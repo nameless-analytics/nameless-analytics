@@ -85,14 +85,6 @@ Implements a robust "handshake" protocol to stitch sessions across different top
 
 </details>
 
-##### Endpoint requirements for Cross-domain
-When tracking multiple domains, the Server-side GTM endpoint configuration becomes critical due to how browsers handle the `Set-Cookie` header:
-
-*   **Static Endpoint**: If all domains are subdomains of the same root (e.g., `a.site.com` and `b.site.com`), a single static endpoint (e.g., `gtm.site.com`) works.
-*   **Dynamic Endpoints**: If domains are completely different (e.g., `domain-a.com` and `domain-b.com`), the requests **must** be sent to a first-party subdomain of the *current* page (e.g., `gtm.domain-a.com` on site A and `gtm.domain-b.com` on site B). This ensures that the `Domain` attribute in the `Set-Cookie` header matches the request origin, allowing the browser to accept the cookie.
-
-Failure to use dynamic endpoints in a multi-domain setup will result in cookies being rejected by the browser due to cross-site security policies.
-
 #### Debugging & Visibility
 Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
 
