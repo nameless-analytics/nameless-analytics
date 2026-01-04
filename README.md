@@ -73,33 +73,6 @@ Implements specific logic to handle high-frequency events (e.g., rapid clicks), 
 #### SPA & History Management
 Native support for Single Page Applications, automatically detecting history changes to trigger virtual page views.
 
-#### ID Management
-The tracker automatically generates and manages unique identifiers for pages, and events.
-
-<details><summary>page_id and event_id values</summary>
-
-| ID Name      | Renewed            | Example values                                                 | Value composition                                |
-|--------------|--------------------|----------------------------------------------------------------|--------------------------------------------------|
-| **page_id**  | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Last Page ID            |
-| **event_id** | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Last Page ID _ Event ID |
-
-</details>
-
-#### Cross-domain Architecture
-Implements a robust "handshake" protocol to stitch sessions across different top-level domains. Since Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
-
-<details><summary>How the cross-domain handshake works</summary>
-
-1. **Pre-flight Request**: When a user clicks a link pointing to a configured cross-domain, the tracker intercepts the click and sends a synchronous `get_user_data` request to the Server-side GTM endpoint.
-2. **Identity Retrieval**: The server receives the request (along with the `HttpOnly` cookies), extracts the `client_id` and `session_id`, and returns them in the JSON response.
-3. **URL Decoration**: The tracker receives the IDs and decorates the outbound destination URL with a `na_id` parameter (e.g., `https://destination.com/?na_id=...`).
-4. **Session Stitching**: On the destination site, the tracker detects the `na_id` parameter, sends it to the server, and the server sets the same `HttpOnly` cookies for the new domain, effectively merging the session.
-
-</details>
-
-#### Debugging & Visibility
-Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
-
 #### Request payload data
 The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
 
@@ -356,6 +329,33 @@ When "Enable cross-domain tracking" in the Nameless Analytics Client-side Tracke
 | session_data       | cross_domain_session | String   | Server-Side | Is cross domain session |
 
 </details>
+
+#### ID Management
+The tracker automatically generates and manages unique identifiers for pages, and events.
+
+<details><summary>page_id and event_id values</summary>
+
+| ID Name      | Renewed            | Example values                                                 | Value composition                                |
+|--------------|--------------------|----------------------------------------------------------------|--------------------------------------------------|
+| **page_id**  | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Last Page ID            |
+| **event_id** | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Last Page ID _ Event ID |
+
+</details>
+
+#### Cross-domain Architecture
+Implements a robust "handshake" protocol to stitch sessions across different top-level domains. Since Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
+
+<details><summary>How the cross-domain handshake works</summary>
+
+1. **Pre-flight Request**: When a user clicks a link pointing to a configured cross-domain, the tracker intercepts the click and sends a synchronous `get_user_data` request to the Server-side GTM endpoint.
+2. **Identity Retrieval**: The server receives the request (along with the `HttpOnly` cookies), extracts the `client_id` and `session_id`, and returns them in the JSON response.
+3. **URL Decoration**: The tracker receives the IDs and decorates the outbound destination URL with a `na_id` parameter (e.g., `https://destination.com/?na_id=...`).
+4. **Session Stitching**: On the destination site, the tracker detects the `na_id` parameter, sends it to the server, and the server sets the same `HttpOnly` cookies for the new domain, effectively merging the session.
+
+</details>
+
+#### Debugging & Visibility
+Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
 
 #### Parameter Hierarchy & Overriding
 Since parameters can be set at multiple levels (Variables, Tags, and Server-side logic), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
