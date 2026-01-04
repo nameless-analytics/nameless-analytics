@@ -91,33 +91,17 @@ Real-time tracker logs and errors are sent to the **Browser Console**, ensuring 
 #### ID Management
 The tracker automatically generates and manages unique identifiers for pages, and events.
 
-| Cookie Name  | Renewed            | Example values                                                 | Value composition                                |
+<details><summary>page_id and event_id values</summary>
+
+| ID Name      | Renewed            | Example values                                                 | Value composition                                |
 |--------------|--------------------|----------------------------------------------------------------|--------------------------------------------------|
 | **page_id**  | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Last Page ID            |
 | **event_id** | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Last Page ID _ Event ID |
 
+</details>
+
 #### Request payload data
 The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
-
-#### Parameter Hierarchy & Overriding
-Since parameters can be set at multiple levels (Variables, Tags, and Server-side logic), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
-
-##### 1. User & Session Parameters
-| Priority | Level | Source |
-| :--- | :--- | :--- |
-| **High** | Server-side | [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag) logic |
-| **Low** | Client-side | [Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable) |
-
-##### 2. Event Parameters
-| Priority | Level | Source |
-| :--- | :--- | :--- |
-| **1 (Max)** | Server-side | [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag) override |
-| **2** | Client-side Tag | [Specific Event Parameters](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag) |
-| **3** | Configuration | [Shared Event Parameters](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable) |
-| **4** | dataLayer | Values captured from the `dataLayer.push()` |
-| **5 (Min)** | Native | Standard parameters (e.g., `page_location`, `page_title`) |
-
-> **Note**: System-critical parameters like `page_id`, `event_id`, `client_id`, and `session_id` are protected and cannot be overwritten by custom tags or variables.
 
 <details><summary>Request payload example with only standard parameters and no customization at all</summary>
 
@@ -373,6 +357,35 @@ When "Enable cross-domain tracking" in the Nameless Analytics Client-side Tracke
 
 </details>
 
+
+
+
+#### Parameter Hierarchy & Overriding
+Since parameters can be set at multiple levels (Variables, Tags, and Server-side logic), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
+
+**Note**: System-critical parameters like `page_id`, `event_id`, `client_id`, and `session_id` are protected and cannot be overwritten by custom tags or variables.
+
+<details> <summary>User and sessions parameters hierarchy</summary>
+
+| Priority | Level | Source |
+| :--- | :--- | :--- |
+| **High** | Server-side | [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag) logic |
+| **Low** | Client-side | [Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable) |
+
+</details>
+
+<details> <summary>Event parameters hierarchy</summary>
+
+| Priority | Level | Source |
+| :--- | :--- | :--- |
+| **1 (Max)** | Server-side | [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag) override |
+| **2** | Client-side Tag | [Specific Event Parameters](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag) |
+| **3** | Configuration | [Shared Event Parameters](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable) |
+| **4** | dataLayer | Values captured from the `dataLayer.push()` |
+| **5 (Min)** | Native | Standard parameters (e.g., `page_location`, `page_title`) |
+
+</details>
+
 </br>
 
 
@@ -405,18 +418,29 @@ Developers can monitor the server-side logic in real-time through **GTM Server P
 #### ID Management
 The tracker automatically generates and manages unique identifiers for users and sessions.
 
-| Cookie Name    | Renewed                       | Example values                 | Value composition |
+<details> <summary>client_id and session_id values</summary>
+
+| ID Name        | Renewed                       | Example values                 | Value composition |
 |----------------|-------------------------------|--------------------------------|-------------------|
 | **client_id**  | when `na_u` cookie is created | lZc919IBsqlhHks                | Client ID         |
 | **session_id** | when `na_s` cookie is created | lZc919IBsqlhHks_1KMIqneQ7dsDJU | Session ID        |
 
+</details>
+
 #### Cookies
 All cookies are issued with `HttpOnly`, `Secure`, and `SameSite=Strict` flags. This multi-layered approach prevents client-side access (XSS protection) and Cross-Site Request Forgery (CSRF).
 
-| Cookie Name | Default expiration | Example values                                 | Value composition                     |
-|-------------|--------------------|------------------------------------------------|---------------------------------------|
-| **na_u**    | 400 days           | lZc919IBsqlhHks                                | Client ID                             |
-| **na_s**    | 30 minutes         | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y | Client ID _ Session ID - Last Page ID |
+<details> <summary>User Session cookie values </summary>
+
+
+| Cookie Name | Default expiration | Example values                                 | Value composition                     | Usage              |
+|-------------|--------------------|------------------------------------------------|---------------------------------------|--------------------|
+| **na_u**    | 400 days           | lZc919IBsqlhHks                                | Client ID                             | Used as client_id  |
+| **na_s**    | 30 minutes         | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y | Client ID _ Session ID - Last Page ID | Used as session_id |
+
+</details>
+
+</br>
 
 The platform automatically calculates the appropriate cookie domain by extracting the **Effective TLD+1** from the request origin. This ensures seamless identity persistence across subdomains without manual configuration. 
   
