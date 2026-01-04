@@ -11,6 +11,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
 ## Start from here
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Technical Architecture](#technical-architecture)
+  - [Key Components](#key-components)
   - [High-Level Data Flow](#high-level-data-flow)
   - [Client-Side Collection](#client-side-collection)
   - [Server-Side Processing](#server-side-processing)
@@ -28,9 +29,9 @@ Collect, analyze, and activate your website data with a free real-time digital a
 
 
 ## What is Nameless Analytics 
-Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. It's built upon a transparent pipeline that is built entirely on your own Google Cloud Platform environment.
+Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. 
 
-At a high level, the platform solves critical challenges in modern analytics:
+Built upon a transparent pipeline hosted entirely on your own Google Cloud Platform environment, at a high level, the platform solves critical challenges in modern analytics:
 
 1.  **Total Data Ownership**: Unlike commercial tools where data resides on third-party servers, Nameless Analytics pipelines every interaction directly to your BigQuery warehouse. You own the raw data, the retention policies and the reporting.
 2.  **Data Quality**: By leveraging a server-side, first-party architecture, the platform bypasses common client-side restrictions (such as ad blockers and ITP), ensuring granular, unsampled data collection that is far more accurate than standard client-side tags.
@@ -41,14 +42,20 @@ At a high level, the platform solves critical challenges in modern analytics:
 
 
 ## Technical Architecture
-The platform is built on a modern architecture that separates data capture, processing, and storage to ensure maximum flexibility and performance.
+The platform is built on a modern architecture that separates data capture, processing and storage to ensure maximum flexibility and performance.
 
-### Components
+### Key components
+#### For GTM Client-side
 - Client-side tracker tag: [nameless-analytics-client-side-tracker-tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
 - Client-side tracker configuration variable: [nameless-analytics-client-side-tracker-configuration-variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
+- GTM client-side basic container: [gtm-client-side-container-template](nameless-analytics/gtm-containers/gtm-client-side-container-template.json)
+
+#### For GTM Server-side
 - Server-side client tag: [nameless-analytics-server-side-client-tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
+- GTM server-side basic container: [gtm-server-side-container-template](nameless-analytics/gtm-containers/gtm-server-side-container-template.json)
+
+#### For BigQuery
 - Reporting tables: [reporting-tables](reporting-tables/)
-- GTM default containers: [gtm-containers](gtm-containers/)
 
 </br>
 
@@ -359,7 +366,7 @@ Since parameters can be set at multiple levels (Variables, Tags, and Server-side
 
 **Note**: System-critical parameters like `page_id`, `event_id`, `client_id`, and `session_id` are protected and cannot be overwritten by custom tags or variables.
 
-<details> <summary>User and sessions parameters hierarchy</summary>
+<details> <summary>See user and sessions parameters hierarchy</summary>
 
 | Priority | Level | Source |
 | :--- | :--- | :--- |
@@ -368,7 +375,7 @@ Since parameters can be set at multiple levels (Variables, Tags, and Server-side
 
 </details>
 
-<details> <summary>Event parameters hierarchy</summary>
+<details> <summary>See event parameters hierarchy</summary>
 
 | Priority | Level | Source |
 | :--- | :--- | :--- |
@@ -395,8 +402,8 @@ Validates request origins and authorized domains (CORS) before processing to pre
 #### Bot Protection
 Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
 
-#### Data Integrity & Priority
-Enforces a strict parameter hierarchy (Server Overrides > Tag Metadata > Config Variable > dataLayer) and **prevents "orphan events"**. The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
+#### Data Integrity
+The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
 
 #### Geolocation & Privacy by Design
 Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations.
@@ -422,7 +429,7 @@ The platform automatically calculates the appropriate cookie domain by extractin
   
 Cookies are created or updated on every event to track the user's session and identity across the entire journey.
 
-<details> <summary>User Session cookie values </summary>
+<details> <summary>See user and session cookie values</summary>
 
 
 | Cookie Name | Default expiration | Example values                                 | Value composition                     | Usage              |
