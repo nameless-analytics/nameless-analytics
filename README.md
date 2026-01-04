@@ -533,8 +533,8 @@ SQL Table Functions can be used as sources for dashboards, such as [**this one**
 
 </details>
 
-#### Compliance (Consent)
-<details><summary>See compliance dashboard examples</summary>
+#### Users consents
+<details><summary>See users consents dashboard examples</summary>
 
 - [**Consent Overview**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_sba934crpd): Stats on opt-in rates. Powered by [consents.sql](reporting-tables/consents.sql).
 - [**Consent Details**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_nn21ghetpd): Granular consent types over time. Logic in [consents.sql](reporting-tables/consents.sql).
