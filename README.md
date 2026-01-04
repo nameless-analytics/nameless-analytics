@@ -64,14 +64,26 @@ The following diagram illustrates the real-time data flow from the user's browse
 ### Client-Side Collection
 The **Client-Side Tracker** (GTM Web) is the system's intelligent agent in the browser. It abstracts complex logic to ensure reliable data capture under any condition.
 
-#### Sequential Execution Queue
-Implements specific logic to handle high-frequency events (e.g., rapid clicks), ensuring requests are dispatched in strict FIFO order to preserve the narrative of the session.
-
 #### Smart Consent Management
 Fully integrated with Google Consent Mode. It can track every event or automatically queue events (`analytics_storage` pending) and release them only when consent is granted, preventing data loss.
 
+#### Sequential Execution Queue
+Implements specific logic to handle high-frequency events (e.g., rapid clicks), ensuring requests are dispatched in strict FIFO order to preserve the narrative of the session.
+
 #### SPA & History Management
 Native support for Single Page Applications, automatically detecting history changes to trigger virtual page views.
+
+#### ID Management
+The tracker automatically generates and manages unique identifiers for pages, and events.
+
+<details><summary>page_id and event_id values</summary>
+
+| ID Name      | Renewed            | Example values                                                 | Value composition                                |
+|--------------|--------------------|----------------------------------------------------------------|--------------------------------------------------|
+| **page_id**  | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Last Page ID            |
+| **event_id** | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Last Page ID _ Event ID |
+
+</details>
 
 #### Cross-domain Architecture
 Implements a robust "handshake" protocol to stitch sessions across different top-level domains. Since Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
@@ -87,18 +99,6 @@ Implements a robust "handshake" protocol to stitch sessions across different top
 
 #### Debugging & Visibility
 Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
-
-#### ID Management
-The tracker automatically generates and manages unique identifiers for pages, and events.
-
-<details><summary>page_id and event_id values</summary>
-
-| ID Name      | Renewed            | Example values                                                 | Value composition                                |
-|--------------|--------------------|----------------------------------------------------------------|--------------------------------------------------|
-| **page_id**  | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Last Page ID            |
-| **event_id** | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Last Page ID _ Event ID |
-
-</details>
 
 #### Request payload data
 The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
@@ -357,9 +357,6 @@ When "Enable cross-domain tracking" in the Nameless Analytics Client-side Tracke
 
 </details>
 
-
-
-
 #### Parameter Hierarchy & Overriding
 Since parameters can be set at multiple levels (Variables, Tags, and Server-side logic), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
 
@@ -406,15 +403,6 @@ Automatically maps the incoming request IP to geographic data (Country, City) fo
 
 To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic).
 
-#### Real-time Forwarding
-Supports instantaneous data streaming to external HTTP endpoints immediately after processing. The system allows for **custom HTTP headers** injection, enabling secure authentication with third-party services endpoints directly from the server.
-
-#### Self-Monitoring & Performance
-The system transparently tracks pipeline health by measuring **ingestion latency** (the exact millisecond delay between the client hit and server processing) and **payload size** (`content_length`). This data allows for high-resolution monitoring of the real-time data flow directly within BigQuery.
-
-#### Debugging & Visibility
-Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**.
-
 #### ID Management
 The tracker automatically generates and manages unique identifiers for users and sessions.
 
@@ -439,6 +427,15 @@ All cookies are issued with `HttpOnly`, `Secure`, and `SameSite=Strict` flags. T
 | **na_s**    | 30 minutes         | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y | Client ID _ Session ID - Last Page ID | Used as session_id |
 
 </details>
+
+#### Real-time Forwarding
+Supports instantaneous data streaming to external HTTP endpoints immediately after processing. The system allows for **custom HTTP headers** injection, enabling secure authentication with third-party services endpoints directly from the server.
+
+#### Self-Monitoring & Performance
+The system transparently tracks pipeline health by measuring **ingestion latency** (the exact millisecond delay between the client hit and server processing) and **payload size** (`content_length`). This data allows for high-resolution monitoring of the real-time data flow directly within BigQuery.
+
+#### Debugging & Visibility
+Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**.
 
 </br>
 
