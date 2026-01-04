@@ -354,9 +354,6 @@ Implements a robust "handshake" protocol to stitch sessions across different top
 
 </details>
 
-#### Debugging & Visibility
-Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
-
 #### Parameter Hierarchy & Overriding
 Since parameters can be set at multiple levels (Variables, Tags, and Server-side logic), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
 
@@ -382,6 +379,9 @@ Since parameters can be set at multiple levels (Variables, Tags, and Server-side
 | **5 (Min)** | Native | Standard parameters (e.g., `page_location`, `page_title`) |
 
 </details>
+
+#### Debugging & Visibility
+Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
 
 </br>
 
@@ -418,6 +418,10 @@ The tracker automatically generates and manages unique identifiers for users and
 #### Cookies
 All cookies are issued with `HttpOnly`, `Secure`, and `SameSite=Strict` flags. This multi-layered approach prevents client-side access (XSS protection) and Cross-Site Request Forgery (CSRF).
 
+The platform automatically calculates the appropriate cookie domain by extracting the **Effective TLD+1** from the request origin. This ensures seamless identity persistence across subdomains without manual configuration. 
+  
+Cookies are created or updated on every event to track the user's session and identity across the entire journey.
+
 <details> <summary>User Session cookie values </summary>
 
 
@@ -436,12 +440,6 @@ The system transparently tracks pipeline health by measuring **ingestion latency
 
 #### Debugging & Visibility
 Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**.
-
-</br>
-
-The platform automatically calculates the appropriate cookie domain by extracting the **Effective TLD+1** from the request origin. This ensures seamless identity persistence across subdomains without manual configuration. 
-  
-Cookies are created or updated on every event to track the user's session and identity across the entire journey.
 
 </br>
 
