@@ -29,3 +29,8 @@ Have an idea for a new feature? Check our [Contributing Guidelines](CONTRIBUTING
 ---
 
 **Note**: Completed tasks are tracked in [CHANGELOG.md](CHANGELOG.md)
+
+---
+
+Reach me at: [Email](mailto:hello@tommasomoretti.com) | [Website](https://tommasomoretti.com) | [Twitter](https://twitter.com/tommoretti88) | [LinkedIn](https://www.linkedin.com/in/tommasomoretti/)
+

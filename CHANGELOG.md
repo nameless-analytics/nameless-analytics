@@ -70,3 +70,8 @@ All notable changes to Nameless Analytics will be documented in this file.
 
 [1.0.0]: https://github.com/nameless-analytics/nameless-analytics/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/nameless-analytics/nameless-analytics/releases/tag/v0.9.0
+
+---
+
+Reach me at: [Email](mailto:hello@tommasomoretti.com) | [Website](https://tommasomoretti.com) | [Twitter](https://twitter.com/tommoretti88) | [LinkedIn](https://www.linkedin.com/in/tommasomoretti/)
+
