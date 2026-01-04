@@ -88,15 +88,7 @@ The tracker automatically generates and manages unique identifiers for pages, an
 | **event_id** | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Last Page ID _ Event ID |
 
 #### Request payload data
-The request data is sent via a POST request in JSON format. It is structured into:
-* User data
-* Session data
-* Page data
-* Event data
-* dataLayer data
-* Ecommerce data
-* consent data
-* GTM data
+The request data is sent via a POST request in JSON format. It is structured into: User data, Session data, Page data, Event data, dataLayer data, Ecommerce data, Consent data and GTM data.
 
 <details><summary>Request payload example with only standard parameters and no customization at all</summary>
 
@@ -508,23 +500,28 @@ Get expert help for implementation, technical documentation, and advanced SQL qu
 ## Pricing & Cloud Costs
 Nameless Analytics is designed to achieve maximum performance with minimum overhead. By utilizing Google Cloud's serverless offerings, the platform can operate at **zero cost** for many users and scales predictably with traffic.
 
-### Compute - Processing Layer
+### Data processing
 You can choose the compute environment that best fits your traffic and budget:
 
 *   **Cloud Run (Recommended)**: The most modern and cost-effective choice. It scales to zero when there's no traffic. The Google Cloud "Always Free" tier includes **2 million requests per month**, which covers most small-to-medium websites at no charge.
 *   **App Engine Standard**: Ideal for 24/7 uptime on a budget. Includes **28 free instance-hours per day** (F1 instances), allowing for a continuous single-server setup at **zero cost**.
 *   **App Engine Flexible**: Best for enterprise-scale deployments (5-10M+ hits/month) requiring multi-zone redundancy. Typically starts at ~$120/month for a 3-instance minimum cluster.
 
-### Storage - Data Layer
-*   **Google Firestore**: Manages real-time session states. The free tier includes **50,000 reads, 20,000 writes, and 20,000 deletes per day**, which is ample for high-resolution session tracking.
-*   **Google BigQuery**: Your historical data warehouse. Includes **10 GB of storage** and **1 TB of query processing per month** for free.
+### Data storage
+*   **Google Firestore**: Manages real-time session states. Billing is primarily based on **document operations** (Reads and Writes). The free tier includes **50,000 reads and 20,000 writes per day**. Since data is frequently overwritten or deleted, physical storage usage typically remains within the **1 GB free limit**.
+*   **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). **Note**: Query processing (scanning data for analysis/dashboards) is billed separately by Google Cloud based on usage; however, the first **1 TB per month** is always free.
 
-### Cost Summary Table
-| Traffic Volume | Recommended Setup | Estimated Monthly Cost |
-| :--- | :--- | :--- |
-| **Low** (<500k hits) | Cloud Run / App Engine Standard | **$0 (Free Tier)** |
-| **Medium** (1M - 2M hits) | Cloud Run | **$0 - $5** |
-| **High** (5M+ hits) | Cloud Run / App Engine Flexible | **Pay-per-use / ~$120+** |
+### Cost Summary Table (Monthly estimates)
+| Traffic Tier | Monthly Hits | Processing (Compute) | Firestore Ops | BQ Ingest & Storage | Estimated Total |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Low** | < 500k | $0 (Free Tier) | $0 (Free Tier) | $0 (Free Tier) | **FREE** |
+| **Medium** | 1M - 2M | $0 - $1 | ~$3 - $4 | < $1 | **$3 - $6** |
+| **High** | 5M | ~$8 - $12 | ~$10 - $12 | ~$1 - $2 | **$19 - $26** |
+| **Enterprise** | 10M+ | ~$20 - $130+ | ~$22+ | ~$3+ | **$45 - $155+** |
+
+</br>
+
+> **Note on Estimates**: Calculations are based on standard US/EU regional pricing. "Data" costs reflect Firestore operations and BigQuery streaming ingestion. These totals **exclude** BigQuery query processing costs, which vary based on dashboard usage and analytical query volume (1 TB/mo free Tier typically covers standard dashboard usage).
 
 
 </br></br>
