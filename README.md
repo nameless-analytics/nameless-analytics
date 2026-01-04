@@ -74,7 +74,24 @@ Fully integrated with Google Consent Mode. It can track every event or automatic
 Native support for Single Page Applications, automatically detecting history changes to trigger virtual page views.
 
 #### Cross-domain Architecture
-Implements a robust "handshake" protocol to stitch sessions across different top-level domains. The client performs a pre-flight request (`get_user_data`) to the server to retrieve identifiers stored in `HttpOnly` cookies (otherwise invisible to JavaScript) and then uses these values to decorate outbound links with the `na_id` parameter.
+Implements a robust "handshake" protocol to stitch sessions across different top-level domains. Since Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
+
+<details><summary>How the cross-domain handshake works</summary>
+
+1. **Pre-flight Request**: When a user clicks a link pointing to a configured cross-domain, the tracker intercepts the click and sends a synchronous `get_user_data` request to the Server-side GTM endpoint.
+2. **Identity Retrieval**: The server receives the request (along with the `HttpOnly` cookies), extracts the `client_id` and `session_id`, and returns them in the JSON response.
+3. **URL Decoration**: The tracker receives the IDs and decorates the outbound destination URL with a `na_id` parameter (e.g., `https://destination.com/?na_id=...`).
+4. **Session Stitching**: On the destination site, the tracker detects the `na_id` parameter, sends it to the server, and the server sets the same `HttpOnly` cookies for the new domain, effectively merging the session.
+
+</details>
+
+##### Endpoint requirements for Cross-domain
+When tracking multiple domains, the Server-side GTM endpoint configuration becomes critical due to how browsers handle the `Set-Cookie` header:
+
+*   **Static Endpoint**: If all domains are subdomains of the same root (e.g., `a.site.com` and `b.site.com`), a single static endpoint (e.g., `gtm.site.com`) works.
+*   **Dynamic Endpoints**: If domains are completely different (e.g., `domain-a.com` and `domain-b.com`), the requests **must** be sent to a first-party subdomain of the *current* page (e.g., `gtm.domain-a.com` on site A and `gtm.domain-b.com` on site B). This ensures that the `Domain` attribute in the `Set-Cookie` header matches the request origin, allowing the browser to accept the cookie.
+
+Failure to use dynamic endpoints in a multi-domain setup will result in cookies being rejected by the browser due to cross-site security policies.
 
 #### Debugging & Visibility
 Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
@@ -88,7 +105,27 @@ The tracker automatically generates and manages unique identifiers for pages, an
 | **event_id** | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Last Page ID _ Event ID |
 
 #### Request payload data
-The request data is sent via a POST request in JSON format. It is structured into: User data, Session data, Page data, Event data, dataLayer data, Ecommerce data, Consent data and GTM data.
+The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
+
+#### Parameter Hierarchy & Overriding
+Since parameters can be set at multiple levels (Variables, Tags, and Server-side logic), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
+
+##### 1. User & Session Parameters
+| Priority | Level | Source |
+| :--- | :--- | :--- |
+| **High** | Server-side | [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag) logic |
+| **Low** | Client-side | [Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable) |
+
+##### 2. Event Parameters
+| Priority | Level | Source |
+| :--- | :--- | :--- |
+| **1 (Max)** | Server-side | [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag) override |
+| **2** | Client-side Tag | [Specific Event Parameters](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag) |
+| **3** | Configuration | [Shared Event Parameters](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable) |
+| **4** | dataLayer | Values captured from the `dataLayer.push()` |
+| **5 (Min)** | Native | Standard parameters (e.g., `page_location`, `page_title`) |
+
+> **Note**: System-critical parameters like `page_id`, `event_id`, `client_id`, and `session_id` are protected and cannot be overwritten by custom tags or variables.
 
 <details><summary>Request payload example with only standard parameters and no customization at all</summary>
 
