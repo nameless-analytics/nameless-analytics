@@ -57,7 +57,7 @@ The platform is built on a modern architecture that separates data capture, proc
 #### For BigQuery
 - Reporting tables: [reporting-tables](reporting-tables/)
 
-</br>
+</br></br>
 
 
 ### High-Level Data Flow
@@ -65,7 +65,7 @@ The following diagram illustrates the real-time data flow from the user's browse
 
 <img src="https://github.com/user-attachments/assets/ea15a5f1-b456-4d85-a116-42e54c4073cd" alt="Nameless Analytics schema"/>
 
-</br>
+</br></br>
 
 
 ### Client-Side Collection
