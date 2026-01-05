@@ -579,9 +579,15 @@ You can choose the compute environment that best fits your traffic and budget:
 *   **App Engine Standard**: Ideal for 24/7 uptime on a budget. Includes **28 free instance-hours per day** (F1 instances), allowing for a continuous single-server setup at **zero cost**.
 *   **App Engine Flexible**: Best for enterprise-scale deployments (5-10M+ hits/month) requiring multi-zone redundancy. Typically starts at ~$120/month for a 3-instance minimum cluster.
 
+</br></br>
+
+
 ### Data storage
 *   **Google Firestore**: Manages real-time session states. Billing is primarily based on **document operations** (Reads and Writes). The free tier includes **50,000 reads and 20,000 writes per day**. Since data is frequently overwritten or deleted, physical storage usage typically remains within the **1 GB free limit**.
 *   **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). **Note**: Query processing (scanning data for analysis/dashboards) is billed separately by Google Cloud based on usage; however, the first **1 TB per month** is always free.
+
+</br></br>
+
 
 ### Cost Summary Table (Monthly estimates)
 | Traffic Tier | Monthly Hits | Processing (Compute) | Firestore Ops | BQ Ingest & Storage | Estimated Total |
@@ -609,16 +615,22 @@ Before starting the setup, ensure you have:
 - A Google Tag Manager (Web) container
 - A Google Tag Manager (Server-side) container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/)
 
+</br>
+
+
 ### Google Cloud Setup
 - Google Cloud BigQuery: Create tables and table functions in BigQuery using the provided [SQL scripts](reporting-tables/)
 - Google Cloud Firestore: Enable in **Native Mode**
 - Google Cloud IAM: Grant your GTM SS Service Account `BigQuery Data Editor`, `BigQuery Job User`, and `Cloud Datastore User`
 
+</br>
+
+
 ### Google Tag Manager Setup
 - Import: [Client-side GTM Template](gtm-containers/gtm-client-side-container-template.json)
 - Import: [Server-side GTM Template](gtm-containers/gtm-server-side-container-template.json)
 
-</br>
+</br></br>
 
 
 
