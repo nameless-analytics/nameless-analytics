@@ -45,17 +45,17 @@ Built upon a transparent pipeline hosted entirely on your own Google Cloud Platf
 The platform is built on a modern architecture that separates data capture, processing and storage to ensure maximum flexibility and performance.
 
 ### Key components
-#### For GTM Client-side
-- Client-side tracker tag: [nameless-analytics-client-side-tracker-tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
-- Client-side tracker configuration variable: [nameless-analytics-client-side-tracker-configuration-variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
+#### Client-side
+- Nameless Analytics | Client-side Tracker Tag: [nameless-analytics-client-side-tracker-tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
+- Nameless Analytics | Client-side Tracker Configuration Variable: [nameless-analytics-client-side-tracker-configuration-variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
 - GTM client-side basic container: [gtm-client-side-container-template](nameless-analytics/gtm-containers/gtm-client-side-container-template.json)
 
-#### For GTM Server-side
-- Server-side client tag: [nameless-analytics-server-side-client-tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
+#### Server-side
+- Nameless Analytics | Server-side Client Tag: [nameless-analytics-server-side-client-tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
 - GTM server-side basic container: [gtm-server-side-container-template](nameless-analytics/gtm-containers/gtm-server-side-container-template.json)
 
-#### For BigQuery
-- Reporting tables: [reporting-tables](reporting-tables/)
+#### Storage
+- Nameless Analytics | Reporting tables: [reporting-tables](reporting-tables/)
 
 </br></br>
 
@@ -63,7 +63,7 @@ The platform is built on a modern architecture that separates data capture, proc
 ### High-Level Data Flow
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
 
-<img src="https://github.com/user-attachments/assets/ea15a5f1-b456-4d85-a116-42e54c4073cd" alt="Nameless Analytics schema"/>
+![Nameless Analytics schema](https://github.com/user-attachments/assets/ea15a5f1-b456-4d85-a116-42e54c4073cd)
 
 </br></br>
 
@@ -411,7 +411,7 @@ Automatically maps the incoming request IP to geographic data (Country, City) fo
 To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic).
 
 #### ID Management
-The tracker automatically generates and manages unique identifiers for users and sessions.
+The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
 
 <details> <summary>See client_id and session_id values</summary>
 
@@ -464,7 +464,7 @@ It mantains the latest available state for every user and session. For example, 
 
 </br>
 
-<img alt="Nameless Analytics - Firestore collection schema" src="https://github.com/user-attachments/assets/d27c3ca6-f039-4702-853e-81e71ed033c2" />
+![Nameless Analytics - Firestore collection schema](https://github.com/user-attachments/assets/d27c3ca6-f039-4702-853e-81e71ed033c2)
 
 </br>
 
@@ -496,7 +496,7 @@ It mantains **every single state transition** for every user and session. For ex
 
 </br>
 
-<img alt="Nameless Analytics - BigQuery event_raw schema" src="https://github.com/user-attachments/assets/d23e3959-ab7a-453c-88db-a4bc2c7b32f4" />
+![Nameless Analytics - BigQuery event_raw schema](https://github.com/user-attachments/assets/d23e3959-ab7a-453c-88db-a4bc2c7b32f4)
 
 </br>
 
