@@ -267,7 +267,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 | event_timestamp    |                               | Integer  | Client-Side | Event timestamp                               |
 | event_id           |                               | String   | Client-Side | Unique event identifier                       |
 | event_name         |                               | String   | Client-Side | Event name                                    |
-| event_origin       |                               | String   | Client-Side | Event origin (e.g., Website)                  |
+| event_origin       |                               | String   | Client-Side | Event origin (Website or Streaming protocol)  |
 | event_data         | event_type                    | String   | Client-Side | Event type                                    |
 |                    | channel_grouping              | String   | Client-Side | Channel grouping for the event                |
 |                    | source                        | String   | Client-Side | Event traffic source                          |
