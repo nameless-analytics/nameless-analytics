@@ -167,7 +167,7 @@ declare main_table_sql string default format(
           name STRING OPTIONS (description = 'GTM execution parameter name'),
           value STRUCT<
             string STRING OPTIONS (description = 'GTM execution parameter string value'),
-            int INT64 OPTIONS (description = 'Event data parameter int number value')
+            int INT64 OPTIONS (description = 'GTM execution parameter int number value')
           > OPTIONS (description = 'GTM execution parameter value name')
         >
       > OPTIONS (description = 'GTM execution data')
@@ -256,7 +256,7 @@ This main table is partitioned by `event_date` and clustered by `user_date`, `se
 | event_id        | STRING  | REQUIRED | Event ID.                                  |
 | event_date      | DATE    | REQUIRED | Date of the request.                       |
 | event_timestamp | INTEGER | REQUIRED | Insertion timestamp of the event.          |
-| event_origin    | STRING  | REQUIRED | "Website" if the hit comes from a browser. |
+| event_origin    | STRING  | REQUIRED | "Website" or "Streaming protocol".          |
 | event_data      | RECORD  | REPEATED | Event data.                                |
 | ecommerce       | JSON    | NULLABLE | Ecommerce object.                          |
 | datalayer       | JSON    | NULLABLE | Current `dataLayer` value.                 |
