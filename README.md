@@ -402,6 +402,9 @@ Validates request origins and authorized domains (CORS) before processing to pre
 #### Bot Protection
 Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
 
+#### Streaming Protocol Authentication
+To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol (Measurement Protocol). When enabled, every server-to-server request must include a secret `x-api-key` header. This provides a secure layer for backend integrations without impacting the performance or compatibility of client-side browser tracking.
+
 #### Data Integrity
 The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
 
@@ -540,8 +543,8 @@ SQL Table Functions can be used as sources for dashboards, such as [**this one**
 
 </details>
 
-#### Users consents
-<details><summary>See users consents dashboard examples</summary>
+#### User consents
+<details><summary>See user consents dashboard examples</summary>
 
 - [**Consent Overview**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_sba934crpd): Stats on opt-in rates. Powered by [consents.sql](reporting-tables/consents.sql).
 - [**Consent Details**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_nn21ghetpd): Granular consent types over time. Logic in [consents.sql](reporting-tables/consents.sql).
