@@ -57,7 +57,7 @@ The platform is built on a modern architecture that separates data capture, proc
 #### Storage
 - Nameless Analytics | Reporting tables: [reporting-tables](reporting-tables/)
 
-</br></br>
+</br>
 
 
 ### High-Level Data Flow
@@ -65,7 +65,7 @@ The following diagram illustrates the real-time data flow from the user's browse
 
 ![Nameless Analytics schema](https://github.com/user-attachments/assets/ea15a5f1-b456-4d85-a116-42e54c4073cd)
 
-</br></br>
+</br>
 
 
 ### Client-Side Collection
@@ -403,7 +403,9 @@ Validates request origins and authorized domains (CORS) before processing to pre
 Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
 
 #### Streaming Protocol Authentication
-To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol (Measurement Protocol). When enabled, every server-to-server request must include a secret `x-api-key` header. This provides a secure layer for backend integrations without impacting the performance or compatibility of client-side browser tracking.
+To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol. This protocol is specifically designed for server-to-server communication, allowing you to send events directly from your backend or other offline sources.
+
+When enabled, the Client Tag acts as a gatekeeper: it will automatically reject any request where `event_origin` is set to "Streaming protocol" unless it includes a valid `x-api-key` header matching your configuration. This ensures that only your trusted infrastructure can stream data into your pipeline, providing a secure layer for backend integrations without impacting the performance or compatibility of standard client-side browser tracking.
 
 #### Data Integrity
 The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
@@ -507,7 +509,7 @@ A suite of SQL Table Functions transforms raw data into business-ready views for
 
 </details>
 
-</br></br>
+</br>
 
 
 ### Reporting
@@ -555,7 +557,7 @@ SQL Table Functions can be used as sources for dashboards, such as [**this one**
 <details><summary>See debugging & tech dashboard examples</summary>
 
 - [**Web Hits Latency**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_zlobch0knd): Pipeline latency monitoring. Using [gtm_performances.sql](reporting-tables/gtm_performances.sql).
-- [**Server-to-Server Hits**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_yiouuvwgod): Dedicated view for non-browser events sent via Measurement Protocol.
+- [**Server-to-Server Hits**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_yiouuvwgod): Dedicated view for non-browser events sent via Streaming protocol.
 - [**Raw Data Inspector**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_unnkswttkd): Full table view of individual raw events for granular troubleshooting and verification.
 
 </details>
