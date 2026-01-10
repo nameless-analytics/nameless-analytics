@@ -46,16 +46,16 @@ The platform is built on a modern architecture that separates data capture, proc
 
 ### Key components
 #### Client-side
-- Nameless Analytics | Client-side Tracker Tag: [nameless-analytics-client-side-tracker-tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
-- Nameless Analytics | Client-side Tracker Configuration Variable: [nameless-analytics-client-side-tracker-configuration-variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
-- GTM client-side basic container: [gtm-client-side-container-template](nameless-analytics/gtm-containers/gtm-client-side-container-template.json)
+- [Client-side Tracker Tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
+- [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
+- [GTM client-side basic container](nameless-analytics/gtm-containers/gtm-client-side-container-template.json)
 
 #### Server-side
-- Nameless Analytics | Server-side Client Tag: [nameless-analytics-server-side-client-tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
-- GTM server-side basic container: [gtm-server-side-container-template](nameless-analytics/gtm-containers/gtm-server-side-container-template.json)
+- [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
+- [GTM server-side basic container](nameless-analytics/gtm-containers/gtm-server-side-container-template.json)
 
 #### Storage
-- Nameless Analytics | Reporting tables: [reporting-tables](reporting-tables/)
+- [Tables](tables/)
 
 </br>
 
