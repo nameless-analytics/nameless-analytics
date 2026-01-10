@@ -14,28 +14,26 @@ Implementation:
 * [Installation](#installation)
 * [Configuration](#configuration)
 * [Usage](#usage)
- 
-</br></br>
- 
- 
- 
+  
+
+
 ## Features
 ### BigQuery Enrichment
 Automatically retrieves `page_date` and `page_data` from your BigQuery `events_raw` table based on the session ID (`na_s`), allowing you to enrich server-side events with historical page context.
 
 ### Automatic Type Handling
 Correctly maps BigQuery data types (`string`, `int`, `float`, `json`) to the JSON payload.
- 
+
+
 ### Error Handling
 Includes robust error handling for API responses and database queries.
  
+
 ### Security
 Supports API Key authentication for secure server-side ingestion.
- 
-</br></br>
- 
- 
- 
+
+
+
 ## Implementation
 ### Installation
  
@@ -45,6 +43,7 @@ Supports API Key authentication for secure server-side ingestion.
     pip install requests google-cloud-bigquery
     ```
  
+
 ### Configuration
  
 Open `streaming-protocol.py` and configure the following settings:
@@ -65,6 +64,7 @@ Open `streaming-protocol.py` and configure the following settings:
     *   `bq_table_id`: Your BigQuery Table ID (e.g., `events_raw`).
     *   `bq_credentials_path`: Path to your Google Cloud Service Account JSON key.
  
+
 ### Usage
  
 Run the script using Python:
@@ -78,8 +78,6 @@ The script will:
 2.  Construct a robust event payload.
 3.  Send the event to your GTM Server-side endpoint via the Streaming Protocol.
 4.  Print the server response (or any errors) to the console.
-
-</br></br>
 
 ---
 

@@ -22,8 +22,6 @@ Table functions:
 * [GTM performances](#gtm-performances)
 * [Consents](#consents)
 
-</br>
-
 
 
 ## Tables
@@ -286,8 +284,6 @@ This table is partitioned by `date` and clustered by `month_name` and `day_name`
 
 </details>
 
-</br>
-
 
 
 ## Table functions
@@ -543,7 +539,6 @@ This table illustrates the fields available across different table functions, al
 | `viewport_size` | X | | | | | | | | | |
 
 </details>
-
 
 
 ### Create table functions

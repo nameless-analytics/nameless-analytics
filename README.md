@@ -4,8 +4,6 @@ An open-source web analytics platform for power users, based on [Google Tag Mana
 
 Collect, analyze, and activate your website data with a free real-time digital analytics suite that respects user privacy.
 
-</br>
-
 
 
 ## Start from here
@@ -28,8 +26,6 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [Cost Summary Table](#cost-summary-table)
 - [External Resources](#external-resources)
 
-</br>
-
 
 
 ## What is Nameless Analytics 
@@ -41,8 +37,6 @@ Built upon a transparent pipeline hosted entirely on your own Google Cloud Platf
 2.  **Data Quality**: By leveraging a server-side, first-party architecture, the platform bypasses common client-side restrictions (such as ad blockers and ITP), ensuring granular, unsampled data collection that is far more accurate than standard client-side tags.
 3.  **Real-Time Activation**: Stream identical event payloads to external APIs, CRMs, or marketing automation tools the instant an event occurs, enabling true real-time personalization.
 4.  **Scaling and Cost-Efficiency**: Engineered to run effectively within the **Google Cloud Free Tier** for small to medium traffic, while scaling to a highly cost-efficient pay-per-use model for enterprise-grade deployments.
-
-</br>
 
 
 
@@ -66,8 +60,6 @@ Before starting the setup, ensure you have:
 - Import: [Client-side GTM Template](gtm-containers/gtm-client-side-container-template.json)
 - Import: [Server-side GTM Template](gtm-containers/gtm-server-side-container-template.json)
 
-</br>
-
 
 
 ## Technical Architecture
@@ -89,15 +81,11 @@ The platform is built on a modern architecture that separates data capture, proc
 #### Streaming protocol
 - [Streaming protocol](streaming-protocol/)
 
-</br>
-
 
 ### High-Level Data Flow
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
 
 ![Nameless Analytics schema](https://github.com/user-attachments/assets/9f784a98-a428-4af2-91a1-c21b6ffbe3dd)
-
-</br>
 
 
 ### Client-Side Collection
@@ -116,8 +104,6 @@ Native support for Single Page Applications, automatically detecting history cha
 The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
 
 <details><summary>Request payload example with only standard parameters and no customization at all</summary>
-
-</br>
 
 ```json
 {
@@ -234,8 +220,6 @@ The request data is sent via a POST request in JSON format. It is structured int
   }
 }
 ```
-
-</br>
 
 | **Parameter name** | **Sub-parameter**             | **Type** | **Added**   | **Field description**                         |
 |--------------------|-------------------------------|----------|-------------|-----------------------------------------------|
@@ -422,8 +406,6 @@ Since parameters can be set at multiple levels (Variables, Tags, and Server-side
 #### Debugging & Visibility
 Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
 
-</br>
-
 
 ### Server-Side Processing
 The **Server-Side Client Tag** serves as the security gateway and data orchestrator. It sits between the public internet and your cloud infrastructure, sanitizing every request.
@@ -470,7 +452,6 @@ Cookies are created or updated on every event to track the user's session and id
 
 <details> <summary>See user and session cookie values</summary>
 
-
 | Cookie Name | Default expiration | Example values                                 | Value composition                     | Usage              |
 |-------------|--------------------|------------------------------------------------|---------------------------------------|--------------------|
 | **na_u**    | 400 days           | lZc919IBsqlhHks                                | Client ID                             | Used as client_id  |
@@ -487,8 +468,6 @@ The system transparently tracks pipeline health by measuring **ingestion latency
 #### Debugging & Visibility
 Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**.
 
-</br>
-
 
 ### Storage
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:
@@ -501,11 +480,7 @@ It mantains **the latest available state for every user and session**. For examp
 
 <details><summary>Firestore document structure example</summary>
 
-</br>
-
 ![Nameless Analytics - Firestore collection schema](https://github.com/user-attachments/assets/d27c3ca6-f039-4702-853e-81e71ed033c2)
-
-</br>
 
 Firestore ensures data integrity by managing how parameters are updated across hits:
 
@@ -533,13 +508,9 @@ It mantains **every single state transition** for every user and session. For ex
 
 <details><summary>BigQuery schema example</summary>
 
-</br>
-
 ![Nameless Analytics - BigQuery event_raw schema](https://github.com/user-attachments/assets/d23e3959-ab7a-453c-88db-a4bc2c7b32f4)
 
 </details>
-
-</br>
 
 
 ### Reporting
@@ -594,15 +565,11 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 </details>
 
-</br>
-
 
 ### Support & AI
 Get expert help for implementation, technical documentation, and advanced SQL queries.
 - **[OpenAI ChatGPT](https://chatgpt.com/g/g-6860ef949f94819194c3bc2c08e2f395-nameless-analytics-qna)**: Specialized GPTs trained on the platform docs
 - **Google Gemini (Coming soon)**: Specialized Gem trained on the platform docs
-
-</br>
 
 
 
@@ -616,29 +583,24 @@ You can choose the compute environment that best fits your traffic and budget:
 * **App Engine Standard**: Ideal for 24/7 uptime on a budget. Includes **28 free instance-hours per day** (F1 instances), allowing for a continuous single-server setup at **zero cost**.
 * **App Engine Flexible**: Best for enterprise-scale deployments (5-10M+ hits/month) requiring multi-zone redundancy. Typically starts at ~$120/month for a 3-instance minimum cluster.
 
-</br>
-
 
 ### Data storage
 * **Google Firestore**: Manages real-time session states. Billing is primarily based on **document operations** (Reads and Writes). The free tier includes **50,000 reads and 20,000 writes per day**. Since data is frequently overwritten or deleted, physical storage usage typically remains within the **1 GB free limit**.
 * **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). **Note**: Query processing (scanning data for analysis/dashboards) is billed separately by Google Cloud based on usage; however, the first **1 TB per month** is always free.
 
-</br>
-
 
 ### Cost Summary Table (Monthly estimates)
+
+The following calculations are based on standard US/EU regional pricing. "Data" costs reflect Firestore operations and BigQuery streaming ingestion. 
+
+These totals exclude BigQuery query processing costs, which vary based on dashboard usage and analytical query volume (1 TB/mo free Tier typically covers standard dashboard usage).
+
 | Traffic Tier | Monthly Hits | Processing (Compute) | Firestore Ops | BQ Ingest & Storage | Estimated Total |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Low** | < 500k | $0 (Free Tier) | $0 (Free Tier) | $0 (Free Tier) | **FREE** |
 | **Medium** | 1M - 2M | $0 - $1 | ~$3 - $4 | < $1 | **$3 - $6** |
 | **High** | 5M | ~$8 - $12 | ~$10 - $12 | ~$1 - $2 | **$19 - $26** |
 | **Enterprise** | 10M+ | ~$20 - $130+ | ~$22+ | ~$3+ | **$45 - $155+** |
-
-</br>
-
-> **Note on Estimates**: Calculations are based on standard US/EU regional pricing. "Data" costs reflect Firestore operations and BigQuery streaming ingestion. These totals **exclude** BigQuery query processing costs, which vary based on dashboard usage and analytical query volume (1 TB/mo free Tier typically covers standard dashboard usage).
-
-</br>
 
 
 
