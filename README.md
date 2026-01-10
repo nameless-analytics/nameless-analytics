@@ -10,6 +10,10 @@ Collect, analyze, and activate your website data with a free real-time digital a
 
 ## Start from here
 - [What is Nameless Analytics](#what-is-nameless-analytics)
+- [Quick Start](#quick-start)
+  - [Project configuration](#project-configuration)
+  - [Google Cloud Setup](#google-cloud-setup)
+  - [Google Tag Manager Setup](#google-tag-manager-setup)
 - [Technical Architecture](#technical-architecture)
   - [Key Components](#key-components)
   - [High-Level Data Flow](#high-level-data-flow)
@@ -19,9 +23,9 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [Reporting](#reporting)
   - [Support & AI](#support--ai)
 - [Pricing & Cloud Costs](#pricing--cloud-costs)
-- [Quick Start](#quick-start)
-  - [Repository structure](#repository-structure)
-  - [Project configuration](#project-configuration)
+  - [Data processing](#data-processing)
+  - [Data storage](#data-storage)
+  - [Cost Summary Table](#cost-summary-table)
 - [External Resources](#external-resources)
 
 </br></br>
@@ -39,6 +43,35 @@ Built upon a transparent pipeline hosted entirely on your own Google Cloud Platf
 4.  **Scaling and Cost-Efficiency**: Engineered to run effectively within the **Google Cloud Free Tier** for small to medium traffic, while scaling to a highly cost-efficient pay-per-use model for enterprise-grade deployments.
 
 </br></br>
+
+
+
+## Quick Start
+### Project configuration
+Before starting the setup, ensure you have:
+- A Google Cloud Project with an active billing account
+- A Google BigQuery project
+- A Google Firestore database
+- A Google Tag Manager (Web) container
+- A Google Tag Manager (Server-side) container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/)
+
+</br>
+
+
+### Google Cloud Setup
+- Google Cloud BigQuery: Create tables and table functions in BigQuery using the provided [SQL scripts](reporting-tables/)
+- Google Cloud Firestore: Enable in **Native Mode**
+- Google Cloud IAM: Grant your GTM SS Service Account `BigQuery Data Editor`, `BigQuery Job User`, and `Cloud Datastore User`
+
+</br>
+
+
+### Google Tag Manager Setup
+- Import: [Client-side GTM Template](gtm-containers/gtm-client-side-container-template.json)
+- Import: [Server-side GTM Template](gtm-containers/gtm-server-side-container-template.json)
+
+</br></br>
+
 
 
 ## Technical Architecture
@@ -402,10 +435,12 @@ Validates request origins and authorized domains (CORS) before processing to pre
 #### Bot Protection
 Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
 
-#### Streaming Protocol Authentication
-To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol. This protocol is specifically designed for server-to-server communication, allowing you to send events directly from your backend or other offline sources.
+#### Streaming Protocol
+The Streaming Protocol is specifically designed for server-to-server communication, allowing you to send events directly from your backend or other offline sources.
 
-When enabled, the Client Tag acts as a gatekeeper: it will automatically reject any request where `event_origin` is set to "Streaming protocol" unless it includes a valid `x-api-key` header matching your configuration. This ensures that only your trusted infrastructure can stream data into your pipeline, providing a secure layer for backend integrations without impacting the performance or compatibility of standard client-side browser tracking.
+To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol.
+
+The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming protocol" and does not include a valid `x-api-key` header matching your configuration.
 
 #### Data Integrity
 The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
@@ -503,10 +538,6 @@ It mantains **every single state transition** for every user and session. For ex
 
 ![Nameless Analytics - BigQuery event_raw schema](https://github.com/user-attachments/assets/d23e3959-ab7a-453c-88db-a4bc2c7b32f4)
 
-</br>
-
-A suite of SQL Table Functions transforms raw data into business-ready views for [Users](reporting-tables/users.sql), [Sessions](reporting-tables/sessions.sql), [Pages](reporting-tables/pages.sql), [Events](reporting-tables/events.sql), [Consents](reporting-tables/consents.sql), [GTM Performance](reporting-tables/gtm_performances.sql), and specialized Ecommerce views like [Transactions](reporting-tables/ec_transactions.sql), [Products](reporting-tables/ec_products.sql), and Funnels ([Open](reporting-tables/ec_shopping_stages_open_funnel.sql) / [Closed](reporting-tables/ec_shopping_stages_closed_funnel.sql)).
-
 </details>
 
 </br>
@@ -514,7 +545,9 @@ A suite of SQL Table Functions transforms raw data into business-ready views for
 
 ### Reporting
 
-SQL Table Functions can be used as sources for dashboards, such as [**this one**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd), which demonstrates the platform's potential with a pre-built template covering all key metrics.
+A suite of SQL Table Functions transforms raw data into business-ready views for [Users](reporting-tables/users.sql), [Sessions](reporting-tables/sessions.sql), [Pages](reporting-tables/pages.sql), [Events](reporting-tables/events.sql), [Consents](reporting-tables/consents.sql), [GTM Performance](reporting-tables/gtm_performances.sql), and specialized Ecommerce views like [Transactions](reporting-tables/ec_transactions.sql), [Products](reporting-tables/ec_products.sql), and Funnels ([Open](reporting-tables/ec_shopping_stages_open_funnel.sql) / [Closed](reporting-tables/ec_shopping_stages_closed_funnel.sql)).
+
+SQL Table Functions can be used as sources for dashboards, such as [this one](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd), which demonstrates the platform's potential with a pre-built template covering all key metrics.
 
 #### Acquisition
 <details><summary>See acquisition dashboard examples</summary>
@@ -580,16 +613,16 @@ Nameless Analytics is designed to achieve maximum performance with minimum overh
 ### Data processing
 You can choose the compute environment that best fits your traffic and budget:
 
-*   **Cloud Run (Recommended)**: The most modern and cost-effective choice. It scales to zero when there's no traffic. The Google Cloud "Always Free" tier includes **2 million requests per month**, which covers most small-to-medium websites at no charge.
-*   **App Engine Standard**: Ideal for 24/7 uptime on a budget. Includes **28 free instance-hours per day** (F1 instances), allowing for a continuous single-server setup at **zero cost**.
-*   **App Engine Flexible**: Best for enterprise-scale deployments (5-10M+ hits/month) requiring multi-zone redundancy. Typically starts at ~$120/month for a 3-instance minimum cluster.
+* **Cloud Run (Recommended)**: The most modern and cost-effective choice. It scales to zero when there's no traffic. The Google Cloud "Always Free" tier includes **2 million requests per month**, which covers most small-to-medium websites at no charge.
+* **App Engine Standard**: Ideal for 24/7 uptime on a budget. Includes **28 free instance-hours per day** (F1 instances), allowing for a continuous single-server setup at **zero cost**.
+* **App Engine Flexible**: Best for enterprise-scale deployments (5-10M+ hits/month) requiring multi-zone redundancy. Typically starts at ~$120/month for a 3-instance minimum cluster.
 
 </br></br>
 
 
 ### Data storage
-*   **Google Firestore**: Manages real-time session states. Billing is primarily based on **document operations** (Reads and Writes). The free tier includes **50,000 reads and 20,000 writes per day**. Since data is frequently overwritten or deleted, physical storage usage typically remains within the **1 GB free limit**.
-*   **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). **Note**: Query processing (scanning data for analysis/dashboards) is billed separately by Google Cloud based on usage; however, the first **1 TB per month** is always free.
+* **Google Firestore**: Manages real-time session states. Billing is primarily based on **document operations** (Reads and Writes). The free tier includes **50,000 reads and 20,000 writes per day**. Since data is frequently overwritten or deleted, physical storage usage typically remains within the **1 GB free limit**.
+* **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). **Note**: Query processing (scanning data for analysis/dashboards) is billed separately by Google Cloud based on usage; however, the first **1 TB per month** is always free.
 
 </br></br>
 
@@ -605,35 +638,6 @@ You can choose the compute environment that best fits your traffic and budget:
 </br>
 
 > **Note on Estimates**: Calculations are based on standard US/EU regional pricing. "Data" costs reflect Firestore operations and BigQuery streaming ingestion. These totals **exclude** BigQuery query processing costs, which vary based on dashboard usage and analytical query volume (1 TB/mo free Tier typically covers standard dashboard usage).
-
-
-</br></br>
-
-
-
-## Quick Start
-### Project configuration
-Before starting the setup, ensure you have:
-- A Google Cloud Project with an active billing account
-- A Google BigQuery project
-- A Google Firestore database
-- A Google Tag Manager (Web) container
-- A Google Tag Manager (Server-side) container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/)
-
-</br>
-
-
-### Google Cloud Setup
-- Google Cloud BigQuery: Create tables and table functions in BigQuery using the provided [SQL scripts](reporting-tables/)
-- Google Cloud Firestore: Enable in **Native Mode**
-- Google Cloud IAM: Grant your GTM SS Service Account `BigQuery Data Editor`, `BigQuery Job User`, and `Cloud Datastore User`
-
-</br>
-
-
-### Google Tag Manager Setup
-- Import: [Client-side GTM Template](gtm-containers/gtm-client-side-container-template.json)
-- Import: [Server-side GTM Template](gtm-containers/gtm-server-side-container-template.json)
 
 </br></br>
 
