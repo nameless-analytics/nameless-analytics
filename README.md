@@ -460,7 +460,7 @@ Developers can monitor the server-side logic in real-time through **GTM Server P
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:
 
 #### Firestore as Last updated Snapshot
-It mantains the latest available state for every user and session. For example, the current user_level.
+It mantains **the latest available state for every user and session**. For example, the current user_level.
 
 - **User data**: Stores the latest user profile state, including first/last session timestamps, original acquisition source, and persistent device metadata.
 - **Session data**: Stores the latest session state, including real-time counters (total events, page views), landing/exit page details, and session-specific attribution.
