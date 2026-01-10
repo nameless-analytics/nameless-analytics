@@ -90,6 +90,9 @@ The platform is built on a modern architecture that separates data capture, proc
 #### Storage
 - [Tables](tables/)
 
+#### Streaming protocol
+- [Streaming protocol](streaming-protocol/)
+
 </br>
 
 
