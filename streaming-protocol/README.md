@@ -5,15 +5,15 @@ The Nameless Analytics Streaming Protocol is a robust implementation for sending
 For an overview of how Nameless Analytics works [start from here](https://github.com/nameless-analytics/nameless-analytics/#high-level-data-flow).
  
 Features:
-*   [BigQuery Enrichment](#bigquery-enrichment)
-*   [Automatic Type Handling](#automatic-type-handling)
-*   [Error Handling](#error-handling)
-*   [Security](#security)
+* [BigQuery Enrichment](#bigquery-enrichment)
+* [Automatic Type Handling](#automatic-type-handling)
+* [Error Handling](#error-handling)
+* [Security](#security)
 
 Implementation:
-*   [Installation](#installation)
-*   [Configuration](#configuration)
-*   [Usage](#usage)
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Usage](#usage)
  
 </br></br>
  
