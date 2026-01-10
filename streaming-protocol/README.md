@@ -1,6 +1,8 @@
 # Nameless Analytics | Streaming Protocol
  
-This directory contains a Python script `streaming-protocol.py` that demonstrates a robust implementation of the **Nameless Analytics Streaming Protocol**.
+The Nameless Analytics Streaming Protocol is a robust implementation for sending data to the [Nameless Analytics Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag).
+
+For an overview of how Nameless Analytics works [start from here](https://github.com/nameless-analytics/nameless-analytics/#high-level-data-flow).
  
 Features:
 *   [BigQuery Enrichment](#bigquery-enrichment)
