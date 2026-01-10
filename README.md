@@ -63,7 +63,7 @@ The platform is built on a modern architecture that separates data capture, proc
 ### High-Level Data Flow
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
 
-<img width="1516" height="854" alt="Screenshot 2026-01-10 alle 10 55 31" src="https://github.com/user-attachments/assets/9f784a98-a428-4af2-91a1-c21b6ffbe3dd" />
+![Nameless Analytics schema](https://github.com/user-attachments/assets/9f784a98-a428-4af2-91a1-c21b6ffbe3dd)
 
 </br>
 
