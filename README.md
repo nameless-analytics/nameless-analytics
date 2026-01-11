@@ -595,7 +595,7 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 ### Support & AI
 Get expert help for implementation, technical documentation, and advanced SQL queries.
 - **[OpenAI ChatGPT](https://chatgpt.com/g/g-6860ef949f94819194c3bc2c08e2f395-nameless-analytics-qna)**: Specialized GPTs trained on the platform docs
-- **Google Gemini (Coming soon)**: Specialized Gem trained on the platform docs
+- **Google Gemini (https://gemini.google.com/gem/11zF4ggbmFqUW-alpiqjXZ5cci5KfDbWz)**: Specialized Gem trained on the platform docs
 
 
 
