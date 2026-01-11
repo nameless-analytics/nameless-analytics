@@ -4,7 +4,7 @@ All notable changes to Nameless Analytics will be documented in this file.
 
 > **Note**: For upcoming features and planned improvements, see the [Roadmap](ROADMAP.md).
 
----
+--- 
 
 ## [1.0.0] - 2026-01-02
 

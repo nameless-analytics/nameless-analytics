@@ -331,27 +331,35 @@ The request data is sent via a POST request in JSON format. It is structured int
 
 <details><summary>Request payload additional data parameters</summary>
 
+#### Page status code
+When the "Add page status code" option is enabled, a `page_status_code` parameter will be added to the page_data object in the payload: 
+
+| **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
+|--------------------|-------------------|----------|-------------|-----------------------|
+| page_status_code   |                   | Integer  | Client-Side | Page status code      | 
+
+
 #### Add dataLayer data
-When the "Add current dataLayer state" option in the Nameless Analytics Client-side Tracker Configuration Variable is enabled, a `dataLayer` parameter will be added to the standard payload: 
+When the "Add current dataLayer state" option is enabled, a `dataLayer` parameter will be added to the payload: 
 
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
 | dataLayer          |                   | JSON     | Client-Side | DataLayer data        |
 
 #### Ecommerce data
-When "Add ecommerce data" in the Nameless Analytics Client-side Tracker Tag is enabled, an `ecommerce` parameter will be added to the standard payload:
+When "Add ecommerce data" is enabled, an `ecommerce` parameter will be added to the payload:
 
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
 | ecommerce          |                   | JSON     | Client-Side | Ecommerce data        |
 
 #### Cross-domain data
-When "Enable cross-domain tracking" in the Nameless Analytics Client-side Tracker Configuration Variable is enabled, the `cross_domain_session` and `cross_domain_id` parameters will be added to the standard payload:
+When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and the `cross_domain_id` parameters will be added to the payload in `session_data` and `event_data` respectively:
 
 | **Parameter name** | **Sub-parameter**    | **Type** | **Added**   | **Field description**   |
 |--------------------|----------------------|----------|-------------|-------------------------|
-| event_data         | cross_domain_id      | String   | Client-Side | Cross domain id         |
 | session_data       | cross_domain_session | String   | Server-Side | Is cross domain session |
+| event_data         | cross_domain_id      | String   | Client-Side | Cross domain id         |
 
 </details>
 
