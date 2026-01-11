@@ -382,28 +382,28 @@ Implements a robust "handshake" protocol to stitch sessions across different top
 </details>
 
 #### Parameter Hierarchy & Overriding
-Since parameters can be set at multiple levels (Variables, Tags, and Server-side logic), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
+Since parameters can be set at multiple levels (Client side variable + Client-side tag, Server-side tag), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
 
 **Note**: System-critical parameters like `page_id`, `event_id`, `client_id`, and `session_id` are protected and cannot be overwritten by custom tags or variables.
 
 <details> <summary>See user and sessions parameters hierarchy</summary>
 
-| Priority | Level | Source |
-| :--- | :--- | :--- |
-| **High** | Server-side | [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag) logic |
-| **Low** | Client-side | [Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable) |
+| **Priority** | **Level**                           | **Source**                                                    |
+|--------------|-------------------------------------|---------------------------------------------------------------|
+| **High**     | User and sessions parameters        | Nameless Analytics Server-side Client Tag                     |
+| **Low**      | Shared user and sessions parameters | Nameless Analytics Client-side Tracker Configuration Variable |
 
 </details>
 
 <details> <summary>See event parameters hierarchy</summary>
 
-| Priority | Level | Source |
-| :--- | :--- | :--- |
-| **1 (Max)** | Server-side | [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag) override |
-| **2** | Client-side Tag | [Specific Event Parameters](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag) |
-| **3** | Configuration | [Shared Event Parameters](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable) |
-| **4** | dataLayer | Values captured from the `dataLayer.push()` |
-| **5 (Min)** | Native | Standard parameters (e.g., `page_location`, `page_title`) |
+| **Priority** | **Level**                  | **Source**                                                    |
+|--------------|----------------------------|---------------------------------------------------------------|
+| **1 (High)** | Event parameters           | Nameless Analytics Server-side Client Tag                     |
+| **2**        | Event parameters           | Nameless Analytics Client-side Tracker Tag                    |
+| **3**        | Shared event parameters    | Nameless Analytics Client-side Tracker Configuration Variable |
+| **4**        | dataLayer event parameters | Nameless Analytics Client-side Tracker Tag                    |
+| **5 (Low)**  | Default event parameters   | Nameless Analytics Client-side Tracker Tag                    |
 
 </details>
 
