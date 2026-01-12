@@ -4,23 +4,27 @@ The Nameless Analytics Reporting Tables are a set of tables and table functions 
 
 For an overview of how Nameless Analytics works [start from here](https://github.com/nameless-analytics/nameless-analytics/#high-level-data-flow).
 
-Tables:
-* [Create tables](#create-tables)
-* [Events raw table](#events-raw-table)
-* [Dates table](#dates-table)
 
-Table functions:
-* [Create table functions](#create-table-functions)
-* [Events](#events)
-* [Users](#users)
-* [Sessions](#sessions)
-* [Pages](#pages)
-* [Transactions](#transactions)
-* [Products](#products)
-* [Shopping stages open funnel](#shopping-stages-open-funnel)
-* [Shopping stages closed funnel](#shopping-stages-closed-funnel)
-* [GTM performances](#gtm-performances)
-* [Consents](#consents)
+
+## TOC
+* [Tables](#tables)
+  * [Create tables](#create-tables)
+  * [Events raw table](#events-raw-table)
+  * [Dates table](#dates-table)
+
+* [Table functions](#table-functions)
+  * [Reporting fields](#reporting-fields)
+  * [Create table functions](#create-table-functions)
+  * [Events](#events)
+  * [Users](#users)
+  * [Sessions](#sessions)
+  * [Pages](#pages)
+  * [Transactions](#transactions)
+  * [Products](#products)
+  * [Shopping stages open funnel](#shopping-stages-open-funnel)
+  * [Shopping stages closed funnel](#shopping-stages-closed-funnel)
+  * [GTM performances](#gtm-performances)
+  * [Consents](#consents)
 
 
 

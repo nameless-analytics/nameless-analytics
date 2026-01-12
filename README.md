@@ -51,7 +51,7 @@ Before starting the setup, ensure you have:
 
 
 ### Google Cloud Setup
-- Google Cloud BigQuery: Create tables and table functions in BigQuery using the provided [SQL scripts](reporting-tables/)
+- Google Cloud BigQuery: Create tables and table functions in BigQuery using the provided [SQL scripts](tables/)
 - Google Cloud Firestore: Enable in **Native Mode**
 - Google Cloud IAM: Grant your GTM SS Service Account `BigQuery Data Editor`, `BigQuery Job User`, and `Cloud Datastore User`
 
@@ -65,15 +65,15 @@ Before starting the setup, ensure you have:
 ## Technical Architecture
 The platform is built on a modern architecture that separates data capture, processing and storage to ensure maximum flexibility and performance.
 
-### Key components
+### Key Components
 #### Client-side
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
-- [GTM client-side basic container](nameless-analytics/gtm-containers/gtm-client-side-container-template.json)
+- [GTM client-side basic container](gtm-containers/gtm-client-side-container-template.json)
 
 #### Server-side
 - [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
-- [GTM server-side basic container](nameless-analytics/gtm-containers/gtm-server-side-container-template.json)
+- [GTM server-side basic container](gtm-containers/gtm-server-side-container-template.json)
 
 #### Storage
 - [Tables](tables/)
@@ -531,7 +531,7 @@ It mantains **every single state transition** for every user and session. For ex
 
 ### Reporting
 
-A suite of SQL Table Functions transforms raw data into business-ready views for [Users](reporting-tables/users.sql), [Sessions](reporting-tables/sessions.sql), [Pages](reporting-tables/pages.sql), [Events](reporting-tables/events.sql), [Consents](reporting-tables/consents.sql), [GTM Performance](reporting-tables/gtm_performances.sql), and specialized Ecommerce views like [Transactions](reporting-tables/ec_transactions.sql), [Products](reporting-tables/ec_products.sql), and Funnels ([Open](reporting-tables/ec_shopping_stages_open_funnel.sql) / [Closed](reporting-tables/ec_shopping_stages_closed_funnel.sql)).
+A suite of SQL Table Functions transforms raw data into business-ready views for [Users](tables/users.sql), [Sessions](tables/sessions.sql), [Pages](tables/pages.sql), [Events](tables/events.sql), [Consents](tables/consents.sql), [GTM Performance](tables/gtm_performances.sql), and specialized Ecommerce views like [Transactions](tables/ec_transactions.sql), [Products](tables/ec_products.sql), and Funnels ([Open](tables/ec_shopping_stages_open_funnel.sql) / [Closed](tables/ec_shopping_stages_closed_funnel.sql)).
 
 SQL Table Functions can be used as sources for dashboards, such as [this one](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd), which demonstrates the platform's potential with a pre-built template covering all key metrics.
 
@@ -540,8 +540,8 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 </br>
 
-- [**Traffic Sources**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_rmpwib9hod): Breakdown of traffic by source, medium, and channel grouping. Powered by [sessions.sql](reporting-tables/sessions.sql).
-- [**Device Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_cmywmb9hod): Analysis of user volume and revenue split across devices. Logic defined in [sessions.sql](reporting-tables/sessions.sql).
+- [**Traffic Sources**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_rmpwib9hod): Breakdown of traffic by source, medium, and channel grouping. Powered by [sessions.sql](tables/sessions.sql).
+- [**Device Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_cmywmb9hod): Analysis of user volume and revenue split across devices. Logic defined in [sessions.sql](tables/sessions.sql).
 - [**Geographic Distribution**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_enanrb9hod): Map and table views showing user sessions and revenue by Country (using server-side enrichment).
 
 </details>
@@ -551,10 +551,10 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 </br>
 
-- [**Page Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_oqvpz41sgd): Detailed metrics for individual pages. Powered by [pages.sql](reporting-tables/pages.sql).
-- [**Landing Pages**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_it3ayf1hod): Effectiveness of entry points. Logic in [sessions.sql](reporting-tables/sessions.sql).
-- [**Exit Pages**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ep50zf1hod): Identification of high-drop-off pages. Logic in [sessions.sql](reporting-tables/sessions.sql).
-- [**Event Tracking**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_y779jg1hod): Granular view of tracked interaction events. Powered by [events.sql](reporting-tables/events.sql).
+- [**Page Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_oqvpz41sgd): Detailed metrics for individual pages. Powered by [pages.sql](tables/pages.sql).
+- [**Landing Pages**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_it3ayf1hod): Effectiveness of entry points. Logic in [sessions.sql](tables/sessions.sql).
+- [**Exit Pages**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ep50zf1hod): Identification of high-drop-off pages. Logic in [sessions.sql](tables/sessions.sql).
+- [**Event Tracking**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_y779jg1hod): Granular view of tracked interaction events. Powered by [events.sql](tables/events.sql).
 
 </details>
 
@@ -563,10 +563,10 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 </br>
 
-- [**Customer Analysis**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_jc2z2lhwgd): Customer loyalty and frequency. Based on [users.sql](reporting-tables/users.sql).
-- [**Sales Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_zlu0hdkugd): Revenue trends over time. Powered by [ec_transactions.sql](reporting-tables/ec_transactions.sql).
-- [**Product Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_x89r79gvgd): Item-level reporting. Powered by [ec_products.sql](reporting-tables/ec_products.sql).
-- [**Shopping Funnel**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_o8lq2jfvgd): Conversion funnel analysis. Based on [Open](reporting-tables/ec_shopping_stages_open_funnel.sql) and [Closed](reporting-tables/ec_shopping_stages_closed_funnel.sql) funnel logic.
+- [**Customer Analysis**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_jc2z2lhwgd): Customer loyalty and frequency. Based on [users.sql](tables/users.sql).
+- [**Sales Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_zlu0hdkugd): Revenue trends over time. Powered by [ec_transactions.sql](tables/ec_transactions.sql).
+- [**Product Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_x89r79gvgd): Item-level reporting. Powered by [ec_products.sql](tables/ec_products.sql).
+- [**Shopping Funnel**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_o8lq2jfvgd): Conversion funnel analysis. Based on [Open](tables/ec_shopping_stages_open_funnel.sql) and [Closed](tables/ec_shopping_stages_closed_funnel.sql) funnel logic.
 
 </details>
 
@@ -575,8 +575,8 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 </br>
 
-- [**Consent Overview**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_sba934crpd): Stats on opt-in rates. Powered by [consents.sql](reporting-tables/consents.sql).
-- [**Consent Details**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_nn21ghetpd): Granular consent types over time. Logic in [consents.sql](reporting-tables/consents.sql).
+- [**Consent Overview**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_sba934crpd): Stats on opt-in rates. Powered by [consents.sql](tables/consents.sql).
+- [**Consent Details**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_nn21ghetpd): Granular consent types over time. Logic in [consents.sql](tables/consents.sql).
 
 </details>
 
@@ -585,7 +585,7 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 </br>
 
-- [**Web Hits Latency**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_zlobch0knd): Pipeline latency monitoring. Using [gtm_performances.sql](reporting-tables/gtm_performances.sql).
+- [**Web Hits Latency**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_zlobch0knd): Pipeline latency monitoring. Using [gtm_performances.sql](tables/gtm_performances.sql).
 - [**Server-to-Server Hits**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_yiouuvwgod): Dedicated view for non-browser events sent via Streaming protocol.
 - [**Raw Data Inspector**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_unnkswttkd): Full table view of individual raw events for granular troubleshooting and verification.
 
@@ -615,7 +615,7 @@ You can choose the compute environment that best fits your traffic and budget:
 * **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). **Note**: Query processing (scanning data for analysis/dashboards) is billed separately by Google Cloud based on usage; however, the first **1 TB per month** is always free.
 
 
-### Cost Summary Table (Monthly estimates)
+### Cost Summary Table
 
 The following calculations are based on standard US/EU regional pricing. "Data" costs reflect Firestore operations and BigQuery streaming ingestion. 
 
