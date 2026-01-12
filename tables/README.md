@@ -6,7 +6,7 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 
-## TOC
+## Table of Contents
 * [Tables](#tables)
   * [Create tables](#create-tables)
   * [Events raw table](#events-raw-table)

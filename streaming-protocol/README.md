@@ -6,7 +6,7 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 
-## TOC
+## Table of Contents
 * [Features](#features)
     * [BigQuery Enrichment](#bigquery-enrichment)
     * [Automatic Type Handling](#automatic-type-handling)
