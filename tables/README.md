@@ -300,7 +300,7 @@ This table illustrates the fields available across different table functions, al
 
 <details><summary>Output Fields Matrix</summary>
 
-| Field Name | Events | Users | Sessions | Pages | Transactions | Products | Open Funnel | Closed Funnel | GTM Perf | Consents |
+| Field Name | Events | Users | Sessions | Pages | Transactions | Products | Open Funnel | Closed Funnel | GTM Performances | Consents |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | `ad_personalization` | X | | | | | | | | | X |
 | `ad_personalization_accepted_percentage` | | | X | | | | | | | |

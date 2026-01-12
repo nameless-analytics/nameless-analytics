@@ -57,7 +57,6 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [Data processing](#data-processing)
   - [Data storage](#data-storage)
   - [Cost Summary Table](#cost-summary-table)
-    - [Cost Summary Table](#cost-summary-table-1)
 - [External Resources](#external-resources)
 
 
@@ -654,8 +653,6 @@ You can choose the compute environment that best fits your traffic and budget:
 This is an estimated monthly cost breakdown for the platform, based on **real-world Google Cloud pricing** and **measured event payload size** (~2.8 KB / event).
 
 **Excluded costs:** BigQuery query processing (1 TB/month free tier)
-
-#### Cost Summary Table
 
 | Traffic Tier | Monthly Events | Compute (Cloud Run / GAE) | Firestore Ops | BigQuery Ingest & Storage | **Estimated Total (CR / GAE)** |
 |-------------|----------------|---------------------------|---------------|---------------------------|--------------------------------|
