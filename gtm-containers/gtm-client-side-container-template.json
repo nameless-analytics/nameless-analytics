@@ -1,6 +1,6 @@
 {
     "exportFormatVersion": 2,
-    "exportTime": "2026-01-11 18:32:42",
+    "exportTime": "2026-01-12 13:44:03",
     "containerVersion": {
         "path": "accounts/6000752942/containers/31944806/versions/0",
         "accountId": "6000752942",
@@ -718,13 +718,12 @@
                         "value": "false"
                     }
                 ],
-                "fingerprint": "1767648776800",
+                "fingerprint": "1768225375196",
                 "firingTriggerId": [
                     "318"
                 ],
                 "parentFolderId": "393",
                 "tagFiringOption": "ONCE_PER_EVENT",
-                "paused": true,
                 "monitoringMetadata": {
                     "type": "MAP"
                 },
@@ -902,13 +901,12 @@
                         "value": "false"
                     }
                 ],
-                "fingerprint": "1767648776800",
+                "fingerprint": "1768225375223",
                 "firingTriggerId": [
                     "366"
                 ],
                 "parentFolderId": "393",
                 "tagFiringOption": "ONCE_PER_EVENT",
-                "paused": true,
                 "monitoringMetadata": {
                     "type": "MAP"
                 },
@@ -1990,7 +1988,8 @@
                         "value": "user_level"
                     }
                 ],
-                "fingerprint": "1767300956683",
+                "fingerprint": "1768225404588",
+                "parentFolderId": "393",
                 "formatValue": {}
             }
         ],
@@ -2287,7 +2286,7 @@
                 "name": "Analytics Session Number"
             }
         ],
-        "fingerprint": "1768156362050",
+        "fingerprint": "1768225443467",
         "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/6000752942/containers/31944806/versions/0?apiLink=version",
         "customTemplate": [
             {
