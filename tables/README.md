@@ -7,24 +7,24 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 ## Table of Contents
-* [Tables](#tables)
-  * [Create tables](#create-tables)
-  * [Events raw table](#events-raw-table)
-  * [Dates table](#dates-table)
+- [Tables](#tables)
+  - [Create tables](#create-tables)
+  - [Events raw table](#events-raw-table)
+  - [Dates table](#dates-table)
+- [Table functions](#table-functions)
+  - [Reporting fields](#reporting-fields)
+  - [Create table functions](#create-table-functions)
+  - [Events](#events)
+  - [Users](#users)
+  - [Sessions](#sessions)
+  - [Pages](#pages)
+  - [Transactions](#transactions)
+  - [Products](#products)
+  - [Shopping stages open funnel](#shopping-stages-open-funnel)
+  - [Shopping stages closed funnel](#shopping-stages-closed-funnel)
+  - [GTM performances](#gtm-performances)
+  - [Consents](#consents)
 
-* [Table functions](#table-functions)
-  * [Reporting fields](#reporting-fields)
-  * [Create table functions](#create-table-functions)
-  * [Events](#events)
-  * [Users](#users)
-  * [Sessions](#sessions)
-  * [Pages](#pages)
-  * [Transactions](#transactions)
-  * [Products](#products)
-  * [Shopping stages open funnel](#shopping-stages-open-funnel)
-  * [Shopping stages closed funnel](#shopping-stages-closed-funnel)
-  * [GTM performances](#gtm-performances)
-  * [Consents](#consents)
 
 
 

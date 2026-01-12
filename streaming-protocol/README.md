@@ -7,16 +7,16 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 ## Table of Contents
-* [Features](#features)
-    * [BigQuery Enrichment](#bigquery-enrichment)
-    * [Automatic Type Handling](#automatic-type-handling)
-    * [Error Handling](#error-handling)
-    * [Security](#security)
+- [Features](#features)
+  - [BigQuery Enrichment](#bigquery-enrichment)
+  - [Automatic Type Handling](#automatic-type-handling)
+  - [Error Handling](#error-handling)
+  - [Security](#security)
+- [Implementation](#implementation)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Usage](#usage)
 
-* [Implementation](#implementation)
-    * [Installation](#installation)
-    * [Configuration](#configuration)
-    * [Usage](#usage)
     
 
 
