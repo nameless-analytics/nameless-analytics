@@ -594,8 +594,8 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 ### Support & AI
 Get expert help for implementation, technical documentation, and advanced SQL queries.
-- **[OpenAI ChatGPT](https://chatgpt.com/g/g-6860ef949f94819194c3bc2c08e2f395-nameless-analytics-qna)**: Specialized GPTs trained on the platform docs
-- **Google Gemini (https://gemini.google.com/gem/11zF4ggbmFqUW-alpiqjXZ5cci5KfDbWz)**: Specialized Gem trained on the platform docs
+- **[OpenAI ChatGPT](https://chatgpt.com/g/g-6860ef949f94819194c3bc2c08e2f395-nameless-analytics-qna)**: Specialized GPTs trained on the platform docs.
+- **[Google Gemini](https://gemini.google.com/gem/1ZsO2SPn5yqDXDAbwHb6bHJcU0LjVsL6S)**: Specialized Gem trained on the platform docs
 
 
 
@@ -616,17 +616,22 @@ You can choose the compute environment that best fits your traffic and budget:
 
 
 ### Cost Summary Table
+This is an estimated monthly cost breakdown for the platform, based on **real-world Google Cloud pricing** and **measured event payload size** (~2.8 KB / event).
 
-The following calculations are based on standard US/EU regional pricing. "Data" costs reflect Firestore operations and BigQuery streaming ingestion. 
+**Excluded costs:** BigQuery query processing (1 TB/month free tier)
 
-These totals exclude BigQuery query processing costs, which vary based on dashboard usage and analytical query volume (1 TB/mo free Tier typically covers standard dashboard usage).
+#### Cost Summary Table
 
-| Traffic Tier | Monthly Hits | Processing (Compute) | Firestore Ops | BQ Ingest & Storage | Estimated Total |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Low** | < 500k | $0 (Free Tier) | $0 (Free Tier) | $0 (Free Tier) | **FREE** |
-| **Medium** | 1M - 2M | $0 - $1 | ~$3 - $4 | < $1 | **$3 - $6** |
-| **High** | 5M | ~$8 - $12 | ~$10 - $12 | ~$1 - $2 | **$19 - $26** |
-| **Enterprise** | 10M+ | ~$20 - $130+ | ~$22+ | ~$3+ | **$45 - $155+** |
+| Traffic Tier | Monthly Events | Compute (Cloud Run / GAE) | Firestore Ops | BigQuery Ingest & Storage | **Estimated Total (CR / GAE)** |
+|-------------|----------------|---------------------------|---------------|---------------------------|--------------------------------|
+| **Low** | < 500k | $0 / $0* | ~$0 | ~$0 | **FREE** |
+| **Medium** | 1M – 2M | $0 – $1 / $0* | ~$3 – $4 | **< $0.2** | **$3 – $5 / $3 – $4** |
+| **High** | 5M | ~$8 – $12 / $0* | ~$10 – $12 | **~$0.3** | **$18 – $24 / $10 – $12** |
+| **Enterprise** | 10M | ~$20 – $40 / ~$120+** | ~$22 | **~$0.6** | **$43 – $65 / $143+** |
+| **Enterprise+** | 50M | ~$40 – $70 / ~$120+** | ~$90 | **~$3** | **$133 – $163 / $213+** |
+
+\* App Engine **Standard Environment (F1 instance)** – suitable for low/medium traffic  
+\** App Engine **Flexible Environment (multi-instance cluster)** – production / HA setup
 
 
 
