@@ -4,7 +4,9 @@ Thank you for your interest in contributing to Nameless Analytics!
 
 ## How to Contribute
 
-Currently, I am not accepting external contributions. If you would like to discuss the project or potential future collaborations, please feel free to reach out via [email](mailto:tommasomoretti88@gmail.com).
+Currently, I am not accepting external contributions. 
+
+If you would like to discuss the project or potential future collaborations, please feel free to reach out via [email](mailto:tommasomoretti88@gmail.com).
 
 ---
 
