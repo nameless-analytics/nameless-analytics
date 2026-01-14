@@ -76,18 +76,12 @@ Built upon a transparent pipeline hosted entirely on your own Google Cloud Platf
 
 ## Quick Start
 ### Project configuration
-Before starting the setup, ensure you have:
+Ensure you have under the same account:
 - A Google Cloud Project with an active billing account
-- A Google BigQuery project
-- A Google Firestore database
-- A Google Tag Manager (Web) container
-- A Google Tag Manager (Server-side) container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/)
-
-
-### Google Cloud Setup
-- Google Cloud BigQuery: Create tables and table functions in BigQuery using the provided [SQL scripts](tables/)
-- Google Cloud Firestore: Enable in **Native Mode**
-- Google Cloud IAM: Grant your GTM SS Service Account `BigQuery Data Editor`, `BigQuery Job User`, and `Cloud Datastore User`
+- A Google BigQuery project + tables and table functions created using the provided [SQL scripts](tables/)
+- A Google Firestore database enabled in Native Mode
+- A Web Google Tag Manager container
+- A Server-side Google Tag Manager container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/)
 
 
 ### Google Tag Manager Setup
