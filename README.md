@@ -123,7 +123,7 @@ The following diagram illustrates the real-time data flow from the user's browse
 
 
 ### Client-Side Collection
-The **Client-Side Tracker** (GTM Web) is the system's intelligent agent in the browser. It abstracts complex logic to ensure reliable data capture under any condition.
+The **Client-Side Tracker Tag** serves as an intelligent agent in the browser. It abstracts complex logic to ensure reliable data capture under any condition.
 
 #### Smart Consent Management
 Fully integrated with Google Consent Mode. It can track every event or automatically queue events (`analytics_storage` pending) and release them only when consent is granted, preventing data loss.
@@ -454,7 +454,7 @@ Real-time tracker logs and errors are sent to the **Browser Console**, ensuring 
 
 
 ### Server-Side Processing
-The **Server-Side Client Tag** serves as the security gateway and data orchestrator. It sits between the public internet and your cloud infrastructure, sanitizing every request.
+The **Server-Side Client Tag** serves as security gateway and data orchestrator. It sits between the public internet and your cloud infrastructure, sanitizing every request.
 
 #### Security & Validation
 Validates request origins and authorized domains (CORS) before processing to prevent unauthorized usage.
