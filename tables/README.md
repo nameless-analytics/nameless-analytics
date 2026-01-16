@@ -4,6 +4,8 @@ The Nameless Analytics Reporting Tables are a set of tables and table functions 
 
 For an overview of how Nameless Analytics works [start from here](https://github.com/nameless-analytics/nameless-analytics/#high-level-data-flow).
 
+> Nameless Analytics is currently in beta and is subject to change.
+
 
 
 ## Table of Contents
