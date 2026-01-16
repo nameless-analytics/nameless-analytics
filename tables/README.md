@@ -558,21 +558,21 @@ This table illustrates the fields available across different table functions, al
 Flattens raw event data and extracts custom parameters, making it easier to analyze specific interaction metrics. Event data can be extracted at various levels.
 
 #### User level
-Returns users acquired in the selected time period.
+Returns events related to users acquired in the selected time period.
 
 ```sql
 select * from `project.nameless_analytics.events` (start_date, end_date, 'User')
 ```
 
 #### Session level: 
-Returns sessions that started in the selected time period.
+Returns events related to sessions that started in the selected time period.
 
 ```sql
 select * from `project.nameless_analytics.events`(start_date, end_date, 'Session')
 ```
 
 #### Page level
-Returns pages visited in the selected time period.
+Returns events related to pages visited in the selected time period.
 
 ```sql
 select * from `project.nameless_analytics.events`(start_date, end_date, 'Page')
