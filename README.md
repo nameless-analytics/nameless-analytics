@@ -398,10 +398,10 @@ The tracker automatically generates and manages unique identifiers for pages, an
 
 <details><summary>See page_id and event_id values</summary>
 
-| ID Name      | Renewed            | Example values                                                 | Value composition                                |
-|--------------|--------------------|----------------------------------------------------------------|--------------------------------------------------|
-| **page_id**  | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Last Page ID            |
-| **event_id** | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Last Page ID _ Event ID |
+| ID Name      | Renewed            | Example values                                                 | Value composition                           |
+|--------------|--------------------|----------------------------------------------------------------|---------------------------------------------|
+| **page_id**  | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Page ID            |
+| **event_id** | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Page ID _ Event ID |
 
 </details>
 
@@ -480,10 +480,10 @@ The Nameless Analytics Server-side Client Tag automatically generates and manage
 
 <details> <summary>See client_id and session_id values</summary>
 
-| ID Name        | Renewed                       | Example values                 | Value composition |
-|----------------|-------------------------------|--------------------------------|-------------------|
-| **client_id**  | when `na_u` cookie is created | lZc919IBsqlhHks                | Client ID         |
-| **session_id** | when `na_s` cookie is created | lZc919IBsqlhHks_1KMIqneQ7dsDJU | Session ID        |
+| ID Name        | Renewed                       | Example values                 | Value composition      |
+|----------------|-------------------------------|--------------------------------|------------------------|
+| **client_id**  | when `na_u` cookie is created | lZc919IBsqlhHks                | Client ID              |
+| **session_id** | when `na_s` cookie is created | lZc919IBsqlhHks_1KMIqneQ7dsDJU | Client ID - Session ID |
 
 </details>
 
@@ -496,10 +496,10 @@ Cookies are created or updated on every event to track the user's session and id
 
 <details> <summary>See user and session cookie values</summary>
 
-| Cookie Name | Default expiration | Example values                                 | Value composition                     | Usage              |
-|-------------|--------------------|------------------------------------------------|---------------------------------------|--------------------|
-| **na_u**    | 400 days           | lZc919IBsqlhHks                                | Client ID                             | Used as client_id  |
-| **na_s**    | 30 minutes         | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y | Client ID _ Session ID - Last Page ID | Used as session_id |
+| Cookie Name | Default expiration | Example values                                 | Value composition                     | Usage                                                                                                              |
+|-------------|--------------------|------------------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| **na_u**    | 400 days           | lZc919IBsqlhHks                                | Client ID                             | Used as client_id                                                                                                  |
+| **na_s**    | 30 minutes         | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y | Client ID _ Session ID - Last Page ID | Used as session_id </br> page_id can be used for sending real time Server to Server events with Streaming Protocol |
 
 </details>
 
