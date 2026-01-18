@@ -128,7 +128,7 @@ Fully integrated with Google Consent Mode. It can track every event or automatic
 Implements specific logic to handle high-frequency events (e.g., rapid clicks), ensuring requests are dispatched in strict FIFO order to preserve the narrative of the session.
 
 #### SPA & History Management
-Native support for Single Page Applications, automatically detecting history changes to trigger virtual page views.
+Native support for Single Page Applications, it's able to track page views on history changes or custom events.
 
 #### Request payload data
 The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
@@ -560,7 +560,6 @@ It mantains **every single state transition** for every user and session. For ex
 
 
 ### Reporting
-
 A suite of SQL Table Functions transforms raw data into business-ready views for [Users](tables/users.sql), [Sessions](tables/sessions.sql), [Pages](tables/pages.sql), [Events](tables/events.sql), [Consents](tables/consents.sql), [GTM Performance](tables/gtm_performances.sql), and specialized Ecommerce views like [Transactions](tables/ec_transactions.sql), [Products](tables/ec_products.sql), and Funnels ([Open](tables/ec_shopping_stages_open_funnel.sql) / [Closed](tables/ec_shopping_stages_closed_funnel.sql)).
 
 SQL Table Functions can be used as sources for dashboards, such as [this one](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd), which demonstrates the platform's potential with a pre-built template covering all key metrics.
