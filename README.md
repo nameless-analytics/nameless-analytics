@@ -422,7 +422,9 @@ Implements a robust "handshake" protocol to stitch sessions across different top
 #### Parameter Hierarchy & Overriding
 Since parameters can be set at multiple levels (Client side variable + Client-side tag, Server-side tag), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
 
-**Note**: System-critical parameters like `page_id`, `event_id`, `client_id`, and `session_id` are protected and cannot be overwritten by custom tags or variables.
+System-critical parameters like `client_id`, `session_id`, `page_id` and `event_id` and the standard parameters are protected and cannot be overwritten in any ways.
+
+User, session, and event parameters follow this hierarchy of overriding:
 
 <details> <summary>See user and sessions parameters hierarchy</summary>
 
@@ -437,11 +439,11 @@ Since parameters can be set at multiple levels (Client side variable + Client-si
 
 | **Priority** | **Level**                  | **Source**                                                    |
 |--------------|----------------------------|---------------------------------------------------------------|
-| **1 (High)** | Event parameters           | Nameless Analytics Server-side Client Tag                     |
-| **2**        | Event parameters           | Nameless Analytics Client-side Tracker Tag                    |
+| **5 (High)** | Event parameters           | Nameless Analytics Server-side Client Tag                     |
+| **4**        | Event parameters           | Nameless Analytics Client-side Tracker Tag                    |
 | **3**        | Shared event parameters    | Nameless Analytics Client-side Tracker Configuration Variable |
-| **4**        | dataLayer event parameters | Nameless Analytics Client-side Tracker Tag                    |
-| **5 (Low)**  | Default event parameters   | Nameless Analytics Client-side Tracker Tag                    |
+| **2**        | dataLayer event parameters | Nameless Analytics Client-side Tracker Tag                    |
+| **1 (Low)**  | Default event parameters   | Nameless Analytics Client-side Tracker Tag                    |
 
 </details>
 
