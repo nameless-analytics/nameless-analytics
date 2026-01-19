@@ -12,7 +12,6 @@ Collect, analyze, and activate your website data with a free real-time digital a
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
   - [Project configuration](#project-configuration)
-  - [Google Cloud Setup](#google-cloud-setup)
   - [Google Tag Manager Setup](#google-tag-manager-setup)
 - [Technical Architecture](#technical-architecture)
   - [Key Components](#key-components)
@@ -22,28 +21,24 @@ Collect, analyze, and activate your website data with a free real-time digital a
     - [Streaming protocol](#streaming-protocol)
   - [High-Level Data Flow](#high-level-data-flow)
   - [Client-Side Collection](#client-side-collection)
-    - [Smart Consent Management](#smart-consent-management)
-    - [Sequential Execution Queue](#sequential-execution-queue)
-    - [SPA & History Management](#spa-history-management)
     - [Request payload data](#request-payload-data)
-    - [Page status code](#page-status-code)
-    - [Add dataLayer data](#add-datalayer-data)
-    - [Ecommerce data](#ecommerce-data)
-    - [Cross-domain data](#cross-domain-data)
     - [ID Management](#id-management)
+    - [Sequential Execution Queue](#sequential-execution-queue)
+    - [Smart Consent Management](#smart-consent-management)
+    - [SPA & History Management](#spa-history-management)
     - [Cross-domain Architecture](#cross-domain-architecture)
     - [Parameter Hierarchy & Overriding](#parameter-hierarchy-overriding)
     - [Debugging & Visibility](#debugging-visibility)
   - [Server-Side Processing](#server-side-processing)
-    - [Security & Validation](#security-validation)
-    - [Bot Protection](#bot-protection)
-    - [Streaming Protocol](#streaming-protocol-1)
-    - [Data Integrity](#data-integrity)
-    - [Geolocation & Privacy by Design](#geolocation-privacy-by-design)
+    - [Security and Validation](#security-and-validation)
     - [ID Management](#id-management-1)
-    - [Cookies](#cookies)
+    - [Data Integrity](#data-integrity)
     - [Real-time Forwarding](#real-time-forwarding)
     - [Self-Monitoring & Performance](#self-monitoring-performance)
+    - [Bot Protection](#bot-protection)
+    - [Geolocation & Privacy by Design](#geolocation-privacy-by-design)
+    - [Cookies](#cookies)
+    - [Streaming Protocol](#streaming-protocol-1)
     - [Debugging & Visibility](#debugging-visibility-1)
   - [Storage](#storage-1)
     - [Firestore as Last updated Snapshot](#firestore-as-last-updated-snapshot)
@@ -120,15 +115,6 @@ The following diagram illustrates the real-time data flow from the user's browse
 
 ### Client-Side Collection
 The **Client-Side Tracker Tag** serves as an intelligent agent in the browser. It abstracts complex logic to ensure reliable data capture under any condition.
-
-#### Smart Consent Management
-Fully integrated with Google Consent Mode. It can track every event or automatically queue events (`analytics_storage` pending) and release them only when consent is granted, preventing data loss.
-
-#### Sequential Execution Queue
-Implements specific logic to handle high-frequency events (e.g., rapid clicks), ensuring requests are dispatched in strict FIFO order to preserve the narrative of the session.
-
-#### SPA & History Management
-Native support for Single Page Applications, it's able to track page views on history changes or custom events.
 
 #### Request payload data
 The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
@@ -405,6 +391,15 @@ The tracker automatically generates and manages unique identifiers for pages, an
 
 </details>
 
+#### Sequential Execution Queue
+Implements specific logic to handle high-frequency events (e.g., rapid clicks), ensuring requests are dispatched in strict FIFO order to preserve the narrative of the session.
+
+#### Smart Consent Management
+Fully integrated with Google Consent Mode. It can track every event or automatically queue events (`analytics_storage` pending) and release them only when consent is granted, preventing data loss.
+
+#### SPA & History Management
+Native support for Single Page Applications, it's able to track page views on history changes or custom events.
+
 #### Cross-domain Architecture
 Implements a robust "handshake" protocol to stitch sessions across different top-level domains. Since Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
 
@@ -454,26 +449,8 @@ Real-time tracker logs and errors are sent to the **Browser Console**, ensuring 
 ### Server-Side Processing
 The **Server-Side Client Tag** serves as security gateway and data orchestrator. It sits between the public internet and your cloud infrastructure, sanitizing every request.
 
-#### Security & Validation
+#### Security and Validation
 Validates request origins and authorized domains (CORS) before processing to prevent unauthorized usage.
-
-#### Bot Protection
-Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
-
-#### Streaming Protocol
-The Streaming Protocol is specifically designed for server-to-server communication, allowing you to send events directly from your backend or other offline sources.
-
-To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol.
-
-The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming protocol" and does not include a valid `x-api-key` header matching your configuration.
-
-#### Data Integrity
-The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
-
-#### Geolocation & Privacy by Design
-Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations.
-
-To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic).
 
 #### ID Management
 The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
@@ -486,6 +463,23 @@ The Nameless Analytics Server-side Client Tag automatically generates and manage
 | **session_id** | when `na_s` cookie is created | lZc919IBsqlhHks_1KMIqneQ7dsDJU | Client ID - Session ID |
 
 </details>
+
+#### Data Integrity
+The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
+
+#### Real-time Forwarding
+Supports instantaneous data streaming to external HTTP endpoints immediately after processing. The system allows for **custom HTTP headers** injection, enabling secure authentication with third-party services endpoints directly from the server.
+
+#### Self-Monitoring & Performance
+The system transparently tracks pipeline health by measuring **ingestion latency** (the exact millisecond delay between the client hit and server processing) and **payload size**. This data allows for high-resolution monitoring of the real-time data flow directly within BigQuery.
+
+#### Bot Protection
+Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
+
+#### Geolocation & Privacy by Design
+Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations.
+
+To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic).
 
 #### Cookies
 All cookies are issued with `HttpOnly`, `Secure`, and `SameSite=Strict` flags. This multi-layered approach prevents client-side access (XSS protection) and Cross-Site Request Forgery (CSRF).
@@ -503,11 +497,12 @@ Cookies are created or updated on every event to track the user's session and id
 
 </details>
 
-#### Real-time Forwarding
-Supports instantaneous data streaming to external HTTP endpoints immediately after processing. The system allows for **custom HTTP headers** injection, enabling secure authentication with third-party services endpoints directly from the server.
+#### Streaming Protocol
+The Streaming Protocol is specifically designed for server-to-server communication, allowing you to send events directly from your backend or other offline sources.
 
-#### Self-Monitoring & Performance
-The system transparently tracks pipeline health by measuring **ingestion latency** (the exact millisecond delay between the client hit and server processing) and **payload size** (`content_length`). This data allows for high-resolution monitoring of the real-time data flow directly within BigQuery.
+To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol.
+
+The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming protocol" and does not include a valid `x-api-key` header matching your configuration.
 
 #### Debugging & Visibility
 Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**.
