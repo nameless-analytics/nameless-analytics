@@ -21,7 +21,6 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
     
 
-
 ## Features
 ### BigQuery Enrichment
 Automatically retrieves `page_date` and `page_data` from your BigQuery `events_raw` table based on the session ID (`na_s`), allowing you to enrich server-side events with historical page context.
