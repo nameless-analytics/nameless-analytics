@@ -108,6 +108,9 @@ The platform is built on a modern architecture that separates data capture, proc
 - [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
 - [GTM server-side basic container](gtm-containers/gtm-server-side-container-template.json)
 
+#### Implementation guides
+- [Setup guides](setup-guides/)
+
 #### Storage
 - [Tables](tables/)
 
@@ -135,7 +138,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 
 ```json
 {
-  "user_date": "2025-12-05",
+  "user_date": "2026-01-20",
   "client_id": "lZc919IBsqlhHks",
   "user_data": {
     "user_campaign_id": null,
@@ -150,9 +153,9 @@ The request data is sent via a POST request in JSON format. It is structured int
     "user_tld_source": "google.com",
     "user_language": "it-IT",
     "user_campaign_term": null,
-    "user_last_session_timestamp": 1765022517600
+    "user_last_session_timestamp": 1768661707758
   },
-  "session_date": "2025-12-06",
+  "session_date": "2026-01-20",
   "session_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU",
   "session_data": {
     "session_number": 2,
@@ -176,10 +179,10 @@ The request data is sent via a POST request in JSON format. It is structured int
     "session_exit_page_category": "Homepage",
     "session_exit_page_location": "/",
     "session_exit_page_title": "Tommaso Moretti | Freelance digital data analyst",
-    "session_start_timestamp": 1765022517600,
-    "session_end_timestamp": 1765023618088
+    "session_start_timestamp": 1768661707758,
+    "session_end_timestamp": 1768661707758
   },
-  "page_date": "2025-12-06",
+  "page_date": "2026-01-20",
   "page_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y",
   "page_data": {
     "page_title": "Tommaso Moretti | Freelance digital data analyst",
@@ -190,12 +193,12 @@ The request data is sent via a POST request in JSON format. It is structured int
     "page_query": "gtm_debug=1765021707758",
     "page_extension": null,
     "page_referrer": "https://tagassistant.google.com/",
-    "page_timestamp": 1765023618088,
+    "page_timestamp": 1768661707758,
     "page_category": "Homepage",
     "page_language": "it"
   },
-  "event_date": "2025-12-06",
-  "event_timestamp": 1765023618088,
+  "event_date": "2026-01-20",
+  "event_timestamp": 1768661707758,
   "event_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV",
   "event_name": "page_view",
   "event_origin": "Website",
@@ -313,7 +316,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 | event_name         |                               | String   | Client-Side | Event name                                    |
 | event_origin       |                               | String   | Client-Side | Event origin (Website or Streaming protocol)  |
 | event_data         | event_type                    | String   | Client-Side | Event type                                    |
-|                    | channel_grouping              | String   | Client-Side | Channel grouping for the event                |
+|                    | channel_grouping              | String   | Client-Side | Channel grouping for the event (see [detailed logic](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable/#channel-grouping)) |
 |                    | source                        | String   | Client-Side | Event traffic source                          |
 |                    | campaign                      | String   | Client-Side | Event campaign                                |
 |                    | campaign_id                   | String   | Client-Side | Event campaign ID                             |
@@ -408,7 +411,7 @@ Implements specific logic to handle high-frequency events (e.g., rapid clicks), 
 Fully integrated with Google Consent Mode. It can track every event or automatically queue events (`analytics_storage` pending) and release them only when consent is granted, preventing data loss.
 
 #### SPA & History Management
-Native support for Single Page Applications, it's able to track page views on history changes or custom events.
+Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Virtual Page View Setup Guide](setup-guides/#how-to-trigger-virtual-page-views) for implementation examples.
 
 #### Cross-domain Architecture
 Implements a robust "handshake" protocol to stitch sessions across different top-level domains. Since Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
@@ -661,8 +664,12 @@ You can choose the compute environment that best fits your traffic and budget:
 #
 
 ### Data storage
-* **Google Firestore**: Manages real-time session states. Billing is primarily based on **document operations** (Reads and Writes). The free tier includes **50,000 reads and 20,000 writes per day**. Since data is frequently overwritten or deleted, physical storage usage typically remains within the **1 GB free limit**.
-* **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). **Note**: Query processing (scanning data for analysis/dashboards) is billed separately by Google Cloud based on usage; however, the first **1 TB per month** is always free.
+Data will be stored in two different locations:
+
+* **Google Firestore**: Manages real-time session states. Billing is primarily based on **document operations** (Reads and Writes). The free tier includes **50,000 reads and 20,000 writes per day**. Physical storage usage free tier is **1 GB**.
+* **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). 
+
+Query processing (scanning data in BigQuery for analysis/dashboards) is billed separately by Google Cloud based on usage. However, the first **1 TB per month** is always free.
 
 #
 
