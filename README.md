@@ -8,6 +8,8 @@ Collect, analyze, and activate your website data with a free real-time digital a
 
 
 
+</br>
+
 ## Start from here
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
@@ -58,6 +60,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
 
 
 
+</br>
 
 ## What is Nameless Analytics 
 Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. 
@@ -71,6 +74,8 @@ Built upon a transparent pipeline hosted entirely on your own Google Cloud Platf
 
 
 
+</br>
+
 ## Quick Start
 ### Project configuration
 Ensure you have under the same account:
@@ -80,12 +85,15 @@ Ensure you have under the same account:
 - A Web Google Tag Manager container
 - A Server-side Google Tag Manager container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/)
 
+#
 
 ### Google Tag Manager Setup
 - Import: [Client-side GTM Template](gtm-containers/gtm-client-side-container-template.json)
 - Import: [Server-side GTM Template](gtm-containers/gtm-server-side-container-template.json)
 
 
+
+</br>
 
 ## Technical Architecture
 The platform is built on a modern architecture that separates data capture, processing and storage to ensure maximum flexibility and performance.
@@ -106,12 +114,14 @@ The platform is built on a modern architecture that separates data capture, proc
 #### Streaming protocol
 - [Streaming protocol](streaming-protocol/)
 
+#
 
 ### High-Level Data Flow
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
 
 ![Nameless Analytics schema](https://github.com/user-attachments/assets/9f784a98-a428-4af2-91a1-c21b6ffbe3dd)
 
+#
 
 ### Client-Side Collection
 The **Client-Side Tracker Tag** serves as an intelligent agent in the browser. It abstracts complex logic to ensure reliable data capture under any condition.
@@ -445,6 +455,7 @@ User, session, and event parameters follow this hierarchy of overriding:
 #### Debugging & Visibility
 Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
 
+#
 
 ### Server-Side Processing
 The **Server-Side Client Tag** serves as security gateway and data orchestrator. It sits between the public internet and your cloud infrastructure, sanitizing every request.
@@ -507,6 +518,7 @@ The Server-Side Client Tag will automatically reject any request where `event_or
 #### Debugging & Visibility
 Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**.
 
+#
 
 ### Storage
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:
@@ -555,6 +567,9 @@ It mantains **every single state transition** for every user and session. For ex
 
 </details>
 
+</br>
+
+#
 
 ### Reporting
 A suite of SQL Table Functions transforms raw data into business-ready views for [Users](tables/users.sql), [Sessions](tables/sessions.sql), [Pages](tables/pages.sql), [Events](tables/events.sql), [Consents](tables/consents.sql), [GTM Performance](tables/gtm_performances.sql), and specialized Ecommerce views like [Transactions](tables/ec_transactions.sql), [Products](tables/ec_products.sql), and Funnels ([Open](tables/ec_shopping_stages_open_funnel.sql) / [Closed](tables/ec_shopping_stages_closed_funnel.sql)).
@@ -617,13 +632,21 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 </details>
 
+</br>
+
+#
 
 ### Support & AI
 Get expert help for implementation, technical documentation, and advanced SQL queries.
+
+Choose from: 
+
 - **[OpenAI ChatGPT](https://chatgpt.com/g/g-6860ef949f94819194c3bc2c08e2f395-nameless-analytics-qna)**: Specialized GPTs trained on the platform docs.
 - **[Google Gemini](https://gemini.google.com/gem/1ZsO2SPn5yqDXDAbwHb6bHJcU0LjVsL6S)**: Specialized Gem trained on the platform docs
 
 
+
+<br>
 
 ## Pricing & Cloud Costs
 Nameless Analytics is designed to achieve maximum performance with minimum overhead. By utilizing Google Cloud's serverless offerings, the platform can operate at **zero cost** for many users and scales predictably with traffic.
@@ -635,11 +658,13 @@ You can choose the compute environment that best fits your traffic and budget:
 * **App Engine Standard**: Ideal for 24/7 uptime on a budget. Includes **28 free instance-hours per day** (F1 instances), allowing for a continuous single-server setup at **zero cost**.
 * **App Engine Flexible**: Best for enterprise-scale deployments (5-10M+ hits/month) requiring multi-zone redundancy. Typically starts at ~$120/month for a 3-instance minimum cluster.
 
+#
 
 ### Data storage
 * **Google Firestore**: Manages real-time session states. Billing is primarily based on **document operations** (Reads and Writes). The free tier includes **50,000 reads and 20,000 writes per day**. Since data is frequently overwritten or deleted, physical storage usage typically remains within the **1 GB free limit**.
 * **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). **Note**: Query processing (scanning data for analysis/dashboards) is billed separately by Google Cloud based on usage; however, the first **1 TB per month** is always free.
 
+#
 
 ### Cost Summary Table
 This is an estimated monthly cost breakdown for the platform, based on **real-world Google Cloud pricing** and **measured event payload size** (~2.8 KB / event).
@@ -654,10 +679,11 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 | **Enterprise** | 10M | ~$20 – $40 / ~$120+** | ~$22 | **~$0.6** | **$43 – $65 / $143+** |
 | **Enterprise+** | 50M | ~$40 – $70 / ~$120+** | ~$90 | **~$3** | **$133 – $163 / $213+** |
 
-\* App Engine **Standard Environment (F1 instance)** – suitable for low/medium traffic  
-\** App Engine **Flexible Environment (multi-instance cluster)** – production / HA setup
+> \* App Engine **Standard Environment (F1 instance)** – suitable for low/medium traffic  
+> \** App Engine **Flexible Environment (multi-instance cluster)** – production / HA setup
 
 
+</br>
 
 ## External Resources
 - [Live Demo](https://namelessanalytics.com) (Open the dev console).
@@ -669,4 +695,3 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 ---
 
 Reach me at: [Email](mailto:hello@tommasomoretti.com) | [Website](https://tommasomoretti.com) | [Twitter](https://twitter.com/tommoretti88) | [LinkedIn](https://www.linkedin.com/in/tommasomoretti/)
-
