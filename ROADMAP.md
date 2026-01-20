@@ -3,12 +3,11 @@
 Nameless Analytics upcoming features and improvements. For completed work and release history, see [CHANGELOG.md](CHANGELOG.md).
 
 ### High Priority
-- [] **BigQuery Master Script**: Create a single SQL/DML script to initialize all reporting table functions at once.
 
 ### Medium Priority
+- [] **BigQuery Master Script**: Create a single SQL/DML script to initialize all reporting table functions at once.
 
 ### Low Priority
-- [ ] **FAQ Section**: Add comprehensive FAQ and troubleshooting guide to documentation
 
 ---
 
