@@ -99,20 +99,35 @@ Ensure you have under the same account:
 The platform is built on a modern architecture that separates data capture, processing and storage to ensure maximum flexibility and performance.
 
 ### Key Components
+
+</br>
+
 #### Client-side
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
 - [GTM client-side basic container](gtm-containers/gtm-client-side-container-template.json)
 
+
+</br>
+
 #### Server-side
 - [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
 - [GTM server-side basic container](gtm-containers/gtm-server-side-container-template.json)
 
+
+</br>
+
 #### Implementation guides
 - [Setup guides](setup-guides/)
 
+
+</br>
+
 #### Storage
 - [Tables](tables/)
+
+
+</br>
 
 #### Streaming protocol
 - [Streaming protocol](streaming-protocol/)
@@ -128,6 +143,9 @@ The following diagram illustrates the real-time data flow from the user's browse
 
 ### Client-Side Collection
 The **Client-Side Tracker Tag** serves as an intelligent agent in the browser. It abstracts complex logic to ensure reliable data capture under any condition.
+
+
+</br>
 
 #### Request payload data
 The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
@@ -360,6 +378,9 @@ The request data is sent via a POST request in JSON format. It is structured int
 
 <details><summary>Request payload additional data parameters</summary>
 
+
+</br>
+
 #### Page status code
 When the "Add page status code" option is enabled, a `page_status_code` parameter will be added to the page_data object in the payload: 
 
@@ -368,6 +389,9 @@ When the "Add page status code" option is enabled, a `page_status_code` paramete
 | page_status_code   |                   | Integer  | Client-Side | Page status code      | 
 
 
+
+</br>
+
 #### Add dataLayer data
 When the "Add current dataLayer state" option is enabled, a `dataLayer` parameter will be added to the payload: 
 
@@ -375,12 +399,18 @@ When the "Add current dataLayer state" option is enabled, a `dataLayer` paramete
 |--------------------|-------------------|----------|-------------|-----------------------|
 | dataLayer          |                   | JSON     | Client-Side | DataLayer data        |
 
+
+</br>
+
 #### Ecommerce data
 When "Add ecommerce data" is enabled, an `ecommerce` parameter will be added to the payload:
 
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
 | ecommerce          |                   | JSON     | Client-Side | Ecommerce data        |
+
+
+</br>
 
 #### Cross-domain data
 When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and the `cross_domain_id` parameters will be added to the payload in `session_data` and `event_data` respectively:
@@ -391,6 +421,9 @@ When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and t
 | event_data         | cross_domain_id      | String   | Client-Side | Cross domain id         |
 
 </details>
+
+
+</br>
 
 #### ID Management
 The tracker automatically generates and manages unique identifiers for pages, and events.
@@ -404,14 +437,26 @@ The tracker automatically generates and manages unique identifiers for pages, an
 
 </details>
 
+
+</br>
+
 #### Sequential Execution Queue
 Implements specific logic to handle high-frequency events (e.g., rapid clicks), ensuring requests are dispatched in strict FIFO order to preserve the narrative of the session.
+
+
+</br>
 
 #### Smart Consent Management
 Fully integrated with Google Consent Mode. It can track every event or automatically queue events (`analytics_storage` pending) and release them only when consent is granted, preventing data loss.
 
+
+</br>
+
 #### SPA & History Management
 Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Virtual Page View Setup Guide](setup-guides/#how-to-trigger-virtual-page-views) for implementation examples.
+
+
+</br>
 
 #### Cross-domain Architecture
 Implements a robust "handshake" protocol to stitch sessions across different top-level domains. Since Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
@@ -426,6 +471,9 @@ Implements a robust "handshake" protocol to stitch sessions across different top
 4. **Session Stitching**: On the destination site, the tracker detects the `na_id` parameter, sends it to the server, and the server sets the same `HttpOnly` cookies for the new domain, effectively merging the session.
 
 </details>
+
+
+</br>
 
 #### Parameter Hierarchy & Overriding
 Since parameters can be set at multiple levels (Client side variable + Client-side tag, Server-side tag), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
@@ -455,6 +503,9 @@ User, session, and event parameters follow this hierarchy of overriding:
 
 </details>
 
+
+</br>
+
 #### Debugging & Visibility
 Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
 
@@ -463,8 +514,14 @@ Real-time tracker logs and errors are sent to the **Browser Console**, ensuring 
 ### Server-Side Processing
 The **Server-Side Client Tag** serves as security gateway and data orchestrator. It sits between the public internet and your cloud infrastructure, sanitizing every request.
 
+
+</br>
+
 #### Security and Validation
 Validates request origins and authorized domains (CORS) before processing to prevent unauthorized usage.
+
+
+</br>
 
 #### ID Management
 The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
@@ -478,22 +535,40 @@ The Nameless Analytics Server-side Client Tag automatically generates and manage
 
 </details>
 
+
+</br>
+
 #### Data Integrity
 The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
+
+
+</br>
 
 #### Real-time Forwarding
 Supports instantaneous data streaming to external HTTP endpoints immediately after processing. The system allows for **custom HTTP headers** injection, enabling secure authentication with third-party services endpoints directly from the server.
 
+
+</br>
+
 #### Self-Monitoring & Performance
 The system transparently tracks pipeline health by measuring **ingestion latency** (the exact millisecond delay between the client hit and server processing) and **payload size**. This data allows for high-resolution monitoring of the real-time data flow directly within BigQuery.
 
+
+</br>
+
 #### Bot Protection
 Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
+
+
+</br>
 
 #### Geolocation & Privacy by Design
 Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations.
 
 To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic).
+
+
+</br>
 
 #### Cookies
 All cookies are issued with `HttpOnly`, `Secure`, and `SameSite=Strict` flags. This multi-layered approach prevents client-side access (XSS protection) and Cross-Site Request Forgery (CSRF).
@@ -511,12 +586,18 @@ Cookies are created or updated on every event to track the user's session and id
 
 </details>
 
+
+</br>
+
 #### Streaming Protocol
 The Streaming Protocol is specifically designed for server-to-server communication, allowing you to send events directly from your backend or other offline sources.
 
 To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol.
 
 The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming protocol" and does not include a valid `x-api-key` header matching your configuration.
+
+
+</br>
 
 #### Debugging & Visibility
 Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**.
@@ -525,6 +606,9 @@ Developers can monitor the server-side logic in real-time through **GTM Server P
 
 ### Storage
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:
+
+
+</br>
 
 #### Firestore as Last updated Snapshot
 It mantains **the latest available state for every user and session**. For example, the current user_level.
@@ -549,6 +633,9 @@ Firestore ensures data integrity by managing how parameters are updated across h
 | **Session** | **Progressive** | `cross_domain_session` | Flags as 'Yes' if any hit in the session is cross-domain. |
 
 </details>
+
+
+</br>
 
 #### BigQuery as Historical Timeline
 It mantains **every single state transition** for every user and session. For example, all different user_level values through time.
@@ -579,6 +666,9 @@ A suite of SQL Table Functions transforms raw data into business-ready views for
 
 SQL Table Functions can be used as sources for dashboards, such as [this one](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd), which demonstrates the platform's potential with a pre-built template covering all key metrics.
 
+
+</br>
+
 #### Acquisition
 <details><summary>See acquisition dashboard examples</summary>
 
@@ -589,6 +679,9 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 - [**Geographic Distribution**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_enanrb9hod): Map and table views showing user sessions and revenue by Country (using server-side enrichment).
 
 </details>
+
+
+</br>
 
 #### Behaviour
 <details><summary>See behaviour dashboard examples</summary>
@@ -602,6 +695,9 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 </details>
 
+
+</br>
+
 #### Ecommerce
 <details><summary>See ecommerce dashboard examples</summary>
 
@@ -614,6 +710,9 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 </details>
 
+
+</br>
+
 #### User consents
 <details><summary>See user consents dashboard examples</summary>
 
@@ -623,6 +722,9 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 - [**Consent Details**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_nn21ghetpd): Granular consent types over time. Logic in [consents.sql](tables/consents.sql).
 
 </details>
+
+
+</br>
 
 #### Debugging & Tech
 <details><summary>See debugging & tech dashboard examples</summary>
