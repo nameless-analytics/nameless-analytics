@@ -257,27 +257,27 @@ This main table is partitioned by `event_date` and clustered by `user_date`, `se
 
 <details><summary>View table schema</summary>
 
-| Field name      | Type    | Mode     | Description                                |
-|-----------------|---------|----------|--------------------------------------------|
-| client_id       | STRING  | REQUIRED | Client ID.                                 |
-| user_date       | DATE    | REQUIRED | User date.                                 |
-| user_data       | RECORD  | REPEATED | User data.                                 |
-| session_id      | STRING  | REQUIRED | Session ID.                                |
-| session_date    | DATE    | REQUIRED | Session date.                              |
-| session_data    | RECORD  | REPEATED | Session data.                              |
-| page_id         | STRING  | REQUIRED | Page ID.                                   |
-| page_date       | DATE    | REQUIRED | Page date.                                 |
-| page_data       | RECORD  | REPEATED | Page data.                                 |
-| event_name      | STRING  | REQUIRED | Event name.                                |
-| event_id        | STRING  | REQUIRED | Event ID.                                  |
-| event_date      | DATE    | REQUIRED | Date of the request.                       |
-| event_timestamp | INTEGER | REQUIRED | Insertion timestamp of the event.          |
-| event_origin    | STRING  | REQUIRED | "Website" or "Streaming protocol".          |
-| event_data      | RECORD  | REPEATED | Event data.                                |
-| ecommerce       | JSON    | NULLABLE | Ecommerce object.                          |
-| datalayer       | JSON    | NULLABLE | Current `dataLayer` value.                 |
-| consent_data    | RECORD  | REPEATED | Consent data.                              |
-| gtm_data        | RECORD  | REPEATED | GTM performance and execution data.        |
+| Field name      | Type    | Mode     | Description                        |
+|-----------------|---------|----------|------------------------------------|
+| client_id       | STRING  | REQUIRED | Client ID                          |
+| user_date       | DATE    | REQUIRED | User date                          |
+| user_data       | RECORD  | REPEATED | User data                          |
+| session_id      | STRING  | REQUIRED | Session ID                         |
+| session_date    | DATE    | REQUIRED | Session date                       |
+| session_data    | RECORD  | REPEATED | Session data                       |
+| page_id         | STRING  | REQUIRED | Page ID                            |
+| page_date       | DATE    | REQUIRED | Page date                          |
+| page_data       | RECORD  | REPEATED | Page data                          |
+| event_name      | STRING  | REQUIRED | Event name                         |
+| event_id        | STRING  | REQUIRED | Event ID                           |
+| event_date      | DATE    | REQUIRED | Date of the request                |
+| event_timestamp | INTEGER | REQUIRED | Insertion timestamp of the event   |
+| event_origin    | STRING  | REQUIRED | "Website" or "Streaming protocol"  |
+| event_data      | RECORD  | REPEATED | Event data                         |
+| ecommerce       | JSON    | NULLABLE | Ecommerce object                   |
+| datalayer       | JSON    | NULLABLE | Current `dataLayer` value          |
+| consent_data    | RECORD  | REPEATED | Consent data                       |
+| gtm_data        | RECORD  | REPEATED | GTM performance and execution data |
 
 </details>
 
@@ -286,19 +286,19 @@ This table is partitioned by `date` and clustered by `month_name` and `day_name`
 
 <details><summary>View table schema</summary>
 
-| Field name         | Type    | Mode     | Description                                                     |
-|--------------------|---------|----------|---------------------------------------------------------------- |
-| date               | DATE    | REQUIRED | The date value.                                                 |
-| year               | INTEGER | NULLABLE | Year extracted from the date.                                   |
-| quarter            | INTEGER | NULLABLE | Quarter of the year (1-4) extracted from the date.              |
-| month_number       | INTEGER | NULLABLE | Month number of the year (1-12) extracted from the date.        |
-| month_name         | STRING  | NULLABLE | Full name of the month (e.g., January) extracted from the date. |
-| week_number_sunday | INTEGER | NULLABLE | Week number of the year, starting on Sunday.                    |
-| week_number_monday | INTEGER | NULLABLE | Week number of the year, starting on Monday.                    |
-| day_number         | INTEGER | NULLABLE | Day number of the month (1-31).                                 |
-| day_name           | STRING  | NULLABLE | Full name of the day of the week (e.g., Monday).                |
-| day_of_week_number | INTEGER | NULLABLE | Day of the week number (1 for Monday, 7 for Sunday).            |
-| is_weekend         | BOOLEAN | NULLABLE | True if the day is a Saturday or Sunday.                        |
+| Field name         | Type    | Mode     | Description                                                    |
+|--------------------|---------|----------|----------------------------------------------------------------|
+| date               | DATE    | REQUIRED | The date value                                                 |
+| year               | INTEGER | NULLABLE | Year extracted from the date                                   |
+| quarter            | INTEGER | NULLABLE | Quarter of the year (1-4) extracted from the date              |
+| month_number       | INTEGER | NULLABLE | Month number of the year (1-12) extracted from the date        |
+| month_name         | STRING  | NULLABLE | Full name of the month (e.g., January) extracted from the date |
+| week_number_sunday | INTEGER | NULLABLE | Week number of the year, starting on Sunday                    |
+| week_number_monday | INTEGER | NULLABLE | Week number of the year, starting on Monday                    |
+| day_number         | INTEGER | NULLABLE | Day number of the month (1-31)                                 |
+| day_name           | STRING  | NULLABLE | Full name of the day of the week (e.g., Monday)                |
+| day_of_week_number | INTEGER | NULLABLE | Day of the week number (1 for Monday, 7 for Sunday)            |
+| is_weekend         | BOOLEAN | NULLABLE | True if the day is a Saturday or Sunday                        |
 
 </details>
 
