@@ -11,7 +11,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
 
 
 </br>
- 
+
 ## Start from here
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
@@ -801,6 +801,7 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 - [Changelog](CHANGELOG.md)
 - [Roadmap](ROADMAP.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
+- [Manifesto](MANIFESTO.md)
 - [MIT License](LICENSE)
 
 ---
