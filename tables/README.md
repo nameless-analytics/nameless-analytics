@@ -1110,7 +1110,7 @@ This table illustrates the fields available across different table functions, al
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **USER DATA** | `avg_purchase_value` | | X | | | | | | | | |
 | | `avg_refund_value` | | X | | | | | | | | |
-| | `client_id` | X | X | X | | | | | | | |
+| | `client_id` | X | X | X | X | X | X | X | X | X | X |
 | | `customer_type` | | X | | | | | | | | |
 | | `customers` | | X | | | | | | | | |
 | | `days_from_first_purchase` | | X | | | | | | | | |
@@ -1119,99 +1119,102 @@ This table illustrates the fields available across different table functions, al
 | | `days_from_last_purchase` | | X | | | | | | | | |
 | | `days_from_last_visit` | X | X | | | | | | | | |
 | | `is_customer` | | X | | | | | | | | |
-| | `item_quantity_purchased` | | X | | | | | | | | |
-| | `item_quantity_refunded` | | X | | | | | | | | |
+| | `item_quantity_purchased` | | X | | | | X | | | | |
+| | `item_quantity_refunded` | | X | | | | X | | | | |
 | | `new_customers` | | X | | | | | | | | |
-| | `new_user` | X | | X | | | | | | | |
+| | `new_user` | X | | X | X | X | X | | X | X | X |
 | | `new_user_client_id` | | X | | | | | | | | |
 | | `new_users_percentage` | | | X | | | | | | | |
-| | `page_view` | | X | X | | | | | | | |
-| | `purchase` | | X | X | | | | | | | |
-| | `purchase_revenue` | | X | X | | | | | | | |
-| | `refund` | | X | X | | | | | | | |
-| | `refund_revenue` | | X | X | | | | | | | |
+| | `page_view` | | X | X | X | | | | | | |
+| | `purchase` | | X | X | | X | | | | | |
+| | `purchase_revenue` | | X | X | | X | | | | | |
+| | `refund` | | X | X | | X | | | | | |
+| | `refund_revenue` | | X | X | | X | | | | | |
 | | `respect_consent_mode` | X | | | | | | | | | |
 | | `returning_customers` | | X | | | | | | | | |
-| | `returning_user` | X | | X | | | | | | | |
+| | `returning_user` | X | | X | X | X | X | | X | X | X |
 | | `returning_user_client_id` | | X | | | | | | | | |
 | | `returning_users_percentage` | | | X | | | | | | | |
-| | `revenue_net_refund` | | X | X | | | | | | | |
+| | `revenue_net_refund` | | X | X | | X | | | | | |
 | | `sessions` | | X | | | | | | | | |
-| | `user_campaign` | X | X | X | | | | | | | |
-| | `user_campaign_click_id` | X | X | X | | | | | | | |
-| | `user_campaign_content` | X | X | X | | | | | | | |
+| | `user_campaign` | X | X | X | X | X | X | | X | X | X |
+| | `user_campaign_click_id` | X | X | X | X | | | | | | |
+| | `user_campaign_content` | X | X | X | X | | | | | | |
 | | `user_campaign_id` | X | | | | | | | | | |
-| | `user_campaign_term` | X | X | X | | | | | | | |
-| | `user_channel_grouping` | X | X | X | | | | | | | |
+| | `user_campaign_term` | X | X | X | X | | | | | | |
+| | `user_channel_grouping` | X | X | X | X | X | X | | X | X | X |
 | | `user_conversion_rate` | | | X | | | | | | | |
-| | `user_country` | X | X | X | | | | | | | |
+| | `user_country` | X | X | X | X | X | X | | X | X | X |
 | | `user_data` | X | | | | | | | | | |
-| | `user_date` | X | X | X | | | | | | | |
-| | `user_device_type` | X | X | X | | | | | | | |
+| | `user_date` | X | X | X | X | X | X | | X | X | X |
+| | `user_device_type` | X | X | X | X | X | X | | X | X | X |
 | | `user_first_session_timestamp` | X | | | | | | | | | |
-| | `user_id` | X | | X | | | | | | | |
-| | `user_language` | X | X | X | | | | | | | |
+| | `user_id` | X | | X | | X | X | X | X | X | X |
+| | `user_language` | X | X | X | X | X | X | | X | X | X |
 | | `user_last_session_timestamp` | X | | | | | | | | | |
-| | `user_source` | X | X | X | | | | | | | |
-| | `user_tld_source` | X | X | X | | | | | | | |
-| | `user_type` | X | X | X | | | | | | | |
+| | `user_source` | X | X | X | X | X | X | | X | X | X |
+| | `user_tld_source` | X | X | X | X | X | X | | X | X | X |
+| | `user_type` | X | X | X | X | X | X | | X | X | X |
 | | `user_value` | | | X | | | | | | | |
-| **SESSION DATA** | `cross_domain_session` | X | | X | | | | | | | |
-| | `engaged_session` | | | X | | | | | | | |
+| **SESSION DATA** | `cross_domain_session` | X | | X | X | X | X | | X | X | X |
+| | `engaged_session` | | | X | | | | | | | X |
 | | `engaged_sessions_percentage` | | | X | | | | | | | |
-| | `first_session` | | | X | | | | | | | |
-| | `new_session` | X | | X | | | | | | | |
+| | `first_session` | | | X | | | | | | | X |
+| | `new_session` | X | | X | X | | | | | | |
 | | `new_sessions_percentage` | | | X | | | | | | | |
 | | `page_view_per_session` | | | X | | | | | | | |
-| | `returning_session` | X | | X | | | | | | | |
+| | `returning_session` | X | | X | X | | | | | | |
 | | `returning_sessions_percentage` | | | X | | | | | | | |
-| | `session_browser_name` | X | | X | | | | | | | |
-| | `session_campaign` | X | | X | | | | | | | |
-| | `session_campaign_click_id` | X | | X | | | | | | | |
-| | `session_campaign_content` | X | | X | | | | | | | |
-| | `session_campaign_id` | X | | X | | | | | | | |
-| | `session_campaign_term` | X | | X | | | | | | | |
-| | `session_channel_grouping` | X | | X | | | | | | | |
+| | `session_browser_name` | X | | X | X | X | X | | X | X | X |
+| | `session_campaign` | X | | X | X | X | X | X | X | X | X |
+| | `session_campaign_click_id` | X | | X | X | | | | | | |
+| | `session_campaign_content` | X | | X | X | | | | | | |
+| | `session_campaign_id` | X | | X | X | | | | | | |
+| | `session_campaign_term` | X | | X | X | | | | | | |
+| | `session_channel_grouping` | X | | X | X | X | X | X | X | X | X |
 | | `session_conversion_rate` | | | X | | | | | | | |
-| | `session_country` | X | | X | | | | | | | |
+| | `session_country` | X | | X | X | X | X | X | X | X | X |
 | | `session_data` | X | | | | | | | | | |
-| | `session_date` | X | | X | | | | | | | |
-| | `session_device_type` | X | | X | | | | | | | |
-| | `session_duration_sec` | X | X | X | | | | | | | |
-| | `session_end_timestamp` | X | | | | | | | | | |
-| | `session_exit_page_category` | X | | X | | | | | | | |
-| | `session_exit_page_location` | X | | X | | | | | | | |
-| | `session_exit_page_title` | X | | X | | | | | | | |
-| | `session_hostname` | X | | X | | | | | | | |
-| | `session_id` | X | | X | | | | | | | |
-| | `session_landing_page_category` | X | | X | | | | | | | |
-| | `session_landing_page_location` | X | | X | | | | | | | |
-| | `session_landing_page_title` | X | | X | | | | | | | |
-| | `session_language` | X | | X | | | | | | | |
-| | `session_number` | X | | X | | | | | | | |
-| | `session_source` | X | | X | | | | | | | |
-| | `session_start_timestamp` | X | | X | | | | | | | |
-| | `session_tld_source` | X | | X | | | | | | | |
+| | `session_date` | X | | X | X | | | | X | X | X |
+| | `session_device_type` | X | | X | X | X | X | X | X | X | X |
+| | `session_duration_sec` | X | X | X | X | | | | X | X | X |
+| | `session_end_timestamp` | X | | | | | | | X | X | |
+| | `session_exit_page_category` | X | | X | X | | | | X | X | X |
+| | `session_exit_page_location` | X | | X | X | | | | X | X | X |
+| | `session_exit_page_title` | X | | X | X | | | | X | X | X |
+| | `session_hostname` | X | | X | X | | | | X | X | X |
+| | `session_id` | X | | X | X | X | X | X | X | X | X |
+| | `session_landing_page_category` | X | | X | X | | | | X | X | X |
+| | `session_landing_page_location` | X | | X | X | | | | X | X | X |
+| | `session_landing_page_title` | X | | X | X | | | | X | X | X |
+| | `session_language` | X | | X | X | X | X | X | X | X | X |
+| | `session_number` | X | | X | X | X | X | | X | X | X |
+| | `session_source` | X | | X | X | X | X | X | X | X | X |
+| | `session_start_timestamp` | X | | X | X | X | X | X | X | X | X |
+| | `session_tld_source` | X | | X | X | X | X | X | X | X | X |
 | | `session_value` | | | X | | | | | | | |
 | | `sessions_per_user` | | | X | | | | | | | |
-| **PAGE DATA** | `page_category` | X | | | | | | | | | |
-| | `page_data` | X | | | | | | | | | |
-| | `page_date` | X | | | | | | | | | |
+| **PAGE DATA** | `page_category` | X | | | X | | | | | | |
+| | `page_data` | X | | | | | | | | X | |
+| | `page_date` | X | | | X | | | | | | |
 | | `page_extension` | X | | | | | | | | | |
 | | `page_fragment` | X | | | | | | | | | |
-| | `page_hostname` | X | | | | | | | | | |
+| | `page_hostname` | X | | | X | | | | | | |
 | | `page_hostname_protocol` | X | | | | | | | | | |
-| | `page_id` | X | | | | | | | | | |
+| | `page_id` | X | | | X | | | | | | |
 | | `page_language` | X | | | | | | | | | |
+| | `page_load_datetime` | | | | X | | | | | | |
+| | `page_load_time_sec` | | | | X | | | | | | |
 | | `page_load_timestamp` | X | | | | | | | | | |
-| | `page_location` | X | | | | | | | | | |
+| | `page_location` | X | | | X | | | | | | |
 | | `page_query` | X | | | | | | | | | |
 | | `page_referrer` | X | | | | | | | | | |
-| | `page_status_code` | X | | | | | | | | | |
-| | `page_title` | X | | | | | | | | | |
+| | `page_status_code` | X | | | X | | | | | | |
+| | `page_title` | X | | | X | | | | | | |
+| | `page_unload_datetime` | | | | X | | | | | | |
 | | `page_unload_timestamp` | X | | | | | | | | | |
-| | `page_view_number` | X | | | | | | | | | |
-| | `time_on_page` | X | | | | | | | | | |
+| | `page_view_number` | X | | | X | | | | | | |
+| | `time_on_page` | X | | | X | | | | | | |
 | **EVENT DATA** | `browser_language` | X | | | | | | | | | |
 | | `browser_name` | X | | | | | | | | | |
 | | `browser_version` | X | | | | | | | | | |
@@ -1227,50 +1230,93 @@ This table illustrates the fields available across different table functions, al
 | | `device_model` | X | | | | | | | | | |
 | | `device_type` | X | | | | | | | | | |
 | | `device_vendor` | X | | | | | | | | | |
-| | `event_data` | X | | | | | | | | | |
-| | `event_date` | X | | | | | | | | | |
-| | `event_id` | X | | | | | | | | | |
-| | `event_name` | X | | | | | | | | | |
+| | `event_data` | X | | | | | | | | X | |
+| | `event_date` | X | | | | X | X | X | X | X | |
+| | `event_datetime` | | | | | | | | | X | |
+| | `event_id` | X | | | | | | | | X | |
+| | `event_name` | X | | | | X | X | X | | X | |
 | | `event_number` | X | | | | | | | | | |
-| | `event_timestamp` | X | | | | | | | | | |
+| | `event_timestamp` | X | | | | X | X | | | X | |
 | | `event_type` | X | | | | | | | | | |
+| | `hit_number` | | | | | | | | | X | |
 | | `os_name` | X | | | | | | | | | |
 | | `os_version` | X | | | | | | | | | |
-| | `page_render_time` | X | | | | | | | | | |
+| | `page_render_time` | X | | | X | | | | | | |
 | | `screen_size` | X | | | | | | | | | |
 | | `search_term` | X | | | | | | | | | |
 | | `source` | X | | | | | | | | | |
-| | `time_to_dom_complete` | X | | | | | | | | | |
-| | `time_to_dom_interactive` | X | | | | | | | | | |
+| | `time_to_dom_complete` | X | | | X | | | | | | |
+| | `time_to_dom_interactive` | X | | | X | | | | | | |
 | | `tld_source` | X | | | | | | | | | |
 | | `total_page_load_time` | X | | | | | | | | | |
 | | `user_agent` | X | | | | | | | | | |
 | | `viewport_size` | X | | | | | | | | | |
-| **DATALAYER DATA** | `datalayer` | X | | | | | | | | | |
-| **ECOMMERCE DATA** | `add_payment_info` | | | X | | | | | | | |
-| | `add_shipping_info` | | | X | | | | | | | |
-| | `add_to_cart` | | | X | | | | | | | |
-| | `add_to_wishlist` | | | X | | | | | | | |
+| **DATALAYER DATA** | `datalayer` | X | | | | | | | | X | |
+| **ECOMMERCE DATA** | `add_payment_info` | | | X | | | X | | | | |
+| | `add_shipping_info` | | | X | | | X | | | | |
+| | `add_to_cart` | | | X | | | X | | | | |
+| | `add_to_wishlist` | | | X | | | X | | | | |
 | | `avg_order_value` | | | X | | | | | | | |
-| | `begin_checkout` | | | X | | | | | | | |
-| | `ecommerce` | X | | | | | | | | | |
-| | `purchase` | | X | X | | | | | | | |
-| | `purchase_net_refund` | | | X | | | | | | | |
-| | `purchase_revenue` | | X | X | | | | | | | |
-| | `purchase_shipping` | | | X | | | | | | | |
-| | `purchase_tax` | | | X | | | | | | | |
-| | `refund` | | X | X | | | | | | | |
-| | `refund_revenue` | | X | X | | | | | | | |
-| | `refund_shipping` | | | X | | | | | | | |
-| | `refund_tax` | | | X | | | | | | | |
-| | `remove_from_cart` | | | X | | | | | | | |
-| | `revenue_net_refund` | | X | X | | | | | | | |
-| | `select_item` | | | X | | | | | | | |
-| | `shipping_net_refund` | | | X | | | | | | | |
-| | `tax_net_refund` | | | X | | | | | | | |
-| | `view_cart` | | | X | | | | | | | |
-| | `view_item` | | | X | | | | | | | |
-| | `view_item_list` | | | X | | | | | | | |
+| | `begin_checkout` | | | X | | | X | | | | |
+| | `client_id_next_step` | | | | | | | X | X | | |
+| | `creative_name` | | | | | | X | | | | |
+| | `creative_slot` | | | | | | X | | | | |
+| | `ecommerce` | X | | | | | | | | X | |
+| | `item_affiliation` | | | | | | X | | | | |
+| | `item_brand` | | | | | | X | | | | |
+| | `item_category` | | | | | | X | | | | |
+| | `item_category_2` | | | | | | X | | | | |
+| | `item_category_3` | | | | | | X | | | | |
+| | `item_category_4` | | | | | | X | | | | |
+| | `item_category_5` | | | | | | X | | | | |
+| | `item_coupon` | | | | | | X | | | | |
+| | `item_discount` | | | | | | X | | | | |
+| | `item_id` | | | | | | X | | | | |
+| | `item_list_id` | | | | | | X | | | | |
+| | `item_list_name` | | | | | | X | | | | |
+| | `item_name` | | | | | | X | | | | |
+| | `item_purchase_revenue` | | | | | | X | | | | |
+| | `item_quantity_added_to_cart` | | | | | | X | | | | |
+| | `item_quantity_purchased` | | X | | | | X | | | | |
+| | `item_quantity_refunded` | | X | | | | X | | | | |
+| | `item_quantity_removed_from_cart` | | | | | | X | | | | |
+| | `item_refund_revenue` | | | | | | X | | | | |
+| | `item_revenue_net_refund` | | | | | | X | | | | |
+| | `item_unique_purchases` | | | | | | X | | | | |
+| | `item_variant` | | | | | | X | | | | |
+| | `list_id` | | | | | | X | | | | |
+| | `list_name` | | | | | | X | | | | |
+| | `promotion_id` | | | | | | X | | | | |
+| | `promotion_name` | | | | | | X | | | | |
+| | `purchase` | | X | X | | X | | | | | |
+| | `purchase_net_refund` | | | X | | X | | | | | |
+| | `purchase_revenue` | | X | X | | X | | | | | |
+| | `purchase_shipping` | | | X | | X | | | | | |
+| | `purchase_tax` | | | X | | X | | | | | |
+| | `refund` | | X | X | | X | | | | | |
+| | `refund_revenue` | | X | X | | X | | | | | |
+| | `refund_shipping` | | | X | | X | | | | | |
+| | `refund_tax` | | | X | | X | | | | | |
+| | `remove_from_cart` | | | X | | | X | | | | |
+| | `revenue_net_refund` | | X | X | | X | | | | | |
+| | `select_item` | | | X | | | X | | | | |
+| | `select_promotion` | | | | | | X | | | | |
+| | `session_id_next_step` | | | | | | | X | X | | |
+| | `shipping_net_refund` | | | X | | X | | | | | |
+| | `status` | | | | | | | X | | | |
+| | `step_index` | | | | | | | X | | | |
+| | `step_index_next_step` | | | | | | | X | | | |
+| | `step_index_next_step_real` | | | | | | | X | | | |
+| | `step_name` | | | | | | | X | X | | |
+| | `tax_net_refund` | | | X | | X | | | | | |
+| | `transaction_coupon` | | | | | X | | | | | |
+| | `transaction_currency` | | | | | X | | | | | |
+| | `transaction_id` | | | | | X | X | | | | |
+| | `user_id_next_step` | | | | | | | | X | | |
+| | `view_cart` | | | X | | | X | | | | |
+| | `view_item` | | | X | | | X | | | | |
+| | `view_item_list` | | | X | | | X | | | | |
+| | `view_promotion` | | | | | | X | | | | |
 | **CONSENT DATA** | `ad_personalization` | X | | | | | | | | | |
 | | `ad_personalization_accepted_percentage` | | | X | | | | | | | |
 | | `ad_personalization_denied_percentage` | | | X | | | | | | | |
@@ -1284,8 +1330,13 @@ This table illustrates the fields available across different table functions, al
 | | `analytics_storage_accepted_percentage` | | | X | | | | | | | |
 | | `analytics_storage_denied_percentage` | | | X | | | | | | | |
 | | `consent_expressed` | | | X | | | | | | | |
+| | `consent_name` | | | | | | | | | | X |
+| | `consent_state` | | | | | | | | | | X |
 | | `consent_timestamp` | | | X | | | | | | | |
 | | `consent_type` | X | | | | | | | | | |
+| | `consent_value_int_accepted` | | | | | | | | | | X |
+| | `consent_value_int_denied` | | | | | | | | | | X |
+| | `consent_value_string` | | | | | | | | | | X |
 | | `functionality_storage` | X | | | | | | | | | |
 | | `functionality_storage_accepted_percentage` | | | X | | | | | | | |
 | | `functionality_storage_denied_percentage` | | | X | | | | | | | |
@@ -1299,18 +1350,23 @@ This table illustrates the fields available across different table functions, al
 | | `session_ad_user_data` | | | X | | | | | | | |
 | | `session_analytics_storage` | | | X | | | | | | | |
 | | `session_functionality_storage` | | | X | | | | | | | |
+| | `session_id_consent_expressed` | | | | | | | | | | X |
+| | `session_id_consent_mode_not_present` | | | | | | | | | | X |
+| | `session_id_consent_not_expressed` | | | | | | | | | | X |
 | | `session_personalization_storage` | | | X | | | | | | | |
 | | `session_security_storage` | | | X | | | | | | | |
-| **REQUEST DATA** | `content_length` | X | | | | | | | | | |
-| | `cs_container_id` | X | | | | | | | | | |
-| | `cs_hostname` | X | | | | | | | | | |
+| **REQUEST DATA** | `content_length` | X | | | | | | | | X | |
+| | `cs_container_id` | X | | | | | | | | X | |
+| | `cs_hostname` | X | | | | | | | | X | |
 | | `cs_tag_id` | X | | | | | | | | | |
 | | `cs_tag_name` | X | | | | | | | | | |
-| | `event_origin` | X | | | | | | | | | |
+| | `delay_in_milliseconds` | | | | | | | | | X | |
+| | `delay_in_seconds` | | | | | | | | | X | |
+| | `event_origin` | X | | | | | | | | X | |
 | | `gtm_data` | X | | | | | | | | | |
-| | `processing_event_timestamp` | X | | | | | | | | | |
-| | `ss_container_id` | X | | | | | | | | | |
-| | `ss_hostname` | X | | | | | | | | | |
+| | `processing_event_timestamp` | X | | | | | | | | X | |
+| | `ss_container_id` | X | | | | | | | | X | |
+| | `ss_hostname` | X | | | | | | | | X | |
 | | `ss_tag_id` | X | | | | | | | | | |
 | | `ss_tag_name` | X | | | | | | | | | |
 </details>
