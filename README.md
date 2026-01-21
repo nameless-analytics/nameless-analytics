@@ -132,7 +132,7 @@ The platform is built on a modern architecture that separates data capture, proc
 </br>
 
 #### Streaming protocol
-- [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables/streaming-protocol)
+- [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol)
 
 #
 
