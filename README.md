@@ -120,13 +120,13 @@ The platform is built on a modern architecture that separates data capture, proc
 </br>
 
 #### Implementation guides
-- [Setup guides](setup-guides/)
+- [Setup guides](https://github.com/nameless-analytics/nameless-analytics/tree/main/setup-guides)
 
 
 </br>
 
 #### Storage
-- [Tables](tables/)
+- [Tables](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables)
 
 
 </br>
