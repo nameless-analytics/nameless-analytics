@@ -6,7 +6,7 @@ The Nameless Analytics Manifesto is a document that outlines the vision, mission
 
 </br>
 
-## What really is Nameless Analytics
+## What Nameless Analytics really is
 If you are like me, completely disillusioned with GA4, a compulsive tinkerer, a cloud-obsessed experimenter and a data lover searching for advanced, clever and actually functional solutions, then this is for us.
 
 We are tired of proprietary platforms that promise "simplicity" but only deliver dependency and skyrocketing costs. 
