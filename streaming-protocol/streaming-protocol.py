@@ -17,27 +17,21 @@ na_s = 'iGybyojfMznbfe7_dFnDUvIIDpausKh-mYAnphPDNl8o8bP' # Modify this according
 
 
 # Request settings
-full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
-origin = 'https://tommasomoretti.com' # Modify this according to website origin
-api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5YmEzYjIwMDhhMWJkYTBkNTFjNw==' # Modify this according to the GTM Server-side preview header
-
 # full_endpoint = 'https://gtm.domain.com/nameless_analytics_endpoint' # Modify this according to your GTM Server-side endpoint 
 # origin = 'https://domain.com' # Modify this according to website origin
 # api_key = '[X-Api-Key]' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
 # gtm_preview_header = '[X-Gtm-Server-Preview]' # Modify this according to the GTM Server-side preview header
 
+full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless'
+origin = 'https://tommasomoretti.com'
+api_key = '1234'
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5YmUwYTkyN2QzY2M2NWU5YjJkYQ=='
+
+
 
 # Event settings
 user_id = '1234' # Add it if needed
-
-event_name = 'page_view' # Modify this according to the event name to be sent
-event_date = datetime.now(timezone.utc).strftime('%Y-%m-%d')
-event_timestamp = int(datetime.now(timezone.utc).timestamp() * 1000)
-event_id = f'{na_s}_{secrets.token_hex(8)}'
-event_origin = "Streaming protocol"
-user_agent = 'Nameless Analytics - Streaming protocol'
-
+event_name = 'purchase' # Modify this according to the event name to be sent
 
 # BigQuery settings
 bq_project_id = 'tom-moretti' # Modify this according to your BigQuery project ID
@@ -108,12 +102,20 @@ except Exception as e:
 
 
 # Event data
+event_date = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+event_timestamp = int(datetime.now(timezone.utc).timestamp() * 1000)
+event_id = f'{na_s}_{secrets.token_hex(8)}'
+event_origin = "Streaming protocol"
+user_agent = 'Nameless Analytics - Streaming protocol'
+
 payload = {
     "user_data": {
+        "user_source": "Streaming protocol"
     },
 
     "session_data": {
-      # "user_id": user_id,
+        "session_source": "Streaming protocol",
+      "user_id": user_id,
     },
 
     "page_date": page_date_from_bq,
@@ -163,7 +165,7 @@ print('👉 Send request to ' + full_endpoint)
 
 headers = {
     'X-Gtm-Server-Preview': gtm_preview_header,
-    'x-api-key': api_key,
+    'x-Api-Key': api_key,
 
     'Content-Type': 'application/json',
     'Origin': origin,

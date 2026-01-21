@@ -23,7 +23,7 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 ## Features
 ### BigQuery Enrichment
-Automatically retrieves `page_date` and `page_data` from your BigQuery `events_raw` table based on the session ID (`na_s`), allowing you to enrich server-side events with historical page context.
+Automatically retrieves page_data from your BigQuery `events_raw` table based on the `na_s` cookie, allowing you to enrich server-side events with historical page data.
 
 ### Automatic Type Handling
 Correctly maps BigQuery data types (`string`, `int`, `float`, `json`) to the JSON payload.
@@ -53,8 +53,8 @@ Supports API Key authentication for secure server-side ingestion.
 Open `streaming-protocol.py` and configure the following settings:
  
 1.  **User Cookies**:
-    *   Set `na_u` (User ID).
-    *   Set `na_s` (Session ID).
+    *   Set `na_u` cookie value
+    *   Set `na_s` cookie value.
  
 2.  **Request Settings**:
     *   `full_endpoint`: Your GTM Server-side URL (e.g., `https://gtm.yourdomain.com/tm/nameless`).
