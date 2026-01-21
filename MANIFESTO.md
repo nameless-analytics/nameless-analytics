@@ -19,11 +19,14 @@ Nameless Analytics isn't just for tinkerers; it's for organizations that underst
 </br>
 
 ### Who it's for
+It's not for everyone. It's not for those who prefer the comfort of a black box over the power of the truth. 
+
+It's for:
+
 * **Builders**, who want to create rather than just consume
 * **Companies**, that treat data as a strategic asset, not a line item
 * **Decision Makers**, who need auditable, transparent and functional numbers
 
-It's not for everyone. It's not for those who prefer the comfort of a black box over the power of the truth.
 
 If you're not ready to own your stack, feel free to keep letting others control your data.
 
@@ -36,16 +39,12 @@ If you're not ready to own your stack, feel free to keep letting others control 
 * **Dashboards are an output, not the truth.** Don't let pretty charts hide ugly realities.
 * **Privacy is a consequence of architecture.** It’s about not collecting what you don’t need and owning what you do.
 
+
+
 </br>
 
-| Corporate Bullshit | The Business Risk | The Nameless Way |
-| :--- | :--- | :--- |
-| "User-friendly AI-driven Dashboards" | Vendor Lock-in & Blind Spots | **Full Data Sovereignty** |
-| "Free, Zero-Cost Implementation" | You are the product | **Owned Infrastructure ROI** |
-| "360° Seamless Customer View" | Opaque, Non-auditable Black Box | **SQL-level Truth** |
-| "Privacy as a Core Feature" | Compliance & Data Leakage | **Architectural Integrity** |
-| "Out-of-the-box Advanced Attribution" | Generic, Misleading Logic | **Custom Business Models** |
-| "Democratizing Data for Everyone" | Tool Dependency & Data Silos | **Raw Data Portability** |
+## Let go
+For an overview of Nameless Analytics [start from here](https://github.com/nameless-analytics/nameless-analytics/).
 
 ---
 
