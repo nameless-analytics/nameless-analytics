@@ -8,6 +8,8 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 
+</br>
+
 ## Table of Contents
 - [Setup](#setup)
   - [Create tables](#create-tables)
@@ -28,6 +30,9 @@ For an overview of how Nameless Analytics works [start from here](https://github
   - [Consents](#consents)
 - [Reporting fields](#reporting-fields)
 
+
+
+</br>
 
 ## Setup
 The following SQL scripts are used to initialize the Nameless Analytics reporting environment in BigQuery.
@@ -234,6 +239,8 @@ execute immediate dates_table_sql;
 ```
 </details>
 
+#
+
 ### Create table functions
 <details><summary>To create the table functions use this DML statement.</summary>
 
@@ -241,7 +248,7 @@ execute immediate dates_table_sql;
 # Run the SQL scripts in this directory to create the table functions.
 ```
 </details>
-
+</br>
 
 ## Tables
 Tables are the foundational storage layer of Nameless Analytics, designed to capture and preserve every user interaction in its raw, unprocessed form. These tables serve as the single source of truth for all analytics data, storing event-level information with complete historical fidelity.
@@ -281,6 +288,9 @@ This main table is partitioned by `event_date` and clustered by `user_date`, `se
 
 </details>
 
+
+#
+
 ### Dates table
 This table is partitioned by `date` and clustered by `month_name` and `day_name`.
 
@@ -302,7 +312,7 @@ This table is partitioned by `date` and clustered by `month_name` and `day_name`
 
 </details>
 
-
+</br>
 
 ## Table functions
 Table functions are predefined SQL queries that simplify data analysis by transforming raw event data into structured, easy-to-use formats for common reporting needs.
@@ -492,6 +502,8 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'Event')
 </details>
 
 
+#
+
 ### Users
 Aggregates data at the user level, calculating lifecycle metrics like total sessions, first/last seen dates, and lifetime values.
 
@@ -543,6 +555,8 @@ Aggregates data at the user level, calculating lifecycle metrics like total sess
 
 </details>
 
+
+#
 
 ### Sessions
 Groups events into individual sessions, calculating duration, bounce rates, and landing/exit pages.
@@ -663,6 +677,8 @@ Groups events into individual sessions, calculating duration, bounce rates, and 
 </details>
 
 
+#
+
 ### Pages
 Focuses on page-level performance, aggregating views, time on page, and navigation paths.
 
@@ -737,6 +753,8 @@ Focuses on page-level performance, aggregating views, time on page, and navigati
 </details>
 
 
+#
+
 ### Transactions
 Extracts and structures ecommerce transaction data, including revenue, tax, and shipping details.
 
@@ -796,6 +814,8 @@ Extracts and structures ecommerce transaction data, including revenue, tax, and 
 
 </details>
 
+
+#
 
 ### Products
 Provides a granular view of product performance, including views, add-to-carts, and purchases per SKU.
@@ -883,6 +903,8 @@ Provides a granular view of product performance, including views, add-to-carts, 
 </details>
 
 
+#
+
 ### Shopping stages open funnel
 Calculates drop-off rates across the entire shopping journey, regardless of where the user started.
 
@@ -941,6 +963,8 @@ Calculates drop-off rates across the entire shopping journey, regardless of wher
 </details>
 
 
+#
+
 ### Shopping stages closed funnel
 Analyzes the shopping journey for users who follow a specific, linear sequence of steps.
 
@@ -965,6 +989,8 @@ Analyzes the shopping journey for users who follow a specific, linear sequence o
 
 </details>
 
+
+#
 
 ### GTM performances
 Provides metrics on GTM container execution times and tag performance to help optimize site speed.
@@ -1040,6 +1066,8 @@ Provides metrics on GTM container execution times and tag performance to help op
 </details>
 
 
+#
+
 ### Consents
 Tracks changes in user consent status over time, ensuring compliance and data transparency.
 
@@ -1070,6 +1098,7 @@ Tracks changes in user consent status over time, ensuring compliance and data tr
 
 
 
+</br>
 </br>
 
 ## Reporting fields
@@ -1320,6 +1349,8 @@ This table illustrates the fields available across different table functions, al
 | `viewport_size` | X | | | | | | | | | |
 
 </details>
+
+</br>
 
 ---
 
