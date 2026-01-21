@@ -31,7 +31,7 @@ If you're not ready to own your stack, feel free to keep letting others control 
 
 ### Our principles and values
 * **The data belongs to whoever generates it.** Period. If you can't access the raw records, you don't own it.
-* **Raw data is God.** Metrics are just derived opinions. Always keep a copy of the truth.
+* **Raw data is gold.** Metrics are just derived opinions. Always keep a copy of the truth.
 * **Analytics is infrastructure, not an interface.** If you don't control the flow, you're just a tenant.
 * **Dashboards are an output, not the truth.** Don't let pretty charts hide ugly realities.
 * **Privacy is a consequence of architecture.** It’s about not collecting what you don’t need and owning what you do.
