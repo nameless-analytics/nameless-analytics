@@ -90,8 +90,8 @@ Ensure you have under the same account:
 #
 
 ### Google Tag Manager Setup
-- Import: [Client-side GTM Template](gtm-containers/gtm-client-side-container-template.json)
-- Import: [Server-side GTM Template](gtm-containers/gtm-server-side-container-template.json)
+- Import: [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
+- Import: [Server-side GTM default container](gtm-containers/gtm-server-side-container-template.json)
 
 
 
@@ -107,14 +107,14 @@ The platform is built on a modern architecture that separates data capture, proc
 #### Client-side
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
-- [GTM client-side basic container](gtm-containers/gtm-client-side-container-template.json)
+- [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
 
 
 </br>
 
 #### Server-side
 - [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
-- [GTM server-side basic container](gtm-containers/gtm-server-side-container-template.json)
+- [Server-side GTM default container](gtm-containers/gtm-server-side-container-template.json)
 
 
 </br>
