@@ -335,8 +335,6 @@ The request data is sent via a POST request in JSON format. It is structured int
 
 <details><summary>Request payload additional data parameters</summary>
 
-</br>
-
 #### Page status code
 When the "Add page status code" option is enabled, a `page_status_code` parameter will be added to the page_data object in the payload: 
   
@@ -372,7 +370,9 @@ When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and t
 The tracker automatically generates and manages unique identifiers for pages, and events.
   
 <details><summary>See page_id and event_id values</summary>
-  
+
+</br>
+
 | Parameter name | Renewed            | Example values                                                 | Value composition                           |
 |----------------|--------------------|----------------------------------------------------------------|---------------------------------------------|
 | **page_id**    | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Page ID            |
@@ -417,6 +417,8 @@ User, session, and event parameters follow this hierarchy of overriding:
 
 <details> <summary>See user and sessions parameters hierarchy</summary>
 
+</br>
+
 | **Priority** | **Level**                           | **Source**                                                    |
 |--------------|-------------------------------------|---------------------------------------------------------------|
 | **High**     | User and sessions parameters        | Nameless Analytics Server-side Client Tag                     |
@@ -425,6 +427,8 @@ User, session, and event parameters follow this hierarchy of overriding:
 </details>
 
 <details> <summary>See event parameters hierarchy</summary>
+
+</br>
 
 | **Priority** | **Level**                  | **Source**                                                    |
 |--------------|----------------------------|---------------------------------------------------------------|
@@ -450,6 +454,8 @@ Validates request origins and authorized domains (CORS) before processing to pre
 The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
 
 <details> <summary>See client_id and session_id values</summary>
+
+</br>
 
 | ID Name        | Renewed                       | Example values                 | Value composition      |
 |----------------|-------------------------------|--------------------------------|------------------------|
@@ -484,6 +490,8 @@ The platform automatically calculates the appropriate cookie domain by extractin
 Cookies are created or updated on every event to track the user's session and identity across the entire journey.
 
 <details> <summary>See user and session cookie values</summary>
+
+</br>
 
 | Cookie Name | Default expiration | Example values                                 | Value composition                     | Usage                                                                                                              |
 |-------------|--------------------|------------------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------|
@@ -650,7 +658,7 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 **Excluded costs:** BigQuery query processing (1 TB/month free tier)
 
 | Traffic Tier | Monthly Events | Compute (Cloud Run / GAE) | Firestore Ops | BigQuery Ingest & Storage | **Estimated Total (CR / GAE)** |
-|-------------|----------------|---------------------------|---------------|---------------------------|--------------------------------|
+|--------------|----------------|---------------------------|---------------|---------------------------|--------------------------------|
 | **Low** | < 500k | $0 / $0* | ~$0 | ~$0 | **FREE** |
 | **Medium** | 1M – 2M | $0 – $1 / $0* | ~$3 – $4 | **< $0.2** | **$3 – $5 / $3 – $4** |
 | **High** | 5M | ~$8 – $12 / $0* | ~$10 – $12 | **~$0.3** | **$18 – $24 / $10 – $12** |
