@@ -8,7 +8,6 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 
-
 ## Table of Contents
 - [Setup](#setup)
   - [Create tables](#create-tables)
@@ -31,9 +30,9 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 
-
 ## Setup
 The following SQL scripts are used to initialize the Nameless Analytics reporting environment in BigQuery.
+
 
 ### Create tables
 <details><summary>To create the tables use this DML statement.</summary>
@@ -237,7 +236,6 @@ execute immediate dates_table_sql;
 ```
 </details>
 
-#
 
 ### Create table functions
 <details><summary>To create the table functions use this DML statement.</summary>
@@ -247,13 +245,14 @@ execute immediate dates_table_sql;
 ```
 </details>
 
+
+
 ## Tables
 Tables are the foundational storage layer of Nameless Analytics, designed to capture and preserve every user interaction in its raw, unprocessed form. These tables serve as the single source of truth for all analytics data, storing event-level information with complete historical fidelity.
 
 The architecture consists of two core tables: the **Events raw table** (`events_raw`), which stores all user, session, page, event, ecommerce, consent, and GTM performance data in a denormalized structure optimized for both write performance and analytical queries; and the **Dates table** (`calendar_dates`), a utility dimension table that provides comprehensive date attributes for time-based analysis and reporting.
 
 All data is partitioned by date and clustered by key dimensions to ensure optimal query performance and cost efficiency when analyzing large datasets.
-
 
 
 ### Events raw table
@@ -286,8 +285,6 @@ This main table is partitioned by `event_date` and clustered by `user_date`, `se
 </details>
 
 
-#
-
 ### Dates table
 This table is partitioned by `date` and clustered by `month_name` and `day_name`.
 
@@ -310,6 +307,7 @@ This table is partitioned by `date` and clustered by `month_name` and `day_name`
 </details>
 
 
+
 ## Table functions
 Table functions are predefined SQL queries that simplify data analysis by transforming raw event data into structured, easy-to-use formats for common reporting needs.
 
@@ -319,6 +317,32 @@ Unlike other systems, Nameless Analytics reporting functions are designed to wor
 ### Events
 Flattens raw event data and extracts custom parameters, making it easier to analyze specific interaction metrics.
 
+Event data can be extracted at various levels:
+
+```sql
+-- User level
+-- Returns events related to users acquired in the selected time period.
+
+select * from `project.nameless_analytics.events` (start_date, end_date, 'User')
+
+
+--Session level
+-- Returns events related to sessions that started in the selected time period.
+
+select * from `project.nameless_analytics.events`(start_date, end_date, 'Session')
+
+
+-- Page level
+-- Returns events related to pages visited in the selected time period.
+
+select * from `project.nameless_analytics.events`(start_date, end_date, 'Page')
+
+
+-- Event level
+-- Returns events that occurred in the selected time period.
+
+select * from `project.nameless_analytics.events`(start_date, end_date, 'Event')
+```
 [View SQL code](events.sql)
 
 <details><summary>View table schema</summary>
@@ -462,43 +486,8 @@ Flattens raw event data and extracts custom parameters, making it easier to anal
 | `event_data` | ARRAY | Raw event data array | `events_raw.event_data` |
 | `gtm_data` | ARRAY | Raw GTM data array | `events_raw.gtm_data` |
 
-
-</br>
-
-Event data can be extracted at various levels:
-
-#### User level
-Returns events related to users acquired in the selected time period.
-
-```sql
-select * from `project.nameless_analytics.events` (start_date, end_date, 'User')
-```
-
-#### Session level: 
-Returns events related to sessions that started in the selected time period.
-
-```sql
-select * from `project.nameless_analytics.events`(start_date, end_date, 'Session')
-```
-
-#### Page level
-Returns events related to pages visited in the selected time period.
-
-```sql
-select * from `project.nameless_analytics.events`(start_date, end_date, 'Page')
-```
-
-#### Event level
-Returns events that occurred in the selected time period.
-
-```sql
-select * from `project.nameless_analytics.events`(start_date, end_date, 'Event')
-```
-
 </details>
 
-
-#
 
 ### Users
 Aggregates data at the user level, calculating lifecycle metrics like total sessions, first/last seen dates, and lifetime values.
@@ -552,11 +541,8 @@ Aggregates data at the user level, calculating lifecycle metrics like total sess
 </details>
 
 
-#
-
 ### Sessions
 Groups events into individual sessions, calculating duration, bounce rates, and landing/exit pages.
-
 
 [View SQL code](sessions.sql)
 
@@ -673,8 +659,6 @@ Groups events into individual sessions, calculating duration, bounce rates, and 
 </details>
 
 
-#
-
 ### Pages
 Focuses on page-level performance, aggregating views, time on page, and navigation paths.
 
@@ -749,8 +733,6 @@ Focuses on page-level performance, aggregating views, time on page, and navigati
 </details>
 
 
-#
-
 ### Transactions
 Extracts and structures ecommerce transaction data, including revenue, tax, and shipping details.
 
@@ -810,8 +792,6 @@ Extracts and structures ecommerce transaction data, including revenue, tax, and 
 
 </details>
 
-
-#
 
 ### Products
 Provides a granular view of product performance, including views, add-to-carts, and purchases per SKU.
@@ -899,8 +879,6 @@ Provides a granular view of product performance, including views, add-to-carts, 
 </details>
 
 
-#
-
 ### Shopping stages open funnel
 Calculates drop-off rates across the entire shopping journey, regardless of where the user started.
 
@@ -959,8 +937,6 @@ Calculates drop-off rates across the entire shopping journey, regardless of wher
 </details>
 
 
-#
-
 ### Shopping stages closed funnel
 Analyzes the shopping journey for users who follow a specific, linear sequence of steps.
 
@@ -985,8 +961,6 @@ Analyzes the shopping journey for users who follow a specific, linear sequence o
 
 </details>
 
-
-#
 
 ### GTM performances
 Provides metrics on GTM container execution times and tag performance to help optimize site speed.
@@ -1062,8 +1036,6 @@ Provides metrics on GTM container execution times and tag performance to help op
 </details>
 
 
-#
-
 ### Consents
 Tracks changes in user consent status over time, ensuring compliance and data transparency.
 
@@ -1091,7 +1063,6 @@ Tracks changes in user consent status over time, ensuring compliance and data tr
 | `session_id` | STRING | Session identifier | `events.session_id` |
 
 </details>
-
 
 
 

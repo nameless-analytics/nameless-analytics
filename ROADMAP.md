@@ -5,17 +5,12 @@ Nameless Analytics upcoming features and improvements.
 For completed work and release history, see [CHANGELOG.md](CHANGELOG.md).
 
 ## What's next
-
 ### High Priority
 - **Review example dashboard**
 - **Fix page_status_code**
 
-# 
-
 ### Medium Priority
 - **BigQuery DML for create table functions**
-
-#
 
 ### Low Priority
 

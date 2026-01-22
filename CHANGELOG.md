@@ -4,8 +4,9 @@ Nameless Analytics release note and changelog history.
 
 For upcoming features and planned improvements, see the [Roadmap](ROADMAP.md).
 
-## Versions
 
+
+## Versions
 ### v1.0
 
 Lorem ipsum
