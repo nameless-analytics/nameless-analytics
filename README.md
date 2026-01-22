@@ -1,7 +1,5 @@
 # Nameless Analytics 
 
-
-
 An open-source web analytics platform for power users, based on [Google Tag Manager](https://marketingplatform.google.com/intl/it/about/tag-manager/), [Google Firestore](https://cloud.google.com/firestore) and [Google BigQuery](https://cloud.google.com/bigquery).
 
 Collect, analyze, and activate your website data with a free real-time digital analytics suite that respects user privacy.
@@ -57,7 +55,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
 
 
 ## What is Nameless Analytics 
-Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. 
+Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. Read the [manifesto](MANIFESTO.md).
 
 Built upon a transparent pipeline hosted entirely on your own Google Cloud Platform environment, at a high level, the platform solves critical challenges in modern analytics:
 
@@ -89,11 +87,17 @@ The platform is built on a modern architecture that separates data capture, proc
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
 - [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
-- [Tables](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables)
-- [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol)
+
+### Documentation
 - [Setup guides](https://github.com/nameless-analytics/nameless-analytics/tree/main/setup-guides)
 - [Troubleshooting](https://github.com/nameless-analytics/nameless-analytics/blob/main/setup-guides/TROUBLESHOOTING.md)
+- [Tables](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables)
+- [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol)
 
+### Resources
+- [Manifesto](MANIFESTO.md)
+- [Roadmap](ROADMAP.md)
+- [Changelog](CHANGELOG.md)
 
 ### High-Level Data Flow
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
