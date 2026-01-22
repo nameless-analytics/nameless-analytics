@@ -20,7 +20,7 @@ We are tired of being treated as passive users. We want access to real raw data,
 
 Nameless Analytics isn't just for tinkerers. It's for organizations that understand that data is their most valuable competitive edge.
 
-</br>
+#
 
 ### Who it's for
 It's not for everyone. It's not for those who prefer the comfort of a black box over the power of the truth. 
@@ -34,7 +34,7 @@ It's for:
 
 If you're not ready to own your stack, feel free to keep letting others control your data.
 
-</br>
+#
 
 ### Our principles and values
 * **The data belongs to whoever generates it.** Period. If you can't access the raw records, you don't own it.
