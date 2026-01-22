@@ -15,6 +15,7 @@ For an overview of how Nameless Analytics works [start from here](https://github
 ## How to trigger virtual page views
 You can trigger a virtual page view in two ways: by updating the browser history (SPA route change) or by using a custom dataLayer event.
 
+
 ### Via browser history (Route change)
 Virtual page views can be triggered upon history changes using `pushState` or `replaceState`. Ensure you update the page title and any relevant dataLayer parameters *before* the history change.
 
@@ -25,6 +26,7 @@ dataLayer.push({
 });
 history.pushState('', '', '/product_name');
 ```
+
 
 ### Via custom dataLayer event
 Virtual page views can be also triggered upon custom dataLayer events.
@@ -38,3 +40,6 @@ dataLayer.push({
 });
 ```
 
+---
+
+Reach me at: [Email](mailto:hello@tommasomoretti.com) | [Website](https://tommasomoretti.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics) | [Twitter](https://twitter.com/tommoretti88) | [LinkedIn](https://www.linkedin.com/in/tommasomoretti/)
