@@ -10,8 +10,6 @@ Collect, analyze, and activate your website data with a free real-time digital a
 
 
 
-</br>
-
 ## Start from here
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
@@ -62,8 +60,6 @@ Collect, analyze, and activate your website data with a free real-time digital a
 
 
 
-</br>
-
 ## What is Nameless Analytics 
 Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. 
 
@@ -76,8 +72,6 @@ Built upon a transparent pipeline hosted entirely on your own Google Cloud Platf
 
 
 
-</br>
-
 ## Quick Start
 ### Project configuration
 Ensure you have under the same account:
@@ -87,7 +81,6 @@ Ensure you have under the same account:
 - A Web Google Tag Manager container
 - A Server-side Google Tag Manager container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/)
 
-#
 
 ### Google Tag Manager Setup
 - Import: [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
@@ -95,61 +88,29 @@ Ensure you have under the same account:
 
 
 
-</br>
-
 ## Technical Architecture
 The platform is built on a modern architecture that separates data capture, processing and storage to ensure maximum flexibility and performance.
 
 ### Key Components
-
-</br>
-
-#### Client-side
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
-- [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
-
-
-</br>
-
-#### Server-side
 - [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
-- [Server-side GTM default container](gtm-containers/gtm-server-side-container-template.json)
-
-
-</br>
-
-#### Implementation guides
+- [Tables](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables)
+- [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol)
 - [Setup guides](https://github.com/nameless-analytics/nameless-analytics/tree/main/setup-guides)
 
-
-</br>
-
-#### Storage
-- [Tables](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables)
-
-
-</br>
-
-#### Streaming protocol
-- [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol)
-
-#
 
 ### High-Level Data Flow
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
 
 ![Nameless Analytics schema](https://github.com/user-attachments/assets/9f784a98-a428-4af2-91a1-c21b6ffbe3dd)
 
-#
 
-### Client-Side Collection
+
+## Client-Side Collection
 The **Client-Side Tracker Tag** serves as an intelligent agent in the browser. It abstracts complex logic to ensure reliable data capture under any condition.
 
-
-</br>
-
-#### Request payload data
+### Request payload data
 The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
 
 <details><summary>Request payload example with only standard parameters and no customization at all</summary>
@@ -380,87 +341,65 @@ The request data is sent via a POST request in JSON format. It is structured int
 
 <details><summary>Request payload additional data parameters</summary>
 
-
 </br>
 
 #### Page status code
 When the "Add page status code" option is enabled, a `page_status_code` parameter will be added to the page_data object in the payload: 
-
+  
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
 | page_status_code   |                   | Integer  | Client-Side | Page status code      | 
-
-
-
-</br>
-
+  
 #### Add dataLayer data
 When the "Add current dataLayer state" option is enabled, a `dataLayer` parameter will be added to the payload: 
-
+  
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
 | dataLayer          |                   | JSON     | Client-Side | DataLayer data        |
-
-
-</br>
-
+    
 #### Ecommerce data
 When "Add ecommerce data" is enabled, an `ecommerce` parameter will be added to the payload:
-
+  
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
 | ecommerce          |                   | JSON     | Client-Side | Ecommerce data        |
-
-
-</br>
-
+    
 #### Cross-domain data
-When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and the `cross_domain_id` parameters will be added to the payload in `session_data` and `event_data` respectively:
-
+When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and the `cross_domain_id` parameters will be added to the payload in `session_data` and `event_data`   respectively:
+  
 | **Parameter name** | **Sub-parameter**    | **Type** | **Added**   | **Field description**   |
 |--------------------|----------------------|----------|-------------|-------------------------|
 | session_data       | cross_domain_session | String   | Server-Side | Is cross domain session |
 | event_data         | cross_domain_id      | String   | Client-Side | Cross domain id         |
-
+  
 </details>
 
-
-</br>
-
-#### ID Management
+### ID Management
 The tracker automatically generates and manages unique identifiers for pages, and events.
-
+  
 <details><summary>See page_id and event_id values</summary>
-
-| ID Name      | Renewed            | Example values                                                 | Value composition                           |
-|--------------|--------------------|----------------------------------------------------------------|---------------------------------------------|
-| **page_id**  | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Page ID            |
-| **event_id** | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Page ID _ Event ID |
+  
+| Parameter name | Renewed            | Example values                                                 | Value composition                           |
+|----------------|--------------------|----------------------------------------------------------------|---------------------------------------------|
+| **page_id**    | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Page ID            |
+| **event_id**   | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Page ID _ Event ID |
 
 </details>
 
 
-</br>
-
-#### Sequential Execution Queue
+### Sequential Execution Queue
 Implements specific logic to handle high-frequency events (e.g., rapid clicks), ensuring requests are dispatched in strict FIFO order to preserve the narrative of the session.
 
 
-</br>
-
-#### Smart Consent Management
+### Smart Consent Management
 Fully integrated with Google Consent Mode. It can track every event or automatically queue events (`analytics_storage` pending) and release them only when consent is granted, preventing data loss.
 
 
-</br>
-
-#### SPA & History Management
+### SPA & History Management
 Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Virtual Page View Setup Guide](setup-guides/#how-to-trigger-virtual-page-views) for implementation examples.
 
 
-</br>
-
-#### Cross-domain Architecture
+### Cross-domain Architecture
 Implements a robust "handshake" protocol to stitch sessions across different top-level domains. Since Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
 
 <details><summary>How the cross-domain handshake works</summary>
@@ -471,13 +410,11 @@ Implements a robust "handshake" protocol to stitch sessions across different top
 2. **Identity Retrieval**: The server receives the request (along with the `HttpOnly` cookies), extracts the `client_id` and `session_id`, and returns them in the JSON response.
 3. **URL Decoration**: The tracker receives the IDs and decorates the outbound destination URL with a `na_id` parameter (e.g., `https://destination.com/?na_id=...`).
 4. **Session Stitching**: On the destination site, the tracker detects the `na_id` parameter, sends it to the server, and the server sets the same `HttpOnly` cookies for the new domain, effectively merging the session.
-
+  
 </details>
 
 
-</br>
-
-#### Parameter Hierarchy & Overriding
+### Parameter Hierarchy & Overriding
 Since parameters can be set at multiple levels (Client side variable + Client-side tag, Server-side tag), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
 
 System-critical parameters like `client_id`, `session_id`, `page_id` and `event_id` and the standard parameters are protected and cannot be overwritten in any ways.
@@ -505,27 +442,17 @@ User, session, and event parameters follow this hierarchy of overriding:
 
 </details>
 
-
-</br>
-
-#### Debugging & Visibility
+### Debugging & Visibility
 Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
 
-#
 
-### Server-Side Processing
+## Server-Side Processing
 The **Server-Side Client Tag** serves as security gateway and data orchestrator. It sits between the public internet and your cloud infrastructure, sanitizing every request.
 
-
-</br>
-
-#### Security and Validation
+### Security and Validation
 Validates request origins and authorized domains (CORS) before processing to prevent unauthorized usage.
 
-
-</br>
-
-#### ID Management
+### ID Management
 The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
 
 <details> <summary>See client_id and session_id values</summary>
@@ -538,45 +465,28 @@ The Nameless Analytics Server-side Client Tag automatically generates and manage
 </details>
 
 
-</br>
-
-#### Data Integrity
+### Data Integrity
 The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
 
-
-</br>
-
-#### Real-time Forwarding
+### Real-time Forwarding
 Supports instantaneous data streaming to external HTTP endpoints immediately after processing. The system allows for **custom HTTP headers** injection, enabling secure authentication with third-party services endpoints directly from the server.
 
-
-</br>
-
-#### Self-Monitoring & Performance
+### Self-Monitoring & Performance
 The system transparently tracks pipeline health by measuring **ingestion latency** (the exact millisecond delay between the client hit and server processing) and **payload size**. This data allows for high-resolution monitoring of the real-time data flow directly within BigQuery.
 
-
-</br>
-
-#### Bot Protection
+### Bot Protection
 Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
 
-
-</br>
-
-#### Geolocation & Privacy by Design
+### Geolocation & Privacy by Design
 Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations.
 
 To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic).
 
-
-</br>
-
-#### Cookies
+### Cookies
 All cookies are issued with `HttpOnly`, `Secure`, and `SameSite=Strict` flags. This multi-layered approach prevents client-side access (XSS protection) and Cross-Site Request Forgery (CSRF).
 
 The platform automatically calculates the appropriate cookie domain by extracting the **Effective TLD+1** from the request origin. This ensures seamless identity persistence across subdomains without manual configuration. 
-  
+
 Cookies are created or updated on every event to track the user's session and identity across the entire journey.
 
 <details> <summary>See user and session cookie values</summary>
@@ -588,31 +498,20 @@ Cookies are created or updated on every event to track the user's session and id
 
 </details>
 
-
-</br>
-
-#### Streaming Protocol
+### Streaming Protocol
 The Streaming Protocol is specifically designed for server-to-server communication, allowing you to send events directly from your backend or other offline sources.
 
 To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol.
 
 The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming protocol" and does not include a valid `x-api-key` header matching your configuration.
 
-
-</br>
-
-#### Debugging & Visibility
+### Debugging & Visibility
 Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**.
 
-#
-
-### Storage
+## Storage
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:
 
-
-</br>
-
-#### Firestore as Last updated Snapshot
+### Firestore as Last updated Snapshot
 It mantains **the latest available state for every user and session**. For example, the current user_level.
 
 - **User data**: Stores the latest user profile state, including first/last session timestamps, original acquisition source, and persistent device metadata.
@@ -628,20 +527,17 @@ Firestore ensures data integrity by managing how parameters are updated across h
 
 | Scope | Type | Parameters | Logic |
 | :--- | :--- | :--- | :--- |
-| **User** | **First-Touch** | `user_date`, `user_source`, `user_tld_source`, `user_campaign`, `user_campaign_id`, `user_campaign_click_id`, `user_campaign_term`, `user_campaign_content`, `user_channel_grouping`, `user_device_type`, `user_country`, `user_language`, `user_first_session_timestamp` | Recorded at first visit, **never overwritten**. |
+| **User** | **First-Touch** | `user_date`, `user_source`, `user_tld_source`, `user_campaign`, `user_campaign_id`, `user_campaign_click_id`, `user_campaign_term`, `user_campaign_content`, `user_channel_grouping`, `user_device_type`, `user_country`, `user_language`,   `user_first_session_timestamp` | Recorded at first visit, **never overwritten**. |
 | **User** | **Last-Touch** | `user_last_session_timestamp` | Updated at the start of every new session. |
-| **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`, `session_channel_grouping`, `session_device_type`, `session_country`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_location`, `session_landing_page_title`, `user_id` | Set at session start, persists throughout the session. |
+| **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`,   `session_channel_grouping`, `session_device_type`, `session_country`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_location`, `session_landing_page_title`, `user_id` | Set at session start, persists throughout   the session. |
 | **Session** | **Last-Touch** | `session_exit_page_category`, `session_exit_page_location`, `session_exit_page_title`, `session_end_timestamp`, `total_events`, `total_page_views` | **Updated on every hit** to reflect the latest state. |
 | **Session** | **Progressive** | `cross_domain_session` | Flags as 'Yes' if any hit in the session is cross-domain. |
 
 </details>
-
-
-</br>
-
-#### BigQuery as Historical Timeline
+  
+### BigQuery as Historical Timeline
 It mantains **every single state transition** for every user and session. For example, all different user_level values through time.
-
+  
 - **User data**: Stores the current user profile state at event occurs, including first/last session timestamps, original acquisition source, and persistent device metadata.
 - **Session data**: Stores the current session state at event occurs, including real-time counters (total events, page views), landing/exit page details, and session-specific attribution.
 - **Page data**: Stores the current page state at event occurs, including page name, timestamp, and page-specific attributes.
@@ -652,30 +548,23 @@ It mantains **every single state transition** for every user and session. For ex
 - **GTM Performance data**: Stores the current GTM performance state at event occurs, including GTM performance metrics, timestamp, and GTM performance-specific attributes.
 
 <details><summary>BigQuery schema example</summary>
-
+  
 </br>
-
+  
 ![Nameless Analytics - BigQuery event_raw schema](https://github.com/user-attachments/assets/d23e3959-ab7a-453c-88db-a4bc2c7b32f4)
-
+  
 </details>
 
-</br>
-
-#
-
-### Reporting
+## Reporting
 A suite of SQL Table Functions transforms raw data into business-ready views for [Users](tables/users.sql), [Sessions](tables/sessions.sql), [Pages](tables/pages.sql), [Events](tables/events.sql), [Consents](tables/consents.sql), [GTM Performance](tables/gtm_performances.sql), and specialized Ecommerce views like [Transactions](tables/ec_transactions.sql), [Products](tables/ec_products.sql), and Funnels ([Open](tables/ec_shopping_stages_open_funnel.sql) / [Closed](tables/ec_shopping_stages_closed_funnel.sql)).
 
 SQL Table Functions can be used as sources for dashboards, such as [this one](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd), which demonstrates the platform's potential with a pre-built template covering all key metrics.
 
-
-</br>
-
-#### Acquisition
+### Acquisition
 <details><summary>See acquisition dashboard examples</summary>
 
 </br>
-
+  
 - [**Traffic Sources**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_rmpwib9hod): Breakdown of traffic by source, medium, and channel grouping. Powered by [sessions.sql](tables/sessions.sql).
 - [**Device Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_cmywmb9hod): Analysis of user volume and revenue split across devices. Logic defined in [sessions.sql](tables/sessions.sql).
 - [**Geographic Distribution**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_enanrb9hod): Map and table views showing user sessions and revenue by Country (using server-side enrichment).
@@ -683,9 +572,7 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 </details>
 
 
-</br>
-
-#### Behaviour
+### Behaviour
 <details><summary>See behaviour dashboard examples</summary>
 
 </br>
@@ -698,9 +585,7 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 </details>
 
 
-</br>
-
-#### Ecommerce
+### Ecommerce
 <details><summary>See ecommerce dashboard examples</summary>
 
 </br>
@@ -713,9 +598,7 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 </details>
 
 
-</br>
-
-#### User consents
+### User consents
 <details><summary>See user consents dashboard examples</summary>
 
 </br>
@@ -726,9 +609,7 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 </details>
 
 
-</br>
-
-#### Debugging & Tech
+### Debugging & Tech
 <details><summary>See debugging & tech dashboard examples</summary>
 
 </br>
@@ -739,11 +620,9 @@ SQL Table Functions can be used as sources for dashboards, such as [this one](ht
 
 </details>
 
-</br>
 
-#
 
-### Support & AI
+## Support & AI
 Get expert help for implementation, technical documentation, and advanced SQL queries.
 
 Choose from: 
@@ -752,8 +631,6 @@ Choose from:
 - **[Google Gemini](https://gemini.google.com/gem/1ZsO2SPn5yqDXDAbwHb6bHJcU0LjVsL6S)**: Specialized Gem trained on the platform docs
 
 
-
-<br>
 
 ## Pricing & Cloud Costs
 Nameless Analytics is designed to achieve maximum performance with minimum overhead. By utilizing Google Cloud's serverless offerings, the platform can operate at **zero cost** for many users and scales predictably with traffic.
@@ -765,8 +642,6 @@ You can choose the compute environment that best fits your traffic and budget:
 * **App Engine Standard**: Ideal for 24/7 uptime on a budget. Includes **28 free instance-hours per day** (F1 instances), allowing for a continuous single-server setup at **zero cost**.
 * **App Engine Flexible**: Best for enterprise-scale deployments (5-10M+ hits/month) requiring multi-zone redundancy. Typically starts at ~$120/month for a 3-instance minimum cluster.
 
-#
-
 ### Data storage
 Data will be stored in two different locations:
 
@@ -774,8 +649,6 @@ Data will be stored in two different locations:
 * **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). 
 
 Query processing (scanning data in BigQuery for analysis/dashboards) is billed separately by Google Cloud based on usage. However, the first **1 TB per month** is always free.
-
-#
 
 ### Cost Summary Table
 This is an estimated monthly cost breakdown for the platform, based on **real-world Google Cloud pricing** and **measured event payload size** (~2.8 KB / event).
@@ -794,7 +667,6 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 > \** App Engine **Flexible Environment (multi-instance cluster)** – production / HA setup
 
 
-</br>
 
 ## External Resources
 - [Live Demo](https://namelessanalytics.com) (Open the dev console).

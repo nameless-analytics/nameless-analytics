@@ -8,7 +8,6 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 
-</br>
 
 ## Table of Contents
 - [Setup](#setup)
@@ -32,7 +31,6 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 
-</br>
 
 ## Setup
 The following SQL scripts are used to initialize the Nameless Analytics reporting environment in BigQuery.
@@ -248,7 +246,6 @@ execute immediate dates_table_sql;
 # Run the SQL scripts in this directory to create the table functions.
 ```
 </details>
-</br>
 
 ## Tables
 Tables are the foundational storage layer of Nameless Analytics, designed to capture and preserve every user interaction in its raw, unprocessed form. These tables serve as the single source of truth for all analytics data, storing event-level information with complete historical fidelity.
@@ -312,7 +309,6 @@ This table is partitioned by `date` and clustered by `month_name` and `day_name`
 
 </details>
 
-</br>
 
 ## Table functions
 Table functions are predefined SQL queries that simplify data analysis by transforming raw event data into structured, easy-to-use formats for common reporting needs.
@@ -1098,8 +1094,6 @@ Tracks changes in user consent status over time, ensuring compliance and data tr
 
 
 
-</br>
-</br>
 
 ## Reporting fields
 This table illustrates the fields available across different table functions, allowing you to easily identify common data points and specific metrics for each report.
