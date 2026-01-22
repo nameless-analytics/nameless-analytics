@@ -11,10 +11,10 @@ Collect, analyze, and activate your website data with a free real-time digital a
 ## Start from here
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
-  - [Project configuration](#project-configuration)
-  - [Google Tag Manager Setup](#google-tag-manager-setup)
 - [Technical Architecture](#technical-architecture)
   - [Key Components](#key-components)
+  - [Documentation](#documentation)
+  - [Resources](#resources)
   - [High-Level Data Flow](#high-level-data-flow)
 - [Client-Side Collection](#client-side-collection)
   - [Request payload data](#request-payload-data)
@@ -22,6 +22,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [Sequential Execution Queue](#sequential-execution-queue)
   - [Smart Consent Management](#smart-consent-management)
   - [SPA & History Management](#spa-history-management)
+  - [Core Libraries Functioning](#core-libraries-functioning)
   - [Cross-domain Architecture](#cross-domain-architecture)
   - [Parameter Hierarchy & Overriding](#parameter-hierarchy-overriding)
   - [Debugging events](#debugging-events)
@@ -36,7 +37,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [Cookies](#cookies)
   - [Streaming Protocol](#streaming-protocol)
   - [Debugging requests](#debugging-requests)
-- [Storage](#storage-1)
+- [Storage](#storage)
   - [Firestore as Last updated Snapshot](#firestore-as-last-updated-snapshot)
   - [BigQuery as Historical Timeline](#bigquery-as-historical-timeline)
 - [Reporting](#reporting)
@@ -398,7 +399,7 @@ Fully integrated with Google Consent Mode. It can track every event or automatic
 
 
 ### SPA & History Management
-Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Virtual Page View Setup Guide](setup-guides/#how-to-trigger-virtual-page-views) for implementation examples.
+Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Virtual Page View Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-trigger-virtual-page-views) for implementation examples.
 
 
 ### Core Libraries Functioning
@@ -722,7 +723,7 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 - [Roadmap](ROADMAP.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Manifesto](MANIFESTO.md)
-- [MIT License](LICENSE)
+- [MIT License](LICENSE.md)
 
 ---
 
