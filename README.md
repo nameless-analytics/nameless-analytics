@@ -69,18 +69,16 @@ Built upon a transparent pipeline hosted entirely on your own Google Cloud Platf
 
 
 ## Quick Start
-### Project configuration
-Ensure you have under the same account:
+Ensure you have the following resources under the same account:
 - A Google Cloud Project with an active billing account
-- A Google BigQuery project + tables and table functions created using the provided [SQL scripts](tables/)
+- A Google BigQuery project + dataset, tables and table functions created using the provided [SQL scripts](tables/)
 - A Google Firestore database enabled in Native Mode
 - A Web Google Tag Manager container
 - A Server-side Google Tag Manager container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/)
 
-
-### Google Tag Manager Setup
-- Import: [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
-- Import: [Server-side GTM default container](gtm-containers/gtm-server-side-container-template.json)
+Download and import the following GTM containers:
+- [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
+- [Server-side GTM default container](gtm-containers/gtm-server-side-container-template.json)
 
 
 
