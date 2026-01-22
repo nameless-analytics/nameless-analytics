@@ -26,7 +26,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [SPA & History Management](#spa-history-management)
   - [Cross-domain Architecture](#cross-domain-architecture)
   - [Parameter Hierarchy & Overriding](#parameter-hierarchy-overriding)
-  - [Debugging & Visibility](#debugging-visibility)
+  - [Debugging events](#debugging-events)
 - [Server-Side Processing](#server-side-processing)
   - [Security and Validation](#security-and-validation)
   - [ID Management](#id-management-1)
@@ -36,8 +36,8 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [Bot Protection](#bot-protection)
   - [Geolocation & Privacy by Design](#geolocation-privacy-by-design)
   - [Cookies](#cookies)
-  - [Streaming Protocol](#streaming-protocol-1)
-  - [Debugging & Visibility](#debugging-visibility-1)
+  - [Streaming Protocol](#streaming-protocol)
+  - [Debugging requests](#debugging-requests)
 - [Storage](#storage-1)
   - [Firestore as Last updated Snapshot](#firestore-as-last-updated-snapshot)
   - [BigQuery as Historical Timeline](#bigquery-as-historical-timeline)
@@ -92,6 +92,7 @@ The platform is built on a modern architecture that separates data capture, proc
 - [Tables](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables)
 - [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol)
 - [Setup guides](https://github.com/nameless-analytics/nameless-analytics/tree/main/setup-guides)
+- [Troubleshooting](https://github.com/nameless-analytics/nameless-analytics/blob/main/setup-guides/TROUBLESHOOTING.md)
 
 
 ### High-Level Data Flow
@@ -393,8 +394,39 @@ Fully integrated with Google Consent Mode. It can track every event or automatic
 Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Virtual Page View Setup Guide](setup-guides/#how-to-trigger-virtual-page-views) for implementation examples.
 
 
+### Core Libraries Functioning
+The tracker relies on two external libraries loaded at runtime to handle complex logic that exceeds the GTM Sandbox environment's capabilities.
+
+<details><summary>nameless-analytics.js</summary>
+
+</br>
+
+This is the core engine that supports the GTM tag by exposing utility functions for execution in a standard JavaScript environment. 
+
+It handles the following background operations:
+
+- **Sequential Requests Queue:** Implements a Promise-based queue to ensure that HTTP requests are sent in the exact order they occurred (FIFO), preserving the timeline of user interactions.
+- **Payload Enrichment:** Formats timestamps into BigQuery-compatible date strings and captures browser environment metrics like screen resolution and viewport size.
+- **Channel Grouping Logic:** Categorizes traffic sources into predefined groups (e.g., Organic Search, Paid Social, AI, Email) using regex-based pattern matching.
+- **Cross-domain Handshake:** Manages a global click listener that detects cross-domain links. It triggers a server-side "handshake" via the `get_user_data` function to retrieve the visitor's server-side identities before redirecting and decorating outbound URLs with the `na_id` parameter.
+- **Server Identity Retrieval (`get_user_data`):** A dedicated function that performs an asynchronous POST request to the Server-Side Client Tag to fetch the active `client_id` and `session_id`. This ensures that cross-domain tracking uses the authoritative IDs issued by the server.
+- **Consent State Mapping:** Provides a function to read the current state of all Google Consent Mode types directly from the global GTM data object.
+
+</details>
+
+<details><summary>ua-parser.min.js</summary>
+
+</br>
+
+Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. This data is mapped into the `event_data` object under `device_vendor`, `os_version`, `device_model`, ecc..
+
+</details>
+
+
 ### Cross-domain Architecture
 Implements a robust "handshake" protocol to stitch sessions across different top-level domains. Since Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
+
+**Temporary Limitation (Beta)**: Since link decoration happens dynamically upon clicking (to ensure ID freshness and bypass `HttpOnly` restrictions), cross-domain tracking currently **will not work** if the user opens the link via a right-click menu (e.g., "Open link in new tab") or using keyboard shortcuts that bypass the standard click event.
 
 <details><summary>How the cross-domain handshake works</summary>
 
@@ -404,7 +436,9 @@ Implements a robust "handshake" protocol to stitch sessions across different top
 2. **Identity Retrieval**: The server receives the request (along with the `HttpOnly` cookies), extracts the `client_id` and `session_id`, and returns them in the JSON response.
 3. **URL Decoration**: The tracker receives the IDs and decorates the outbound destination URL with a `na_id` parameter (e.g., `https://destination.com/?na_id=...`).
 4. **Session Stitching**: On the destination site, the tracker detects the `na_id` parameter, sends it to the server, and the server sets the same `HttpOnly` cookies for the new domain, effectively merging the session.
-  
+
+<!-- ADD HERE -->
+
 </details>
 
 
@@ -440,8 +474,9 @@ User, session, and event parameters follow this hierarchy of overriding:
 
 </details>
 
-### Debugging & Visibility
-Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation.
+### Debugging events
+Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation. For a detailed guide on resolving common sequence and integration issues, see the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING.md).
+
 
 
 ## Server-Side Processing
@@ -507,8 +542,8 @@ To protect against unauthorized data injection from external servers, the system
 
 The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming protocol" and does not include a valid `x-api-key` header matching your configuration.
 
-### Debugging & Visibility
-Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**.
+### Debugging requests
+Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**. For detailed information on server-side errors (403 Forbidden) and validation issues, refer to the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING.md).
 
 ## Storage
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:
