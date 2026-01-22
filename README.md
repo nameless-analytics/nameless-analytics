@@ -83,6 +83,9 @@ Download and import the following GTM containers:
 ## Technical Architecture
 The platform is built on a modern architecture that separates data capture, processing and storage to ensure maximum flexibility and performance.
 
+Since the infrastructure is hosted entirely within your own Google Cloud project, you have complete control over **Data Residency**. By choosing a specific GCP Region (e.g., `europe-west1`), you ensure that your data processing and storage remain within your preferred jurisdiction.
+
+
 ### Key Components
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
@@ -399,7 +402,7 @@ Native support for Single Page Applications. Virtual page views can be triggered
 
 
 ### Core Libraries Functioning
-The tracker relies on two external libraries loaded at runtime to handle complex logic that exceeds the GTM Sandbox environment's capabilities.
+The tracker relies on two external libraries loaded at runtime to handle complex logic. To maximize data collection accuracy and bypass ad-blockers, Nameless Analytics supports **First-Party mode**, allowing you to host these libraries on your own domain or CDN instead of using external CDNs.
 
 <details><summary>nameless-analytics.js</summary>
 
@@ -441,7 +444,7 @@ Implements a robust "handshake" protocol to stitch sessions across different top
 3. **URL Decoration**: The tracker receives the IDs and decorates the outbound destination URL with a `na_id` parameter (e.g., `https://destination.com/?na_id=...`).
 4. **Session Stitching**: On the destination site, the tracker detects the `na_id` parameter, sends it to the server, and the server sets the same `HttpOnly` cookies for the new domain, effectively merging the session.
 
-<!-- ADD HERE -->
+This handshake protocol prioritizes **Data Quality**. By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics ensures that the identifiers passed to the destination domain are 100% authoritative and fresh. While this introduces a small latency (typically <200ms), it eliminates session fragmentation and ensures reliable attribution in environments with strict privacy restrictions.
 
 </details>
 
@@ -479,7 +482,9 @@ User, session, and event parameters follow this hierarchy of overriding:
 </details>
 
 ### Debugging events
-Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation. For a detailed guide on resolving common sequence and integration issues, see the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING.md).
+Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation. 
+
+For a detailed guide on resolving common sequence and integration issues, see the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING.md).
 
 
 
@@ -517,7 +522,7 @@ The system transparently tracks pipeline health by measuring **ingestion latency
 Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
 
 ### Geolocation & Privacy by Design
-Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations.
+Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations. 
 
 To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic).
 
@@ -526,7 +531,7 @@ All cookies are issued with `HttpOnly`, `Secure`, and `SameSite=Strict` flags. T
 
 The platform automatically calculates the appropriate cookie domain by extracting the **Effective TLD+1** from the request origin. This ensures seamless identity persistence across subdomains without manual configuration. 
 
-Cookies are created or updated on every event to track the user's session and identity across the entire journey.
+Cookies are created or updated on every event to track the user's session and identity across the entire journey. The expiration of the client identifier cookie (`na_u`) is set to **400 days**, which is the maximum lifespan allowed by modern browsers (e.g., Chrome, Safari) for first-party cookies, ensuring long-term user recognition while remaining compliant with browser restrictions.
 
 <details> <summary>See user and session cookie values</summary>
 
@@ -547,7 +552,9 @@ To protect against unauthorized data injection from external servers, the system
 The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming protocol" and does not include a valid `x-api-key` header matching your configuration.
 
 ### Debugging requests
-Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**. For detailed information on server-side errors (403 Forbidden) and validation issues, refer to the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING.md).
+Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**. 
+
+For detailed information on server-side errors (403 Forbidden) and validation issues, refer to the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING.md).
 
 ## Storage
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:
