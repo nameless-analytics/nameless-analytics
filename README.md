@@ -72,7 +72,7 @@ Ensure you have the following resources under the same account:
 - A Google BigQuery project + dataset, tables and table functions created using the provided [SQL scripts](tables/TABLES.md)
 - A Google Firestore database enabled in Native Mode
 - A Web Google Tag Manager container
-- A Server-side Google Tag Manager container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) </br> (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
+- A Server-side Google Tag Manager container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
 
 Download and import the following GTM containers:
 - [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
