@@ -93,10 +93,10 @@ Since the infrastructure is hosted entirely within your own Google Cloud project
 - [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
 
 ### Documentation
-- [Setup guides](https://github.com/nameless-analytics/nameless-analytics/tree/main/setup-guides)
+- [Setup guides](https://github.com/nameless-analytics/nameless-analytics/tree/main/setup-guides/SETUP-GUIDES.md)
 - [Troubleshooting](https://github.com/nameless-analytics/nameless-analytics/blob/main/setup-guides/TROUBLESHOOTING.md)
-- [Tables](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables)
-- [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol)
+- [Tables](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables/TABLES.md)
+- [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol/STREAMING-PROTOCOL.md)
 
 ### Resources
 - [Manifesto](MANIFESTO.md)
