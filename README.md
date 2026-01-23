@@ -549,6 +549,12 @@ Cookies are created or updated on every event to track the user's session and id
 ### Streaming Protocol
 The Streaming Protocol is specifically designed for server-to-server communication, allowing you to send events directly from your backend or other offline sources.
 
+Use the Streaming Protocol to:
+- Attribute realtime events to a session by sending data from your backend when a purchase or subscription is completed.
+- Attribute offline events to a session by sending data from your backend days after a session ended.
+
+(Streaming protocol events are excluded from the calculation of the session_duration field)
+
 To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol.
 
 The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming protocol" and does not include a valid `x-api-key` header matching your configuration.
