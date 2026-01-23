@@ -73,7 +73,7 @@ Ensure you have the following resources under the same account:
 - A Google BigQuery project + dataset, tables and table functions created using the provided [SQL scripts](tables/TABLES.md)
 - A Google Firestore database enabled in Native Mode
 - A Web Google Tag Manager container
-- A Server-side Google Tag Manager container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/)
+- A Server-side Google Tag Manager container running on [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) </br> (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
 
 Download and import the following GTM containers:
 - [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
@@ -525,7 +525,7 @@ Actively detects and blocks automated traffic returning a `403 Forbidden` status
 ### Geolocation & Privacy by Design
 Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations. 
 
-To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic).
+To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us again).
 
 ### Cookies
 All cookies are issued with `HttpOnly`, `Secure`, and `SameSite=Strict` flags. This multi-layered approach prevents client-side access (XSS protection) and Cross-Site Request Forgery (CSRF).
