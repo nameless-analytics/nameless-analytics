@@ -10,6 +10,7 @@ For completed work and release history, see [CHANGELOG.md](CHANGELOG.md).
 ### 🔴 - High Priority
 - Fix page_status_code (nameless-analytics.js)
 - Fix dataLayer parameter that's can override default parameters (Client-side tracker config variable)
+- Add core web vitals metrics (Client-side tracker tag) 
 - Add custom channel-grouping rules (Client-side tracker tag)
 - Add bot detections parameters (Server-side client tag)
 
