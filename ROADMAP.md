@@ -7,20 +7,20 @@ For completed work and release history, see [CHANGELOG.md](CHANGELOG.md).
 
 
 ## What's next
-### 🔴 High Priority
+### 🔴 - High Priority
 - Fix page_status_code (nameless-analytics.js)
 - Fix dataLayer parameter that's can override default parameters (Client-side tracker config variable)
 - Add custom channel-grouping rules (Client-side tracker tag)
 - Add bot detections parameters (Server-side client tag)
 
 
-### 🟡 Medium Priority
+### 🟡 - Medium Priority
 - BigQuery DML for create table functions
 - Review example Google Looker Studio dashboard
 - Fix cross-domain tracking for links opened via a right-click menu or using keyboard shortcuts that bypass the standard click event (nameless-analytics.js)
 
 
-### 🟢 Low Priority
+### 🟢 - Low Priority
 - Website design
 - Terraform script
 
