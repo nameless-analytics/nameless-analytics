@@ -16,7 +16,7 @@ For completed work and release history, see [CHANGELOG.md](CHANGELOG.md).
 
 ### Medium Priority
 - BigQuery DML for create table functions
-- Review example dashboard
+- Review example Google Looker Studio dashboard
 - Fix cross-domain tracking for links opened via a right-click menu or using keyboard shortcuts that bypass the standard click event (nameless-analytics.js)
 
 
