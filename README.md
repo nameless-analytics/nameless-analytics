@@ -12,7 +12,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
 - [Technical Architecture](#technical-architecture)
-  - [Key Components](#key-components)
+  - [Google Tag Manager templates](#google-tag-manager-templates)
   - [Documentation](#documentation)
   - [Resources](#resources)
   - [High-Level Data Flow](#high-level-data-flow)
@@ -51,7 +51,6 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [Data processing](#data-processing)
   - [Data storage](#data-storage)
   - [Cost Summary Table](#cost-summary-table)
-- [External Resources](#external-resources)
 
 
 
@@ -87,7 +86,7 @@ The platform is built on a modern architecture that separates data capture, proc
 Since the infrastructure is hosted entirely within your own Google Cloud project, you have complete control over **Data Residency**. By choosing a specific GCP Region (e.g., `europe-west1`), you ensure that your data processing and storage remain within your preferred jurisdiction.
 
 
-### Key Components
+### Google Tag Manager templates
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
 - [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
@@ -99,9 +98,11 @@ Since the infrastructure is hosted entirely within your own Google Cloud project
 - [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol/STREAMING-PROTOCOL.md)
 
 ### Resources
-- [Manifesto](MANIFESTO.md)
-- [Roadmap](ROADMAP.md)
+- [Live Demo](https://namelessanalytics.com) (Open the dev console).
 - [Changelog](CHANGELOG.md)
+- [Roadmap](ROADMAP.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Manifesto](MANIFESTO.md)
 
 ### High-Level Data Flow
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
@@ -714,16 +715,6 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 
 > \* App Engine **Standard Environment (F1 instance)** – suitable for low/medium traffic  
 > \** App Engine **Flexible Environment (multi-instance cluster)** – production / HA setup
-
-
-
-## External Resources
-- [Live Demo](https://namelessanalytics.com) (Open the dev console).
-- [Changelog](CHANGELOG.md)
-- [Roadmap](ROADMAP.md)
-- [Contributing Guidelines](CONTRIBUTING.md)
-- [Manifesto](MANIFESTO.md)
-- [MIT License](LICENSE.md)
 
 ---
 
