@@ -65,6 +65,9 @@ Create a **Regex Lookup Table** variable to dynamically switch the endpoint doma
 
 Set this dynamic variable in the **Request endpoint domain** field. 
 
+[Dynamic request endpoint domain](https://github.com/user-attachments/assets/859e11f1-1d5e-4b62-9d9f-03325c1517cc)
+
+
 This ensures the `Domain` attribute in the `Set-Cookie` header will always match the request origin browser-side.
 
 ![Dynamic endpoint correct configuration](https://github.com/user-attachments/assets/10db0a72-c743-4504-b3aa-adcb487fb9ad)
