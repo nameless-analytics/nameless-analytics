@@ -433,9 +433,13 @@ Parses the browser's `User-Agent` string and extracts granular information about
 
 
 ### Cross-domain Architecture
-Implements a robust "handshake" protocol to stitch sessions across different top-level domains. Since Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
+Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links. 
 
-**Temporary Limitation (Beta)**: Since link decoration happens dynamically upon clicking (to ensure ID freshness and bypass `HttpOnly` restrictions), cross-domain tracking currently **will not work** if the user opens the link via a right-click menu (e.g., "Open link in new tab") or using keyboard shortcuts that bypass the standard click event.
+For retrieving the active `client_id` and `session_id` the Nameless Analytics Client-Side Tracker tag needs to perform a handshake with the server before redirecting and decorating outbound URLs with the `na_id` parameter in real time.
+
+**Beta Limitation**: Link decoration happens dynamically upon clicking (to ensure ID freshness and bypass `HttpOnly` restrictions). This means that cross-domain tracking **will not work** if the user opens the link via:
+- a right-click menu (e.g., "Open link in new tab") 
+- keyboard shortcuts (e.g., "Ctrl + Click")
 
 <details><summary>How the cross-domain handshake works</summary>
 
@@ -446,7 +450,11 @@ Implements a robust "handshake" protocol to stitch sessions across different top
 3. **URL Decoration**: The tracker receives the IDs and decorates the outbound destination URL with a `na_id` parameter (e.g., `https://destination.com/?na_id=...`).
 4. **Session Stitching**: On the destination site, the tracker detects the `na_id` parameter, sends it to the server, and the server sets the same `HttpOnly` cookies for the new domain, effectively merging the session.
 
-This handshake protocol prioritizes **Data Quality**. By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics ensures that the identifiers passed to the destination domain are 100% authoritative and fresh. While this introduces a small latency (typically <200ms), it eliminates session fragmentation and ensures reliable attribution in environments with strict privacy restrictions.
+This handshake protocol prioritizes **Data Quality**. 
+
+By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics ensures that the identifiers passed to the destination domain are 100% correct. 
+
+While this can introduce very small latency, it eliminates session fragmentation and ensures reliable cross-domain attribution in environments with strict privacy restrictions.
 
 </details>
 

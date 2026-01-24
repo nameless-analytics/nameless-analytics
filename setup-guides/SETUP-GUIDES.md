@@ -8,7 +8,16 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 ## Table of Contents
+- [How to set up Nameless Analytics in GTM](#how-to-set-up-nameless-analytics-in-gtm)
+- [How to track page views](#how-to-track-page-views)
 - [How to trigger virtual page views](#how-to-trigger-virtual-page-views)
+- [How to set up cross-domain tracking](#how-to-set-up-cross-domain-tracking)
+
+## How to set up Nameless Analytics in GTM
+
+
+
+## How to track page views
 
 
 
@@ -37,8 +46,32 @@ dataLayer.push({
   page_category: 'Product page', 
   page_title: 'Product name | Nameless Analytics', 
   page_location: '/product_name'
-});
 ```
+
+
+
+## How to set up cross-domain tracking
+To configure cross domain tracking you need to: 
+
+Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable.
+
+Add the domains to the list (one per row).
+
+![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/c8ab4d08-5069-4833-8465-5ca4ddea0863)
+
+Create a **Regex Lookup Table** variable to dynamically switch the endpoint domain based on the current page hostname:
+
+![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/a7b54f23-18b5-4e54-ba80-216a06a51f2d)
+
+Set this dynamic variable in the **Request endpoint domain** field. 
+
+This ensures the `Domain` attribute in the `Set-Cookie` header will always match the request origin browser-side.
+
+![Dynamic endpoint correct configuration](https://github.com/user-attachments/assets/10db0a72-c743-4504-b3aa-adcb487fb9ad)
+
+Otherwise the Set-Cookie header will be blocked by the browser.
+
+![Dynamic endpoint configuration error](https://github.com/user-attachments/assets/66d39b81-6bf3-4af4-8663-273d00ae9515)
 
 ---
 
