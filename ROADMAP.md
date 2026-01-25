@@ -10,8 +10,8 @@ For completed work and release history, see [CHANGELOG.md](CHANGELOG.md).
 ### 🔴 - High Priority
 - Fix page_status_code (nameless-analytics.js)
 - Fix dataLayer parameter that's can override default parameters (Client-side tracker config variable)
-- BigQuery DML for create table functions
 - Review example Google Looker Studio dashboard
+- BigQuery DML for create table functions
 
 
 
