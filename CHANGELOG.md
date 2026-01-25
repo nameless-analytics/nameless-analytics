@@ -7,9 +7,9 @@ For upcoming features and planned improvements, see the [Roadmap](ROADMAP.md).
 
 
 ## Versions
-### v1.0
+### 2026-01-01 | Beta v1.0
 
-Lorem ipsum
+Initial release.
 
 ---
 
