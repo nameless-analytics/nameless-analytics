@@ -1,5 +1,5 @@
 # Nameless Analytics | Setup guides
-The Nameless Analytics Setup guides is a coockbook of guides to help you set up Nameless Analytics. 
+The Nameless Analytics Setup guides is a guide to help you set up Nameless Analytics. 
 
 For an overview of how Nameless Analytics works [start from here](https://github.com/nameless-analytics/nameless-analytics/#high-level-data-flow).
 
