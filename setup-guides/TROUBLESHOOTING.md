@@ -22,6 +22,9 @@ Use the **Browser console** to check tags execution status and event data sent t
 
 Use the **GTM Server Preview Mode** to check incoming events and how the Server-Side Client Tag responds to them.
 
+Inspect a network request to see the data sent by client from Preview and data response by server from Preview.
+
+
 
 ## Orphan Events & Sequence Issues
 An **Orphan Event** is any interaction (click, scroll, etc.) that reaches the server without a valid session context established by a preceding `page_view` event or the requests is without a valid user and session cookie.
