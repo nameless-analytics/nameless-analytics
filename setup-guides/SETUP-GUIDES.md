@@ -30,7 +30,7 @@ Use every trigger in GTM to trigger a page view like `gtm.js`.
 ### Via browser history (Route change)
 Page views can be triggered upon history changes using `pushState` or `replaceState`. 
 
-This is the preferred method for SPAs since the page referrer will be maintained in the browser history and page informations will be retrieved automatically from the history state.
+This is the preferred method for SPAs since the page referrer is maintained for virtual page views even if a page is reloaded and page informations will be retrieved automatically from the history state.
 
 Ensure you **update the page title and any relevant dataLayer parameters before the history change**.
 
