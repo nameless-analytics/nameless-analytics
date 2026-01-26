@@ -20,7 +20,7 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 
 ## How to track page views
-You can trigger a page view in many ways:
+Page view can be triggered in many ways:
 
 
 ### Via GTM standard page view trigger
