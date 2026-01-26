@@ -27,7 +27,7 @@ Use the **GTM Server Preview Mode** to check incoming events and how the Server-
 An **Orphan Event** is any interaction (click, scroll, etc.) that reaches the server without a valid session context established by a preceding `page_view` event or the requests is without a valid user and session cookie.
 
 
-### Error messages
+### Event error messages
 Browser console shows: 
 
 `[event_name] > 🔴 Event fired before a page view event. The first event on a page view ever must be page_view. Request aborted`

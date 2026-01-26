@@ -13,20 +13,26 @@ For an overview of how Nameless Analytics works [start from here](https://github
 - [How to trigger virtual page views](#how-to-trigger-virtual-page-views)
 - [How to set up cross-domain tracking](#how-to-set-up-cross-domain-tracking)
 
+
+
 ## How to set up Nameless Analytics in GTM
 
 
 
 ## How to track page views
+You can trigger a page view in many ways:
 
 
-
-## How to trigger virtual page views
-You can trigger a virtual page view in two ways: by updating the browser history (SPA route change) or by using a custom dataLayer event.
+### Via GTM standard page view trigger
+Use every trigger in GTM to trigger a page view like `gtm.js`.
 
 
 ### Via browser history (Route change)
-Virtual page views can be triggered upon history changes using `pushState` or `replaceState`. Ensure you update the page title and any relevant dataLayer parameters *before* the history change.
+Page views can be triggered upon history changes using `pushState` or `replaceState`. 
+
+This is the preferred method for SPAs since the page referrer will be maintained in the browser history and page informations will be retrieved automatically from the history state.
+
+Ensure you **update the page title and any relevant dataLayer parameters before the history change**.
 
 ```javascript
 document.title = 'Product name | Nameless Analytics';
@@ -38,11 +44,13 @@ history.pushState('', '', '/product_name');
 
 
 ### Via custom dataLayer event
-Virtual page views can be also triggered upon custom dataLayer events.
+Page views can be also triggered upon custom dataLayer events.
+
+Make sure to [override the page parameters](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable#page-data) in the Nameless Analytics Client-side Tracker Configuration Variable otherwise the updated page data will not set set correctly.
 
 ```javascript
 dataLayer.push({
-  event: 'virtual_page_view', // Or any custom events
+  event: 'page_view', // Or any custom events
   page_category: 'Product page', 
   page_title: 'Product name | Nameless Analytics', 
   page_location: '/product_name'
