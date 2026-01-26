@@ -6,7 +6,7 @@ For completed work and release history, see [CHANGELOG.md](CHANGELOG.md).
 
 
 
-## What's next
+## To do
 ### 🔴 - High Priority
 - Fix page_status_code (nameless-analytics.js)
 - Fix dataLayer parameter that's can override default parameters (Client-side tracker config variable)
@@ -18,7 +18,7 @@ For completed work and release history, see [CHANGELOG.md](CHANGELOG.md).
 ### 🟡 - Medium Priority
 - Fix cross-domain tracking for links opened via a right-click menu or using keyboard shortcuts that bypass the standard click event (nameless-analytics.js)
 - Add core web vitals metrics (Client-side tracker tag) 
-- Add custom channel-grouping rules (Client-side tracker tag)
+- Move channel-grouping logic from nameless-analytics.js to server side and add custom channel-grouping rules (Server-side client tag)
 - Add custom bot detections (Server-side client tag)
 
 
