@@ -405,7 +405,7 @@ Fully integrated with Google Consent Mode. It can track every event or automatic
 
 
 ### SPA & History Management
-Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Virtual Page View Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-trigger-virtual-page-views) for implementation examples.
+Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Page View Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-trigger-page-views) for implementation examples.
 
 
 ### Core Libraries Functioning
@@ -432,7 +432,9 @@ It handles the following background operations:
 
 </br>
 
-Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. This data is mapped into the `event_data` object under `device_vendor`, `os_version`, `device_model`, ecc..
+Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. 
+
+This data is mapped into the `event_data` object under `device_vendor`, `os_version`, `device_model`, ecc..
 
 </details>
 
@@ -455,8 +457,6 @@ For retrieving the active `client_id` and `session_id` the Nameless Analytics Cl
 3. **URL Decoration**: The tracker receives the IDs and decorates the outbound destination URL with a `na_id` parameter (e.g., `https://destination.com/?na_id=...`).
 4. **Session Stitching**: On the destination site, the tracker detects the `na_id` parameter, sends it to the server, and the server sets the same `HttpOnly` cookies for the new domain, effectively merging the session.
 
-This handshake protocol prioritizes **Data Quality**. 
-
 By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics ensures that the identifiers passed to the destination domain are 100% correct. 
 
 While this can introduce very small latency, it eliminates session fragmentation and ensures reliable cross-domain attribution in environments with strict privacy restrictions.
@@ -471,7 +471,7 @@ System-critical parameters like `client_id`, `session_id`, `page_id` and `event_
 
 User, session, and event parameters follow this hierarchy of overriding:
 
-<details> <summary>See user and sessions parameters hierarchy</summary>
+<details><summary>See user and sessions parameters hierarchy</summary>
 
 </br>
 
@@ -494,7 +494,7 @@ User, session, and event parameters follow this hierarchy of overriding:
 | **2**        | dataLayer event parameters | Nameless Analytics Client-side Tracker Tag                    |
 | **1 (Low)**  | Default event parameters   | Nameless Analytics Client-side Tracker Tag                    |
 
-</det
+</details>
 
 
 ### Debugging events
