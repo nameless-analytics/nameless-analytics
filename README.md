@@ -91,11 +91,13 @@ Since the infrastructure is hosted entirely within your own Google Cloud project
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
 - [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
 
+
 ### Documentation
 - [Setup guides](https://github.com/nameless-analytics/nameless-analytics/tree/main/setup-guides/SETUP-GUIDES.md)
 - [Troubleshooting](https://github.com/nameless-analytics/nameless-analytics/blob/main/setup-guides/TROUBLESHOOTING.md)
 - [Tables](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables/TABLES.md)
 - [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol/STREAMING-PROTOCOL.md)
+
 
 ### Resources
 - [Live Demo](https://namelessanalytics.com) (Open the dev console).
@@ -103,6 +105,7 @@ Since the infrastructure is hosted entirely within your own Google Cloud project
 - [Roadmap](ROADMAP.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Manifesto](MANIFESTO.md)
+
 
 ### High-Level Data Flow
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
@@ -113,6 +116,7 @@ The following diagram illustrates the real-time data flow from the user's browse
 
 ## Client-Side Collection
 The **Client-Side Tracker Tag** serves as an intelligent agent in the browser. It abstracts complex logic to ensure reliable data capture under any condition.
+
 
 ### Request payload data
 The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
@@ -376,6 +380,7 @@ When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and t
   
 </details>
 
+
 ### ID Management
 The tracker automatically generates and manages unique identifiers for pages, and events.
   
@@ -489,7 +494,8 @@ User, session, and event parameters follow this hierarchy of overriding:
 | **2**        | dataLayer event parameters | Nameless Analytics Client-side Tracker Tag                    |
 | **1 (Low)**  | Default event parameters   | Nameless Analytics Client-side Tracker Tag                    |
 
-</details>
+</det
+
 
 ### Debugging events
 Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation. 
@@ -501,8 +507,10 @@ For a detailed guide on resolving common sequence and integration issues, see th
 ## Server-Side Processing
 The **Server-Side Client Tag** serves as security gateway and data orchestrator. It sits between the public internet and your cloud infrastructure, sanitizing every request.
 
+
 ### Security and Validation
 Validates request origins and authorized domains (CORS) before processing to prevent unauthorized usage.
+
 
 ### ID Management
 The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
@@ -522,19 +530,24 @@ The Nameless Analytics Server-side Client Tag automatically generates and manage
 ### Data Integrity
 The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
 
+
 ### Real-time Forwarding
 Supports instantaneous data streaming to external HTTP endpoints immediately after processing. The system allows for **custom HTTP headers** injection, enabling secure authentication with third-party services endpoints directly from the server.
+
 
 ### Self-Monitoring & Performance
 The system transparently tracks pipeline health by measuring **ingestion latency** (the exact millisecond delay between the client hit and server processing) and **payload size**. This data allows for high-resolution monitoring of the real-time data flow directly within BigQuery.
 
+
 ### Bot Protection
 Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
+
 
 ### Geolocation & Privacy by Design
 Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations. 
 
 To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us again).
+
 
 ### Cookies
 All cookies are issued with `HttpOnly`, `Secure`, and `SameSite=Strict` flags. This multi-layered approach prevents client-side access (XSS protection) and Cross-Site Request Forgery (CSRF).
@@ -554,6 +567,7 @@ Cookies are created or updated on every event to track the user's session and id
 
 </details>
 
+
 ### Streaming Protocol
 The Streaming Protocol is specifically designed for server-to-server communication, allowing you to send events directly from your backend or other offline sources.
 
@@ -567,13 +581,17 @@ To protect against unauthorized data injection from external servers, the system
 
 The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming protocol" and does not include a valid `x-api-key` header matching your configuration.
 
+
 ### Debugging requests
 Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**. 
 
 For detailed information on server-side errors (403 Forbidden) and validation issues, refer to the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING.md).
 
+
+
 ## Storage
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:
+
 
 ### Firestore as Last updated Snapshot
 It mantains **the latest available state for every user and session**. For example, the current user_level.
@@ -599,6 +617,7 @@ Firestore ensures data integrity by managing how parameters are updated across h
 
 </details>
   
+
 ### BigQuery as Historical Timeline
 It mantains **every single state transition** for every user and session. For example, all different user_level values through time.
   
@@ -619,10 +638,13 @@ It mantains **every single state transition** for every user and session. For ex
   
 </details>
 
+
+
 ## Reporting
 A suite of SQL Table Functions transforms raw data into business-ready views for [Users](tables/users.sql), [Sessions](tables/sessions.sql), [Pages](tables/pages.sql), [Events](tables/events.sql), [Consents](tables/consents.sql), [GTM Performance](tables/gtm_performances.sql), and specialized Ecommerce views like [Transactions](tables/ec_transactions.sql), [Products](tables/ec_products.sql), and Funnels ([Open](tables/ec_shopping_stages_open_funnel.sql) / [Closed](tables/ec_shopping_stages_closed_funnel.sql)).
 
 SQL Table Functions can be used as sources for reporting, such in [Google Looker Studio](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd), which demonstrates the platform's potential with a pre-built template covering all key metrics.
+
 
 ### Acquisition
 <details><summary>See acquisition dashboard examples</summary>
@@ -699,12 +721,14 @@ Choose from:
 ## Pricing & Cloud Costs
 Nameless Analytics is designed to achieve maximum performance with minimum overhead. By utilizing Google Cloud's serverless offerings, the platform can operate at **zero cost** for many users and scales predictably with traffic.
 
+
 ### Data processing
 You can choose the compute environment that best fits your traffic and budget:
 
 * **Cloud Run (Recommended)**: The most modern and cost-effective choice. It scales to zero when there's no traffic. The Google Cloud "Always Free" tier includes **2 million requests per month**, which covers most small-to-medium websites at no charge.
 * **App Engine Standard**: Ideal for 24/7 uptime on a budget. Includes **28 free instance-hours per day** (F1 instances), allowing for a continuous single-server setup at **zero cost**.
 * **App Engine Flexible**: Best for enterprise-scale deployments (5-10M+ hits/month) requiring multi-zone redundancy. Typically starts at ~$120/month for a 3-instance minimum cluster.
+
 
 ### Data storage
 Data will be stored in two different locations:
@@ -713,6 +737,7 @@ Data will be stored in two different locations:
 * **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). 
 
 Query processing (scanning data in BigQuery for analysis/reporting) is billed separately by Google Cloud based on usage. However, the first **1 TB per month** is always free.
+
 
 ### Cost Summary Table
 This is an estimated monthly cost breakdown for the platform, based on **real-world Google Cloud pricing** and **measured event payload size** (~2.8 KB / event).
