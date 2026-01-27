@@ -2,7 +2,7 @@
 
 Nameless Analytics upcoming features and improvements. 
 
-For completed work and release history, see [CHANGELOG.md](CHANGELOG.md).
+For completed work and release history, see [changelog](CHANGELOG.md).
 
 
 
@@ -15,9 +15,9 @@ For completed work and release history, see [CHANGELOG.md](CHANGELOG.md).
 
 
 ### 🟡 - Medium Priority
-- Add core web vitals metrics (Client-side tracker tag)
 - Move channel-grouping logic from nameless-analytics.js to server side and add custom channel-grouping rules (Server-side client tag)
 - Add custom bot detections (Server-side client tag)
+- Add core web vitals metrics (Client-side tracker tag)
 
 
 ### 🟢 - Low Priority
