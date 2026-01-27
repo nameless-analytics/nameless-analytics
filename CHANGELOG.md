@@ -2,7 +2,7 @@
 
 Nameless Analytics release note and changelog history.
 
-For upcoming features and planned improvements, see the [Roadmap](ROADMAP.md).
+For upcoming features and planned improvements, see the [roadmap](ROADMAP.md).
 
 
 
