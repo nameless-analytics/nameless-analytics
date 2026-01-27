@@ -73,9 +73,9 @@ Ensure you have the following resources under the same account:
 - A Google Firestore database enabled in Native Mode
 - A Web Google Tag Manager container
 - A Server-side Google Tag Manager container running on:
-  - [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/)
-  - [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
-  - [Stape]() with geo headers power up enable
+  - [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
+  - or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
+  - or [Stape]() with geo headers power up enable
 
 Download and import the following GTM containers:
 - [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
