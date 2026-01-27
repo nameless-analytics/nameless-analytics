@@ -68,7 +68,7 @@ Built upon a transparent pipeline hosted entirely on your own Google Cloud Platf
 
 ## Quick Start
 Ensure you have the following resources under the same account:
-- A Web Google Tag Manager container
+- A Client-side Google Tag Manager container
 - A Server-side Google Tag Manager container running on:
   - [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
   - or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
