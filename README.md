@@ -90,9 +90,9 @@ Since the infrastructure is hosted entirely within your own Google Cloud project
 
 
 ### Google Tag Manager templates
-- [Client-side Tracker Tag](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-tag)
-- [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable)
-- [Server-side Client Tag](https://github.com/nameless-analytics/nameless-analytics-server-side-client-tag)
+- [Client-side Tracker Tag](https://github.com/nameless-analytics/client-side-tracker-tag)
+- [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/client-side-tracker-configuration-variable)
+- [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag)
 
 
 ### Documentation
@@ -308,7 +308,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 | event_name         |                               | String   | Client-Side | Event name                                    |
 | event_origin       |                               | String   | Client-Side | Event origin (Website or Streaming protocol)  |
 | event_data         | event_type                    | String   | Client-Side | Event type                                    |
-|                    | channel_grouping              | String   | Client-Side | Channel grouping for the event (see [detailed logic](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable/#channel-grouping)) |
+|                    | channel_grouping              | String   | Client-Side | Channel grouping for the event (see [detailed logic](https://github.com/nameless-analytics/client-side-tracker-configuration-variable/#channel-grouping)) |
 |                    | source                        | String   | Client-Side | Event traffic source                          |
 |                    | campaign                      | String   | Client-Side | Event campaign                                |
 |                    | campaign_id                   | String   | Client-Side | Event campaign ID                             |

@@ -46,7 +46,7 @@ history.pushState('', '', '/product_name');
 ### Via custom dataLayer event
 Page views can be also triggered upon custom dataLayer events.
 
-Make sure to [override the page parameters](https://github.com/nameless-analytics/nameless-analytics-client-side-tracker-configuration-variable#page-data) in the Nameless Analytics Client-side Tracker Configuration Variable otherwise the updated page data will not set set correctly.
+Make sure to [override the page parameters](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#page-data) in the Nameless Analytics Client-side Tracker Configuration Variable otherwise the updated page data will not set set correctly.
 
 ```javascript
 dataLayer.push({
