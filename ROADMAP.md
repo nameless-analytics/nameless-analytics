@@ -8,7 +8,6 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 
 ## To do
 ### 🔴 - High Priority
-- Fix dataLayer parameter that can override default parameters (Client-side tracker config variable)
 - Review example Google Looker Studio dashboard
 - Review table functions 
 - Add BigQuery DML for create table functions
