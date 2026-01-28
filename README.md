@@ -133,18 +133,18 @@ The request data is sent via a POST request in JSON format. It is structured int
   "user_date": "2026-01-20",
   "client_id": "lZc919IBsqlhHks",
   "user_data": {
-    "user_campaign_id": null,
-    "user_country": "IT",
-    "user_device_type": "desktop",
     "user_channel_grouping": "gtm_debugger",
     "user_source": "tagassistant.google.com",
-    "user_first_session_timestamp": 1764955391487,
-    "user_campaign_content": null,
-    "user_campaign": null,
-    "user_campaign_click_id": null,
     "user_tld_source": "google.com",
-    "user_language": "it-IT",
+    "user_campaign": null,
+    "user_campaign_id": null,
+    "user_campaign_click_id": null,
+    "user_campaign_content": null,
     "user_campaign_term": null,
+    "user_device_type": "desktop",
+    "user_country": "IT",
+    "user_language": "it-IT",
+    "user_first_session_timestamp": 1764955391487,
     "user_last_session_timestamp": 1768661707758
   },
   "session_date": "2026-01-20",
@@ -158,8 +158,8 @@ The request data is sent via a POST request in JSON format. It is structured int
     "session_campaign": null,
     "session_campaign_id": null,
     "session_campaign_click_id": null,
-    "session_campaign_term": null,
     "session_campaign_content": null,
+    "session_campaign_term": null,
     "session_device_type": "desktop",
     "session_country": "IT",
     "session_language": "it-IT",
@@ -248,18 +248,19 @@ The request data is sent via a POST request in JSON format. It is structured int
 |--------------------|-------------------------------|----------|-------------|-----------------------------------------------|
 | user_date          |                               | String   | Server-Side | User data collection date                     |
 | client_id          |                               | String   | Server-Side | Unique client identifier                      |
-| user_data          | user_campaign_id              | String   | Server-Side | User campaign ID                              |
-|                    | user_country                  | String   | Server-Side | User country                                  |
-|                    | user_device_type              | String   | Server-Side | User device type                              |
-|                    | user_channel_grouping         | String   | Server-Side | User channel grouping                         |
+| user_data          | user_channel_grouping         | String   | Server-Side | User channel grouping                         |
 |                    | user_source                   | String   | Server-Side | User source                                   |
-|                    | user_first_session_timestamp  | Integer  | Server-Side | Timestamp of user's first session             |
-|                    | user_campaign_content         | String   | Server-Side | User campaign content                         |
-|                    | user_campaign                 | String   | Server-Side | User campaign name                            |
-|                    | user_campaign_click_id        | String   | Server-Side | User campaign click identifier                |
 |                    | user_tld_source               | String   | Server-Side | User top-level domain source                  |
-|                    | user_language                 | String   | Server-Side | User language                                 |
+|                    | user_campaign                 | String   | Server-Side | User campaign name                            |
+|                    | user_campaign_id              | String   | Server-Side | User campaign ID                              |
+|                    | user_campaign_click_id        | String   | Server-Side | User campaign click identifier                |
+|                    | user_campaign_content         | String   | Server-Side | User campaign content                         |
 |                    | user_campaign_term            | String   | Server-Side | User campaign term                            |
+|                    | user_device_type              | String   | Server-Side | User device type                              |
+|                    | user_city                     | String   | Server-Side | User city                                     |
+|                    | user_country                  | String   | Server-Side | User country                                  |
+|                    | user_language                 | String   | Server-Side | User language                                 |
+|                    | user_first_session_timestamp  | Integer  | Server-Side | Timestamp of user's first session             |
 |                    | user_last_session_timestamp   | Integer  | Server-Side | Timestamp of user's last session              |
 | session_date       |                               | String   | Server-Side | Session date                                  |
 | session_id         |                               | String   | Server-Side | Unique session identifier                     |
