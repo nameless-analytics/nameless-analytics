@@ -10,8 +10,8 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 ### 🔴 - High Priority
 - Fix dataLayer parameter that's can override default parameters (Client-side tracker config variable)
 - Review example Google Looker Studio dashboard
-- BigQuery DML for create table functions
-
+- Review table functions 
+- Add BigQuery DML for create table functions
 
 
 ### 🟡 - Medium Priority
@@ -22,11 +22,12 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 
 ### 🟢 - Low Priority
 - Website design
-- Terraform script
 
 
 ### 🔵 - TBD
-- Fix cross-domain tracking for links opened via a right-click menu or using keyboard shortcuts that bypass the standard click event (nameless-analytics.js)
+- Terraform script
+- Add acquisition information in url when respect consent mode is enabled for denied hit (Client-side tracker tag)
+- Fix cross-domain tracking for links opened via a right-click menu (nameless-analytics.js)
 
 ---
 
