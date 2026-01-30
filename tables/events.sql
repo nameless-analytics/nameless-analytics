@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_date DATE, end_date DATE, date_scope STRING) AS (
-  select
+select
     # USER DATA
     user_date,
     first_value((select value.string from unnest(session_data) where name = 'user_id') IGNORE NULLS) over (partition by session_id order by event_timestamp desc) as user_id,
@@ -53,10 +53,18 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_d
     
     (select value.int from unnest(session_data) where name = 'session_start_timestamp') as session_start_timestamp,
     first_value((select value.int from unnest(session_data) where name = 'session_end_timestamp')) over (partition by session_id order by event_timestamp desc) as session_end_timestamp,
+    
+    -- Exclude streaming protocol events
     datetime_diff(
-      timestamp_millis(first_value((select value.int from unnest(session_data) where name = 'session_end_timestamp')) over (partition by session_id order by event_timestamp desc)), 
-      timestamp_millis((select value.int from unnest(session_data) where name = 'session_start_timestamp'))
-    , second) as session_duration_sec, -- Da integrare in firestore?
+      timestamp_millis(first_value(IF(event_origin != 'Streaming Protocol', (SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_end_timestamp'), NULL)) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC)), 
+      timestamp_millis((SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_start_timestamp'))
+    , second) AS session_duration_sec,
+
+    -- Include streaming protocol events
+    -- datetime_diff(
+    --   timestamp_millis(first_value((select value.int from unnest(session_data) where name = 'session_end_timestamp')) over (partition by session_id order by event_timestamp desc)), 
+    --   timestamp_millis((select value.int from unnest(session_data) where name = 'session_start_timestamp'))
+    -- , second) as session_duration_sec,
 
     case when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 1 else 0 end as new_session,
     case when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 1 else 0 end as returning_session,
@@ -149,9 +157,6 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_d
     (select value.string from unnest(event_data) where name = 'cross_domain_id') as cross_domain_id, 
     
     -- Only for page_load_time event
-    (select value.int from unnest(event_data) where name = 'time_to_dom_interactive') as time_to_dom_interactive, 
-    (select value.int from unnest(event_data) where name = 'page_render_time') as page_render_time, 
-    (select value.int from unnest(event_data) where name = 'time_to_dom_complete') as time_to_dom_complete, 
     (select value.int from unnest(event_data) where name = 'total_page_load_time') as total_page_load_time, 
     
     -- Only for search event
