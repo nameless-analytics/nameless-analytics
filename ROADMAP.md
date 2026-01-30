@@ -8,9 +8,9 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 
 ## To do
 ### 🔴 - High Priority
-- Review example Google Looker Studio dashboard
 - Review table functions 
 - Add BigQuery DML for create table functions
+- Review example Google Looker Studio dashboard
 
 
 ### 🟡 - Medium Priority
