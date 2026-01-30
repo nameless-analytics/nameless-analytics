@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_date DATE, end_date DATE) AS (
-  with base_events as (
+with base_events as (
     select 
       # USER DATA
       user_date, 
@@ -65,9 +65,6 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
       # EVENT DATA
       event_timestamp,
       event_name,
-      time_to_dom_interactive,
-      page_render_time,
-      time_to_dom_complete,
       total_page_load_time
     from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'page')
   ),
@@ -131,9 +128,6 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
       max(page_unload_timestamp) as page_unload_timestamp,
       
       -- Performance metrics
-      max(time_to_dom_interactive) as max_time_to_dom_interactive,
-      max(page_render_time) as max_page_render_time,
-      max(time_to_dom_complete) as max_time_to_dom_complete,
       max(total_page_load_time) as max_total_page_load_time,
       max(page_status_code) as max_page_status_code,
 
@@ -200,9 +194,6 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
     timestamp_millis(page_load_timestamp) as page_load_datetime,
     timestamp_millis(page_unload_timestamp) as page_unload_datetime,
     (page_unload_timestamp - page_load_timestamp) / 1000 as time_on_page,
-    max_time_to_dom_interactive / 1000 as time_to_dom_interactive,
-    max_page_render_time / 1000 as page_render_time,
-    max_time_to_dom_complete / 1000 as time_to_dom_complete,
     max_total_page_load_time / 1000 as page_load_time_sec,
     max_page_status_code as page_status_code,
     
