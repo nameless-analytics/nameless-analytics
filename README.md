@@ -492,11 +492,10 @@ User, session, and event parameters follow this hierarchy of overriding:
 
 | **Priority** | **Level**                  | **Source**                                                    |
 |--------------|----------------------------|---------------------------------------------------------------|
-| **5 (High)** | Event parameters           | Nameless Analytics Server-side Client Tag                     |
-| **4**        | Event parameters           | Nameless Analytics Client-side Tracker Tag                    |
-| **3**        | Shared event parameters    | Nameless Analytics Client-side Tracker Configuration Variable |
-| **2**        | dataLayer event parameters | Nameless Analytics Client-side Tracker Tag                    |
-| **1 (Low)**  | Default event parameters   | Nameless Analytics Client-side Tracker Tag                    |
+| **4 (High)** | Event parameters           | Nameless Analytics Server-side Client Tag                     |
+| **3**        | Event parameters           | Nameless Analytics Client-side Tracker Tag                    |
+| **2**        | Shared event parameters    | Nameless Analytics Client-side Tracker Configuration Variable |
+| **1 (Low)**  | dataLayer event parameters | Nameless Analytics Client-side Tracker Tag                    |
 
 </details>
 
