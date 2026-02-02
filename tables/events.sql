@@ -100,7 +100,7 @@ select
     page_id,
     (select value.int from unnest(session_data) where name = 'total_page_views') as page_view_number,	
     (select value.int from unnest(page_data) where name = 'page_timestamp') as page_load_timestamp,
-    first_value(event_timestamp) over (partition by page_id order by event_timestamp desc) as page_unload_timestamp, --Da integrare in firestore?
+    first_value(event_timestamp) over (partition by page_id order by event_timestamp desc) as page_unload_timestamp,
     
     (select value.string from unnest(page_data) where name = 'page_category') as page_category,
     (select value.string from unnest(page_data) where name = 'page_title') as page_title,
@@ -113,10 +113,18 @@ select
     (select value.string from unnest(page_data) where name = 'page_extension') as page_extension,
     (select value.string from unnest(page_data) where name = 'page_referrer') as page_referrer,
     (select value.int from unnest(page_data) where name = 'page_status_code') as page_status_code,
+
+    -- Exclude streaming protocol events
     datetime_diff(
-      timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp desc)),
+      timestamp_millis(first_value(IF(event_origin != 'Streaming Protocol', event_timestamp, NULL)) over (partition by page_id order by event_timestamp desc)),
       timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
-    , second) as time_on_page, -- Da integrare in firestore?
+    ,second) as time_on_page,  
+
+    -- Include streaming protocol events
+    -- datetime_diff(
+    --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp desc)),
+    --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
+    -- , second) as time_on_page,
     
     -- Add page level custom dimension here
     
@@ -197,7 +205,7 @@ select
     (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') as processing_event_timestamp,
     (select value.int from unnest(gtm_data) where name = 'content_length') as content_length,
 
-    # RAW RECORD ARRAYS (for GTM performances and debugging)
+    # RAW RECORD ARRAYS
     user_data,
     session_data,
     page_data,
