@@ -96,10 +96,10 @@ Since the infrastructure is hosted entirely within your own Google Cloud project
 
 
 ### Documentation
-- [Setup guides](https://github.com/nameless-analytics/nameless-analytics/tree/main/setup-guides/SETUP-GUIDES.md)
-- [Troubleshooting](https://github.com/nameless-analytics/nameless-analytics/blob/main/setup-guides/TROUBLESHOOTING.md)
-- [Tables](https://github.com/nameless-analytics/nameless-analytics/tree/main/tables/TABLES.md)
-- [Streaming protocol](https://github.com/nameless-analytics/nameless-analytics/tree/main/streaming-protocol/STREAMING-PROTOCOL.md)
+- [Setup guides](setup-guides/SETUP-GUIDES.md)
+- [Troubleshooting](setup-guides/TROUBLESHOOTING.md)
+- [Tables](tables/TABLES.md)
+- [Streaming protocol](streaming-protocol/STREAMING-PROTOCOL.md)
 
 
 ### Resources
@@ -409,7 +409,7 @@ Fully integrated with Google Consent Mode. It can track every event or automatic
 
 
 ### SPA & History Management
-Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Page View Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-trigger-page-views) for implementation examples.
+Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Page View Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-track-page-views) for implementation examples.
 
 
 ### Core Libraries Functioning
@@ -438,7 +438,7 @@ It handles the following background operations:
 
 Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. 
 
-This data is mapped into the `event_data` object under `device_vendor`, `os_version`, `device_model`, ecc..
+This data is mapped into the `event_data` object under `device_vendor`, `os_version`, `device_model`, etc.
 
 </details>
 
@@ -448,7 +448,7 @@ Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisib
 
 For retrieving the active `client_id` and `session_id` the Nameless Analytics Client-Side Tracker tag needs to perform a handshake with the server before redirecting and decorating outbound URLs with the `na_id` parameter in real time.
 
-**Beta Limitation**: Link decoration happens dynamically upon clicking (to ensure ID freshness and bypass `HttpOnly` restrictions). This means that cross-domain tracking **will not work** if the user opens the link via:
+Since link decoration happens dynamically upon clicking (to ensure ID freshness and bypass `HttpOnly` restrictions), cross-domain tracking **will not work** if the user opens the link via:
 - a right-click menu (e.g., "Open link in new tab") 
 - keyboard shortcuts (e.g., "Ctrl + Click")
 
@@ -522,10 +522,10 @@ The Nameless Analytics Server-side Client Tag automatically generates and manage
 
 </br>
 
-| ID Name        | Renewed                       | Example values                 | Value composition      |
-|----------------|-------------------------------|--------------------------------|------------------------|
-| **client_id**  | when `na_u` cookie is created | lZc919IBsqlhHks                | Client ID              |
-| **session_id** | when `na_s` cookie is created | lZc919IBsqlhHks_1KMIqneQ7dsDJU | Client ID - Session ID |
+| ID Name        | Renewed                       | Example values                 | Value composition             |
+|----------------|-------------------------------|--------------------------------|-------------------------------|
+| **client_id**  | when `na_u` cookie is created | lZc919IBsqlhHks                | Client ID                     |
+| **session_id** | when `na_s` cookie is created | lZc919IBsqlhHks_1KMIqneQ7dsDJU | Client ID _ Random Session ID |
 
 </details>
 

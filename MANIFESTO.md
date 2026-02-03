@@ -41,7 +41,7 @@ If you're not ready to own your stack, feel free to keep letting others control 
 
 
 ## Let go
-[Start from here](https://github.com/nameless-analytics/nameless-analytics/).
+[Start from here](README.md).
 
 ---
 

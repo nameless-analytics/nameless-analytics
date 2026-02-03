@@ -10,12 +10,15 @@ For an overview of how Nameless Analytics works [start from here](https://github
 ## Table of Contents
 - [How to set up Nameless Analytics in GTM](#how-to-set-up-nameless-analytics-in-gtm)
 - [How to track page views](#how-to-track-page-views)
-- [How to trigger virtual page views](#how-to-trigger-virtual-page-views)
 - [How to set up cross-domain tracking](#how-to-set-up-cross-domain-tracking)
 
 
 
 ## How to set up Nameless Analytics in GTM
+1.  **Download Templates**: Get the latest GTM container templates from the [`gtm-containers/`](../gtm-containers/) directory.
+2.  **Import to GTM**: In your GTM container, go to **Admin > Import Container**. Select the JSON file and choose **Merge** (with the 'Overwrite conflicting' or 'Rename' option).
+3.  **Configure Variables**: Update the **Nameless Analytics Client-side Tracker Configuration Variable** with your Server-side GTM endpoint.
+4.  **Publish**: Preview your changes and publish the container.
 
 
 
@@ -30,7 +33,7 @@ Use every trigger in GTM to trigger a page view like `gtm.js`.
 ### Via browser history (Route change)
 Page views can be triggered upon history changes using `pushState` or `replaceState`. 
 
-This is the preferred method for SPAs since the page referrer for virtual page views is maintained even if a page is reloaded and page informations id retrieved automatically from the history state.
+This is the preferred method for SPAs since the page referrer for virtual page views is maintained even if a page is reloaded and page information is retrieved automatically from the history state.
 
 Ensure you **update the page title and any relevant dataLayer parameters before the history change**.
 

@@ -73,7 +73,7 @@ Run the script using Python:
 ```bash
 python streaming-protocol.py
 ```
- å
+ 
 The script will:
 1.  Connect to BigQuery to fetch the latest page context for the given session.
 2.  Construct a robust event payload.
