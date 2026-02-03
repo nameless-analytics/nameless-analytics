@@ -113,7 +113,7 @@ Since the infrastructure is hosted entirely within your own Google Cloud project
 ### High-Level Data Flow
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
 
-![Nameless Analytics schema](https://github.com/user-attachments/assets/9f784a98-a428-4af2-91a1-c21b6ffbe3dd)
+![Nameless Analytics schema](https://github.com/user-attachments/assets/e9ff1593-f7c9-442e-a600-798a51a02a1e)
 
 
 
