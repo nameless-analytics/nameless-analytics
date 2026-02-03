@@ -12,8 +12,8 @@ from google.cloud import bigquery
 
 
 # User cookies
-na_u = 'iGybyojfMznbfe7' # Modify this according to the current user's na_u cookie value
-na_s = 'iGybyojfMznbfe7_dFnDUvIIDpausKh-mYAnphPDNl8o8bP' # Modify this according to the current user's na_s cookie value
+na_u = 'S5wex7PqJal4nnE' # Modify this according to the current user's na_u cookie value
+na_s = 'S5wex7PqJal4nnE_GT1lPWE81gMCslJ-0VGzH7ZCONKbSzG' # Modify this according to the current user's na_s cookie value
 
 
 # Request settings
@@ -25,7 +25,7 @@ na_s = 'iGybyojfMznbfe7_dFnDUvIIDpausKh-mYAnphPDNl8o8bP' # Modify this according
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless'
 origin = 'https://tommasomoretti.com'
 api_key = '1234'
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5YmUwYTkyN2QzY2M2NWU5YjJkYQ=='
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5YzI0MWQ5MmE1N2U2OGRmYmU5Yw=='
 
 
 
