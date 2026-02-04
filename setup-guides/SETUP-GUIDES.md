@@ -11,6 +11,7 @@ For an overview of how Nameless Analytics works [start from here](https://github
 - [How to set up Nameless Analytics in GTM](#how-to-set-up-nameless-analytics-in-gtm)
 - [How to track page views](#how-to-track-page-views)
 - [How to set up cross-domain tracking](#how-to-set-up-cross-domain-tracking)
+- [How to setup and customize ecommerce tracking](#how-to-setup-and-customize-ecommerce-tracking)
 
 
 
@@ -62,11 +63,10 @@ dataLayer.push({
 
 
 ## How to set up cross-domain tracking
+### Two websites, one client-side GTM container and one server-side GTM container  
 To configure cross domain tracking you need to: 
 
-Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable.
-
-Add the domains to the list (one per row).
+Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable and add the domains to the list (one per row).
 
 ![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/c8ab4d08-5069-4833-8465-5ca4ddea0863)
 
@@ -85,6 +85,19 @@ This ensures the `Domain` attribute in the `Set-Cookie` header will always match
 Otherwise the Set-Cookie header will be blocked by the browser.
 
 ![Dynamic endpoint configuration error](https://github.com/user-attachments/assets/66d39b81-6bf3-4af4-8663-273d00ae9515)
+
+
+### Two websites, two client-side GTM containers and one server-side GTM container 
+To configure cross domain tracking you need to: 
+
+Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable in both client-side GTM containers and add the relative domain in each the variable settings.
+
+
+### Two websites, two client-side GTM containers and two server-side GTM container 
+
+
+
+## How to setup and customize ecommerce tracking
 
 ---
 
