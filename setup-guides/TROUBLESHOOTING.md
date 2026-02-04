@@ -2,7 +2,7 @@
 
 This guide helps you identify, understand, and resolve the most common issues encountered during the implementation of Nameless Analytics.
 
-🚧 **Nameless Analytics is currently in beta and is subject to change.** 🚧
+### 🚧 Nameless Analytics is currently in beta and is subject to change 🚧
 
 
 

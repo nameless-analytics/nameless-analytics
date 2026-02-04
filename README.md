@@ -4,7 +4,7 @@ An open-source web analytics platform for power users, based on [Google Tag Mana
 
 Collect, analyze, and activate your website data with a free real-time digital analytics suite that respects user privacy.
 
-🚧 **Nameless Analytics is currently in beta and is subject to change.** 🚧
+### 🚧 Nameless Analytics is currently in beta and is subject to change 🚧
 
 
 

@@ -3,7 +3,7 @@ The Nameless Analytics Setup guides is a guide to help you set up Nameless Analy
 
 For an overview of how Nameless Analytics works [start from here](https://github.com/nameless-analytics/nameless-analytics/#high-level-data-flow).
 
-🚧 **Nameless Analytics is currently in beta and is subject to change.** 🚧
+### 🚧 Nameless Analytics is currently in beta and is subject to change 🚧
 
 
 
