@@ -63,7 +63,7 @@ dataLayer.push({
 
 
 ## How to set up cross-domain tracking
-### Two websites, one client-side GTM container and one server-side GTM container  
+### One client-side GTM container for both sites
 To configure cross domain tracking you need to: 
 
 Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable and add the domains to the list (one per row).
@@ -78,6 +78,47 @@ Set this dynamic variable in the **Request endpoint domain** field.
 
 ![Dynamic request endopoint domain](https://github.com/user-attachments/assets/3d052798-20d9-4578-ab00-35ff4edca695)
 
+### Two client-side GTM containers, one per site
+To configure cross domain tracking you need to: 
+
+Enable cross-domain tracking in each Nameless Analytics Client-side Tracker Configuration Variable and add the counterparty domain to the list.
+
+For namelessanalytics.com the domain will be domain is tommasomoretti.com
+
+![Counterparty domain](https://github.com/user-attachments/assets/6a8a277b-8689-49c3-9f8f-73b4d50c2f31)
+
+For tommasomoretti.com the counterparty domain is namelessanalytics.com
+
+![Counterparty domain](https://github.com/user-attachments/assets/7cce9ce6-6293-4585-8eec-704f02a67389)
+
+Set the Request endpoint domain field for each container.
+
+For namelessanalytics.com the domain will be domain is gtm.namelessanalytics.com
+
+![Request endpoint domain]()
+
+
+For tommasomoretti.com the domain will be domain is gtm.tommasomoretti.com
+
+![Request endpoint domain]()
+
+
+
+## One server-side GTM container for both sites
+
+To ensure proper DNS resolution, the IP addresses of the Google App Engine or Cloud Run instances running the server-side GTM container must be correctly associated with each respective domain name.
+
+Follow these guides for:
+- [Google App Engine standard environment](https://cloud.google.com/appengine/docs/standard/mapping-custom-domains)
+- [Google App Engine flexible environment](https://cloud.google.com/appengine/docs/flexible/mapping-custom-domains)
+- [Google Cloud Run](https://cloud.google.com/run/docs/mapping-custom-domains)
+
+The container must be configured as well. Add the domains in the Admin > Container settings of the Server-side Google Tag Manager.
+
+![Add multiple domains to server-side GTM](https://github.com/user-attachments/assets/53eb03cd-8fdf-437b-b0e2-aa92d7bcef4e)
+
+To select a domain for the preview mode, click the icon near the preview button and select a domain.
+
 This ensures the `Domain` attribute in the `Set-Cookie` header will always match the request origin browser-side.
 
 ![Dynamic endpoint correct configuration](https://github.com/user-attachments/assets/10db0a72-c743-4504-b3aa-adcb487fb9ad)
@@ -87,17 +128,8 @@ Otherwise the Set-Cookie header will be blocked by the browser.
 ![Dynamic endpoint configuration error](https://github.com/user-attachments/assets/66d39b81-6bf3-4af4-8663-273d00ae9515)
 
 
-### Two websites, two client-side GTM containers and one server-side GTM container 
-To configure cross domain tracking you need to: 
 
-Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable in both client-side GTM containers and add the relative domain in each the variable settings.
-
-![Alternative endpoint](https://github.com/user-attachments/assets/6a8a277b-8689-49c3-9f8f-73b4d50c2f31)
-![Alternative endpoint](https://github.com/user-attachments/assets/7cce9ce6-6293-4585-8eec-704f02a67389)
-
-
-
-### Two websites, two client-side GTM containers and two server-side GTM container 
+## Two server-side GTM containers, one per site
 
 
 
