@@ -4,7 +4,7 @@ The Nameless Analytics Streaming Protocol is a robust implementation for sending
 
 For an overview of how Nameless Analytics works [start from here](https://github.com/nameless-analytics/nameless-analytics/#high-level-data-flow).
 
-### 🚧 Nameless Analytics is currently in beta and is subject to change 🚧
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
 
 
 
