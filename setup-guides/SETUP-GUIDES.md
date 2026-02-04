@@ -92,6 +92,9 @@ To configure cross domain tracking you need to:
 
 Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable in both client-side GTM containers and add the relative domain in each the variable settings.
 
+![Alternative endpoint](https://github.com/user-attachments/assets/4e6f5b59-cad0-4777-9538-be28ce56eb6b)
+
+
 
 ### Two websites, two client-side GTM containers and two server-side GTM container 
 
