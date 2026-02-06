@@ -72,7 +72,7 @@ Ensure you have the following resources under the same account:
 - A Server-side Google Tag Manager container running on:
   - [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
   - or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
-  - or [Stape]() with geo headers power up enable
+  - or [Stape](https://stape.io) with geo headers power up enable
 - A Google Cloud Project with an active billing account
 - A Google BigQuery project + dataset, tables and table functions created using the provided [SQL scripts](tables/TABLES.md)
 - A Google Firestore database enabled in Native Mode
@@ -597,7 +597,7 @@ Nameless Analytics employs a complementary storage strategy to balance real-time
 
 
 ### Firestore as Last updated Snapshot
-It mantains **the latest available state for every user and session**. For example, the current user_level.
+It maintains **the latest available state for every user and session**. For example, the current user_level.
 
 - **User data**: Stores the latest user profile state, including first/last session timestamps, original acquisition source, and persistent device metadata.
 - **Session data**: Stores the latest session state, including real-time counters (total events, page views), landing/exit page details, and session-specific attribution.
@@ -622,7 +622,7 @@ Firestore ensures data integrity by managing how parameters are updated across h
   
 
 ### BigQuery as Historical Timeline
-It mantains **every single state transition** for every user and session. For example, all different user_level values through time.
+It maintains **every single state transition** for every user and session. For example, all different user_level values through time.
   
 - **User data**: Stores the current user profile state at event occurs, including first/last session timestamps, original acquisition source, and persistent device metadata.
 - **Session data**: Stores the current session state at event occurs, including real-time counters (total events, page views), landing/exit page details, and session-specific attribution.

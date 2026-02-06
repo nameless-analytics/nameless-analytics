@@ -95,12 +95,12 @@ Set the Request endpoint domain field for each container.
 
 For namelessanalytics.com the domain will be domain is gtm.namelessanalytics.com
 
-![Request endpoint domain]()
+![Request endpoint domain](https://github.com/nameless-analytics/nameless-analytics/assets/placeholder) <!-- TODO: Add image asset URL -->
 
 
 For tommasomoretti.com the domain will be domain is gtm.tommasomoretti.com
 
-![Request endpoint domain]()
+![Request endpoint domain](https://github.com/nameless-analytics/nameless-analytics/assets/placeholder) <!-- TODO: Add image asset URL -->
 
 
 
@@ -130,10 +130,12 @@ Otherwise the Set-Cookie header will be blocked by the browser.
 
 
 ## Two server-side GTM containers, one per site
+_Section coming soon. This configuration is recommended for multi-region setups or strict data residence requirements._
 
 
 
 ## How to setup and customize ecommerce tracking
+_Section coming soon. Nameless Analytics supports standard GA4 ecommerce schemas. Detailed mapping guides will be provided in the next beta update._
 
 ---
 

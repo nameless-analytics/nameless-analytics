@@ -46,8 +46,8 @@ bq_credentials_path = '/Users/tommasomoretti/Library/CloudStorage/GoogleDrive-to
 print("NAMELESS ANALYTICS")
 print("STREAMING PROTOCOL")
 
-# Retreive page data from BigQuery, for events. If not found no hit will be sent.
-print(f'👉 Retreive page data from BigQuery for page_id: {na_s}')
+# Retrieve page data from BigQuery, for events. If not found no hit will be sent.
+print(f'👉 Retrieve page data from BigQuery for page_id: {na_s}')
 
 page_date_from_bq = ""
 page_data_from_bq = {}

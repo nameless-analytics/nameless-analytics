@@ -2,6 +2,8 @@
 
 The Nameless Analytics Manifesto is a document that outlines the vision, mission, and values of Nameless Analytics. It is a living document that is subject to change as the project evolves.
 
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
+
 
 
 ## What Nameless Analytics really is

@@ -4,6 +4,7 @@ Nameless Analytics upcoming features and improvements.
 
 For completed work and release history, see [changelog](CHANGELOG.md).
 
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
 
 
 ## To do

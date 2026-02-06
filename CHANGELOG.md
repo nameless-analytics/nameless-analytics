@@ -4,6 +4,7 @@ Nameless Analytics release note and changelog history.
 
 For upcoming features and planned improvements, see the [roadmap](ROADMAP.md).
 
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
 
 
 ## Versions
