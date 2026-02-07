@@ -53,7 +53,7 @@ with event_data as (
       event_name,
       event_date,
       -- event_timestamp,
-    from `tom-moretti.nameless_analytics.events` (start_date, end_date, 'session_level')
+    from `tom-moretti.nameless_analytics.events` (start_date, end_date, 'session')
   ),
 
   all_sessions as (

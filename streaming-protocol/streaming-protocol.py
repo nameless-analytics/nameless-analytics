@@ -12,32 +12,27 @@ from google.cloud import bigquery
 
 
 # User cookies
-na_u = 'S5wex7PqJal4nnE' # Modify this according to the current user's na_u cookie value
-na_s = 'S5wex7PqJal4nnE_GT1lPWE81gMCslJ-0VGzH7ZCONKbSzG' # Modify this according to the current user's na_s cookie value
+na_u = '[YOUR_NA_U_COOKIE_VALUE]' # Modify this according to the current user's na_u cookie value
+na_s = '[YOUR_NA_S_COOKIE_VALUE]' # Modify this according to the current user's na_s cookie value
 
 
 # Request settings
-# full_endpoint = 'https://gtm.domain.com/nameless_analytics_endpoint' # Modify this according to your GTM Server-side endpoint 
-# origin = 'https://domain.com' # Modify this according to website origin
-# api_key = '[X-Api-Key]' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-# gtm_preview_header = '[X-Gtm-Server-Preview]' # Modify this according to the GTM Server-side preview header
-
-full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless'
-origin = 'https://tommasomoretti.com'
-api_key = '1234'
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5YzI0MWQ5MmE1N2U2OGRmYmU5Yw=='
+full_endpoint = 'https://gtm.yourdomain.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
+origin = 'https://yourdomain.com' # Modify this according to website origin
+api_key = '[YOUR_API_KEY]' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
+gtm_preview_header = '[YOUR_GTM_SERVER_PREVIEW_HEADER]' # Modify this according to the GTM Server-side preview header
 
 
 
 # Event settings
-user_id = '1234' # Add it if needed
+user_id = '[OPTIONAL_USER_ID]' # Add it if needed
 event_name = 'purchase' # Modify this according to the event name to be sent
 
 # BigQuery settings
-bq_project_id = 'tom-moretti' # Modify this according to your BigQuery project ID
-bq_dataset_id = 'nameless_analytics' # Modify this according to your BigQuery dataset ID
+bq_project_id = '[YOUR_BQ_PROJECT_ID]' # Modify this according to your BigQuery project ID
+bq_dataset_id = '[YOUR_BQ_DATASET_ID]' # Modify this according to your BigQuery dataset ID
 bq_table_id = 'events_raw' # Modify this according to your BigQuery table ID
-bq_credentials_path = '/Users/tommasomoretti/Library/CloudStorage/GoogleDrive-tommasomoretti88@gmail.com/Il mio Drive/Lavoro/Nameless Analytics/worker_service_account.json' # Modify this according to your service account JSON file path
+bq_credentials_path = '[PATH_TO_YOUR_SERVICE_ACCOUNT_JSON]' # Modify this according to your service account JSON file path
 
 
 # --------------------------------------------------------------------------------------------------------------
@@ -81,7 +76,7 @@ try:
                 name = item.get('name')
                 value_struct = item.get('value')
                 if name and isinstance(value_struct, dict):
-                    for val_type in ['string', 'int', 'float', 'json']:
+                    for val_type in ['string', 'int', 'float', 'json', 'bool']:
                         val = value_struct.get(val_type)
                         if val is not None:
                             page_data_from_bq[name] = val

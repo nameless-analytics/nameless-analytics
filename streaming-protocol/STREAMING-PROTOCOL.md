@@ -22,14 +22,19 @@ For an overview of how Nameless Analytics works [start from here](https://github
     
 
 ## Features
-### BigQuery Enrichment
-Automatically retrieves page_data from your BigQuery `events_raw` table based on the `na_s` cookie, allowing you to enrich server-side events with historical page data.
-
-### Automatic Type Handling
-Correctly maps BigQuery data types (`string`, `int`, `float`, `json`) to the JSON payload.
+### Session enrichment
+The Streaming Protocol is designed for secondary interactions (conversions, backend events, offline data). **`page_view` events are not allowed** via the Streaming Protocol and must be sent through the standard website tracker to correctly initialize the session context.
 
 
-### Error Handling
+### BigQuery enrichment
+Automatically retrieves page_data from your BigQuery `events_raw` table based on the `na_s` cookie, allowing you to enrich server-side events to send with the correct page data.
+
+
+### Automatic type handling
+Correctly maps BigQuery data types (`string`, `int`, `float`, `json` and `bool`) to the JSON payload.
+
+
+### Error handling
 Includes robust error handling for API responses and database queries.
  
 

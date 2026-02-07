@@ -53,7 +53,7 @@ with event_data as (
       event_name,
       event_date,
       -- event_timestamp,
-    from `tom-moretti.nameless_analytics.events` (start_date, end_date, 'session_level')
+    from `tom-moretti.nameless_analytics.events` (start_date, end_date, 'session')
   ),
 
   all_sessions as (
@@ -593,6 +593,5 @@ with event_data as (
       else case when step_index_next_step_real = step_index_next_step then session_id_next_step else null end 
     end as session_id_next_step,
   from union_steps_def
-  where true 
-    and event_date between start_date and end_date
+  where true
 );

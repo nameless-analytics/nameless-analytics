@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.gtm_performances`(start_date DATE, end_date DATE) AS (
-  with base_events as (
+with base_events as (
     select 
       # USER DATA
       user_date, 
@@ -32,7 +32,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.gtm_performance
       session_browser_name,
       session_country, 
       session_language,
-      session_hostname,
+      session_hostname, 
       session_landing_page_category, 
       session_landing_page_location, 
       session_landing_page_title, 
@@ -48,7 +48,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.gtm_performance
       event_id,
       ecommerce,
       
-      # GTM DATA (Flattened in events())
+      # GTM DATA
       cs_hostname,
       cs_container_id,
       ss_hostname,
@@ -56,8 +56,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.gtm_performance
       processing_event_timestamp,
       content_length,
 
-      # RAW RECORD ARRAYS (For transformations)
-      page_data,
+      # RAW RECORD ARRAYS
+      page_data, 
       event_data,
       datalayer
     from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'event')
@@ -111,7 +111,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.gtm_performance
           value.string as string,
           value.int as int,
           value.float as float,
-          to_json_string(value.json) as json
+          to_json_string(value.json) as json,
+          value.bool as bool
         ) as value
       from unnest(page_data)
     ) as page_data,
@@ -139,7 +140,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.gtm_performance
           value.string as string,
           value.int as int,
           value.float as float,
-          to_json_string(value.json) as json
+          to_json_string(value.json) as json,
+          value.bool as bool
         ) as value
       from unnest(event_data)
     ) as event_data,

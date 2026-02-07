@@ -27,7 +27,7 @@ Inspect a network request to see the data sent by client from Preview and data r
 
 
 ## Orphan Events & Sequence Issues
-An **Orphan Event** is any interaction (click, scroll, etc.) that reaches the server without a valid session context established by a preceding `page_view` event or the requests is without a valid user and session cookie.
+An **Orphan Event** is any interaction (click, scroll, etc.) that reaches the server without a valid session context established by a preceding `page_view` event or the request is without a valid user and session cookie.
 
 
 ### Event error messages
@@ -36,7 +36,7 @@ Browser console shows:
 `[event_name] > 🔴 Event fired before a page view event. The first event on a page view ever must be page_view. Request aborted`
 
 - **Issue:** An interaction event is fired before the `page_view` event has been dispatched.
-- **Solution:** Nameless Analytics utilizes an internal fetch queue to manage requests, which prevents most race conditions. However, every events must be preceded by a `page_view` event. Ensure the page view is the first event sent at every page load.
+- **Solution:** Nameless Analytics utilizes an internal fetch queue to manage requests, which prevents most race conditions. However, every event must be preceded by a `page_view` event. Ensure the page view is the first event sent at every page load.
 
 Server logs show: 
 

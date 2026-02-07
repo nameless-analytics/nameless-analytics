@@ -25,8 +25,8 @@ select
       timestamp_micros(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), 
       timestamp_micros((select value.int from unnest(user_data) where name = 'user_first_session_timestamp'))
     , day) as days_from_first_to_last_visit,
-    datetime_diff(current_timestamp(), timestamp_millis((select value.int from unnest(user_data) where name = 'user_first_session_timestamp')), day) as days_from_first_visit, -- Da capire se ha senso
-    datetime_diff(current_timestamp(), timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), day) as days_from_last_visit, -- Da capire se ha senso
+    datetime_diff(current_timestamp(), timestamp_millis((select value.int from unnest(user_data) where name = 'user_first_session_timestamp')), day) as days_from_first_visit,
+    datetime_diff(current_timestamp(), timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), day) as days_from_last_visit,
     
     (select value.string from unnest(user_data) where name = 'user_channel_grouping') as user_channel_grouping,
     (select value.string from unnest(user_data) where name = 'user_source') as user_source,
@@ -56,7 +56,7 @@ select
     
     -- Exclude streaming protocol events
     datetime_diff(
-      timestamp_millis(first_value(IF(event_origin != 'Streaming Protocol', (SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_end_timestamp'), NULL)) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC)), 
+      timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', (SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_end_timestamp'), NULL)) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC)), 
       timestamp_millis((SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_start_timestamp'))
     , second) AS session_duration_sec,
 
@@ -116,7 +116,7 @@ select
 
     -- Exclude streaming protocol events
     datetime_diff(
-      timestamp_millis(first_value(IF(event_origin != 'Streaming Protocol', event_timestamp, NULL)) over (partition by page_id order by event_timestamp desc)),
+      timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', event_timestamp, NULL)) over (partition by page_id order by event_timestamp desc)),
       timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
     ,second) as time_on_page,  
 

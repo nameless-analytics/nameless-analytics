@@ -1,10 +1,9 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_date DATE, end_date DATE) AS (
-  with base_events as (
+with base_events as (
     select 
       # USER DATA
       user_date,
       client_id,
-      user_id,
       user_type,
       new_user,
       returning_user,

@@ -41,9 +41,9 @@ The following SQL scripts are used to initialize the Nameless Analytics reportin
 # NAMELESS ANALYTICS
 
 # Project settings
-declare project_name string default 'project_name';  -- Change this
-declare dataset_name string default 'dataset_name'; -- Change this
-declare dataset_location string default 'dataset_location'; -- Change this
+declare project_name string default 'tom-moretti';  -- Change this
+declare dataset_name string default 'nameless_analytics'; -- Change this
+declare dataset_location string default 'eu'; -- Change this
 
 # Tables
 declare main_table_name string default 'events_raw';
@@ -100,7 +100,8 @@ declare main_table_sql string default format(
             string STRING OPTIONS (description = 'User data parameter string value'),
             int INT64 OPTIONS (description = 'User data parameter int number value'),
             float FLOAT64 OPTIONS (description = 'User data parameter float number value'),
-            json JSON OPTIONS (description = 'User data parameter JSON value')
+            json JSON OPTIONS (description = 'User data parameter JSON value'),
+            bool BOOL OPTIONS (description = 'User data parameter boolean value')
           > OPTIONS (description = 'User data parameter value name')
         >
       > OPTIONS (description = 'User data'),
@@ -114,7 +115,8 @@ declare main_table_sql string default format(
             string STRING OPTIONS (description = 'Session data parameter string value'),
             int INT64 OPTIONS (description = 'Session data parameter int number value'),
             float FLOAT64 OPTIONS (description = 'Session data parameter float number value'),
-            json JSON OPTIONS (description = 'Session data parameter JSON value')
+            json JSON OPTIONS (description = 'Session data parameter JSON value'),
+            bool BOOL OPTIONS (description = 'Session data parameter boolean value')
           > OPTIONS (description = 'Session data parameter value name')
         >
       > OPTIONS (description = 'Session data'),  
@@ -128,7 +130,8 @@ declare main_table_sql string default format(
             string STRING OPTIONS (description = 'Page data parameter string value'),
             int INT64 OPTIONS (description = 'Page data parameter int number value'),
             float FLOAT64 OPTIONS (description = 'Page data parameter float number value'),
-            json JSON OPTIONS (description = 'Page data parameter JSON value')
+            json JSON OPTIONS (description = 'Page data parameter JSON value'),
+            bool BOOL OPTIONS (description = 'Page data parameter boolean value')
           > OPTIONS (description = 'Page data parameter value name')
         >
       > OPTIONS (description = 'Page data'),
@@ -145,7 +148,8 @@ declare main_table_sql string default format(
             string STRING OPTIONS (description = 'Event data parameter string value'),
             int INT64 OPTIONS (description = 'Event data parameter int number value'),
             float FLOAT64 OPTIONS (description = 'Event data parameter float number value'),
-            json JSON OPTIONS (description = 'Event data parameter JSON value')
+            json JSON OPTIONS (description = 'Event data parameter JSON value'),
+            bool BOOL OPTIONS (description = 'Event data parameter boolean value')
           > OPTIONS (description = 'Event data parameter value name')
         >
       > OPTIONS (description = 'Event data'),

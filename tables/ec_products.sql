@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_products`(start_date DATE, end_date DATE) AS (
-  with base_events as (
+with base_events as (
     select 
       # USER DATA
       user_date, 
@@ -89,7 +89,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_products`(st
       event_name,
       timestamp_millis(event_timestamp) as event_datetime,
 
-      # ECOMMERCE DATA
+      # ECOMMERCE & ITEMS DATA
       json_value(ecommerce, '$.transaction_id') as transaction_id,
       json_value(ecommerce, '$.item_list_id') as list_id,
       json_value(ecommerce, '$.item_list_name') as list_name,
