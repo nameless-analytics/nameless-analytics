@@ -839,8 +839,8 @@ Provides a granular view of product performance, including views, add-to-carts, 
 | `event_timestamp` | TIMESTAMP | Event timestamp | `timestamp_millis(event_timestamp)` |
 | **ECOMMERCE DATA** | | | |
 | `transaction_id` | STRING | Transaction ID | `json_value(ecommerce, '$.transaction_id')` |
-| `list_id` | STRING | List ID (deprecated?) | `json_value(ecommerce, '$.item_list_id')` |
-| `list_name` | STRING | List Name (deprecated?) | `json_value(ecommerce, '$.item_list_name')` |
+| `list_id` | STRING | List ID | `json_value(ecommerce, '$.item_list_id')` |
+| `list_name` | STRING | List Name | `json_value(ecommerce, '$.item_list_name')` |
 | `item_list_id` | STRING | List ID | `json_value(items, '$.item_list_id')` |
 | `item_list_name` | STRING | List Name | `json_value(items, '$.item_list_name')` |
 | `item_affiliation` | STRING | Item affiliation | `json_value(items, '$.affiliation')` |

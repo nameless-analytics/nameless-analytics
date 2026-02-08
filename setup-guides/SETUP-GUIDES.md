@@ -21,7 +21,7 @@ Setting up Nameless Analytics involves a dual-container strategy that combines t
 
 The implementation is streamlined through pre-configured templates that include all the necessary Tags, Triggers, and Variables to get your first-party analytics pipeline running in minutes.
 
-**Encountering issues during setup?** Check the [Configuration Troubleshooting](TROUBLESHOOTING.md#library-loading--configuration-issues) section if your tags aren't firing or the [Validation Errors](TROUBLESHOOTING.md#validation-errors-403-forbidden) if you see 403 Forbidden errors.
+**Encountering issues during setup?** Check the [Configuration Troubleshooting](TROUBLESHOOTING.md#library-loading--configuration-issues) section if your tags aren't firing.
 
 ### Phase 1: Prerequisites Check
 Before proceeding, ensure your Google Cloud environment is fully provisioned:
@@ -52,19 +52,19 @@ Configure the tracker to establish a secure handshake with your server:
 
 
 ## How to track page views
-Page views can be triggered in many ways:
+Ensure that the `page_view` event is the **first** event triggered on every page load. Triggering other events before it will result in [Orphan Events](TROUBLESHOOTING.md#orphan-events--sequence-issues). 
 
+Page view tags can be triggered in many ways:
 
 ### Via GTM standard page view trigger
-Use every trigger in GTM to trigger a page view like `gtm.js`.
+Using any standard GTM trigger (such as **All Pages**).
 
 
 ### Via browser history (Route change)
-Page views can be triggered upon history changes using `pushState` or `replaceState`. 
+Using history changes `pushState` or `replaceState`.
 
 This is the preferred method for SPAs since the page referrer for virtual page views is maintained even if a page is reloaded and page information is retrieved automatically from the history state.
 
-Ensure you **update the page title and any relevant dataLayer parameters before the history change**.
 
 ```javascript
 document.title = 'Product name | Nameless Analytics';
@@ -74,11 +74,11 @@ dataLayer.push({
 history.pushState('', '', '/product_name');
 ```
 
+> Make sure to update the page title and any relevant dataLayer parameters before the history change otherwise the Page Title and Page Category will not be set correctly.
 
 ### Via custom dataLayer event
-Page views can be also triggered upon custom dataLayer events.
+Using custom dataLayer events.
 
-Make sure to [override the page parameters](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#page-data) in the Nameless Analytics Client-side Tracker Configuration Variable otherwise the updated page data will not set set correctly.
 
 ```javascript
 dataLayer.push({
@@ -89,65 +89,61 @@ dataLayer.push({
 });
 ```
 
-> [!WARNING]
-> Ensure that the `page_view` event is the **first** event triggered on every page load. Triggering other events before it will result in [Orphan Events](TROUBLESHOOTING.md#orphan-events--sequence-issues).
+> Make sure to [override the page parameters](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#page-data) in the Nameless Analytics Client-side Tracker Configuration Variable otherwise the updated page data will not set set correctly.
 
 
 
 ## How to set up cross-domain tracking
-### One client-side GTM container for both sites
-To configure cross domain tracking you need to: 
+Nameless Analytics utilizes server-side **HttpOnly cookies** for maximum security and data integrity. 
 
-Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable and add the domains to the list (one per row).
+Since these cookies are inaccessible to client-side JavaScript, the tracker employs a real-time 'handshake' mechanism via a specific event called **`get_user_data`**. 
 
-![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/c8ab4d08-5069-4833-8465-5ca4ddea0863)
+When a user clicks an outbound link to a tracked domain, the tracker intercepts the click and sends a synchronous `get_user_data` request to the Server-side GTM endpoint. The server extracts the `client_id` and `session_id` from the secure cookies and returns them to the tracker, which then decorates the destination URL with the **`na_id`** parameter (e.g., `https://destination.com/?na_id=...`). This ensures 100% accurate session stitching even across different domains.
 
-Create a **Regex Lookup Table** variable to dynamically switch the endpoint domain based on the current page hostname:
+To ensure proper DNS resolution, the IP addresses of the Google App Engine, Cloud Run or Stape instances running the server-side GTM container must be correctly associated with each respective domain.
 
-![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/a7b54f23-18b5-4e54-ba80-216a06a51f2d)
+Follow these guides for:
+- Google App Engine [standard](https://cloud.google.com/appengine/docs/standard/mapping-custom-domains) and [flexible](https://cloud.google.com/appengine/docs/flexible/mapping-custom-domains) environments
+- [Google Cloud Run](https://cloud.google.com/run/docs/mapping-custom-domains)
+- [Stape](https://help.stape.io/hc/en-us/articles/4405367809681-How-to-setup-custom-domain-for-server-side-Google-Tag-Manager)
 
-Set this dynamic variable in the **Request endpoint domain** field. 
-
-![Dynamic request endopoint domain](https://github.com/user-attachments/assets/3d052798-20d9-4578-ab00-35ff4edca695)
-
-> [!TIP]
 > If IDs are not passing between domains, verify your [Cross-domain Troubleshooting](TROUBLESHOOTING.md#network--custom-endpoint-issues) steps.
 
 
-### Two client-side GTM containers, one per site
+
+### One client-side GTM container for both sites
 To configure cross domain tracking you need to: 
 
-Enable cross-domain tracking in each Nameless Analytics Client-side Tracker Configuration Variable and add the counterparty domain to the list.
+1. Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable and add the domains to the list (one per row).
 
-For namelessanalytics.com the domain will be domain is tommasomoretti.com
+    ![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/c8ab4d08-5069-4833-8465-5ca4ddea0863)
 
-![Counterparty domain](https://github.com/user-attachments/assets/6a8a277b-8689-49c3-9f8f-73b4d50c2f31)
+2. Create a **Regex Lookup Table** variable to dynamically switch the endpoint domain based on the current page hostname:
 
-For tommasomoretti.com the counterparty domain is namelessanalytics.com
+    ![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/a7b54f23-18b5-4e54-ba80-216a06a51f2d)
 
-![Counterparty domain](https://github.com/user-attachments/assets/7cce9ce6-6293-4585-8eec-704f02a67389)
+3. Set this dynamic variable in the **Request endpoint domain** field. 
 
-Set the Request endpoint domain field for each container.
-
-For namelessanalytics.com the domain will be domain is gtm.namelessanalytics.com
-
-![Request endpoint domain](https://github.com/nameless-analytics/nameless-analytics/assets/placeholder) <!-- TODO: Add image asset URL -->
+    ![Dynamic request endopoint domain](https://github.com/user-attachments/assets/3d052798-20d9-4578-ab00-35ff4edca695)
 
 
-For tommasomoretti.com the domain will be domain is gtm.tommasomoretti.com
+### Two client-side GTM containers, one per site
+To configure cross-domain tracking across separate containers, follow these steps:
 
-![Request endpoint domain](https://github.com/nameless-analytics/nameless-analytics/assets/placeholder) <!-- TODO: Add image asset URL -->
+1. **Enable Cross-Domain Tracking**: In each Nameless Analytics Client-side Tracker Configuration Variable, enable the cross-domain option and add the counterparty domain to the domain list.
 
+    - For **namelessanalytics.com**, the counterparty domain will be `tommasomoretti.com`.
+    - For **tommasomoretti.com**, the counterparty domain will be `namelessanalytics.com`.
+
+
+2. **Configure Request Endpoints**: Set the **Request endpoint domain** field for each container to point to its respective server-side GTM subdomain.
+
+    - For **namelessanalytics.com**, the endpoint will be `gtm.namelessanalytics.com`.
+    - For **tommasomoretti.com**, the endpoint will be `gtm.tommasomoretti.com`.
 
 
 ### One server-side GTM container for both sites
-
-To ensure proper DNS resolution, the IP addresses of the Google App Engine or Cloud Run instances running the server-side GTM container must be correctly associated with each respective domain name.
-
-Follow these guides for:
-- [Google App Engine standard environment](https://cloud.google.com/appengine/docs/standard/mapping-custom-domains)
-- [Google App Engine flexible environment](https://cloud.google.com/appengine/docs/flexible/mapping-custom-domains)
-- [Google Cloud Run](https://cloud.google.com/run/docs/mapping-custom-domains)
+If **Accept requests from authorized domains only** option is enabled in **Nameless Analytics Server-side Client** configuration, ensure that all domains involved in the cross-domain setup are explicitly added to the **Authorized domains** list. This prevents requests from being blocked when the tracker switches domains.
 
 The container must be configured as well. Add the domains in the Admin > Container settings of the Server-side Google Tag Manager.
 
