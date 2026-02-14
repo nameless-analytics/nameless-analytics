@@ -90,8 +90,16 @@ Server logs show:
 
 `🔴 Invalid User-Agent header value. Request from bot`
 
-- **Issue:** The request was identified as an automated bot or scraper, or the `User-Agent` header is missing.
-- **Solution:** Nameless Analytics blocks common bot patterns. Ensure you are testing from a standard browser. If using the **Streaming Protocol**, ensure you send the mandatory UA: `nameless analytics - streaming protocol`.
+- **Issue:** The request was identified as an automated bot, a scraper, or originated from a common HTTP library.
+- **Solution:** Nameless Analytics blocks requests from non-browser environments to ensure data quality. Verify you are testing from a standard, modern browser. 
+  
+  The system currently blocks any User-Agent containing the following keywords:
+  - **HTTP Libraries:** `curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.
+  - **AI Agents & LLMs:** `gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytspider`, `ccbot`.
+  - **SEO & Marketing Bots:** `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
+  - **Automation & Security:** `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
+
+  If you are using the **Streaming Protocol**, you must send the following mandatory User-Agent to bypass this check: `nameless analytics - streaming protocol`.
 
 Server logs show: 
 
