@@ -456,10 +456,11 @@ Since link decoration happens dynamically upon clicking (to ensure ID freshness 
 
 </br>
 
-1. **Pre-flight Request**: When a user clicks a link pointing to a configured cross-domain, the tracker intercepts the click and sends a synchronous `get_user_data` request to the Server-side GTM endpoint.
-2. **Identity Retrieval**: The server receives the request (along with the `HttpOnly` cookies), extracts the `client_id` and `session_id`, and returns them in the JSON response.
-3. **URL Decoration**: The tracker receives the IDs and decorates the outbound destination URL with a `na_id` parameter (e.g., `https://destination.com/?na_id=...`).
-4. **Session Stitching**: On the destination site, the tracker detects the `na_id` parameter, sends it to the server, and the server sets the same `HttpOnly` cookies for the new domain, effectively merging the session.
+1. **Handshake Initialization**: When a user clicks a link toward a configured cross-domain, the tracker intercepts the event, **pauses navigation**, and performs a real-time POST call to the Server-side GTM endpoint with the special parameter `event_name: 'get_user_data'`.
+2. **Identity Extraction (`HttpOnly` bypass)**: The Server-side Client Tag receives the request. Since the call is directed to its own domain, it has access to the `HttpOnly` cookies (`na_u` and `na_s`). It securely extracts the `client_id` and `session_id`.
+3. **Real-time Response**: Instead of streaming the data to BigQuery, the server immediately responds to the browser by providing both identifiers in a JSON payload. 
+4. **URL Decoration**: The tracker receives the response and decorates the destination URL with the session ID value (e.g., `https://destination.com/?na_id={session_id}`) before allowing the redirect to proceed.
+5. **Session Stitching**: On the destination domain, the tracker detects the `na_id` parameter and sends it to its own server. The server "unpacks" the session ID value and sets the corresponding `HttpOnly` cookies, effectively merging the user’s session.
 
 By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics ensures that the identifiers passed to the destination domain are 100% correct. 
 
