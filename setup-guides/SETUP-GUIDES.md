@@ -98,7 +98,7 @@ Nameless Analytics utilizes server-side **HttpOnly cookies** for maximum securit
 
 Since these cookies are inaccessible to client-side JavaScript, the tracker employs a real-time 'handshake' mechanism via a specific event called **`get_user_data`**. 
 
-When a user clicks an outbound link to a tracked domain, the tracker intercepts the click and sends a synchronous `get_user_data` request to the Server-side GTM endpoint. The server extracts the `client_id` and `session_id` from the secure cookies and returns them to the tracker, which then decorates the destination URL with the **`na_id`** parameter (e.g., `https://destination.com/?na_id=...`). This ensures 100% accurate session stitching even across different domains.
+When a user clicks an outbound link to a tracked domain, the tracker intercepts the click and sends an asynchronous `get_user_data` request to the Server-side GTM endpoint. The server extracts the `client_id` and `session_id` from the secure cookies and returns them to the tracker, which then decorates the destination URL with the **`na_id`** parameter (e.g., `https://destination.com/?na_id=...`). This ensures 100% accurate session stitching even across different domains.
 
 To ensure proper DNS resolution, the IP addresses of the Google App Engine, Cloud Run or Stape instances running the server-side GTM container must be correctly associated with each respective domain.
 
@@ -167,7 +167,32 @@ _Section coming soon. This configuration is recommended for multi-region setups 
 
 
 ## How to setup and customize ecommerce tracking
-_Section coming soon. Nameless Analytics supports standard GA4 ecommerce schemas. Detailed mapping guides will be provided in the next beta update._
+Nameless Analytics supports full ecommerce tracking following the standard GA4 schema.
+
+### Ecommerce Tracking Initialization
+The system is designed to automatically capture ecommerce data from your website's `dataLayer`, provided it follows the standard GA4 format.
+
+**1. DataLayer Requirement**
+Your website must push ecommerce events to the `dataLayer` using the standard structure (e.g., `view_item`, `add_to_cart`, `begin_checkout`, `purchase`). The tracker will automatically look for the `ecommerce` object within the event that triggers the tag.
+
+**2. Tracker Configuration**
+In your GTM Client-side Tracker Tag configuration:
+- Ensure the **"Send ecommerce data"** checkbox is enabled. 
+- This tells the tracker to capture the `ecommerce` object from the current dataLayer state and include it in the payload sent to the server.
+
+**3. Server-side Processing**
+The Nameless Analytics Server-side Client Tag receives the request, extracts the `ecommerce` data and stores it directly in the `ecommerce` column of your BigQuery `events_raw` table. 
+
+No additional mapping is required if you follow the standard schema. If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the extraction paths in the BigQuery SQL Table Functions.
+
+
+### Advanced Ecommerce Reporting
+Once data is in BigQuery, you can leverage built-in Table Functions for deep analysis. These functions process the raw JSON and flatten it into structured reporting tables:
+
+- **[Transactions](../tables/TABLES.md#transactions)**: Provides a high-level view of orders: revenue, tax, shipping, and transaction IDs.
+- **[Products](../tables/TABLES.md#products)**: Flattens the items array to show performance per product (quantity sold, item revenue, variants, etc.).
+- **[Shopping stages (Open Funnel)](../tables/TABLES.md#shopping-stages-open-funnel)**: Analyzes the Open Funnel from item view to purchase.
+- **[Shopping stages (Closed Funnel)](../tables/TABLES.md#shopping-stages-closed-funnel)**: Analyzes the Closed Funnel from item view to purchase.
 
 ---
 

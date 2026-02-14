@@ -1342,6 +1342,36 @@ This table illustrates the fields available across different table functions, al
 
 </br>
 
+
+## Data Governance and Maintenance
+Below are SQL templates to help you manage data integrity and comply with privacy regulations.
+
+### GDPR & Privacy Compliance
+To delete all data associated with a specific user (Right to be Forgotten), use the following script. Note that since the table is partitioned by `event_date`, this operation is efficient in terms of cost if you also specify a date range (optional but recommended).
+
+```sql
+# Delete all records for a specific client_id
+DELETE FROM `project.dataset.events_raw`
+WHERE client_id = 'USER_CLIENT_ID';
+```
+
+### Data Health Check
+To ensure your data pipeline is healthy and active, use this query to monitor the event volume per day. Sudden drops might indicate configuration issues in GTM or Cloud Run.
+
+```sql
+# Monitor daily event volume
+SELECT 
+  event_date, 
+  count(distinct client_id) as users,
+  count(distinct session_id) as sessions,
+  count(distinct page_id) as page_view,
+  count(distinct event_id) as events,
+FROM `project.dataset.events_raw`
+WHERE event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
+GROUP BY 1 
+ORDER BY 1 DESC;
+```
+
 ---
 
 Reach me at: [Email](mailto:hello@namelessanalytics.com) | [Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_tables) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)
