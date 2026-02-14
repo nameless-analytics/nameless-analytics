@@ -282,6 +282,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | session_landing_page_category | String   | Server-Side | Landing page category                         |
 |                    | session_landing_page_location | String   | Server-Side | Landing page path                             |
 |                    | session_landing_page_title    | String   | Server-Side | Landing page title                            |
+|                    | session_city                  | String   | Server-Side | Session geolocation city                      |
 |                    | session_exit_page_category    | String   | Server-Side | Exit page category                            |
 |                    | session_exit_page_location    | String   | Server-Side | Exit page path                                |
 |                    | session_exit_page_title       | String   | Server-Side | Exit page title                               |
@@ -346,7 +347,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | ss_hostname                   | String   | Server-Side | Server-side container hostname                |
 |                    | ss_container_id               | String   | Server-Side | Server-side container ID                      |
 |                    | ss_tag_name                   | String   | Server-Side | Server-side tag name                          |
-|                    | ss_tag_id                     | String   | Server-Side | Server-side tag ID                            |
+|                    | ss_tag_id                     | Integer  | Server-Side | Server-side tag ID                            |
 |                    | processing_event_timestamp    | Integer  | Server-Side | Event processing timestamp                    |
 |                    | content_length                | Integer  | Server-Side | Request content length                        |
 </details>
@@ -456,7 +457,7 @@ Since link decoration happens dynamically upon clicking (to ensure ID freshness 
 
 </br>
 
-1. **Handshake Initialization**: When a user clicks a link toward a configured cross-domain, the tracker intercepts the event, **pauses navigation**, and performs a real-time POST call to the Server-side GTM endpoint with the special parameter `event_name: 'get_user_data'`.
+1. **Handshake Initialization**: When a user clicks a link toward a configured cross-domain, the tracker intercepts the event, **pauses navigation**, and performs a real-time asynchronous POST call to the Server-side GTM endpoint with `event_name: 'get_user_data'`.
 2. **Identity Extraction (`HttpOnly` bypass)**: The Server-side Client Tag receives the request. Since the call is directed to its own domain, it has access to the `HttpOnly` cookies (`na_u` and `na_s`). It securely extracts the `client_id` and `session_id`.
 3. **Real-time Response**: Instead of streaming the data to BigQuery, the server immediately responds to the browser by providing both identifiers in a JSON payload. 
 4. **URL Decoration**: The tracker receives the response and decorates the destination URL with the session ID value (e.g., `https://destination.com/?na_id={session_id}`) before allowing the redirect to proceed.
@@ -544,7 +545,11 @@ The system transparently tracks pipeline health by measuring **ingestion latency
 
 
 ### Bot Protection
-Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 20 User-Agents, including `HeadlessChrome`, `Puppeteer`, `Selenium`, `Playwright`, as well as common HTTP libraries like `Axios`, `Go-http-client`, `Python-requests`, `Java/OkHttp`, `Curl`, and `Wget`.
+Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 45 keywords, including:
+- **AI Agents & LLMs:** `gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytspider`, `ccbot`.
+- **SEO & Marketing Bots:** `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
+- **HTTP Libraries:** `curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.
+- **Automation & Security:** `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
 
 
 ### Geolocation & Privacy by Design
