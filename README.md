@@ -81,6 +81,8 @@ Download and import the following GTM containers:
 - [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
 - [Server-side GTM default container](gtm-containers/gtm-server-side-container-template.json)
 
+or read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
+
 
 
 ## Technical Architecture
@@ -143,6 +145,7 @@ The request data is sent via a POST request in JSON format. It is structured int
     "user_campaign_term": null,
     "user_device_type": "desktop",
     "user_country": "IT",
+    "user_city": "venice",
     "user_language": "it-IT",
     "user_first_session_timestamp": 1764955391487,
     "user_last_session_timestamp": 1768661707758
@@ -162,6 +165,7 @@ The request data is sent via a POST request in JSON format. It is structured int
     "session_campaign_term": null,
     "session_device_type": "desktop",
     "session_country": "IT",
+    "session_city": "venice",
     "session_language": "it-IT",
     "session_hostname": "tommasomoretti.com",
     "session_browser_name": "Chrome",
@@ -406,11 +410,12 @@ Implements specific logic to handle high-frequency events (e.g., rapid clicks), 
 
 
 ### Smart Consent Management
-Fully integrated with Google Consent Mode. It can track every event or automatically queue events (`analytics_storage` pending) and release them only when consent is granted, preventing data loss.
-
+Fully integrated with Google Consent Mode. Choose between respect or not respect consent mode:
+- When respect_consent_mode is disabled, the tracker will send requests even when consent is not granted.
+- When respect_consent_mode is enabled, the tracker will send requests only when consent is granted (`analytics_storage` granted), otherwise it will automatically queue events and release them only when consent is granted, in the context of the same page, preventing data loss.
 
 ### SPA & History Management
-Native support for Single Page Applications. Virtual page views can be triggered on history changes or via custom dataLayer events. See the [Page View Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-track-page-views) for implementation examples.
+Native support for Single Page Applications. See the [Page View Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-track-page-views) for implementation examples.
 
 
 ### Core Libraries Functioning
