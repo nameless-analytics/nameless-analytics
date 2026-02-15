@@ -419,13 +419,15 @@ Native support for Single Page Applications. See the [Page View Setup Guide](set
 
 
 ### Core Libraries Functioning
-The tracker relies on two external libraries loaded at runtime to handle complex logic. To maximize data collection accuracy and bypass ad-blockers, Nameless Analytics supports **First-Party mode**, allowing you to host these libraries on your own domain or CDN instead of using external CDNs.
+The tracker relies on a main external library and a dependency library loaded by Nameless Analytics Client-side Tracker Tag.
 
-<details><summary>nameless-analytics.js</summary>
+To maximize data collection accuracy and bypass ad-blockers, Nameless Analytics supports **First-Party mode**, allowing you to host this library on your own domain or CDN instead of using external CDNs.
+
+<details><summary>Main library</summary>
 
 </br>
 
-This is the core engine that supports the GTM tag by exposing utility functions for execution in a standard JavaScript environment. 
+This is the core engine that supports the GTM tag by exposing utility functions for execution in a standard JavaScript environment. Source code: [nameless-analytics.js](https://github.com/nameless-analytics/nameless-analytics/blob/main/src/nameless-analytics.js)
 
 It handles the following background operations:
 
@@ -438,11 +440,11 @@ It handles the following background operations:
 
 </details>
 
-<details><summary>ua-parser.min.js</summary>
+<details><summary>Dependency library</summary>
 
 </br>
 
-Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. 
+Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. Source code: [ua-parser.min.js](https://github.com/faisalman/ua-parser-js)
 
 This data is mapped into the `event_data` object under `device_vendor`, `os_version`, `device_model`, etc.
 
@@ -452,7 +454,7 @@ This data is mapped into the `event_data` object under `device_vendor`, `os_vers
 ### Cross-domain Architecture
 Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links. 
 
-For retrieving the active `client_id` and `session_id` the Nameless Analytics Client-Side Tracker tag needs to perform a handshake with the server before redirecting and decorating outbound URLs with the `na_id` parameter in real time.
+For retrieving the active `client_id` and `session_id` the Nameless Analytics Client-Side Tracker Tag needs to perform a handshake with the server before redirecting and decorating outbound URLs with the `na_id` parameter in real time.
 
 Since link decoration happens dynamically upon clicking (to ensure ID freshness and bypass `HttpOnly` restrictions), cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
 
