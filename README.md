@@ -454,9 +454,7 @@ Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisib
 
 For retrieving the active `client_id` and `session_id` the Nameless Analytics Client-Side Tracker tag needs to perform a handshake with the server before redirecting and decorating outbound URLs with the `na_id` parameter in real time.
 
-Since link decoration happens dynamically upon clicking (to ensure ID freshness and bypass `HttpOnly` restrictions), cross-domain tracking **will not work** if the user opens the link via:
-- a right-click menu (e.g., "Open link in new tab") 
-- keyboard shortcuts (e.g., "Ctrl + Click")
+Since link decoration happens dynamically upon clicking (to ensure ID freshness and bypass `HttpOnly` restrictions), cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
 
 <details><summary>How the cross-domain handshake works</summary>
 
@@ -550,12 +548,22 @@ The system transparently tracks pipeline health by measuring **ingestion latency
 
 
 ### Bot Protection
-Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 45 keywords, including:
-- **AI Agents & LLMs:** `gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytspider`, `ccbot`.
-- **SEO & Marketing Bots:** `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
-- **HTTP Libraries:** `curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.
-- **Automation & Security:** `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
+Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 45 User-Agent strings
 
+<details><summary>See bot protection list</summary>
+
+#### AI Agents & LLMs 
+`gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytspider`, `ccbot`.
+
+#### SEO & Marketing Bots 
+`ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
+
+#### HTTP Libraries 
+`curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.
+
+#### Automation & Security 
+`nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
+</details>
 
 ### Geolocation & Privacy by Design
 Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations. 
