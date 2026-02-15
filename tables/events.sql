@@ -165,6 +165,8 @@ select
     (select value.string from unnest(event_data) where name = 'os_version') as os_version, 
     (select value.string from unnest(event_data) where name = 'screen_size') as screen_size, 
       
+    (select value.string from unnest(event_data) where name = 'hostname') as hostname,
+
     (select value.string from unnest(event_data) where name = 'country') as country, 
     (select value.string from unnest(event_data) where name = 'city') as city, 
         
