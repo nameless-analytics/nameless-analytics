@@ -74,7 +74,7 @@ Ensure you have the following resources under the same account or service accoun
   - or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) with `X-Gclb-Country` and `X-Gclb-Region` headers configured (thanks to [Simo Ahava](https://www.simoahava.com/))
   - or [Stape](https://stape.io) with geo headers power up enabled
 - A Google Cloud Project with an active billing account
-- A Google BigQuery project + dataset, tables and table functions created using the provided [SQL scripts](tables/TABLES.md)
+- A Google BigQuery project + dataset, raw tables and table functions created using the provided [SQL scripts](tables/TABLES.md)
 - A Google Firestore database enabled in Native Mode
 
 Download and import the following GTM containers:
