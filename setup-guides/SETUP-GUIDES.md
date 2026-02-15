@@ -56,12 +56,13 @@ Ensure that the `page_view` event is the **first** event triggered on every page
 
 Page view tags can be triggered in many ways:
 
+
 ### Via GTM standard page view trigger
 Using any standard GTM trigger (such as **All Pages**).
 
 
 ### Via browser history (Route change)
-Using history changes `pushState` or `replaceState`.
+Using history changes `pushState` or `replaceState`. Make sure to update the page title and any relevant dataLayer parameters before the history change otherwise the Page Title and Page Category will not be set correctly.
 
 This is the preferred method for SPAs since the page referrer for virtual page views is maintained even if a page is reloaded and page information is retrieved automatically from the history state.
 
@@ -74,7 +75,6 @@ dataLayer.push({
 history.pushState('', '', '/product_name');
 ```
 
-> Make sure to update the page title and any relevant dataLayer parameters before the history change otherwise the Page Title and Page Category will not be set correctly.
 
 ### Via custom dataLayer event
 Using custom dataLayer events.
