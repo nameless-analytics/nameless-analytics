@@ -33,7 +33,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [Data Integrity](#data-integrity)
   - [Real-time Forwarding](#real-time-forwarding)
   - [Self-Monitoring & Performance](#self-monitoring-performance)
-  - [Bot Protection](#bot-protection)
+  - [Bot protection](#bot-protection)
   - [Geolocation & Privacy by Design](#geolocation-privacy-by-design)
   - [Cookies](#cookies)
   - [Streaming Protocol](#streaming-protocol)
@@ -554,8 +554,8 @@ Supports instantaneous data streaming to external HTTP endpoints immediately aft
 The system transparently tracks pipeline health by measuring **ingestion latency** (the exact millisecond delay between the client hit and server processing) and **payload size**. This data allows for high-resolution monitoring of the real-time data flow directly within BigQuery.
 
 
-### Bot Protection
-Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 45 User-Agent strings
+### Bot protection
+Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 45 User-Agent strings.
 
 <details><summary>See bot protection list</summary>
 
@@ -571,6 +571,7 @@ Actively detects and blocks automated traffic returning a `403 Forbidden` status
 #### Automation & Security 
 `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
 </details>
+
 
 ### Geolocation & Privacy by Design
 Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations. 
