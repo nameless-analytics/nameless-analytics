@@ -28,6 +28,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [Debugging events](#debugging-events)
 - [Server-Side Processing](#server-side-processing)
   - [Security and Validation](#security-and-validation)
+  - [Transparency](#transparency)
   - [ID Management](#id-management-1)
   - [Data Integrity](#data-integrity)
   - [Real-time Forwarding](#real-time-forwarding)
@@ -522,6 +523,10 @@ The **Server-Side Client Tag** serves as security gateway and data orchestrator.
 Validates request origins and authorized domains (CORS) before processing to prevent unauthorized usage.
 
 
+### Transparency
+The data processed by the server is returned to the client within the request response. This provides full visibility into the collected information, allowing for real-time verification and ensuring the entire data pipeline remains transparent and auditable directly from the browser's network tab.
+
+
 ### ID Management
 The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
 
@@ -608,8 +613,6 @@ The Server-Side Client Tag will automatically reject any request where `event_or
 Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**. 
 
 For detailed information on server-side errors (403 Forbidden) and validation issues, refer to the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING.md).
-
-
 
 ## Storage
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:
