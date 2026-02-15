@@ -60,19 +60,19 @@ Nameless Analytics is an open-source, first-party data collection infrastructure
 Built upon a transparent pipeline hosted entirely on your own Google Cloud Platform environment, at a high level, the platform solves critical challenges in modern analytics:
 
 1.  **Total Data Ownership**: Unlike commercial tools where data resides on third-party servers, Nameless Analytics pipelines every interaction directly to your BigQuery warehouse. You own the raw data, the retention policies and the reporting.
-2.  **Data Quality**: By leveraging a server-side, first-party architecture, the platform bypasses common client-side restrictions (such as ad blockers and ITP), ensuring granular, unsampled data collection that is far more accurate than standard client-side tags.
+2.  **Data Quality**: By leveraging a server-side, first-party architecture, the platform can bypasses common client-side restrictions (such as ad blockers and ITP), ensuring granular, unsampled data collection that is far more accurate than the standard client-side tracking.
 3.  **Real-Time Activation**: Stream identical event payloads to external APIs, CRMs, or marketing automation tools the instant an event occurs, enabling true real-time personalization.
 4.  **Scaling and Cost-Efficiency**: Engineered to run effectively within the **Google Cloud Free Tier** for small to medium traffic, while scaling to a highly cost-efficient pay-per-use model for enterprise-grade deployments.
 
 
 
 ## Quick Start
-Ensure you have the following resources under the same account:
+Ensure you have the following resources under the same account or service account:
 - A Client-side Google Tag Manager container
 - A Server-side Google Tag Manager container running on:
-  - [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
-  - or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us)
-  - or [Stape](https://stape.io) with geo headers power up enable
+  - [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) (thanks to [Simo Ahava](https://www.simoahava.com/))
+  - or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) with `X-Gclb-Country` and `X-Gclb-Region` headers configured (thanks to [Simo Ahava](https://www.simoahava.com/))
+  - or [Stape](https://stape.io) with geo headers power up enabled
 - A Google Cloud Project with an active billing account
 - A Google BigQuery project + dataset, tables and table functions created using the provided [SQL scripts](tables/TABLES.md)
 - A Google Firestore database enabled in Native Mode

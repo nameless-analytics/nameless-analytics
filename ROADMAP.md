@@ -17,17 +17,15 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 ### 🟡 - Medium Priority
 - Move channel-grouping logic from nameless-analytics.js to server side and add custom channel-grouping rules (Server-side client tag)
 - Add custom bot detections (Server-side client tag)
-- Add core web vitals metrics (Client-side tracker tag)
 
 
 ### 🟢 - Low Priority
-- Website design
+- Add acquisition information in url when respect consent mode is enabled for denied hit (Client-side tracker tag)
+- Add core web vitals metrics (Client-side tracker tag)
 
 
 ### 🔵 - TBD
-- Terraform script
-- Add acquisition information in url when respect consent mode is enabled for denied hit (Client-side tracker tag)
-- Fix cross-domain tracking for links opened via a right-click menu (nameless-analytics.js)
+- Website design
 
 ---
 
