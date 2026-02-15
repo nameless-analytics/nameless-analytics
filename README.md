@@ -333,6 +333,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | os_version                    | String   | Client-Side | Operating system version                      |
 |                    | screen_size                   | String   | Client-Side | Screen resolution                             |
 |                    | viewport_size                 | String   | Client-Side | Browser viewport size                         |
+|                    | hostname                      | String   | Server-Side | Event hostname                              |
 |                    | country                       | String   | Server-Side | Event geolocation country                     |
 |                    | city                          | String   | Server-Side | Event geolocation city                        |
 |                    | tld_source                    | String   | Client-Side | Event top-level domain source                 |

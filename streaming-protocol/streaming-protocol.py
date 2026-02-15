@@ -12,27 +12,27 @@ from google.cloud import bigquery
 
 
 # User cookies
-na_u = '[YOUR_NA_U_COOKIE_VALUE]' # Modify this according to the current user's na_u cookie value
-na_s = '[YOUR_NA_S_COOKIE_VALUE]' # Modify this according to the current user's na_s cookie value
+na_s = 'GmvyYdQjp7llENO_UOi1nNgWL96zvnV-Ba6r2Bv28ywByK' # Modify this according to the current user's na_s cookie value
+
+client_id = na_s.split('_')[0]
+session_id = na_s.split('_')[1].split('-')[0]
+
+# Request settings
+full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
+origin = 'https://tommasomoretti.com' # Modify this according to website origin
+api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5YzYyNTNkMjExODcxMzc1NTJmZQ==' # Modify this according to the GTM Server-side preview header
 
 
 # Request settings
-full_endpoint = 'https://gtm.yourdomain.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
-origin = 'https://yourdomain.com' # Modify this according to website origin
-api_key = '[YOUR_API_KEY]' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = '[YOUR_GTM_SERVER_PREVIEW_HEADER]' # Modify this according to the GTM Server-side preview header
-
-
-
-# Event settings
-user_id = '[OPTIONAL_USER_ID]' # Add it if needed
 event_name = 'purchase' # Modify this according to the event name to be sent
+user_id = '[OPTIONAL_USER_ID]' # Add it if needed
 
 # BigQuery settings
-bq_project_id = '[YOUR_BQ_PROJECT_ID]' # Modify this according to your BigQuery project ID
-bq_dataset_id = '[YOUR_BQ_DATASET_ID]' # Modify this according to your BigQuery dataset ID
+bq_project_id = 'tom-moretti' # Modify this according to your BigQuery project ID
+bq_dataset_id = 'nameless_analytics' # Modify this according to your BigQuery dataset ID
 bq_table_id = 'events_raw' # Modify this according to your BigQuery table ID
-bq_credentials_path = '[PATH_TO_YOUR_SERVICE_ACCOUNT_JSON]' # Modify this according to your service account JSON file path
+bq_credentials_path = '/Users/tommasomoretti/Library/CloudStorage/GoogleDrive-tommasomoretti88@gmail.com/Il mio Drive/Lavoro/Nameless Analytics/worker_service_account.json' # Modify this according to your service account JSON file path
 
 
 # --------------------------------------------------------------------------------------------------------------
@@ -104,13 +104,15 @@ event_origin = "Streaming protocol"
 user_agent = 'Nameless Analytics - Streaming protocol'
 
 payload = {
+    "user_date": event_date,
+    "client_id": client_id,
     "user_data": {
-        "user_source": "Streaming protocol"
     },
 
+    "session_date": event_date,
+    "session_id": session_id,
     "session_data": {
-        "session_source": "Streaming protocol",
-      "user_id": user_id,
+        # "user_id": user_id, # Optional
     },
 
     "page_date": page_date_from_bq,
@@ -123,7 +125,29 @@ payload = {
     "event_name": event_name,
     "event_origin": event_origin,
     "event_data": {
-        "event_type": "event"
+        "event_type": "event" # Optional,
+        # "channel_grouping": None, # Optional
+        # "source": None, # Optional
+        # "campaign": None, # Optional
+        # "campaign_id": None, # Optional
+        # "campaign_click_id": None, # Optional
+        # "campaign_term": None, # Optional
+        # "campaign_content": None, # Optional
+        # "user_agent": user_agent, # Optional
+        # "browser_name": None, # Optional
+        # "browser_language": None, # Optional
+        # "browser_version": None, # Optional
+        # "device_type": None, # Optional
+        # "device_vendor": None, # Optional
+        # "device_model": None, # Optional
+        # "os_name": None, # Optional
+        # "os_version": None, # Optional
+        # "screen_size": None, # Optional
+        # "viewport_size": None, # Optional
+        # "hostname": None, # Optional
+        # "country": None, # Optional
+        # "city": None, # Optional
+        # "tld_source": None, # Optional
     },
 
     "ecommerce": {
@@ -147,12 +171,6 @@ payload = {
       "cs_container_id": None,
       "cs_tag_name": None,
       "cs_tag_id": None,
-      "ss_hostname": None,
-      "ss_container_id": None,
-      "ss_tag_name": None,
-      "ss_tag_id": None,
-      "processing_event_timestamp": None,
-      "content_length": None
     }
 }
 
@@ -165,7 +183,7 @@ headers = {
     'Content-Type': 'application/json',
     'Origin': origin,
     'User-Agent': user_agent,
-    'Cookie': f'na_u={na_u}; na_s={na_s}' 
+    'Cookie': f'na_u={client_id}; na_s={na_s}' 
 }
 
 try:
