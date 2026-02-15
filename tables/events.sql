@@ -39,9 +39,14 @@ select
 
     (select value.string from unnest(user_data) where name = 'user_device_type') as user_device_type,
     (select value.string from unnest(user_data) where name = 'user_country') as user_country,
+    (select value.string from unnest(user_data) where name = 'user_city') as user_city,
     (select value.string from unnest(user_data) where name = 'user_language') as user_language,
       
     -- Add user level custom dimension here
+    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name')) over (partition by client_id order by event_timestamp asc) as session_exit_page_category, -- First touch value
+    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name') ignore nulls) over (partition by client_id order by event_timestamp asc) as session_exit_page_category, -- First touch not null value
+    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name')) over (partition by client_id order by event_timestamp desc) as session_parameter_name, -- Last touch value
+    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name') ignore nulls) over (partition by client_id order by event_timestamp desc) as session_parameter_name, -- Last touch not null value
     
     
     # SESSION DATA
@@ -56,7 +61,7 @@ select
     
     -- Exclude streaming protocol events
     datetime_diff(
-      timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', (SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_end_timestamp'), NULL)) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC)), 
+      timestamp_millis(first_value(IF(event_origin != 'Streaming Protocol', (SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_end_timestamp'), NULL)) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC)), 
       timestamp_millis((SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_start_timestamp'))
     , second) AS session_duration_sec,
 
@@ -80,6 +85,7 @@ select
 
     (select value.string from unnest(session_data) where name = 'session_device_type') as session_device_type,
     (select value.string from unnest(session_data) where name = 'session_country') as session_country,
+    (select value.string from unnest(session_data) where name = 'session_city') as session_city,
     (select value.string from unnest(session_data) where name = 'session_language') as session_language,
 
     (select value.string from unnest(session_data) where name = 'session_browser_name') as session_browser_name,
@@ -93,7 +99,10 @@ select
     first_value((select value.string from unnest(session_data) where name = 'session_exit_page_title')) over (partition by session_id order by event_timestamp desc) as session_exit_page_title,
     
     -- Add session level custom dimension here
-      
+    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name')) over (partition by session_id order by event_timestamp asc) as session_exit_page_category, -- First touch value
+    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name') ignore nulls) over (partition by session_id order by event_timestamp asc) as session_exit_page_category, -- First touch not null value
+    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name')) over (partition by session_id order by event_timestamp desc) as session_parameter_name, -- Last touch value
+    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name') ignore nulls) over (partition by session_id order by event_timestamp desc) as session_parameter_name, -- Last touch not null value
       
     # PAGE DATA
     page_date,
@@ -116,7 +125,7 @@ select
 
     -- Exclude streaming protocol events
     datetime_diff(
-      timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', event_timestamp, NULL)) over (partition by page_id order by event_timestamp desc)),
+      timestamp_millis(first_value(IF(event_origin != 'Streaming Protocol', event_timestamp, NULL)) over (partition by page_id order by event_timestamp desc)),
       timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
     ,second) as time_on_page,  
 
@@ -124,10 +133,7 @@ select
     -- datetime_diff(
     --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp desc)),
     --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
-    -- , second) as time_on_page,
-    
-    -- Add page level custom dimension here
-    
+    -- , second) as time_on_page,    
     
     # EVENT DATA
     event_date,
@@ -171,7 +177,7 @@ select
     (select value.string from unnest(event_data) where name = 'search_term') as search_term, 
     
     -- Add event level custom dimension here
-    
+    -- (select value.string from unnest(event_data) where name = 'parameter_name') as parameter_name
     
     # ECOMMERCE DATA
     ecommerce,
@@ -205,12 +211,11 @@ select
     (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') as processing_event_timestamp,
     (select value.int from unnest(gtm_data) where name = 'content_length') as content_length,
 
-    # RAW RECORD ARRAYS
+    # RAW ARRAY DATA
     user_data,
     session_data,
     page_data,
-    event_data,
-    gtm_data
+    event_data
     
   from `tom-moretti.nameless_analytics.events_raw`
   where true

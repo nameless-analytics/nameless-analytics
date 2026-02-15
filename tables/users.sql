@@ -17,6 +17,7 @@ with base_events as (
       user_campaign_content,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       days_from_first_to_last_visit,
       days_from_first_visit,
@@ -48,6 +49,7 @@ with base_events as (
       user_campaign_content,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       max(days_from_first_to_last_visit) as days_from_first_to_last_visit,
       max(days_from_first_visit) as days_from_first_visit,
@@ -95,6 +97,7 @@ with base_events as (
       user_campaign_content,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       days_from_first_to_last_visit,
       days_from_first_visit,
@@ -149,6 +152,7 @@ with base_events as (
     user_campaign_content,
     user_device_type,
     user_country,
+    user_city,
     user_language,
     case 
       when max(total_sessions) = 1 then 'new_user'

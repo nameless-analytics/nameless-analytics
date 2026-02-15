@@ -11,6 +11,7 @@ with event_data as (
       user_campaign,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       case 
         when session_number = 1 then 'new_user'
@@ -46,6 +47,7 @@ with event_data as (
       session_hostname,
       session_device_type,
       session_country,
+      session_city,
       session_language,
       session_browser_name,
 
@@ -68,6 +70,7 @@ with event_data as (
       user_campaign,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       user_type,
       new_user,
@@ -94,6 +97,7 @@ with event_data as (
       session_hostname,
       session_device_type,
       session_country,
+      session_city,
       session_language,
       session_browser_name,
       event_date
@@ -113,6 +117,7 @@ with event_data as (
       user_campaign,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       user_type,
       new_user,
@@ -139,6 +144,7 @@ with event_data as (
       session_hostname,
       session_device_type,
       session_country,
+      session_city,
       session_language,
       session_browser_name,
       event_date
@@ -159,6 +165,7 @@ with event_data as (
       user_campaign,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       user_type,
       new_user,
@@ -185,6 +192,7 @@ with event_data as (
       session_hostname,
       session_device_type,
       session_country,
+      session_city,
       session_language,
       session_browser_name,
       event_date
@@ -205,6 +213,7 @@ with event_data as (
       user_campaign,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       user_type,
       new_user,
@@ -231,6 +240,7 @@ with event_data as (
       session_hostname,
       session_device_type,
       session_country,
+      session_city,
       session_language,
       session_browser_name,
       event_date
@@ -251,6 +261,7 @@ with event_data as (
       user_campaign,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       user_type,
       new_user,
@@ -277,6 +288,7 @@ with event_data as (
       session_hostname,
       session_device_type,
       session_country,
+      session_city,
       session_language,
       session_browser_name,
       event_date
@@ -297,6 +309,7 @@ with event_data as (
       user_campaign,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       user_type,
       new_user,
@@ -323,6 +336,7 @@ with event_data as (
       session_hostname,
       session_device_type,
       session_country,
+      session_city,
       session_language,
       session_browser_name,
       event_date
@@ -343,6 +357,7 @@ with event_data as (
       user_campaign,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       user_type,
       new_user,
@@ -369,6 +384,7 @@ with event_data as (
       session_hostname,
       session_device_type,
       session_country,
+      session_city,
       session_language,
       session_browser_name,
       event_date
@@ -389,6 +405,7 @@ with event_data as (
       user_campaign,
       user_device_type,
       user_country,
+      user_city,
       user_language,
       user_type,
       new_user,
@@ -415,6 +432,7 @@ with event_data as (
       session_hostname,
       session_device_type,
       session_country,
+      session_city,
       session_language,
       session_browser_name,
       event_date
@@ -435,6 +453,7 @@ with event_data as (
       all_sessions.user_campaign,
       all_sessions.user_device_type,
       all_sessions.user_country,
+      all_sessions.user_city,
       all_sessions.user_language,
       all_sessions.user_type,
       all_sessions.new_user,
@@ -461,6 +480,7 @@ with event_data as (
       all_sessions.session_hostname,
       all_sessions.session_device_type,
       all_sessions.session_country,
+      all_sessions.session_city,
       all_sessions.session_language,
       all_sessions.session_browser_name,
       
@@ -528,6 +548,7 @@ with event_data as (
     user_campaign,
     user_device_type,
     user_country,
+    user_city,
     user_language,
     user_type,
     new_user,
@@ -554,21 +575,22 @@ with event_data as (
     session_hostname,
     session_device_type,
     session_country,
+    session_city,
     session_language,
     session_browser_name,
     event_date,
     step_name,
     lead(client_id, 1) over (
-      partition by client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_language, session_browser_name
-      order by event_date, client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_language, session_browser_name, step_name
+      partition by client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_city, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_city, session_language, session_browser_name
+      order by event_date, client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_city, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_city, session_language, session_browser_name, step_name
     ) as client_id_next_step,
     lead(user_id, 1) over (
-      partition by client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_language, session_browser_name
-      order by event_date, client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_language, session_browser_name, step_name
+      partition by client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_city, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_city, session_language, session_browser_name
+      order by event_date, client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_city, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_city, session_language, session_browser_name, step_name
     ) as user_id_next_step,
     lead(session_id, 1) over (
-      partition by client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_language, session_browser_name
-      order by event_date, client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_language, session_browser_name, step_name
+      partition by client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_city, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_city, session_language, session_browser_name
+      order by event_date, client_id, user_id, user_channel_grouping, user_source, user_tld_source, user_campaign, user_device_type, user_country, user_city, user_language, user_type, new_user, returning_user, session_date, session_number, session_id, session_start_timestamp, session_end_timestamp, session_duration_sec, session_channel_grouping, session_source, session_tld_source, session_campaign, cross_domain_session, session_landing_page_category, session_landing_page_location, session_landing_page_title, session_exit_page_category, session_exit_page_location, session_exit_page_title, session_hostname, session_device_type, session_country, session_city, session_language, session_browser_name, step_name
     ) as session_id_next_step
   from steps_pivot
   where true 

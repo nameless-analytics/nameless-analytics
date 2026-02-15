@@ -18,6 +18,7 @@ with base_events as (
       user_campaign_content,
       user_device_type, 
       user_country, 
+      user_city,
       user_language, 
 
       # SESSION DATA
@@ -42,6 +43,7 @@ with base_events as (
       session_device_type, 
       session_browser_name,
       session_country, 
+      session_city,
       session_language,
       session_hostname,
       session_landing_page_category, 
@@ -84,6 +86,7 @@ with base_events as (
       user_campaign_content,
       user_device_type, 
       user_country, 
+      user_city,
       user_language, 
 
       # SESSION DATA
@@ -106,6 +109,7 @@ with base_events as (
       session_device_type, 
       session_browser_name,
       session_country, 
+      session_city,
       session_language,
       session_landing_page_category, 
       session_landing_page_location, 
@@ -186,7 +190,8 @@ with base_events as (
       user_campaign_term,
       user_campaign_content,
       user_device_type, 
-      user_country, 
+      user_country,
+      user_city, 
       user_language, 
 
       # SESSION DATA
@@ -209,6 +214,7 @@ with base_events as (
       session_device_type, 
       session_browser_name,
       session_country, 
+      session_city,
       session_language,
       session_landing_page_category, 
       session_landing_page_location, 

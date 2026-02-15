@@ -57,9 +57,7 @@ declare dates_table_path string default CONCAT('`', project_name, '.', dataset_n
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-# Enable BigQuery advanced runtime (for more info https://cloud.google.com/bigquery/docs/advanced-runtime)
-# Enables a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries
+# Enable BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. For more informations: https://cloud.google.com/bigquery/docs/advanced-runtime
 declare enable_bigquery_advanced_runtime string default format(
   """
     ALTER PROJECT `%s`
@@ -70,7 +68,7 @@ declare enable_bigquery_advanced_runtime string default format(
 , project_name, dataset_location);
 
 
-# Main dataset (for more info https://cloud.google.com/bigquery/docs/datasets#sql)
+# Create main dataset (for more info https://cloud.google.com/bigquery/docs/datasets#sql)
 declare main_dataset_sql string default format(
   """
     create schema if not exists %s
@@ -87,7 +85,7 @@ declare main_dataset_sql string default format(
 , main_dataset_path, dataset_location);
 
 
-# Main table
+# Create main table
 declare main_table_sql string default format(
   """
     create table if not exists %s (
@@ -172,7 +170,7 @@ declare main_table_sql string default format(
           name STRING OPTIONS (description = 'GTM execution parameter name'),
           value STRUCT<
             string STRING OPTIONS (description = 'GTM execution parameter string value'),
-            int INT64 OPTIONS (description = 'GTM execution parameter int number value')
+            int INT64 OPTIONS (description = 'Event data parameter int number value')
           > OPTIONS (description = 'GTM execution parameter value name')
         >
       > OPTIONS (description = 'GTM execution data')
@@ -189,7 +187,7 @@ declare main_table_sql string default format(
 , main_table_path);
 
 
-# Dates table
+# Create dates table
 declare dates_table_sql string default FORMAT(
   """
     create table if not exists %s (
@@ -231,12 +229,17 @@ declare dates_table_sql string default FORMAT(
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+# Enable BigQuery advanced runtime
+execute immediate enable_bigquery_advanced_runtime; 
 
-# Create tables 
-execute immediate enable_bigquery_advanced_runtime;
-execute immediate main_dataset_sql;
-execute immediate main_table_sql;
-execute immediate dates_table_sql;
+# Create main dataset
+execute immediate main_dataset_sql; 
+
+# Create main table
+execute immediate main_table_sql; 
+
+# Create dates table
+execute immediate dates_table_sql; 
 ```
 </details>
 
@@ -251,8 +254,8 @@ execute immediate dates_table_sql;
 
 
 
-## Tables
-Tables are the foundational storage layer of Nameless Analytics, designed to capture and preserve every user interaction in its raw, unprocessed form. These tables serve as the single source of truth for all analytics data, storing event-level information with complete historical fidelity.
+## Raw tables
+Raw tables are the foundational storage layer of Nameless Analytics, designed to capture and preserve every user interaction in its raw, unprocessed form. These tables serve as the single source of truth for all analytics data, storing event-level information with complete historical fidelity.
 
 The architecture consists of two core tables: the **Events raw table** (`events_raw`), which stores all user, session, page, event, ecommerce, consent, and GTM performance data in a denormalized structure optimized for both write performance and analytical queries; and the **Dates table** (`calendar_dates`), a utility dimension table that provides comprehensive date attributes for time-based analysis and reporting.
 
@@ -316,6 +319,8 @@ This table is partitioned by `date` and clustered by `month_name` and `day_name`
 Table functions are predefined SQL queries that simplify data analysis by transforming raw event data into structured, easy-to-use formats for common reporting needs.
 
 Unlike other systems, Nameless Analytics reporting functions are designed to work directly on the `events_raw` table as the single source of truth. By leveraging BigQuery **Window Functions**. This approach ensures that reports always reflect the most up-to-date state of the data without the need for complex ETL processes or intermediate staging tables.
+
+Streaming protocol events are excluded from the calculation of the `session_duration` and `time_on_page` fields.
 
 
 ### Events

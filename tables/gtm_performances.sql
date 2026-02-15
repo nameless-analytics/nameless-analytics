@@ -13,7 +13,8 @@ with base_events as (
       user_tld_source, 
       user_campaign, 
       user_device_type, 
-      user_country, 
+      user_country,
+      user_city, 
       user_language, 
 
       # SESSION DATA
@@ -29,8 +30,9 @@ with base_events as (
       session_tld_source, 
       session_campaign,
       session_device_type, 
-      session_browser_name,
+      session_browser_name, 
       session_country, 
+      session_city,
       session_language,
       session_hostname, 
       session_landing_page_category, 
@@ -74,6 +76,7 @@ with base_events as (
     user_campaign,
     user_device_type,
     user_country,
+    user_city, 
     user_language,
     user_type,
     new_user,
@@ -100,6 +103,7 @@ with base_events as (
     session_hostname,
     session_device_type,
     session_country,
+    session_city,
     session_language,
     session_browser_name,
 

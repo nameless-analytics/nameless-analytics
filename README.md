@@ -393,7 +393,7 @@ When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and t
 ### ID Management
 The tracker automatically generates and manages unique identifiers for pages, and events.
   
-<details><summary>See page_id and event_id values</summary>
+<details><summary>See page ID and event ID values</summary>
 
 </br>
 
@@ -525,7 +525,7 @@ Validates request origins and authorized domains (CORS) before processing to pre
 ### ID Management
 The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
 
-<details> <summary>See client_id and session_id values</summary>
+<details><summary>See client ID and session ID values</summary>
 
 </br>
 
@@ -598,8 +598,6 @@ The Streaming Protocol is specifically designed for server-to-server communicati
 Use the Streaming Protocol to:
 - Attribute realtime events to a session by sending data from your backend when a purchase or subscription is completed.
 - Attribute offline events to a session by sending data from your backend days after a session ended.
-
-(Streaming protocol events are excluded from the calculation of the session_duration field)
 
 To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol.
 
