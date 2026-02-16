@@ -10,18 +10,18 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 ## To do
 ### 🔴 - High Priority
 - Review table functions 
-- Add BigQuery DML for create table functions
 - Review example Google Looker Studio dashboard
+- Add BigQuery DML for create table functions
 
 
 ### 🟡 - Medium Priority
-- Move channel-grouping logic from nameless-analytics.js to server side and add custom channel-grouping rules (Server-side client tag)
-- Add custom bot detections (Server-side client tag)
+- Move channel-grouping logic from nameless-analytics.js to server side for processing both Web and Streaming protocol requests
+- Add custom channel-grouping rules (Server-side client tag)
 
 
 ### 🟢 - Low Priority
 - Add acquisition information in url when respect consent mode is enabled for denied hit (Client-side tracker tag)
-- Add core web vitals metrics (Client-side tracker tag)
+- Add core web vitals metrics (Client-side tracker tag) for page_load_time event.
 
 
 ### 🔵 - TBD
