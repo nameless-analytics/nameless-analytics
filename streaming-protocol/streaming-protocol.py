@@ -4,6 +4,7 @@
 import requests
 import secrets
 import sys
+from urllib.parse import urlparse
 from datetime import datetime, timezone
 from google.cloud import bigquery
 
@@ -12,17 +13,16 @@ from google.cloud import bigquery
 
 
 # User cookies
-na_s = 'GmvyYdQjp7llENO_UOi1nNgWL96zvnV-Ba6r2Bv28ywByK' # Modify this according to the current user's na_s cookie value
-
+na_s = 'LPqJP8hpxpGedIA_sKWExPWU8qZLi1v-b62nO18gD6tqRh' # Modify this according to the current user's na_s cookie value
 client_id = na_s.split('_')[0]
 session_id = na_s.split('_')[1].split('-')[0]
 
 # Request settings
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
 origin = 'https://tommasomoretti.com' # Modify this according to website origin
+hostname = urlparse(origin).netloc
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
 gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5YzYyNTNkMjExODcxMzc1NTJmZQ==' # Modify this according to the GTM Server-side preview header
-
 
 # Request settings
 event_name = 'purchase' # Modify this according to the event name to be sent
@@ -125,7 +125,7 @@ payload = {
     "event_name": event_name,
     "event_origin": event_origin,
     "event_data": {
-        "event_type": "event" # Optional,
+        "event_type": "event",
         # "channel_grouping": None, # Optional
         # "source": None, # Optional
         # "campaign": None, # Optional
@@ -144,7 +144,7 @@ payload = {
         # "os_version": None, # Optional
         # "screen_size": None, # Optional
         # "viewport_size": None, # Optional
-        # "hostname": None, # Optional
+        "hostname": hostname,
         # "country": None, # Optional
         # "city": None, # Optional
         # "tld_source": None, # Optional
@@ -177,8 +177,8 @@ payload = {
 print('👉 Send request to ' + full_endpoint)
 
 headers = {
-    'X-Gtm-Server-Preview': gtm_preview_header,
     'x-Api-Key': api_key,
+    'X-Gtm-Server-Preview': gtm_preview_header,
 
     'Content-Type': 'application/json',
     'Origin': origin,
