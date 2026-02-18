@@ -110,7 +110,7 @@ payload = {
     },
 
     "session_date": event_date,
-    "session_id": session_id,
+    "session_id": f"{client_id}_{session_id}",
     "session_data": {
         # "user_id": user_id, # Optional
     },

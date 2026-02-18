@@ -25,6 +25,8 @@ For an overview of how Nameless Analytics works [start from here](https://github
 ### Session enrichment
 The Streaming Protocol is designed for secondary interactions (conversions, backend events, offline data). **`page_view` events are not allowed** via the Streaming Protocol and must be sent through the standard website tracker to correctly initialize the session context.
 
+> ⚠️ **Note on session duration**: Events sent via the Streaming Protocol are recorded in BigQuery but **do not extend the session duration** (`session_duration_sec`). By default, duration calculation remains based exclusively on on-site events (`event_origin = 'Website'`).
+
 
 ### BigQuery enrichment
 Automatically retrieves page_data from your BigQuery `events_raw` table based on the `na_s` cookie, allowing you to enrich server-side events to send with the correct page data.

@@ -190,8 +190,8 @@ with base_events as (
     sum(session_purchase_revenue) as purchase_revenue,
     sum(session_refund_revenue) as refund_revenue,
     sum(session_purchase_revenue) + sum(session_refund_revenue) as revenue_net_refund,
-    avg(session_avg_purchase_value) as avg_purchase_value,
-    avg(session_avg_refund_value) as avg_refund_value
+    safe_divide(sum(session_purchase_revenue), sum(purchase)) as avg_purchase_value,
+    safe_divide(sum(session_refund_revenue), sum(refund)) as avg_refund_value,
   from user_prep
   group by all
 );

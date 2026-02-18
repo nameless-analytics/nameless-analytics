@@ -27,6 +27,9 @@ For an overview of how Nameless Analytics works [start from here](https://github
   - [GTM performances](#gtm-performances)
   - [Consents](#consents)
 - [Reporting fields](#reporting-fields)
+- [Data Governance and Maintenance](#data-governance-and-maintenance)
+  - [GDPR & Privacy Compliance](#gdpr--privacy-compliance)
+  - [Data Health Check](#data-health-check)
 
 
 
@@ -544,8 +547,8 @@ Aggregates data at the user level, calculating lifecycle metrics like total sess
 | `purchase_revenue` | FLOAT | Total revenue generated | `sum(session_purchase_revenue)` |
 | `refund_revenue` | FLOAT | Total revenue refunded | `sum(session_refund_revenue)` |
 | `revenue_net_refund` | FLOAT | Revenue minus refunds | `purchase_revenue + refund_revenue` |
-| `avg_purchase_value` | FLOAT | Average order value | `avg(session_avg_purchase_value)` |
-| `avg_refund_value` | FLOAT | Average refund value | `avg(session_avg_refund_value)` |
+| `avg_purchase_value` | FLOAT | Average order value | `safe_divide(sum(session_purchase_revenue), sum(purchase))` |
+| `avg_refund_value` | FLOAT | Average refund value | `safe_divide(sum(session_refund_revenue), sum(refund))` |
 
 </details>
 
@@ -587,7 +590,7 @@ Groups events into individual sessions, calculating duration, bounce rates, and 
 | `first_session` | STRING | 'true' if it is the first session | `if session_number = 1 then 'true' else 'false'` |
 | `cross_domain_session` | STRING | Flag for cross-domain sessions | `events.cross_domain_session` |
 | `session_start_timestamp` | INTEGER | Session start timestamp | `events.session_start_timestamp` |
-| `session_duration_sec` | INTEGER | Session duration in seconds | `events.session_duration_sec` |
+| `session_duration_sec` | INTEGER | Session duration in seconds (based on Website events only) | `events.session_duration_sec` |
 | `new_session` | INTEGER | 1 if new session, else 0 | `events.new_session` |
 | `new_sessions_percentage` | FLOAT | Percentage of new sessions | `safe_divide(sum(new_session), count(distinct session_id))` |
 | `returning_session` | INTEGER | 1 if returning session, else 0 | `events.returning_session` |
@@ -1351,14 +1354,32 @@ This table illustrates the fields available across different table functions, al
 ## Data Governance and Maintenance
 Below are SQL templates to help you manage data integrity and comply with privacy regulations.
 
+
 ### GDPR & Privacy Compliance
-To delete all data associated with a specific user (Right to be Forgotten), use the following script. Note that since the table is partitioned by `event_date`, this operation is efficient in terms of cost if you also specify a date range (optional but recommended).
+To comply with GDPR "Right to be Forgotten" requests, data must be removed from both the historical timeline (BigQuery) and the real-time snapshots (Firestore).
+
+**Unified Deletion Script (Recommended)**
+```markdown
+You can use the provided Python script `users-deletion-tools.py` in the root directory to handle both deletions in a single command.
+```
+
+```bash
+# Usage
+python users-deletion-tools.py [CLIENT_ID]
+```
+
+**Manual BigQuery Deletion**
+If you prefer manual deletion in BigQuery, use the following DML statement:
 
 ```sql
 # Delete all records for a specific client_id
 DELETE FROM `project.dataset.events_raw`
 WHERE client_id = 'USER_CLIENT_ID';
 ```
+
+**Manual Firestore Deletion**
+Locate the document in the `users` collection where the Document ID matches the `client_id` and delete it. This will remove the user profile and all associated session summaries.
+
 
 ### Data Health Check
 To ensure your data pipeline is healthy and active, use this query to monitor the event volume per day. Sudden drops might indicate configuration issues in GTM or Cloud Run.
@@ -1369,9 +1390,9 @@ SELECT
   event_date, 
   count(distinct client_id) as users,
   count(distinct session_id) as sessions,
-  count(distinct page_id) as page_view,
+  count(distinct page_id) as page_views,
   count(distinct event_id) as events,
-FROM `project.dataset.events_raw`
+FROM `tom-moretti.nameless_analytics.events_raw`
 WHERE event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
 GROUP BY 1 
 ORDER BY 1 DESC;
