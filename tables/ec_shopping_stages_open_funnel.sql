@@ -588,15 +588,32 @@ with event_data as (
   )
 
   select 
-    event_date,
+    -- USER DATA
+    user_date,
     client_id,
     user_id,
+    user_channel_grouping,
+    user_source,
+    user_tld_source,
+    user_campaign,
+    user_device_type,
+    user_country,
+    user_city,
+    user_language,
+    user_type,
+    new_user,
+    returning_user,
+
+    -- SESSION DATA
+    session_date,
+    session_number,
     session_id,
     session_channel_grouping,
     split(session_tld_source, '.')[safe_offset(0)] as session_source,
     session_tld_source,
     session_campaign,
     session_device_type,
+    session_browser_name,
     session_country,
     session_city,
     session_language,
@@ -612,7 +629,7 @@ with event_data as (
     case 
       when step_name = '6 - Purchase' then null 
       else case when step_index_next_step_real = step_index_next_step then session_id_next_step else null end 
-    end as session_id_next_step,
+    end as session_id_next_step
   from union_steps_def
   where true
 );
