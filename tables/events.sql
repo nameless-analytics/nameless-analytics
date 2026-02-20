@@ -72,6 +72,7 @@ select
     --   timestamp_millis((select value.int from unnest(session_data) where name = 'session_start_timestamp'))
     -- , second) as session_duration_sec,
 
+    case when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 'New session' else 'Returning session' end as session_type,
     case when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 1 else 0 end as new_session,
     case when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 1 else 0 end as returning_session,
 

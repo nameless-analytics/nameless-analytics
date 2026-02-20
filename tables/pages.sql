@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_date DATE, end_date DATE) AS (
-  with base_events as (
+with base_events as (
     select 
       # USER DATA
       user_date, 
@@ -24,11 +24,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
       session_id, 
       session_number, 
       cross_domain_session, 
-      session_start_timestamp, 
-      session_end_timestamp,
-      session_duration_sec,
-      new_session,
-      returning_session,
+      session_type,
       session_channel_grouping, 
       session_source_cleaned as session_source,
       session_campaign,
@@ -78,9 +74,9 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
       new_user, 
       returning_user,
       user_channel_grouping, 
-      user_source_cleaned as user_source,
-      user_tld_source, 
+      user_source, 
       user_campaign, 
+      user_campaign_id,
       user_campaign_click_id,
       user_campaign_term,
       user_campaign_content,
@@ -94,14 +90,11 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
       session_id, 
       session_number, 
       cross_domain_session, 
-      session_start_timestamp, 
-      session_duration_sec,
-      new_session,
-      returning_session,
+      session_type,
       session_channel_grouping, 
-      session_source,
-      session_tld_source, 
+      session_source, 
       session_campaign,
+      session_campaign_id,
       session_campaign_click_id,
       session_campaign_term,
       session_campaign_content,
@@ -130,8 +123,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
       max(page_unload_timestamp) as page_unload_timestamp,
       
       -- Performance metrics
-      max(total_page_load_time) as max_total_page_load_time,
-      max(page_status_code) as max_page_status_code,
+      max(total_page_load_time) as total_page_load_time,
+      max(page_status_code) as page_status_code,
 
       # EVENT DATA
       countif(event_name = 'page_view') as page_view
@@ -148,8 +141,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
     returning_user,
     user_channel_grouping, 
     user_source,
-    user_tld_source, 
     user_campaign, 
+    user_campaign_id,
     user_campaign_click_id,
     user_campaign_term,
     user_campaign_content,
@@ -163,14 +156,11 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
     session_id, 
     session_number, 
     cross_domain_session, 
-    session_start_timestamp, 
-    session_duration_sec,
-    new_session,
-    returning_session,
+    session_type,
     session_channel_grouping, 
     session_source,
-    session_tld_source, 
     session_campaign,
+    session_campaign_id,
     session_campaign_click_id,
     session_campaign_term,
     session_campaign_content,
@@ -198,8 +188,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
     timestamp_millis(page_load_timestamp) as page_load_datetime,
     timestamp_millis(page_unload_timestamp) as page_unload_datetime,
     (page_unload_timestamp - page_load_timestamp) / 1000 as time_on_page,
-    max_total_page_load_time / 1000 as page_load_time_sec,
-    max_page_status_code as page_status_code,
+    total_page_load_time / 1000 as page_load_time_sec,
+    page_status_code as page_status_code,
     
     # EVENT DATA
     sum(page_view) as page_view
