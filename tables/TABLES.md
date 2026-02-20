@@ -1290,7 +1290,6 @@ This table illustrates the fields available across different table functions, al
 | `session_tld_source` | X | | X | X | X | X | X | X | X | X |
 | `session_value` | | | X | | | | | | | |
 | `sessions` | | X | | | | | | | | |
-| `sessions_per_user` | | | X | | | | | | | |
 | `shipping_net_refund` | | | X | | X | | | | | |
 | `source` | X | | | | | | | | | |
 | `ss_container_id` | X | | | | | | | | X | |
@@ -1348,17 +1347,11 @@ Below are SQL templates to help you manage data integrity and comply with privac
 ### GDPR & Privacy Compliance
 To comply with GDPR "Right to be Forgotten" requests, data must be removed from both the historical timeline (BigQuery) and the real-time snapshots (Firestore).
 
-**Unified Deletion Script (Recommended)**
-```markdown
-You can use the provided Python script `users-deletion-tools.py` in the root directory to handle both deletions in a single command.
-```
+#### Unified Deletion Script (Recommended)**
+You can use the provided Python script `users-deletion-tools.py` to handle both deletions in a single command.
 
-```bash
-# Usage
-python users-deletion-tools.py [CLIENT_ID]
-```
+#### Manual BigQuery Deletion
 
-**Manual BigQuery Deletion**
 If you prefer manual deletion in BigQuery, use the following DML statement:
 
 ```sql
@@ -1367,7 +1360,8 @@ DELETE FROM `project.dataset.events_raw`
 WHERE client_id = 'USER_CLIENT_ID';
 ```
 
-**Manual Firestore Deletion**
+#### Manual Firestore Deletion
+
 Locate the document in the `users` collection where the Document ID matches the `client_id` and delete it. This will remove the user profile and all associated session summaries.
 
 

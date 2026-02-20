@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_date DATE, end_date DATE) AS (
-with base_events as (
+  with base_events as (
     select 
       # USER DATA
       user_date, 
@@ -8,8 +8,7 @@ with base_events as (
       new_user, 
       returning_user,
       user_channel_grouping, 
-      user_source,
-      user_tld_source, 
+      user_source_cleaned as user_source,
       user_campaign, 
       user_campaign_id,
       user_campaign_click_id,
@@ -31,8 +30,7 @@ with base_events as (
       new_session,
       returning_session,
       session_channel_grouping, 
-      session_source,
-      session_tld_source, 
+      session_source_cleaned as session_source,
       session_campaign,
       session_campaign_id,
       session_campaign_click_id,
@@ -80,7 +78,7 @@ with base_events as (
       new_user, 
       returning_user,
       user_channel_grouping, 
-      split(user_tld_source, '.')[safe_offset(0)] as user_source,
+      user_source_cleaned as user_source,
       user_tld_source, 
       user_campaign, 
       user_campaign_click_id,
@@ -101,7 +99,7 @@ with base_events as (
       new_session,
       returning_session,
       session_channel_grouping, 
-      split(session_tld_source, '.')[safe_offset(0)] as session_source,
+      session_source,
       session_tld_source, 
       session_campaign,
       session_campaign_click_id,

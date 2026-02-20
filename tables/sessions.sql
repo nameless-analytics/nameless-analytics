@@ -338,7 +338,6 @@ with base_events as (
     session_hostname,
     safe_divide(sum(purchase), count(distinct session_id)) as session_conversion_rate,
     safe_divide(sum(purchase_revenue), count(distinct session_id)) as session_value,
-    safe_divide(count(distinct session_id), count(distinct client_id)) as sessions_per_user,
     safe_divide(sum(page_view), count(distinct session_id)) as page_view_per_session,
 
     # EVENTS
