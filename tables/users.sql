@@ -33,6 +33,7 @@ with base_events as (
       event_name,
       ecommerce
     from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'user')
+    where client_id = 'o2dZvBUDGQJfu'
   ),
 
   user_logic as (
