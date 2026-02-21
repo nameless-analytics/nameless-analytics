@@ -28,6 +28,7 @@ with base_events as (
       session_start_timestamp, 
       session_end_timestamp,
       session_duration_sec,
+      session_type,
       new_session,
       returning_session,
       session_channel_grouping, 
@@ -53,7 +54,11 @@ with base_events as (
       # EVENT DATA
       event_timestamp,
       event_name,
+
+      # ECOMMERCE DATA
       ecommerce,
+
+      # CONSENT DATA
       consent_type,
       ad_user_data,
       ad_personalization,
@@ -76,7 +81,7 @@ with base_events as (
       returning_user,
       user_channel_grouping, 
       user_source,
-      user_campaign,
+      user_campaign, 
       user_campaign_id,
       user_campaign_click_id,
       user_campaign_term,
@@ -117,8 +122,6 @@ with base_events as (
 
       # EVENTS
       countif(event_name = 'page_view') as page_view,
-
-      # ECOMMERCE DATA
       countif(event_name = 'view_item_list') as view_item_list,
       countif(event_name = 'select_item') as select_item,
       countif(event_name = 'view_item') as view_item,
@@ -132,6 +135,7 @@ with base_events as (
       countif(event_name = 'purchase') as purchase,
       countif(event_name = 'refund') as refund,
 
+      # ECOMMERCE DATA
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.value') as float64) end), 0) as purchase_revenue,
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.shipping') as float64) end), 0) as purchase_shipping,
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.tax') as float64) end), 0) as purchase_tax,
@@ -181,19 +185,19 @@ with base_events as (
       user_channel_grouping, 
       user_source,
       user_campaign, 
-      user_campaign_id, 
+      user_campaign_id,
       user_campaign_click_id,
       user_campaign_term,
       user_campaign_content,
       user_device_type, 
-      user_country,
-      user_city, 
+      user_country, 
+      user_city,
       user_language, 
 
       # SESSION DATA
       session_date, 
       session_id, 
-      session_number,
+      session_number, 
       cross_domain_session, 
       session_start_timestamp, 
       session_duration_sec,
@@ -221,8 +225,6 @@ with base_events as (
 
       # EVENTS
       page_view,
-
-      # ECOMMERCE DATA
       view_item_list,
       select_item,
       view_item,
@@ -235,6 +237,8 @@ with base_events as (
       add_payment_info,
       purchase,
       refund,
+
+      # ECOMMERCE DATA
       purchase_revenue,
       purchase_shipping,
       purchase_tax,
@@ -261,7 +265,7 @@ with base_events as (
       upd_security_storage,
       def_security_storage,
 
-      case when page_view >= 2 and (session_duration_sec >= 10 or purchase >= 1) then 1 else 0 end as engaged_session,
+      case when page_view >= 2 or session_duration_sec >= 10 or purchase >= 1 then 1 else 0 end as engaged_session,
       if(has_update, update_timestamp, first_timestamp) as consent_timestamp,
       if(has_update, 'Yes', 'No') as consent_expressed,
       if(if(has_update, upd_ad_user_data, def_ad_user_data) = 'Granted', 1, 0) as session_ad_user_data,
@@ -281,13 +285,11 @@ with base_events as (
     client_id, 
     user_type, 
     new_user, 
-    safe_divide(count(distinct new_user), count(distinct client_id)) as new_users_percentage,
     returning_user,
-    safe_divide(count(distinct returning_user), count(distinct client_id)) as returning_users_percentage,
     user_channel_grouping, 
     user_source,
     user_campaign, 
-    user_campaign_id, 
+    user_campaign_id,
     user_campaign_click_id,
     user_campaign_term,
     user_campaign_content,
@@ -295,8 +297,6 @@ with base_events as (
     user_country, 
     user_city,
     user_language, 
-    safe_divide(sum(purchase), count(distinct client_id)) as user_conversion_rate,
-    safe_divide(sum(purchase_revenue), count(distinct client_id)) as user_value,
 
     # SESSION DATA
     session_date, 
@@ -336,8 +336,6 @@ with base_events as (
 
     # EVENTS
     page_view,
-
-    # ECOMMERCE DATA
     view_item_list,
     select_item,
     view_item,
@@ -350,6 +348,8 @@ with base_events as (
     add_payment_info,
     purchase,
     refund,
+
+    # ECOMMERCE DATA
     purchase_revenue,
     purchase_shipping,
     purchase_tax,
@@ -357,6 +357,7 @@ with base_events as (
     refund_revenue,
     refund_shipping,
     refund_tax,
+    ifnull(safe_divide(sum(refund_revenue), sum(refund)), 0) as avg_refund_value,
     purchase - refund as purchase_net_refund,
     purchase_revenue - refund_revenue as revenue_net_refund,
     purchase_shipping + refund_shipping as shipping_net_refund,

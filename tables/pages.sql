@@ -3,6 +3,7 @@ with base_events as (
     select 
       # USER DATA
       user_date, 
+      user_id,
       client_id, 
       user_type, 
       new_user, 

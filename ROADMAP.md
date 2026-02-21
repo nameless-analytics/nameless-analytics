@@ -9,7 +9,7 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 
 ## To do
 ### 🔴 - High Priority
-- Review table functions 
+- Bug fix in users table function: wrong purchase and refund counts
 - Review example Google Looker Studio dashboard
 - Add BigQuery DML for create table functions
 
