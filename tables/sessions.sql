@@ -122,6 +122,7 @@ with base_events as (
 
       # EVENTS
       countif(event_name = 'page_view') as page_view,
+      countif(event_name = 'view_promotion') as view_promotion,
       countif(event_name = 'view_item_list') as view_item_list,
       countif(event_name = 'select_item') as select_item,
       countif(event_name = 'view_item') as view_item,
@@ -225,6 +226,7 @@ with base_events as (
 
       # EVENTS
       page_view,
+      view_promotion,
       view_item_list,
       select_item,
       view_item,
@@ -336,6 +338,7 @@ with base_events as (
 
     # EVENTS
     page_view,
+    view_promotion,
     view_item_list,
     select_item,
     view_item,

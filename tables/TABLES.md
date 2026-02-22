@@ -1085,25 +1085,25 @@ This table illustrates the fields available across different table functions, al
 
 | Field Name | Events | Users | Sessions | Pages | Transactions | Products | Open Funnel | Closed Funnel | GTM Performances | Consents |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `ad_personalization` | X | | | | | | | | | |
+| `ad_personalization` | X | | | | | | | | | X |
 | `ad_personalization_accepted_percentage` | | | X | | | | | | | |
 | `ad_personalization_denied_percentage` | | | X | | | | | | | |
-| `ad_storage` | X | | | | | | | | | |
+| `ad_storage` | X | | | | | | | | | X |
 | `ad_storage_accepted_percentage` | | | X | | | | | | | |
 | `ad_storage_denied_percentage` | | | X | | | | | | | |
-| `ad_user_data` | X | | | | | | | | | |
+| `ad_user_data` | X | | | | | | | | | X |
 | `ad_user_data_accepted_percentage` | | | X | | | | | | | |
 | `ad_user_data_denied_percentage` | | | X | | | | | | | |
 | `add_payment_info` | | | X | | | X | | | | |
 | `add_shipping_info` | | | X | | | X | | | | |
 | `add_to_cart` | | | X | | | X | | | | |
 | `add_to_wishlist` | | | X | | | X | | | | |
-| `analytics_storage` | X | | | | | | | | | |
+| `analytics_storage` | X | | | | | | | | | X |
 | `analytics_storage_accepted_percentage` | | | X | | | | | | | |
 | `analytics_storage_denied_percentage` | | | X | | | | | | | |
 | `avg_order_value` | | | X | | | | | | | |
 | `avg_purchase_value` | | X | | | | | | | | |
-| `avg_refund_value` | | X | | | | | | | | |
+| `avg_refund_value` | | X | X | | | | | | | |
 | `begin_checkout` | | | X | | | X | | | | |
 | `browser_language` | X | | | | | | | | | |
 | `browser_name` | X | | | | | | | | | |
@@ -1117,11 +1117,11 @@ This table illustrates the fields available across different table functions, al
 | `city` | X | | | | | | | | | |
 | `client_id` | X | X | X | X | X | X | X | X | X | X |
 | `client_id_next_step` | | | | | | | X | X | | |
-| `consent_expressed` | | | X | | | | | | | |
+| `consent_expressed` | | | X | | | | | | | X |
 | `consent_name` | | | | | | | | | | X |
 | `consent_state` | | | | | | | | | | X |
 | `consent_timestamp` | | | X | | | | | | | |
-| `consent_type` | X | | | | | | | | | |
+| `consent_type` | X | | | | | | | | | X |
 | `consent_value_int_accepted` | | | | | | | | | | X |
 | `consent_value_int_denied` | | | | | | | | | | X |
 | `consent_value_string` | | | | | | | | | | X |
@@ -1152,7 +1152,7 @@ This table illustrates the fields available across different table functions, al
 | `engaged_session` | | | X | | | | | | | X |
 | `engaged_sessions_percentage` | | | X | | | | | | | |
 | `event_data` | X | | | | | | | | X | |
-| `event_date` | X | | | | X | X | X | X | X | |
+| `event_date` | X | | | | X | X | X | X | X | X |
 | `event_datetime` | | | | | X | X | | | X | |
 | `event_id` | X | | | | | | | | X | |
 | `event_name` | X | | | | X | X | X | | X | |
@@ -1160,8 +1160,8 @@ This table illustrates the fields available across different table functions, al
 | `event_origin` | X | | | | | | | | X | |
 | `event_timestamp` | X | | | | X | X | | | X | |
 | `event_type` | X | | | | | | | | | |
-| `first_session` | | | X | | | | | | | X |
-| `functionality_storage` | X | | | | | | | | | |
+| `first_session` | | | | | | | | | | X |
+| `functionality_storage` | X | | | | | | | | | X |
 | `functionality_storage_accepted_percentage` | | | X | | | | | | | |
 | `functionality_storage_denied_percentage` | | | X | | | | | | | |
 | `gtm_data` | X | | | | | | | | | |
@@ -1192,7 +1192,7 @@ This table illustrates the fields available across different table functions, al
 | `list_id` | | | | | | X | | | | |
 | `list_name` | | | | | | X | | | | |
 | `new_customers` | | X | | | | | | | | |
-| `new_session` | X | | X | X | | | | | | |
+| `new_session` | X | | X | | | | | | | |
 | `new_sessions_percentage` | | | X | | | | | | | |
 | `new_user` | X | | X | X | X | X | X | X | X | X |
 | `new_user_client_id` | | X | | | | | | | | |
@@ -1207,7 +1207,7 @@ This table illustrates the fields available across different table functions, al
 | `page_hostname` | X | | | X | | | | | | |
 | `page_hostname_protocol` | X | | | | | | | | | |
 | `page_id` | X | | | X | | | | | | |
-| `page_language` | X | | | | | | | | | |
+| `page_language` | X | | | X | | | | | | |
 | `page_load_datetime` | | | | X | | | | | | |
 | `page_load_time_sec` | | | | X | | | | | | |
 | `page_load_timestamp` | X | | | | | | | | | |
@@ -1221,7 +1221,7 @@ This table illustrates the fields available across different table functions, al
 | `page_view` | | X | X | X | | | | | | |
 | `page_view_number` | X | | | X | | | | | | |
 | `page_view_per_session` | | | X | | | | | | | |
-| `personalization_storage` | X | | | | | | | | | |
+| `personalization_storage` | X | | | | | | | | | X |
 | `processing_event_timestamp` | X | | | | | | | | X | |
 | `promotion_id` | | | | | | X | | | | |
 | `promotion_name` | | | | | | X | | | | |
@@ -1234,9 +1234,9 @@ This table illustrates the fields available across different table functions, al
 | `refund_revenue` | | X | X | | X | | | | | |
 | `refund_shipping` | | | X | | X | | | | | |
 | `refund_tax` | | | X | | X | | | | | |
-| `respect_consent_mode` | X | | | | | | | | | |
+| `respect_consent_mode` | X | | | | | | | | | X |
 | `returning_customers` | | X | | | | | | | | |
-| `returning_session` | X | | X | X | | | | | | |
+| `returning_session` | X | | X | | | | | | | |
 | `returning_sessions_percentage` | | | X | | | | | | | |
 | `returning_user` | X | | X | X | X | X | X | X | X | X |
 | `returning_user_client_id` | | X | | | | | | | | |
@@ -1244,7 +1244,7 @@ This table illustrates the fields available across different table functions, al
 | `revenue_net_refund` | | X | X | | X | | | | | |
 | `screen_size` | X | | | | | | | | | |
 | `search_term` | X | | | | | | | | | |
-| `security_storage` | X | | | | | | | | | |
+| `security_storage` | X | | | | | | | | | X |
 | `security_storage_accepted_percentage` | | | X | | | | | | | |
 | `security_storage_denied_percentage` | | | X | | | | | | | |
 | `select_item` | | | X | | | X | | | | |
@@ -1266,21 +1266,21 @@ This table illustrates the fields available across different table functions, al
 | `session_data` | X | | | | | | | | | |
 | `session_date` | X | | X | X | | | X | X | X | X |
 | `session_device_type` | X | | X | X | X | X | X | X | X | X |
-| `session_duration_sec` | X | X | X | X | | | X | X | X | X |
-| `session_end_timestamp` | X | | | | | | | X | X | |
-| `session_exit_page_category` | X | | X | X | | | | X | X | X |
-| `session_exit_page_location` | X | | X | X | | | | X | X | X |
-| `session_exit_page_title` | X | | X | X | | | | X | X | X |
+| `session_duration_sec` | X | X | X | | | | | X | | X |
+| `session_end_timestamp` | X | | | | | | X | X | X | |
+| `session_exit_page_category` | X | | X | X | | | X | X | X | X |
+| `session_exit_page_location` | X | | X | X | | | X | X | X | X |
+| `session_exit_page_title` | X | | X | X | | | X | X | X | X |
 | `session_functionality_storage` | | | X | | | | | | | |
-| `session_hostname` | X | | X | X | | | | X | X | X |
+| `session_hostname` | X | | X | X | | | X | X | X | X |
 | `session_id` | X | | X | X | X | X | X | X | X | X |
 | `session_id_consent_expressed` | | | | | | | | | | X |
 | `session_id_consent_mode_not_present` | | | | | | | | | | X |
 | `session_id_consent_not_expressed` | | | | | | | | | | X |
 | `session_id_next_step` | | | | | | | X | X | | |
-| `session_landing_page_category` | X | | X | X | | | | X | X | X |
-| `session_landing_page_location` | X | | X | X | | | | X | X | X |
-| `session_landing_page_title` | X | | X | X | | | | X | X | X |
+| `session_landing_page_category` | X | | X | X | | | X | X | X | X |
+| `session_landing_page_location` | X | | X | X | | | X | X | X | X |
+| `session_landing_page_title` | X | | X | X | | | X | X | X | X |
 | `session_language` | X | | X | X | X | X | X | X | X | X |
 | `session_number` | X | | X | X | X | X | X | X | X | X |
 | `session_personalization_storage` | | | X | | | | | | | |
@@ -1297,7 +1297,7 @@ This table illustrates the fields available across different table functions, al
 | `ss_tag_id` | X | | | | | | | | | |
 | `ss_tag_name` | X | | | | | | | | | |
 | `status` | | | | | | | X | | | |
-| `step_index` | | | | | | | X | | | |
+| `step_index` | | | | | | | X | X | | |
 | `step_index_next_step` | | | | | | | X | | | |
 | `step_index_next_step_real` | | | | | | | X | | | |
 | `step_name` | | | | | | | X | X | | |
@@ -1311,12 +1311,12 @@ This table illustrates the fields available across different table functions, al
 | `user_agent` | X | | | | | | | | | |
 | `user_campaign` | X | X | X | X | X | X | X | X | X | X |
 | `user_campaign_click_id` | X | X | X | X | | | | | | |
-| | `user_campaign_content` | X | X | X | X | | | | | | |
+| `user_campaign_content` | X | X | X | X | | | | | | |
 | `user_campaign_id` | X | | | | | | | | | |
 | `user_campaign_term` | X | X | X | X | | | | | | |
 | `user_channel_grouping` | X | X | X | X | X | X | X | X | X | X |
 | `user_city` | X | X | X | X | X | X | X | X | X | |
-| `user_conversion_rate` | | | X | | | | | | | |
+| `user_conversion_rate` | | X | X | | | | | | | |
 | `user_country` | X | X | X | X | X | X | X | X | X | X |
 | `user_data` | X | | | | | | | | | |
 | `user_date` | X | X | X | X | X | X | X | X | X | X |
@@ -1329,11 +1329,11 @@ This table illustrates the fields available across different table functions, al
 | `user_source` | X | X | X | X | X | X | X | X | X | X |
 | `user_tld_source` | X | X | X | X | X | X | X | X | X | X |
 | `user_type` | X | X | X | X | X | X | X | X | X | X |
-| `user_value` | | | X | | | | | | | |
+| `user_value` | | X | X | | | | | | | |
 | `view_cart` | | | X | | | X | | | | |
 | `view_item` | | | X | | | X | | | | |
 | `view_item_list` | | | X | | | X | | | | |
-| `view_promotion` | | | | | | X | | | | |
+| `view_promotion` | | | X | | | X | | | | |
 | `viewport_size` | X | | | | | | | | | |
 </details>
 
