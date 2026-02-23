@@ -29,9 +29,11 @@ with base_events as (
       session_duration_sec,
 
       # EVENT DATA
-      event_timestamp,
       event_name,
-      ecommerce
+      event_timestamp,
+
+      # ECOMMERCE DATA
+      ecommerce,
     from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'user')
   ),
 
@@ -66,20 +68,10 @@ with base_events as (
 
       ## EVENT DATA
       event_name,
-      countif(event_name = 'page_view') as page_view,
-      -- json_value(ecommerce, '$.transaction_id') as transaction_id,
-      case
-        when event_name = 'purchase' then count(distinct json_value(ecommerce, '$.transaction_id')) 
-        else 0
-      end as purchase,
-
-      case
-        when event_name = 'refund' then count(distinct json_value(ecommerce, '$.transaction_id')) 
-        else 0
-      end as refund,
-      
+      event_timestamp,
 
       ## ECOMMERCE DATA
+      json_value(ecommerce, '$.transaction_id') as transaction_id,
       min(if(event_name = 'purchase', timestamp_millis(event_timestamp), null)) as first_purchase_timestamp,
       max(if(event_name = 'purchase', timestamp_millis(event_timestamp), null)) as last_purchase_timestamp,
 
@@ -128,9 +120,9 @@ with base_events as (
       max(session_number) over (partition by client_id) as total_sessions,
  
       # EVENT DATA
-      sum(page_view) as page_view,
-      sum(purchase) as purchase,
-      sum(refund) as refund,
+      countif(event_name = 'page_view') as page_view,
+      countif(event_name = 'purchase') as purchase,
+      countif(event_name = 'refund') as refund,
  
       # ECOMMERCE DATA
       first_purchase_timestamp,

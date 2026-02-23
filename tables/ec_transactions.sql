@@ -113,6 +113,17 @@ with base_events as (
 
       # ECOMMERCE DATA
       json_value(ecommerce, '$.transaction_id') as transaction_id,
+
+      case
+        when event_name = 'purchase' then json_value(ecommerce, '$.transaction_id') 
+        else null
+      end as purchase_transaction_id,
+
+      case
+        when event_name = 'refund' then json_value(ecommerce, '$.transaction_id')
+        else null
+      end as refund_transaction_id,
+
       json_value(ecommerce, '$.currency') as transaction_currency,
       json_value(ecommerce, '$.coupon') as transaction_coupon,
       
@@ -191,8 +202,10 @@ with base_events as (
       refund_shipping,
       refund_tax,
       
-      countif(event_name = 'purchase') as purchase,
-      countif(event_name = 'refund') as refund,
+      purchase_transaction_id,
+      refund_transaction_id,
+      -- count(distinct purchase_transaction_id) as purchase,
+      -- count(distinct refund_transaction_id) as refund,
       sum(purchase_revenue) as total_purchase_revenue,
       sum(purchase_shipping) as total_purchase_shipping,
       sum(purchase_tax) as total_purchase_tax,
@@ -258,8 +271,10 @@ with base_events as (
 
     # ECOMMERCE DATA
     transaction_id, 
-    purchase,
-    refund,
+    purchase_transaction_id,
+    refund_transaction_id,
+    -- purchase,
+    -- refund,
     transaction_currency,
     transaction_coupon,
     total_purchase_revenue as purchase_revenue,
@@ -267,11 +282,7 @@ with base_events as (
     total_purchase_tax as purchase_tax,
     total_refund_revenue as refund_revenue,
     total_refund_shipping as refund_shipping,
-    total_refund_tax as refund_tax,
-    purchase - refund as purchase_net_refund,
-    ifnull(total_purchase_revenue, 0) - ifnull(total_refund_revenue, 0) as revenue_net_refund,
-    ifnull(total_purchase_shipping, 0) + ifnull(total_refund_shipping, 0) as shipping_net_refund,
-    ifnull(total_purchase_tax, 0) + ifnull(total_refund_tax, 0) as tax_net_refund
+    total_refund_tax as refund_tax
   from transaction_prep
   group by all
 );
