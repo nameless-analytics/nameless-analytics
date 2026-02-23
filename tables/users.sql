@@ -65,11 +65,24 @@ with base_events as (
       max(session_number) as session_number,
 
       ## EVENT DATA
+      event_name,
       countif(event_name = 'page_view') as page_view,
-      countif(event_name = 'purchase') as purchase,
-      countif(event_name = 'refund') as refund,
+      -- json_value(ecommerce, '$.transaction_id') as transaction_id,
+      case
+        when event_name = 'purchase' then count(distinct json_value(ecommerce, '$.transaction_id')) 
+        else 0
+      end as purchase,
+
+      case
+        when event_name = 'refund' then count(distinct json_value(ecommerce, '$.transaction_id')) 
+        else 0
+      end as refund,
+      
 
       ## ECOMMERCE DATA
+      min(if(event_name = 'purchase', timestamp_millis(event_timestamp), null)) as first_purchase_timestamp,
+      max(if(event_name = 'purchase', timestamp_millis(event_timestamp), null)) as last_purchase_timestamp,
+
       sum(case when event_name = 'purchase' then (safe_cast(json_value(items, '$.price') as float64) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as purchase_revenue,
       sum(case when event_name = 'refund' then -(safe_cast(json_value(items, '$.price') as float64) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as refund_revenue,
       sum(case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as purchase_qty,
@@ -78,13 +91,11 @@ with base_events as (
       ifnull(safe_divide(sum(case when event_name = 'purchase' then (safe_cast(json_value(items, '$.price') as float64) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end), countif(event_name = 'purchase')), 0) as avg_purchase_value,
       ifnull(safe_divide(sum(case when event_name = 'refund' then -(safe_cast(json_value(items, '$.price') as float64) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end), countif(event_name = 'refund')), 0) as avg_refund_value,
 
-      min(if(event_name = 'purchase', timestamp_millis(event_timestamp), null)) as first_purchase_timestamp,
-      max(if(event_name = 'purchase', timestamp_millis(event_timestamp), null)) as last_purchase_timestamp
     from base_events
     left join unnest(json_extract_array(ecommerce, '$.items')) as items
     group by all
   ),
-
+ 
   user_prep as (
     select
       # USER DATA
@@ -108,35 +119,32 @@ with base_events as (
       days_from_first_to_last_visit,
       days_from_first_visit,
       days_from_last_visit,
-
+ 
       # SESSION DATA
       session_id,
       session_duration_sec,
       session_number,
       returning_user,
       max(session_number) over (partition by client_id) as total_sessions,
-
+ 
       # EVENT DATA
-      page_view,
-
+      sum(page_view) as page_view,
+      sum(purchase) as purchase,
+      sum(refund) as refund,
+ 
       # ECOMMERCE DATA
-      case when sum(purchase) over (partition by client_id) >= 1 then 1 end as customers,
-      case when sum(purchase) over (partition by client_id) = 1 then 1 end as new_customers,
-      case when sum(purchase) over (partition by client_id) > 1 then 1 end as returning_customers,
-      min(first_purchase_timestamp) over (partition by client_id) as first_purchase_timestamp,
-      max(last_purchase_timestamp) over (partition by client_id) as last_purchase_timestamp,
-      purchase,
-      refund,
-      purchase_revenue,
-      refund_revenue,
-      purchase_qty,
-      refund_qty,
-      avg_purchase_value,
-      avg_refund_value,
-      
+      first_purchase_timestamp,
+      last_purchase_timestamp,
+      sum(purchase_revenue) as purchase_revenue,
+      sum(refund_revenue) as refund_revenue,
+      sum(purchase_qty) as purchase_qty,
+      sum(refund_qty) as refund_qty,
+      sum(avg_purchase_value) as avg_purchase_value,
+      sum(avg_refund_value) as avg_refund_value,
       
     from user_logic
-)
+    group by all
+  )
 
   select
     ## USER DATA
@@ -181,12 +189,14 @@ with base_events as (
     case 
       when sum(purchase) = 1 then 'New customer'
       when sum(purchase) > 1 then 'Returning customer'
-      else null
+      else 'Not customer'
     end as customer_type,
 
-    max(customers) as customers,
-    max(new_customers) as new_customers,
-    max(returning_customers) as returning_customers,
+    case when sum(purchase) >= 1 then 1 end as customers,
+    case when sum(purchase) = 1 then 1 end as new_customers,
+    case when sum(purchase) > 1 then 1 end as returning_customers,
+    max(first_purchase_timestamp) as first_purchase_timestamp,
+    max(last_purchase_timestamp) as last_purchase_timestamp,
 
     count(distinct session_id) as sessions,
     avg(session_duration_sec) as session_duration_sec,
