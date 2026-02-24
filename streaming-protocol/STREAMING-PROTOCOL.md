@@ -50,8 +50,9 @@ Supports API Key authentication for secure server-side ingestion.
  
 1.  Clone the repository.
 2.  Install the required dependencies:
+
     ```bash
-    pip install requests google-cloud-bigquery
+    pip install requests google-cloud-bigquery google-cloud-firestore
     ```
  
 
