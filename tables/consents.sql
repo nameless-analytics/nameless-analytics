@@ -60,8 +60,8 @@ with session_base as (
     select
       # USER DATA
       user_date, 
-      client_id, 
       user_id, 
+      client_id, 
       user_channel_grouping, 
       user_source, 
       user_campaign, 
@@ -121,8 +121,8 @@ with session_base as (
   select 
     # USER DATA
     user_date,
-    client_id,
     user_id,
+    client_id,
     user_channel_grouping,
     user_source,
     user_campaign,

@@ -1083,258 +1083,265 @@ This table illustrates the fields available across different table functions, al
 
 <details><summary>Output Fields Matrix</summary>
 
-| Field Name | Events | Users | Sessions | Pages | Transactions | Products | Open Funnel | Closed Funnel | GTM Performances | Consents |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `ad_personalization` | X | | | | | | | | | X |
-| `ad_personalization_accepted_percentage` | | | X | | | | | | | |
-| `ad_personalization_denied_percentage` | | | X | | | | | | | |
-| `ad_storage` | X | | | | | | | | | X |
-| `ad_storage_accepted_percentage` | | | X | | | | | | | |
-| `ad_storage_denied_percentage` | | | X | | | | | | | |
-| `ad_user_data` | X | | | | | | | | | X |
-| `ad_user_data_accepted_percentage` | | | X | | | | | | | |
-| `ad_user_data_denied_percentage` | | | X | | | | | | | |
-| `add_payment_info` | | | X | | | X | | | | |
-| `add_shipping_info` | | | X | | | X | | | | |
-| `add_to_cart` | | | X | | | X | | | | |
-| `add_to_wishlist` | | | X | | | X | | | | |
-| `analytics_storage` | X | | | | | | | | | X |
-| `analytics_storage_accepted_percentage` | | | X | | | | | | | |
-| `analytics_storage_denied_percentage` | | | X | | | | | | | |
-| `avg_order_value` | | | X | | | | | | | |
-| `avg_purchase_value` | | X | | | | | | | | |
-| `avg_refund_value` | | X | X | | | | | | | |
-| `begin_checkout` | | | X | | | X | | | | |
-| `browser_language` | X | | | | | | | | | |
-| `browser_name` | X | | | | | | | | | |
-| `browser_version` | X | | | | | | | | | |
-| `campaign` | X | | | | | | | | | |
-| `campaign_click_id` | X | | | | | | | | | |
-| `campaign_content` | X | | | | | | | | | |
-| `campaign_id` | X | | | | | | | | | |
-| `campaign_term` | X | | | | | | | | | |
-| `channel_grouping` | X | | | | | | | | | |
-| `city` | X | | | | | | | | | |
-| `client_id` | X | X | X | X | X | X | X | X | X | X |
-| `client_id_next_step` | | | | | | | X | X | | |
-| `consent_expressed` | | | X | | | | | | | X |
-| `consent_name` | | | | | | | | | | X |
-| `consent_state` | | | | | | | | | | X |
-| `consent_timestamp` | | | X | | | | | | | |
-| `consent_type` | X | | | | | | | | | X |
-| `consent_value_int_accepted` | | | | | | | | | | X |
-| `consent_value_int_denied` | | | | | | | | | | X |
-| `consent_value_string` | | | | | | | | | | X |
-| `content_length` | X | | | | | | | | X | |
-| `country` | X | | | | | | | | | |
-| `creative_name` | | | | | | X | | | | |
-| `creative_slot` | | | | | | X | | | | |
-| `cross_domain_id` | X | | | | | | | | | |
-| `cross_domain_session` | X | | X | X | X | X | X | X | X | X |
-| `cs_container_id` | X | | | | | | | | X | |
-| `cs_hostname` | X | | | | | | | | X | |
-| `cs_tag_id` | X | | | | | | | | | |
-| `cs_tag_name` | X | | | | | | | | | |
-| `customer_type` | | X | | | | | | | | |
-| `customers` | | X | | | | | | | | |
-| `datalayer` | X | | | | | | | | X | |
-| `days_from_first_purchase` | | X | | | | | | | | |
-| `days_from_first_to_last_visit` | X | X | | | | | | | | |
-| `days_from_first_visit` | X | X | | | | | | | | |
-| `days_from_last_purchase` | | X | | | | | | | | |
-| `days_from_last_visit` | X | X | | | | | | | | |
-| `delay_in_milliseconds` | | | | | | | | | X | |
-| `delay_in_seconds` | | | | | | | | | X | |
-| `device_model` | X | | | | | | | | | |
-| `device_type` | X | | | | | | | | | |
-| `device_vendor` | X | | | | | | | | | |
-| `ecommerce` | X | | | | | | | | X | |
-| `engaged_session` | | | X | | | | | | | X |
-| `engaged_sessions_percentage` | | | X | | | | | | | |
-| `event_data` | X | | | | | | | | X | |
-| `event_date` | X | | | | X | X | X | X | X | X |
-| `event_datetime` | | | | | X | X | | | X | |
-| `event_id` | X | | | | | | | | X | |
-| `event_name` | X | | | | X | X | X | | X | |
-| `event_number` | X | | | | | | | | | |
-| `event_origin` | X | | | | | | | | X | |
-| `event_timestamp` | X | | | | X | X | | | X | |
-| `event_type` | X | | | | | | | | | |
-| `first_session` | | | | | | | | | | X |
-| `functionality_storage` | X | | | | | | | | | X |
-| `functionality_storage_accepted_percentage` | | | X | | | | | | | |
-| `functionality_storage_denied_percentage` | | | X | | | | | | | |
-| `gtm_data` | X | | | | | | | | | |
-| `hit_number` | | | | | | | | | X | |
-| `is_customer` | | X | | | | | | | | |
-| `item_affiliation` | | | | | | X | | | | |
-| `item_brand` | | | | | | X | | | | |
-| `item_category` | | | | | | X | | | | |
-| `item_category_2` | | | | | | X | | | | |
-| `item_category_3` | | | | | | X | | | | |
-| `item_category_4` | | | | | | X | | | | |
-| `item_category_5` | | | | | | X | | | | |
-| `item_coupon` | | | | | | X | | | | |
-| `item_discount` | | | | | | X | | | | |
-| `item_id` | | | | | | X | | | | |
-| `item_list_id` | | | | | | X | | | | |
-| `item_list_name` | | | | | | X | | | | |
-| `item_name` | | | | | | X | | | | |
-| `item_purchase_revenue` | | | | | | X | | | | |
-| `item_quantity_added_to_cart` | | | | | | X | | | | |
-| `item_quantity_purchased` | | X | | | | X | | | | |
-| `item_quantity_refunded` | | X | | | | X | | | | |
-| `item_quantity_removed_from_cart` | | | | | | X | | | | |
-| `item_refund_revenue` | | | | | | X | | | | |
-| `item_revenue_net_refund` | | | | | | X | | | | |
-| `item_unique_purchases` | | | | | | X | | | | |
-| `item_variant` | | | | | | X | | | | |
-| `list_id` | | | | | | X | | | | |
-| `list_name` | | | | | | X | | | | |
-| `new_customers` | | X | | | | | | | | |
-| `new_session` | X | | X | | | | | | | |
-| `new_sessions_percentage` | | | X | | | | | | | |
-| `new_user` | X | | X | X | X | X | X | X | X | X |
-| `new_user_client_id` | | X | | | | | | | | |
-| `new_users_percentage` | | | X | | | | | | | |
-| `os_name` | X | | | | | | | | | |
-| `os_version` | X | | | | | | | | | |
-| `page_category` | X | | | X | | | | | | |
-| `page_data` | X | | | | | | | | X | |
-| `page_date` | X | | | X | | | | | | |
-| `page_extension` | X | | | | | | | | | |
-| `page_fragment` | X | | | | | | | | | |
-| `page_hostname` | X | | | X | | | | | | |
-| `page_hostname_protocol` | X | | | | | | | | | |
-| `page_id` | X | | | X | | | | | | |
-| `page_language` | X | | | X | | | | | | |
-| `page_load_datetime` | | | | X | | | | | | |
-| `page_load_time_sec` | | | | X | | | | | | |
-| `page_load_timestamp` | X | | | | | | | | | |
-| `page_location` | X | | | X | | | | | | |
-| `page_query` | X | | | | | | | | | |
-| `page_referrer` | X | | | | | | | | | |
-| `page_status_code` | X | | | X | | | | | | |
-| `page_title` | X | | | X | | | | | | |
-| `page_unload_datetime` | | | | X | | | | | | |
-| `page_unload_timestamp` | X | | | | | | | | | |
-| `page_view` | | X | X | X | | | | | | |
-| `page_view_number` | X | | | X | | | | | | |
-| `page_view_per_session` | | | X | | | | | | | |
-| `personalization_storage` | X | | | | | | | | | X |
-| `processing_event_timestamp` | X | | | | | | | | X | |
-| `promotion_id` | | | | | | X | | | | |
-| `promotion_name` | | | | | | X | | | | |
-| `purchase` | | X | X | | X | | | | | |
-| `purchase_net_refund` | | | X | | X | | | | | |
-| `purchase_revenue` | | X | X | | X | | | | | |
-| `purchase_shipping` | | | X | | X | | | | | |
-| `purchase_tax` | | | X | | X | | | | | |
-| `refund` | | X | X | | X | | | | | |
-| `refund_revenue` | | X | X | | X | | | | | |
-| `refund_shipping` | | | X | | X | | | | | |
-| `refund_tax` | | | X | | X | | | | | |
-| `respect_consent_mode` | X | | | | | | | | | X |
-| `returning_customers` | | X | | | | | | | | |
-| `returning_session` | X | | X | | | | | | | |
-| `returning_sessions_percentage` | | | X | | | | | | | |
-| `returning_user` | X | | X | X | X | X | X | X | X | X |
-| `returning_user_client_id` | | X | | | | | | | | |
-| `returning_users_percentage` | | | X | | | | | | | |
-| `revenue_net_refund` | | X | X | | X | | | | | |
-| `screen_size` | X | | | | | | | | | |
-| `search_term` | X | | | | | | | | | |
-| `security_storage` | X | | | | | | | | | X |
-| `security_storage_accepted_percentage` | | | X | | | | | | | |
-| `security_storage_denied_percentage` | | | X | | | | | | | |
-| `select_item` | | | X | | | X | | | | |
-| `select_promotion` | | | | | | X | | | | |
-| `session_ad_personalization` | | | X | | | | | | | |
-| `session_ad_storage` | | | X | | | | | | | |
-| `session_ad_user_data` | | | X | | | | | | | |
-| `session_analytics_storage` | | | X | | | | | | | |
-| `session_browser_name` | X | | X | X | X | X | X | X | X | X |
-| `session_campaign` | X | | X | X | X | X | X | X | X | X |
-| `session_campaign_click_id` | X | | X | X | | | | | | |
-| `session_campaign_content` | X | | X | X | | | | | | |
-| `session_campaign_id` | X | | X | X | | | | | | |
-| `session_campaign_term` | X | | X | X | | | | | | |
-| `session_channel_grouping` | X | | X | X | X | X | X | X | X | X |
-| `session_city` | X | | X | X | X | X | X | X | X | X |
-| `session_conversion_rate` | | | X | | | | | | | |
-| `session_country` | X | | X | X | X | X | X | X | X | X |
-| `session_data` | X | | | | | | | | | |
-| `session_date` | X | | X | X | | | X | X | X | X |
-| `session_device_type` | X | | X | X | X | X | X | X | X | X |
-| `session_duration_sec` | X | X | X | | | | | X | | X |
-| `session_end_timestamp` | X | | | | | | X | X | X | |
-| `session_exit_page_category` | X | | X | X | | | X | X | X | X |
-| `session_exit_page_location` | X | | X | X | | | X | X | X | X |
-| `session_exit_page_title` | X | | X | X | | | X | X | X | X |
-| `session_functionality_storage` | | | X | | | | | | | |
-| `session_hostname` | X | | X | X | | | X | X | X | X |
-| `session_id` | X | | X | X | X | X | X | X | X | X |
-| `session_id_consent_expressed` | | | | | | | | | | X |
-| `session_id_consent_mode_not_present` | | | | | | | | | | X |
-| `session_id_consent_not_expressed` | | | | | | | | | | X |
-| `session_id_next_step` | | | | | | | X | X | | |
-| `session_landing_page_category` | X | | X | X | | | X | X | X | X |
-| `session_landing_page_location` | X | | X | X | | | X | X | X | X |
-| `session_landing_page_title` | X | | X | X | | | X | X | X | X |
-| `session_language` | X | | X | X | X | X | X | X | X | X |
-| `session_number` | X | | X | X | X | X | X | X | X | X |
-| `session_personalization_storage` | | | X | | | | | | | |
-| `session_security_storage` | | | X | | | | | | | |
-| `session_source` | X | | X | X | X | X | X | X | X | X |
-| `session_start_timestamp` | X | | X | X | X | X | X | X | X | X |
-| `session_tld_source` | X | | X | X | X | X | X | X | X | X |
-| `session_value` | | | X | | | | | | | |
-| `sessions` | | X | | | | | | | | |
-| `shipping_net_refund` | | | X | | X | | | | | |
-| `source` | X | | | | | | | | | |
-| `ss_container_id` | X | | | | | | | | X | |
-| `ss_hostname` | X | | | | | | | | X | |
-| `ss_tag_id` | X | | | | | | | | | |
-| `ss_tag_name` | X | | | | | | | | | |
-| `status` | | | | | | | X | | | |
-| `step_index` | | | | | | | X | X | | |
-| `step_index_next_step` | | | | | | | X | | | |
-| `step_index_next_step_real` | | | | | | | X | | | |
-| `step_name` | | | | | | | X | X | | |
-| `tax_net_refund` | | | X | | X | | | | | |
-| `time_on_page` | X | | | X | | | | | | |
-| `tld_source` | X | | | | | | | | | |
-| `total_page_load_time` | X | | | | | | | | | |
-| `transaction_coupon` | | | | | X | | | | | |
-| `transaction_currency` | | | | | X | | | | | |
-| `transaction_id` | | | | | X | X | | | | |
-| `user_agent` | X | | | | | | | | | |
-| `user_campaign` | X | X | X | X | X | X | X | X | X | X |
-| `user_campaign_click_id` | X | X | X | X | | | | | | |
-| `user_campaign_content` | X | X | X | X | | | | | | |
-| `user_campaign_id` | X | | | | | | | | | |
-| `user_campaign_term` | X | X | X | X | | | | | | |
-| `user_channel_grouping` | X | X | X | X | X | X | X | X | X | X |
-| `user_city` | X | X | X | X | X | X | X | X | X | |
-| `user_conversion_rate` | | X | X | | | | | | | |
-| `user_country` | X | X | X | X | X | X | X | X | X | X |
-| `user_data` | X | | | | | | | | | |
-| `user_date` | X | X | X | X | X | X | X | X | X | X |
-| `user_device_type` | X | X | X | X | X | X | X | X | X | X |
-| `user_first_session_timestamp` | X | | | | | | | | | |
-| `user_id` | X | | X | | X | X | X | X | X | X |
-| `user_id_next_step` | | | | | | | | X | | |
-| `user_language` | X | X | X | X | X | X | X | X | X | X |
-| `user_last_session_timestamp` | X | | | | | | | | | |
-| `user_source` | X | X | X | X | X | X | X | X | X | X |
-| `user_tld_source` | X | X | X | X | X | X | X | X | X | X |
-| `user_type` | X | X | X | X | X | X | X | X | X | X |
-| `user_value` | | X | X | | | | | | | |
-| `view_cart` | | | X | | | X | | | | |
-| `view_item` | | | X | | | X | | | | |
-| `view_item_list` | | | X | | | X | | | | |
-| `view_promotion` | | | X | | | X | | | | |
-| `viewport_size` | X | | | | | | | | | |
+| Field name | Field type | Events | Users | Sessions | Pages | Transactions | Products | Open_Funnel | Closed_Funnel | GTM_Performances | Consents |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `ad_personalization` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `ad_personalization_accepted_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `ad_personalization_denied_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `ad_storage` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `ad_storage_accepted_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `ad_storage_denied_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `ad_user_data` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `ad_user_data_accepted_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `ad_user_data_denied_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `add_payment_info` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `add_shipping_info` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `add_to_cart` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `add_to_wishlist` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `analytics_storage` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `analytics_storage_accepted_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `analytics_storage_denied_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `avg_order_value` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `avg_purchase_value` | Metric |   | X |   |   |   |   |   |   |   |   |
+| `avg_refund_value` | Metric |   | X | X |   |   |   |   |   |   |   |
+| `begin_checkout` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `browser_language` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `browser_name` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `browser_version` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `campaign` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `campaign_click_id` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `campaign_content` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `campaign_id` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `campaign_term` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `channel_grouping` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `city` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `client_id` | Dimension | X | X | X | X | X | X | X | X | X | X |
+| `client_id_next_step` | Dimension |   |   |   |   |   |   | X | X |   |   |
+| `consent_expressed` | Dimension |   |   | X |   |   |   |   |   |   |   |
+| `consent_name` | Dimension |   |   |   |   |   |   |   |   |   | X |
+| `consent_state` | Dimension |   |   |   |   |   |   |   |   |   | X |
+| `consent_timestamp` | Dimension |   |   | X |   |   |   |   |   |   |   |
+| `consent_type` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `consent_value_int_accepted` | Metric |   |   |   |   |   |   |   |   |   | X |
+| `consent_value_int_denied` | Metric |   |   |   |   |   |   |   |   |   | X |
+| `consent_value_string` | Dimension |   |   |   |   |   |   |   |   |   | X |
+| `content_length` | Metric | X |   |   |   |   |   |   |   | X |   |
+| `country` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `creative_name` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `creative_slot` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `cross_domain_id` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `cross_domain_session` | Dimension | X |   | X | X | X | X |   | X | X | X |
+| `cs_container_id` | Dimension | X |   |   |   |   |   |   |   | X |   |
+| `cs_hostname` | Dimension | X |   |   |   |   |   |   |   | X |   |
+| `cs_tag_id` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `cs_tag_name` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `customer_type` | Dimension |   | X |   |   |   |   |   |   |   |   |
+| `customers` | Metric |   | X |   |   |   |   |   |   |   |   |
+| `datalayer` | Dimension (JSON object) | X |   |   |   |   |   |   |   | X |   |
+| `days_from_first_purchase` | Metric |   | X |   |   |   |   |   |   |   |   |
+| `days_from_first_to_last_visit` | Metric | X | X |   |   |   |   |   |   |   |   |
+| `days_from_first_visit` | Metric | X | X |   |   |   |   |   |   |   |   |
+| `days_from_last_purchase` | Metric |   | X |   |   |   |   |   |   |   |   |
+| `days_from_last_visit` | Metric | X | X |   |   |   |   |   |   |   |   |
+| `delay_in_milliseconds` | Metric |   |   |   |   |   |   |   |   | X |   |
+| `delay_in_seconds` | Metric |   |   |   |   |   |   |   |   | X |   |
+| `device_model` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `device_type` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `device_vendor` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `ecommerce` | Dimension (JSON object) | X |   |   |   |   |   |   |   | X |   |
+| `engaged_session` | Metric |   |   | X |   |   |   |   |   |   | X |
+| `engaged_sessions_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `event_data` | Dimension (Array object) | X |   |   |   |   |   |   |   | X |   |
+| `event_date` | Dimension | X |   |   |   | X | X | X | X | X |   |
+| `event_datetime` | Dimension |   |   |   |   |   |   |   |   | X |   |
+| `event_id` | Dimension | X |   |   |   |   |   |   |   | X |   |
+| `event_name` | Dimension | X |   |   |   | X | X |   |   | X |   |
+| `event_number` | Dimension | X |   |   |   |   |   |   |   | X |   |
+| `event_origin` | Dimension | X |   |   |   |   |   |   |   | X |   |
+| `event_timestamp` | Dimension | X |   |   |   | X | X |   |   | X |   |
+| `event_type` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `first_purchase_timestamp` | Dimension |   | X |   |   |   |   |   |   |   |   |
+| `functionality_storage` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `functionality_storage_accepted_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `functionality_storage_denied_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `hostname` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `is_customer` | Dimension |   | X |   |   |   |   |   |   |   |   |
+| `item_affiliation` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_brand` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_category` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_category_2` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_category_3` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_category_4` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_category_5` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_coupon` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_discount` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_id` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_list_id` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_list_name` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_name` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `item_purchase_revenue` | Metric |   |   |   |   |   | X |   |   |   |   |
+| `item_quantity_added_to_cart` | Metric |   |   |   |   |   | X |   |   |   |   |
+| `item_quantity_purchased` | Metric |   | X |   |   |   | X |   |   |   |   |
+| `item_quantity_refunded` | Metric |   | X |   |   |   | X |   |   |   |   |
+| `item_quantity_removed_from_cart` | Metric |   |   |   |   |   | X |   |   |   |   |
+| `item_refund_revenue` | Metric |   |   |   |   |   | X |   |   |   |   |
+| `item_revenue_net_refund` | Metric |   |   |   |   |   | X |   |   |   |   |
+| `item_unique_purchases` | Metric |   |   |   |   |   | X |   |   |   |   |
+| `item_variant` | Metric |   |   |   |   |   | X |   |   |   |   |
+| `last_purchase_timestamp` | Dimension |   | X |   |   |   |   |   |   |   |   |
+| `list_id` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `list_name` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `new_customers` | Metric |   | X |   |   |   |   |   |   |   |   |
+| `new_session` | Metric | X |   | X |   |   |   |   |   |   |   |
+| `new_sessions_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `new_user` | Metric | X |   | X | X | X | X | X | X | X | X |
+| `new_user_client_id` | Dimension |   | X |   |   |   |   |   |   |   |   |
+| `os_name` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `os_version` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `page_category` | Dimension | X |   |   | X |   |   |   |   |   |   |
+| `page_data` | Dimension (Array object) | X |   |   |   |   |   |   |   | X |   |
+| `page_date` | Dimension | X |   |   | X |   |   |   |   |   |   |
+| `page_extension` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `page_fragment` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `page_hostname` | Dimension | X |   |   | X |   |   |   |   |   |   |
+| `page_hostname_protocol` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `page_id` | Dimension | X |   |   | X |   |   |   |   |   |   |
+| `page_language` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `page_load_datetime` | Dimension |   |   |   | X |   |   |   |   |   |   |
+| `page_load_time_sec` | Dimension |   |   |   | X |   |   |   |   |   |   |
+| `page_load_timestamp` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `page_location` | Dimension | X |   |   | X |   |   |   |   |   |   |
+| `page_query` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `page_referrer` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `page_status_code` | Dimension | X |   |   | X |   |   |   |   |   |   |
+| `page_title` | Dimension | X |   |   | X |   |   |   |   |   |   |
+| `page_unload_datetime` | Dimension |   |   |   | X |   |   |   |   |   |   |
+| `page_unload_timestamp` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `page_view` | Metric |   | X | X | X |   |   |   |   |   |   |
+| `page_view_number` | Dimension | X |   |   | X |   |   |   |   |   |   |
+| `page_view_per_session` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `personalization_storage` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `processing_event_timestamp` | Dimension | X |   |   |   |   |   |   |   | X |   |
+| `promotion_id` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `promotion_name` | Dimension |   |   |   |   |   | X |   |   |   |   |
+| `purchase` | Metric |   | X | X |   |   |   |   |   |   |   |
+| `purchase_net_refund` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `purchase_revenue` | Metric |   | X | X |   | X |   |   |   |   |   |
+| `purchase_shipping` | Metric |   |   | X |   | X |   |   |   |   |   |
+| `purchase_tax` | Metric |   |   | X |   | X |   |   |   |   |   |
+| `purchase_transaction_id` | Dimension |   |   |   |   | X |   |   |   |   |   |
+| `refund` | Metric |   | X | X |   |   |   |   |   |   |   |
+| `refund_revenue` | Metric |   | X | X |   | X |   |   |   |   |   |
+| `refund_shipping` | Metric |   |   | X |   | X |   |   |   |   |   |
+| `refund_tax` | Metric |   |   | X |   | X |   |   |   |   |   |
+| `refund_transaction_id` | Metric |   |   |   |   | X |   |   |   |   |   |
+| `remove_from_cart` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `respect_consent_mode` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `returning_customers` | Metric |   | X |   |   |   |   |   |   |   |   |
+| `returning_session` | Metric | X |   | X |   |   |   |   |   |   |   |
+| `returning_sessions_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `returning_user` | Metric | X |   | X | X | X | X | X | X | X | X |
+| `returning_user_client_id` | Dimension |   | X |   |   |   |   |   |   |   |   |
+| `revenue_net_refund` | Metric |   | X | X |   |   |   |   |   |   |   |
+| `screen_size` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `search_term` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `security_storage` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `security_storage_accepted_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `security_storage_denied_percentage` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `select_item` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `select_promotion` | Metric |   |   |   |   |   | X |   |   |   |   |
+| `session_ad_personalization` | Dimension |   |   | X |   |   |   |   |   |   |   |
+| `session_ad_storage` | Dimension |   |   | X |   |   |   |   |   |   |   |
+| `session_ad_user_data` | Dimension |   |   | X |   |   |   |   |   |   |   |
+| `session_analytics_storage` | Dimension |   |   | X |   |   |   |   |   |   |   |
+| `session_browser_name` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_campaign` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_campaign_click_id` | Dimension | X |   | X | X | X | X |   |   | X |   |
+| `session_campaign_content` | Dimension | X |   | X | X | X | X |   |   | X |   |
+| `session_campaign_id` | Dimension | X |   | X |   | X | X |   |   | X |   |
+| `session_campaign_term` | Dimension | X |   | X | X | X | X |   |   | X |   |
+| `session_channel_grouping` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_city` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_conversion_rate` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `session_country` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_data` | Dimension (Array object) | X |   |   |   |   |   |   |   |   |   |
+| `session_date` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_device_type` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_duration_sec` | Metric | X | X | X |   |   |   |   | X |   | X |
+| `session_end_timestamp` | Dimension | X |   |   |   | X | X |   | X | X |   |
+| `session_exit_page_category` | Dimension | X |   | X | X | X | X |   | X | X | X |
+| `session_exit_page_location` | Dimension | X |   | X | X | X | X |   | X | X | X |
+| `session_exit_page_title` | Dimension | X |   | X | X | X | X |   | X | X | X |
+| `session_functionality_storage` | Dimension |   |   | X |   |   |   |   |   |   |   |
+| `session_hostname` | Dimension | X |   | X | X | X | X |   | X | X | X |
+| `session_id` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_id_consent_expressed` | Dimension |   |   |   |   |   |   |   |   |   | X |
+| `session_id_consent_mode_not_present` | Dimension |   |   |   |   |   |   |   |   |   | X |
+| `session_id_consent_not_expressed` | Dimension |   |   |   |   |   |   |   |   |   | X |
+| `session_id_next_step` | Dimension |   |   |   |   |   |   | X | X |   |   |
+| `session_landing_page_category` | Dimension | X |   | X | X | X | X |   | X | X | X |
+| `session_landing_page_location` | Dimension | X |   | X | X | X | X |   | X | X | X |
+| `session_landing_page_title` | Dimension | X |   | X | X | X | X |   | X | X | X |
+| `session_language` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_number` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_personalization_storage` | Dimension |   |   | X |   |   |   |   |   |   |   |
+| `session_security_storage` | Dimension |   |   | X |   |   |   |   |   |   |   |
+| `session_source` | Dimension | X |   | X | X | X | X | X | X | X | X |
+| `session_source_cleaned` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `session_start_timestamp` | Dimension | X |   | X | X | X | X |   | X | X | X |
+| `session_tld_source` | Dimension | X |   |   |   |   |   | X | X |   |   |
+| `session_type` | Dimension | X |   |   | X | X | X |   |   | X |   |
+| `session_value` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `sessions` | Metric |   | X |   |   |   |   |   |   |   |   |
+| `sessions_per_user` | Metric |   | X |   |   |   |   |   |   |   |   |
+| `shipping_net_refund` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `source` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `source_cleaned` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `ss_container_id` | Dimension | X |   |   |   |   |   |   |   | X |   |
+| `ss_hostname` | Dimension | X |   |   |   |   |   |   |   | X |   |
+| `ss_tag_id` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `ss_tag_name` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `status` | Dimension |   |   |   |   |   |   | X |   |   |   |
+| `step_index` | Dimension |   |   |   |   |   |   | X |   |   |   |
+| `step_index_next_step` | Dimension |   |   |   |   |   |   | X |   |   |   |
+| `step_index_next_step_real` | Dimension |   |   |   |   |   |   | X |   |   |   |
+| `step_name` | Dimension |   |   |   |   |   |   | X | X |   |   |
+| `tax_net_refund` | Metric |   |   | X |   |   |   |   |   |   |   |
+| `time_on_page` | Metric | X |   |   | X |   |   |   |   |   |   |
+| `tld_source` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `total_page_load_time` | Metric | X |   |   |   |   |   |   |   |   |   |
+| `transaction_coupon` | Dimension |   |   |   |   | X |   |   |   |   |   |
+| `transaction_currency` | Dimension |   |   |   |   | X |   |   |   |   |   |
+| `transaction_id` | Dimension |   |   |   |   | X | X |   |   |   |   |
+| `user_agent` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `user_campaign` | Dimension | X | X | X | X | X | X | X | X | X | X |
+| `user_campaign_click_id` | Dimension | X | X | X | X | X | X |   |   | X |   |
+| `user_campaign_content` | Dimension | X | X | X | X | X | X |   |   | X |   |
+| `user_campaign_id` | Dimension | X | X | X | X | X | X |   |   | X |   |
+| `user_campaign_term` | Dimension | X | X | X | X | X | X |   |   | X |   |
+| `user_channel_grouping` | Dimension | X | X | X | X | X | X | X | X | X | X |
+| `user_city` | Dimension | X | X | X | X | X | X | X | X | X |   |
+| `user_conversion_rate` | Metric |   | X |   |   |   |   |   |   |   |   |
+| `user_country` | Dimension | X | X | X | X | X | X | X | X | X | X |
+| `user_data` | Dimension (Array object) | X |   |   |   |   |   |   |   |   |   |
+| `user_date` | Dimension | X | X | X | X | X | X | X | X | X | X |
+| `user_device_type` | Dimension | X | X | X | X | X | X | X | X | X | X |
+| `user_first_session_timestamp` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `user_id` | Dimension | X | X | X | X | X | X | X | X | X | X |
+| `user_id_next_step` | Dimension |   |   |   |   |   |   |   | X |   |   |
+| `user_language` | Dimension | X | X | X | X | X | X | X | X | X | X |
+| `user_last_session_timestamp` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `user_source` | Dimension | X | X | X | X | X | X | X | X | X | X |
+| `user_source_cleaned` | Dimension | X |   |   |   |   |   |   |   |   |   |
+| `user_tld_source` | Dimension | X |   |   |   |   |   | X | X |   |   |
+| `user_type` | Dimension | X | X | X | X | X | X | X | X | X | X |
+| `user_value` | Dimension |   | X |   |   |   |   |   |   |   |   |
+| `view_cart` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `view_item` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `view_item_list` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `view_promotion` | Metric |   |   | X |   |   | X |   |   |   |   |
+| `viewport_size` | Metric | X |   |   |   |   |   |   |   |   |   |
+
 </details>
 
 </br>

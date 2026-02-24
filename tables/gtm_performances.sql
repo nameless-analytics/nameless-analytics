@@ -52,6 +52,7 @@ with base_events as (
       event_date,
       event_timestamp,
       event_name,
+      event_number,
       event_origin,
       event_id,
       ecommerce,
@@ -146,8 +147,8 @@ with base_events as (
     ss_hostname,
     cs_container_id,
     ss_container_id,
-    row_number() over (partition by client_id, session_id order by event_timestamp asc) as hit_number,
     event_name,
+    event_number,
     event_id,
     array(
       select as struct
@@ -162,6 +163,6 @@ with base_events as (
       from unnest(event_data)
     ) as event_data,
     to_json_string(ecommerce) as ecommerce,
-    to_json_string(datalayer) as dataLayer
+    to_json_string(datalayer) as datalayer
   from base_events
 );

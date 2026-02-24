@@ -71,7 +71,8 @@ with base_events as (
   page_logic as (
     select
       # USER DATA
-      user_date, 
+      user_date,
+      user_id, 
       client_id, 
       user_type, 
       new_user, 
@@ -79,6 +80,7 @@ with base_events as (
       user_channel_grouping, 
       user_source, 
       user_campaign, 
+      user_campaign_id,
       user_campaign_click_id,
       user_campaign_term,
       user_campaign_content,
@@ -136,7 +138,8 @@ with base_events as (
 
   select
     # USER DATA
-    user_date, 
+    user_date,
+    user_id, 
     client_id, 
     user_type, 
     new_user, 
@@ -162,6 +165,7 @@ with base_events as (
     session_channel_grouping, 
     session_source,
     session_campaign,
+    user_campaign_id,
     session_campaign_click_id,
     session_campaign_term,
     session_campaign_content,

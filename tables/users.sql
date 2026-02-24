@@ -142,6 +142,7 @@ with base_events as (
     ## USER DATA
     user_date,
     client_id,
+    user_id,
     user_channel_grouping,
     user_source,
     user_campaign,
