@@ -140,7 +140,7 @@ with base_events as (
     event_timestamp,
     processing_event_timestamp,
     processing_event_timestamp - event_timestamp as delay_in_milliseconds,
-    (processing_event_timestamp - event_timestamp) / 1000 as delay_in_seconds,
+    (processing_event_timestamp - event_timestamp) / 1000 as delay_in_sec,
     event_origin,
     content_length,
     cs_hostname,
