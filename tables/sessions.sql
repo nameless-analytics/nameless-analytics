@@ -391,6 +391,9 @@ with base_events as (
     1 - safe_divide(sum(session_functionality_storage), count(distinct session_id)) as functionality_storage_denied_percentage,
 
     session_personalization_storage,
+    safe_divide(sum(session_personalization_storage), count(distinct session_id)) as personalization_storage_accepted_percentage,
+    1 - safe_divide(sum(session_personalization_storage), count(distinct session_id)) as personalization_storage_denied_percentage,
+
     session_security_storage,
     safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_accepted_percentage,
     1 - safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_denied_percentage,

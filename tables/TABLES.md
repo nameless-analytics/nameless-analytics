@@ -38,7 +38,7 @@ The following SQL scripts are used to initialize the Nameless Analytics reportin
 
 
 ### Create tables
-<details><summary>To create the tables use this DML statement.</summary>
+<details><summary>To create the tables use this DDL statement.</summary>
   
 ```sql
 # NAMELESS ANALYTICS
@@ -248,7 +248,7 @@ execute immediate dates_table_sql;
 
 
 ### Create table functions
-<details><summary>To create the table functions use this DML statement.</summary>
+<details><summary>To create the table functions use this DDL statement.</summary>
 
 ```sql
 # Run the SQL scripts in this directory to create the table functions.
@@ -303,7 +303,7 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'Session
 -- Page level
 -- Returns events related to pages visited in the selected time period.
 
-select * from `project.nameless_analytics.events`(start_date, end_date, 'Page')
+select * from `project.nameless-analytics.events`(start_date, end_date, 'Page')
 
 
 -- Event level
@@ -449,7 +449,7 @@ This table illustrates the fields available across different table functions, al
 | `event_name` | Dimension | string | X |  |  |  | X | X |  |  | X |  |
 | `event_number` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
 | `event_origin` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
-| `event_timestamp` | Dimension | string | X |  |  |  | X | X |  |  | X |  |
+| `event_timestamp` | Metric | integer | X |  |  |  | X | X |  |  | X |  |
 | `event_type` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `first_purchase_timestamp` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
 | `functionality_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -485,7 +485,7 @@ This table illustrates the fields available across different table functions, al
 | `new_customers` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `new_session` | Metric | integer | X |  | X |  |  |  |  |  |  |  |
 | `new_sessions_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
-| `new_user` | Metric | integer | X |  | X | X | X | X | X | X | X | X |
+| `new_user` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `new_user_client_id` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
 | `os_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `os_version` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -512,6 +512,8 @@ This table illustrates the fields available across different table functions, al
 | `page_view_number` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
 | `page_view_per_session` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `personalization_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
+| `personalization_storage_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |
+| `personalization_storage_denied_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |
 | `processing_event_timestamp` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
 | `promotion_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `promotion_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
@@ -525,13 +527,13 @@ This table illustrates the fields available across different table functions, al
 | `refund_revenue` | Metric | float |  | X | X |  | X |  |  |  |  |  |
 | `refund_shipping` | Metric | float |  |  | X |  | X |  |  |  |  |  |
 | `refund_tax` | Metric | float |  |  | X |  | X |  |  |  |  |  |
-| `refund_transaction_id` | Metric | string |  |  |  |  | X |  |  |  |  |  |
+| `refund_transaction_id` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
 | `remove_from_cart` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `respect_consent_mode` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `returning_customers` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `returning_session` | Metric | integer | X |  | X |  |  |  |  |  |  |  |
 | `returning_sessions_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
-| `returning_user` | Metric | integer | X |  | X | X | X | X | X | X | X | X |
+| `returning_user` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `returning_user_client_id` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
 | `revenue_net_refund` | Metric | float |  | X | X |  |  |  |  |  |  |  |
 | `screen_size` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -541,10 +543,10 @@ This table illustrates the fields available across different table functions, al
 | `security_storage_denied_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `select_item` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `select_promotion` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
-| `session_ad_personalization` | Dimension | string |  |  | X |  |  |  |  |  |  |  |
-| `session_ad_storage` | Dimension | string |  |  | X |  |  |  |  |  |  |  |
-| `session_ad_user_data` | Dimension | string |  |  | X |  |  |  |  |  |  |  |
-| `session_analytics_storage` | Dimension | string |  |  | X |  |  |  |  |  |  |  |
+| `session_ad_personalization` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
+| `session_ad_storage` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
+| `session_ad_user_data` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
+| `session_analytics_storage` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `session_browser_name` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_campaign` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_campaign_click_id` | Dimension | string | X |  | X | X | X | X |  |  | X |  |
@@ -563,7 +565,7 @@ This table illustrates the fields available across different table functions, al
 | `session_exit_page_category` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
 | `session_exit_page_location` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
 | `session_exit_page_title` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
-| `session_functionality_storage` | Dimension | string |  |  | X |  |  |  |  |  |  |  |
+| `session_functionality_storage` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `session_hostname` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
 | `session_id` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_id_consent_expressed` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
@@ -575,8 +577,8 @@ This table illustrates the fields available across different table functions, al
 | `session_landing_page_title` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
 | `session_language` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_number` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
-| `session_personalization_storage` | Dimension | string |  |  | X |  |  |  |  |  |  |  |
-| `session_security_storage` | Dimension | string |  |  | X |  |  |  |  |  |  |  |
+| `session_personalization_storage` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
+| `session_security_storage` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `session_source` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_source_cleaned` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `session_start_timestamp` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
@@ -584,7 +586,7 @@ This table illustrates the fields available across different table functions, al
 | `session_type` | Dimension | string | X |  |  | X | X | X |  |  | X |  |
 | `session_value` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `sessions` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
-| `sessions_per_user` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
+| `sessions_per_user` | Metric | float |  | X |  |  |  |  |  |  |  |  |
 | `shipping_net_refund` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `source` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `source_cleaned` | Dimension | string | X |  |  |  |  |  |  |  |  |  |

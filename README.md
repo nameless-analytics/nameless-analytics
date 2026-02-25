@@ -100,7 +100,7 @@ Since the infrastructure is hosted entirely within your own Google Cloud project
 
 ### Documentation
 - [Setup guides](setup-guides/SETUP-GUIDES.md)
-- [Troubleshooting](setup-guides/TROUBLESHOOTING.md)
+- [Troubleshooting](setup-guides/TROUBLESHOOTING-GUIDE.md)
 - [Tables](tables/TABLES.md)
 - [Streaming protocol](streaming-protocol/STREAMING-PROTOCOL.md)
 
@@ -125,9 +125,9 @@ The **Client-Side Tracker Tag** serves as an intelligent agent in the browser. I
 
 
 ### Request payload data
-The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, and metadata like `consent_data` or `gtm_data`.
+The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, `consent_data`, and `gtm_data`.
 
-<details><summary>Request payload example with only standard parameters and no customization at all</summary>
+<details><summary>Example of the final enriched payload as processed and returned by the server (standard parameters only)</summary>
 
 </br>
 
@@ -512,7 +512,7 @@ User, session, and event parameters follow this hierarchy of overriding:
 ### Debugging events
 Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation. 
 
-For a detailed guide on resolving common sequence and integration issues, see the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING.md).
+For a detailed guide on resolving common sequence and integration issues, see the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md).
 
 
 
@@ -614,7 +614,7 @@ The Server-Side Client Tag will automatically reject any request where `event_or
 ### Debugging requests
 Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**. 
 
-For detailed information on server-side errors (403 Forbidden) and validation issues, refer to the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING.md).
+For detailed information on server-side errors (403 Forbidden) and validation issues, refer to the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md).
 
 ## Storage
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:

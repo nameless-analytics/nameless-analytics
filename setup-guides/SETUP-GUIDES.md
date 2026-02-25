@@ -17,11 +17,11 @@ For an overview of how Nameless Analytics works [start from here](https://github
 
 ## How to set up Nameless Analytics in GTM
 
-Setting up Nameless Analytics involves a dual-container strategy that combines the flexibility of Client-side GTM with the security and precision of Server-side GTM. This architecture allows you to capture granular interactions in the browser while offloading complex processing and sensitive data handling to your own private server environment.
+Setting up Nameless Analytics involves a dual-container strategy that combines Client-side GTM with Server-side GTM. This architecture allows you to capture granular interactions in the browser while offloading complex processing and sensitive data handling to your own private server environment.
 
 The implementation is streamlined through pre-configured templates that include all the necessary Tags, Triggers, and Variables to get your first-party analytics pipeline running in minutes.
 
-**Encountering issues during setup?** Check the [Configuration Troubleshooting](TROUBLESHOOTING.md#library-loading--configuration-issues) section if your tags aren't firing.
+**Encountering issues during setup?** Check the [Troubleshooting guide](TROUBLESHOOTING-GUIDE.md).
 
 ### Phase 1: Prerequisites Check
 Before proceeding, ensure your Google Cloud environment is fully provisioned:
@@ -52,7 +52,7 @@ Configure the tracker to establish a secure handshake with your server:
 
 
 ## How to track page views
-Ensure that the `page_view` event is the **first** event triggered on every page load. Triggering other events before it will result in [Orphan Events](TROUBLESHOOTING.md#orphan-events--sequence-issues). 
+Ensure that the `page_view` event is the **first** event triggered on every page load. Triggering other events before it will result in [Orphan Events](TROUBLESHOOTING-GUIDE.md#orphan-events--sequence-issues). 
 
 Page view tags can be triggered in many ways:
 
@@ -107,7 +107,7 @@ Follow these guides for:
 - [Google Cloud Run](https://cloud.google.com/run/docs/mapping-custom-domains)
 - [Stape](https://help.stape.io/hc/en-us/articles/4405367809681-How-to-setup-custom-domain-for-server-side-Google-Tag-Manager)
 
-> If IDs are not passing between domains, verify your [Cross-domain Troubleshooting](TROUBLESHOOTING.md#network--custom-endpoint-issues) steps.
+> If IDs are not passing between domains, verify your [Cross-domain Troubleshooting](TROUBLESHOOTING-GUIDE.md#network--custom-endpoint-issues) steps.
 
 
 

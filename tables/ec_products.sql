@@ -109,7 +109,7 @@ with base_events as (
       # EVENT DATA
       event_date,
       event_name,
-      timestamp_millis(event_timestamp) as event_datetime,
+      event_timestamp,
 
       # ECOMMERCE & ITEMS DATA
       json_value(ecommerce, '$.transaction_id') as transaction_id,
@@ -201,7 +201,7 @@ with base_events as (
       # EVENT DATA
       event_date, 
       event_name, 
-      event_datetime,
+      event_timestamp,
       
       # ECOMMERCE DATA
       transaction_id, 
@@ -301,7 +301,7 @@ with base_events as (
     # EVENT DATA
     event_date,
     event_name,
-    event_datetime as event_timestamp,
+    event_timestamp,
 
     # ECOMMERCE DATA
     transaction_id, 

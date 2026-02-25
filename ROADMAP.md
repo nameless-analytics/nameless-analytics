@@ -4,14 +4,12 @@ Nameless Analytics upcoming features and improvements.
 
 For completed work and release history, see [changelog](CHANGELOG.md).
 
-### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
+> 🚧 **Beta Notice**: Nameless Analytics is currently in beta and subject to change. [See full status](README.md).
 
 
 ## To do
 ### 🔴 - High Priority
-- Bug fix in users table function: wrong purchase and refund counts
-- Review example Google Looker Studio dashboard
-- Add BigQuery DML for create table functions
+- Add BigQuery DDL for create table functions
 
 
 ### 🟡 - Medium Priority

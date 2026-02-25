@@ -52,7 +52,7 @@ Supports API Key authentication for secure server-side ingestion.
 2.  Install the required dependencies:
 
     ```bash
-    pip install requests google-cloud-bigquery google-cloud-firestore
+    pip install requests google-cloud-bigquery
     ```
  
 

@@ -109,7 +109,7 @@ with base_events as (
       # EVENT DATA
       event_date,
       event_name,
-      timestamp_millis(event_timestamp) as event_datetime,
+      event_timestamp,
 
       # ECOMMERCE DATA
       json_value(ecommerce, '$.transaction_id') as transaction_id,
@@ -189,29 +189,21 @@ with base_events as (
       # EVENT DATA
       event_date,
       event_name,
-      event_datetime,
+      event_timestamp,
 
       # ECOMMERCE DATA
       transaction_id,
       transaction_currency,
       transaction_coupon,
-      purchase_revenue,
-      purchase_shipping,
-      purchase_tax,
-      refund_revenue,
-      refund_shipping,
-      refund_tax,
-      
+            
       purchase_transaction_id,
       refund_transaction_id,
-      -- count(distinct purchase_transaction_id) as purchase,
-      -- count(distinct refund_transaction_id) as refund,
-      sum(purchase_revenue) as total_purchase_revenue,
-      sum(purchase_shipping) as total_purchase_shipping,
-      sum(purchase_tax) as total_purchase_tax,
-      sum(refund_revenue) as total_refund_revenue,
-      sum(refund_shipping) as total_refund_shipping,
-      sum(refund_tax) as total_refund_tax
+      sum(purchase_revenue) as purchase_revenue,
+      sum(purchase_shipping) as purchase_shipping,
+      sum(purchase_tax) as purchase_tax,
+      sum(refund_revenue) as refund_revenue,
+      sum(refund_shipping) as refund_shipping,
+      sum(refund_tax) as refund_tax
     from transaction_logic
     group by all
   )
@@ -267,22 +259,20 @@ with base_events as (
     # EVENT DATA
     event_date,
     event_name,
-    event_datetime as event_timestamp,
+    event_timestamp,
 
     # ECOMMERCE DATA
     transaction_id, 
     purchase_transaction_id,
     refund_transaction_id,
-    -- purchase,
-    -- refund,
     transaction_currency,
     transaction_coupon,
-    total_purchase_revenue as purchase_revenue,
-    total_purchase_shipping as purchase_shipping,
-    total_purchase_tax as purchase_tax,
-    total_refund_revenue as refund_revenue,
-    total_refund_shipping as refund_shipping,
-    total_refund_tax as refund_tax
+    purchase_revenue,
+    purchase_shipping,
+    purchase_tax,
+    refund_revenue,
+    refund_shipping,
+    refund_tax
   from transaction_prep
   group by all
 );
