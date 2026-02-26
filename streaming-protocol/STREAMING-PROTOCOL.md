@@ -60,19 +60,19 @@ Supports API Key authentication for secure server-side ingestion.
  
 Open `streaming-protocol.py` and configure the following settings:
  
-1.  **User Cookies**:
-    *   Set `na_u` cookie value
-    *   Set `na_s` cookie value.
-2.  **Request Settings**:
-    *   `full_endpoint`: Your GTM Server-side URL (e.g., `https://gtm.yourdomain.com/tm/nameless`).
-    *   `origin`: The allowed origin domain (e.g., `https://yourdomain.com`).
-    *   `api_key`: The API key matching your Client Tag configuration.
-    *   `gtm_preview_header`: (Optional) Your GTM Preview header for debugging.
-3.  **BigQuery Settings**:
-    *   `bq_project_id`: Your Google Cloud Project ID.
-    *   `bq_dataset_id`: Your BigQuery Dataset ID.
-    *   `bq_table_id`: Your BigQuery Table ID (e.g., `events_raw`).
-    *   `bq_credentials_path`: Path to your Google Cloud Service Account JSON key.
+1. User Cookies:
+    - Set `na_u` cookie value
+    - Set `na_s` cookie value.
+2. Request Settings:
+    - `full_endpoint`: Your GTM Server-side URL (e.g., `https://gtm.yourdomain.com/tm/nameless`).
+    - `origin`: The allowed origin domain (e.g., `https://yourdomain.com`).
+    - `api_key`: The API key matching your Client Tag configuration.
+    - `gtm_preview_header`: (Optional) Your GTM Preview header for debugging.
+3. BigQuery Settings:
+    - `bq_project_id`: Your Google Cloud Project ID.
+    - `bq_dataset_id`: Your BigQuery Dataset ID.
+    - `bq_table_id`: Your BigQuery Table ID (e.g., `events_raw`).
+    - `bq_credentials_path`: Path to your Google Cloud Service Account JSON key.
 
 
 ### Usage 

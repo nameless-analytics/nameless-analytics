@@ -773,14 +773,14 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 
 | Traffic Tier | Monthly Events | Compute (Cloud Run / GAE) | Firestore Ops | BigQuery Ingest & Storage | **Estimated Total (CR / GAE)** |
 |--------------|----------------|---------------------------|---------------|---------------------------|--------------------------------|
-| **Low** | < 500k | $0 / $0* | ~$0 | ~$0 | **FREE** |
-| **Medium** | 1M – 2M | $0 – $1 / $0* | ~$3 – $4 | **< $0.2** | **$3 – $5 / $3 – $4** |
-| **High** | 5M | ~$8 – $12 / $0* | ~$10 – $12 | **~$0.3** | **$18 – $24 / $10 – $12** |
-| **Enterprise** | 10M | ~$20 – $40 / ~$120+** | ~$22 | **~$0.6** | **$43 – $65 / $143+** |
-| **Enterprise+** | 50M | ~$40 – $70 / ~$120+** | ~$90 | **~$3** | **$133 – $163 / $213+** |
+| **Low** | < 500k | $0 / $0* | ~$0 | ~$0 | FREE |
+| **Medium** | 1M – 2M | $0 – $1 / $0* | ~$3 – $4 | < $0.2 | $3 – $5 / $3 – $4 |
+| **High** | 5M | ~$8 – $12 / $0* | ~$10 – $12 | ~$0.3 | $18 – $24 / $10 – $12 |
+| **Enterprise** | 10M | ~$20 – $40 / ~$120** | ~$22 | ~$0.6 | $43 – $65 / $143+ |
+| **Enterprise+** | 50M | ~$40 – $70 / ~$120** | ~$90 | ~$3 | $133 – $163 / $213+ |
 
-> \* App Engine **Standard Environment (F1 instance)** – suitable for low/medium traffic  
-> \** App Engine **Flexible Environment (multi-instance cluster)** – production / HA setup
+\* App Engine **Standard Environment (F1 instance)** – suitable for low/medium traffic  
+\** App Engine **Flexible Environment (multi-instance cluster)** – production / HA setup
 
 ---
 
