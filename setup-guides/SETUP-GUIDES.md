@@ -17,31 +17,44 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 
 ## How to set up Nameless Analytics in GTM
 
-Setting up Nameless Analytics involves a dual-container strategy that combines Client-side GTM with Server-side GTM. This architecture allows you to capture granular interactions in the browser while offloading complex processing and sensitive data handling to your own private server environment.
+Setting up Nameless Analytics involves a dual-container strategy that combines Client-side GTM with Server-side GTM. 
+
+This architecture allows you to capture granular interactions in the browser while offloading complex processing and sensitive data handling to your own private server environment.
 
 The implementation is streamlined through pre-configured templates that include all the necessary Tags, Triggers, and Variables to get your first-party analytics pipeline running in minutes.
 
 **Encountering issues during setup?** Check the [Troubleshooting guide](TROUBLESHOOTING-GUIDE.md).
 
-### Phase 1: Prerequisites Check
+
+### Phase 1: Prerequisites
 Before proceeding, ensure your Google Cloud environment is fully provisioned:
 - **BigQuery**: Dataset and tables must be created according to the [SQL schemas](../tables/TABLES.md).
 - **Firestore**: A database instance should be initialized in Native Mode.
-- **Server-side GTM**: Your instance (Cloud Run or App Engine) must be active and mapped to a custom first-party domain.
+- **Server-side GTM**: Your instance (Cloud Run, App Engine or Stape) must be active and already mapped to a custom first-party domain.
+
 
 ### Phase 2: Asset Acquisition
-Download the primary container templates from the [`gtm-containers/`](../gtm-containers/) directory. These JSON files contain the standardized logic for event capture, sequential execution queuing, and server-side orchestration.
+Download the containers templates from [GTM containers](../gtm-containers/) folder. These JSON files contain the standardized logic for event capture, sequential execution queuing, and server-side orchestration.
+
 
 ### Phase 3: Container Integration & Merging
-Integrate the templates into your GTM environment with the following steps:
-1. Navigate to **Admin > Import Container** in both your Client-side and Server-side workspaces.
-2. **File Selection**: Upload the corresponding JSON template and merge it with your existing container.
+Integrate the relative template into GTM Client-side and Server-side environments with the following steps: 
+1. Navigate to **Admin > Import Container**
+2. Upload the corresponding JSON template and merge it with your existing container.
 
-### Phase 4: Global Configuration (Client-side)
+
+### Phase 4a: Global Configuration (Client-side)
+Configure the tracker tag:
+1. Locate the **Nameless Analytics Client-side Tracker Configuration Variable**.
+2. Update the **Request Endpoint Domain** with your dedicated Server-side GTM URL (e.g., `https://gtm.yourdomain.com/nameless_analytics/`).
+
+
+### Phase 4b: Global Configuration (Server-side)
 Configure the tracker to establish a secure handshake with your server:
-1. In your Client-side workspace, locate the **Nameless Analytics Client-side Tracker Configuration Variable**.
-2. **Request Endpoint Domain**: Update this field with your dedicated Server-side GTM URL (e.g., `https://gtm.yourdomain.com`).
-3. **Library Settings**: (Optional) If you are using First-Party mode for the core libraries, update the library paths here.
+1. In your Server-side workspace, locate the **Nameless Analytics Server-side Tracker Configuration Variable**.
+2. Update the **Request Endpoint Domain** with your dedicated Server-side GTM URL (e.g., `https://gtm.yourdomain.com`).
+3. Update the **Request Endpoint Path** with your dedicated Server-side GTM URL (e.g., `/nameless_analytics/`).
+
 
 ### Phase 5: Pipeline Validation & QA
 1. **Synchronized Preview**: Launch **Preview Mode** for both the Web and Server containers simultaneously.
