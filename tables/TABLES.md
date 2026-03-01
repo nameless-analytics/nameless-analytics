@@ -643,15 +643,14 @@ This table illustrates the fields available across different table functions, al
 ## Data Governance and Maintenance
 Below are SQL templates to help you manage data integrity and comply with privacy regulations.
 
-
-### GDPR & Privacy Compliance
 To comply with GDPR "Right to be Forgotten" requests, data must be removed from both the historical timeline (BigQuery) and the real-time snapshots (Firestore).
 
-#### Unified Deletion Script (Recommended)**
+
+### Delete user data deletion Script (Recommended)
 You can use the provided Python script `users-deletion-tools.py` to handle both deletions in a single command.
 
-#### Manual BigQuery Deletion
-
+### Manual user data deletion
+#### BigQuery user data deletion
 If you prefer manual deletion in BigQuery, use the following DML statement:
 
 ```sql
@@ -660,8 +659,7 @@ DELETE FROM `project.dataset.events_raw`
 WHERE client_id = 'USER_CLIENT_ID';
 ```
 
-#### Manual Firestore Deletion
-
+#### Firestore user data deletion
 Locate the document in the `users` collection where the Document ID matches the `client_id` and delete it. This will remove the user profile and all associated session summaries.
 
 
