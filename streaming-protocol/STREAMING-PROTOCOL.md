@@ -2,7 +2,7 @@
 
 The Nameless Analytics Streaming Protocol is a robust implementation for sending data to the [Nameless Analytics Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag).
 
-For an overview of how Nameless Analytics works [start from here](https://github.com/nameless-analytics/nameless-analytics/#high-level-data-flow).
+For an overview of how Nameless Analytics works [start from here](../README.md#high-level-data-flow).
 
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
 
@@ -42,6 +42,83 @@ Includes robust error handling for API responses and database queries.
 
 ### Security
 Supports API Key authentication for secure server-side ingestion.
+
+
+## JSON Payload Structure
+The Streaming Protocol requires a POST request with a JSON body. While the server validates mandatory root fields, `event_type` is an optional but recommended field within `event_data` to maintain consistency with the BigQuery schema.
+
+### Example Payload
+```json
+{
+        "user_date": event_date,
+        "client_id": client_id,
+        "user_data": {
+        },
+
+        "session_date": event_date,
+        "session_id": f"{client_id}_{session_id}",
+        "session_data": {
+            # "user_id": user_id, # Optional
+        },
+        
+        "page_date": page_date_from_bq,
+        "page_id": na_s,
+        "page_data": page_data_from_bq,
+
+        "event_date": event_date,
+        "event_timestamp": event_timestamp,
+        "event_id": event_id,
+        "event_name": event_name,
+        "event_origin": event_origin,
+        "event_data": {
+            "event_type": "event",
+            # "channel_grouping": None,
+            # "source": None,
+            # "campaign": None,
+            # "campaign_id": None,
+            # "campaign_click_id": None,
+            # "campaign_term": None,
+            # "campaign_content": None,
+            "hostname": hostname,
+            # "user_agent": user_agent,
+            # "browser_name": None,
+            # "browser_language": None,
+            # "browser_version": None,
+            # "device_type": None,
+            # "device_vendor": None,
+            # "device_model": None,
+            # "os_name": None,
+            # "os_version": None,
+            # "screen_size": None,
+            # "viewport_size": None
+        },
+
+        "ecommerce": {
+            # Add ecommerce data here
+        },
+
+        "consent_data": {
+            "consent_type": None,
+            "respect_consent_mode": None,
+            "ad_user_data": None,
+            "ad_personalization": None,
+            "ad_storage": None,
+            "analytics_storage": None,
+            "functionality_storage": None,
+            "personalization_storage": None,
+            "security_storage": None
+        },
+        "gtm_data": {
+            "cs_hostname": None,
+            "cs_container_id": None,
+            "cs_tag_name": None,
+            "cs_tag_id": None,
+        }
+    }
+```
+
+> **Note on `event_type`**: In the standard website tracker, this is automatically set to `page_view` or `event`. For the Streaming Protocol, you should manually set it to `event` (as `page_view` is restricted to the website tracker).
+
 
 
 

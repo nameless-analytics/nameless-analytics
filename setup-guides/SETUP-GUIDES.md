@@ -1,7 +1,7 @@
 # Nameless Analytics | Setup guides
 The Nameless Analytics Setup guides are a guide to help you set up Nameless Analytics. 
 
-For an overview of how Nameless Analytics works [start from here](https://github.com/nameless-analytics/nameless-analytics/#high-level-data-flow).
+For an overview of how Nameless Analytics works [start from here](../README.md#high-level-data-flow).
 
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
 
@@ -124,7 +124,7 @@ To configure cross domain tracking you need to:
 
 3. Set this dynamic variable in the **Request endpoint domain** field. 
 
-    ![Dynamic request endopoint domain](https://github.com/user-attachments/assets/3d052798-20d9-4578-ab00-35ff4edca695)
+    ![Dynamic request endpoint domain](https://github.com/user-attachments/assets/3d052798-20d9-4578-ab00-35ff4edca695)
 
 
 ### Two client-side GTM containers, one per site

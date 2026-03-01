@@ -2,7 +2,7 @@
 
 The Nameless Analytics Reporting Tables are a set of tables and table functions in BigQuery where user, session, and event data are stored and processed.
 
-For an overview of how Nameless Analytics works [start from here](https://github.com/nameless-analytics/nameless-analytics/#high-level-data-flow).
+For an overview of how Nameless Analytics works [start from here](../README.md#high-level-data-flow).
 
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
 
@@ -65,7 +65,7 @@ declare enable_bigquery_advanced_runtime string default format(
   """
     ALTER PROJECT `%s`
     SET OPTIONS (
-      `region-%s.query_runtime` = 'advanced' # default null
+      `region-%s.query_runtime` = 'advanced'
     );
   """
 , project_name, dataset_location);
@@ -291,25 +291,25 @@ Event data can be extracted at various levels:
 -- User level
 -- Returns events related to users acquired in the selected time period.
 
-select * from `project.nameless_analytics.events` (start_date, end_date, 'User')
+select * from `project.nameless_analytics.events` (start_date, end_date, 'user')
 
 
 --Session level
 -- Returns events related to sessions that started in the selected time period.
 
-select * from `project.nameless_analytics.events`(start_date, end_date, 'Session')
+select * from `project.nameless_analytics.events`(start_date, end_date, 'session')
 
 
 -- Page level
 -- Returns events related to pages visited in the selected time period.
 
-select * from `project.nameless-analytics.events`(start_date, end_date, 'Page')
+select * from `project.nameless_analytics.events`(start_date, end_date, 'page')
 
 
 -- Event level
 -- Returns events that occurred in the selected time period.
 
-select * from `project.nameless_analytics.events`(start_date, end_date, 'Event')
+select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 ```
 [View SQL code](events.sql)
 
@@ -420,7 +420,7 @@ This table illustrates the fields available across different table functions, al
 | `country` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `creative_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `creative_slot` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
-| `cross_domain_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
+| `cross_domain_id` (from `na_id`) | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `cross_domain_session` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
 | `cs_container_id` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
 | `cs_hostname` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
@@ -556,7 +556,7 @@ This table illustrates the fields available across different table functions, al
 | `session_channel_grouping` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_city` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_conversion_rate` | Metric | float |  |  | X |  |  |  |  |  |  |  |
-| `session_country` | Dimension | integer | X |  | X | X | X | X | X | X | X | X |
+| `session_country` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_data` | Dimension | Array | X |  |  |  |  |  |  |  |  |  |
 | `session_date` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_device_type` | Dimension | string | X |  | X | X | X | X | X | X | X | X |

@@ -226,9 +226,9 @@ select
   from `tom-moretti.nameless_analytics.events_raw`
   where true
     and case 
-      when date_scope = 'user' then user_date
-      when date_scope = 'session' then session_date
-      when date_scope = 'page' then page_date
-      when date_scope = 'event' then event_date
+      when lower(date_scope) = 'user' then user_date
+      when lower(date_scope) = 'session' then session_date
+      when lower(date_scope) = 'page' then page_date
+      when lower(date_scope) = 'event' then event_date
     end between start_date and end_date
 );

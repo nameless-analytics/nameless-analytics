@@ -314,7 +314,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 | event_id           |                               | String   | Client-Side | Unique event identifier                       |
 | event_name         |                               | String   | Client-Side | Event name                                    |
 | event_origin       |                               | String   | Client-Side | Event origin (Website or Streaming protocol)  |
-| event_data         | event_type                    | String   | Client-Side | Event type                                    |
+| event_data         | event_type                    | String   | Client-Side | Event classification (automatically set to `page_view` or `event`) |
 |                    | channel_grouping              | String   | Client-Side | Channel grouping for the event (see [detailed logic](https://github.com/nameless-analytics/client-side-tracker-configuration-variable/#channel-grouping)) |
 |                    | source                        | String   | Client-Side | Event traffic source                          |
 |                    | campaign                      | String   | Client-Side | Event campaign                                |
@@ -387,7 +387,7 @@ When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and t
 | **Parameter name** | **Sub-parameter**    | **Type** | **Added**   | **Field description**   |
 |--------------------|----------------------|----------|-------------|-------------------------|
 | session_data       | cross_domain_session | String   | Server-Side | Is cross domain session |
-| event_data         | cross_domain_id      | String   | Client-Side | Cross domain id         |
+| event_data         | cross_domain_id      | String   | Client-Side | Cross domain id (populated from `na_id` URL parameter) |
   
 </details>
 
@@ -429,7 +429,7 @@ To maximize data collection accuracy and bypass ad-blockers, Nameless Analytics 
 
 </br>
 
-This is the core engine that supports the GTM tag by exposing utility functions for execution in a standard JavaScript environment. Source code: [nameless-analytics.js](https://github.com/nameless-analytics/nameless-analytics/blob/main/src/nameless-analytics.js)
+This is the core engine that supports the GTM tag by exposing utility functions for execution in a standard JavaScript environment. Source code: [nameless-analytics.js](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/nameless-analytics.js)
 
 It handles the following background operations:
 
@@ -535,7 +535,7 @@ The Nameless Analytics Server-side Client Tag automatically generates and manage
 
 </br>
 
-| ID Name        | Renewed                       | Example values                 | Value composition             |
+| Parameter name | Renewed                       | Example values                 | Value composition             |
 |----------------|-------------------------------|--------------------------------|-------------------------------|
 | **client_id**  | when `na_u` cookie is created | lZc919IBsqlhHks                | Client ID                     |
 | **session_id** | when `na_s` cookie is created | lZc919IBsqlhHks_1KMIqneQ7dsDJU | Client ID _ Random Session ID |
@@ -591,10 +591,10 @@ Cookies are created or updated on every event to track the user's session and id
 
 </br>
 
-| Cookie Name | Default expiration | Example values                                 | Value composition                     | Usage                                                                                                              |
-|-------------|--------------------|------------------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| **na_u**    | 400 days           | lZc919IBsqlhHks                                | Client ID                             | Used as client_id                                                                                                  |
-| **na_s**    | 30 minutes         | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y | Client ID _ Session ID - Last Page ID | Used as session_id </br> page_id can be used for sending real time Server to Server events with Streaming Protocol |
+| Cookie Name | Default expiration | Example values | Value composition | Usage |
+| :--- | :--- | :--- | :--- | :--- |
+| **na_u**    | 400 days           | lZc919IBsqlhHks                                | Client ID                             | Used as client_id |
+| **na_s**    | 30 minutes         | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y | Client ID _ Session ID - Last Page ID | Used as session_id and to retrieve the current page_id for the **Streaming Protocol** requests. |
 
 </details>
 
@@ -621,7 +621,7 @@ Nameless Analytics employs a complementary storage strategy to balance real-time
 
 
 ### Firestore as Last updated Snapshot
-It maintains **the latest available state for every user and session**. For example, the current user_level.
+It maintains **the latest available state for every user and session** (for example, a custom `user_level` parameter).
 
 - **User data**: Stores the latest user profile state, including first/last session timestamps, original acquisition source, and persistent device metadata.
 - **Session data**: Stores the latest session state, including real-time counters (total events, page views), landing/exit page details, and session-specific attribution.
@@ -646,7 +646,7 @@ Firestore ensures data integrity by managing how parameters are updated across h
   
 
 ### BigQuery as Historical Timeline
-It maintains **every single state transition** for every user and session. For example, all different user_level values through time.
+It maintains **every single state transition** for every user and session (for example, all different `user_level` custom parameter values through time).
   
 - **User data**: Stores the current user profile state at event occurs, including first/last session timestamps, original acquisition source, and persistent device metadata.
 - **Session data**: Stores the current session state at event occurs, including real-time counters (total events, page views), landing/exit page details, and session-specific attribution.
