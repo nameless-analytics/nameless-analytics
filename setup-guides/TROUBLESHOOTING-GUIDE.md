@@ -7,15 +7,14 @@ This guide helps you identify, understand, and resolve the most common issues en
 
 
 ## Table of Contents
+
 - [Troubleshooting Tip](#troubleshooting-tip)
-- [Orphan Events & Sequence Issues](#orphan-events--sequence-issues)
+- [Orphan Events & Sequence Issues](#orphan-events-sequence-issues)
 - [Validation Errors (403 Forbidden)](#validation-errors-403-forbidden)
 - [Google Consent Mode](#google-consent-mode)
-- [Library Loading & Configuration Issues](#library-loading--configuration-issues)
-- [Storage & Cloud Permissions](#storage--cloud-permissions)
-- [Network & Custom Endpoint Issues](#network--custom-endpoint-issues)
-
-
+- [Library Loading & Configuration Issues](#library-loading-configuration-issues)
+- [Storage & Cloud Permissions](#storage-cloud-permissions)
+- [Network & Custom Endpoint Issues](#network-custom-endpoint-issues)
 
 ## Troubleshooting Tip
 Use the **Browser console** to check tags execution status and event data sent to the server.

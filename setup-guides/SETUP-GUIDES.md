@@ -8,12 +8,26 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 
 
 ## Table of Contents
+
 - [How to set up Nameless Analytics in GTM](#how-to-set-up-nameless-analytics-in-gtm)
+  - [Phase 1: Prerequisites](#phase-1-prerequisites)
+  - [Phase 2: Asset Acquisition](#phase-2-asset-acquisition)
+  - [Phase 3: Container Integration & Merging](#phase-3-container-integration-merging)
+  - [Phase 4a: Global Configuration (Client-side)](#phase-4a-global-configuration-client-side)
+  - [Phase 4b: Global Configuration (Server-side)](#phase-4b-global-configuration-server-side)
+  - [Phase 5: Pipeline Validation & QA](#phase-5-pipeline-validation-qa)
 - [How to track page views](#how-to-track-page-views)
+  - [Via GTM standard page view trigger](#via-gtm-standard-page-view-trigger)
+  - [Via browser history (Route change)](#via-browser-history-route-change)
+  - [Via custom dataLayer event](#via-custom-datalayer-event)
 - [How to set up cross-domain tracking](#how-to-set-up-cross-domain-tracking)
+  - [One client-side GTM container for both sites](#one-client-side-gtm-container-for-both-sites)
+  - [Two client-side GTM containers, one per site](#two-client-side-gtm-containers-one-per-site)
+  - [One server-side GTM container for both sites](#one-server-side-gtm-container-for-both-sites)
+  - [Two server-side GTM containers, one per site](#two-server-side-gtm-containers-one-per-site)
 - [How to setup and customize ecommerce tracking](#how-to-setup-and-customize-ecommerce-tracking)
-
-
+  - [Ecommerce Tracking Initialization](#ecommerce-tracking-initialization)
+  - [Advanced Ecommerce Reporting](#advanced-ecommerce-reporting)
 
 ## How to set up Nameless Analytics in GTM
 

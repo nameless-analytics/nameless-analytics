@@ -9,10 +9,11 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 
 
 ## Table of Contents
+
 - [Setup](#setup)
   - [Create tables](#create-tables)
   - [Create table functions](#create-table-functions)
-- [Tables](#tables)
+- [Raw tables](#raw-tables)
   - [Events raw table](#events-raw-table)
   - [Dates table](#dates-table)
 - [Table functions](#table-functions)
@@ -28,10 +29,9 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
   - [Consents](#consents)
 - [Reporting fields](#reporting-fields)
 - [Data Governance and Maintenance](#data-governance-and-maintenance)
-  - [GDPR & Privacy Compliance](#gdpr--privacy-compliance)
+  - [Delete user data deletion Script (Recommended)](#delete-user-data-deletion-script-recommended)
+  - [Manual user data deletion](#manual-user-data-deletion)
   - [Data Health Check](#data-health-check)
-
-
 
 ## Setup
 The following SQL scripts are used to initialize the Nameless Analytics reporting environment in BigQuery.

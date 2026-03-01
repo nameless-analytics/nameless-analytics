@@ -9,6 +9,7 @@ Collect, analyze, and activate your website data with a free real-time digital a
 
 
 ## Start from here
+
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
 - [Technical Architecture](#technical-architecture)
@@ -52,8 +53,6 @@ Collect, analyze, and activate your website data with a free real-time digital a
   - [Data processing](#data-processing)
   - [Data storage](#data-storage)
   - [Cost Summary Table](#cost-summary-table)
-
-
 
 ## What is Nameless Analytics 
 Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. Read the [manifesto](MANIFESTO.md).

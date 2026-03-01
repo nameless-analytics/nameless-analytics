@@ -9,17 +9,19 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 
 
 ## Table of Contents
+
 - [Features](#features)
-  - [BigQuery Enrichment](#bigquery-enrichment)
-  - [Automatic Type Handling](#automatic-type-handling)
-  - [Error Handling](#error-handling)
+  - [Session enrichment](#session-enrichment)
+  - [BigQuery enrichment](#bigquery-enrichment)
+  - [Automatic type handling](#automatic-type-handling)
+  - [Error handling](#error-handling)
   - [Security](#security)
+- [JSON Payload Structure](#json-payload-structure)
+  - [Example Payload](#example-payload)
 - [Implementation](#implementation)
   - [Installation](#installation)
   - [Configuration](#configuration)
   - [Usage](#usage)
-
-    
 
 ## Features
 ### Session enrichment
