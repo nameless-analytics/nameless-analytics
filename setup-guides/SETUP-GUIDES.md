@@ -125,6 +125,8 @@ Nameless Analytics utilizes server-side **HttpOnly cookies** for maximum securit
 
 Since these cookies are inaccessible to client-side JavaScript, the tracker employs a real-time 'handshake' mechanism via a specific event called **`get_user_data`**. 
 
+> If IDs are not passing between domains, verify your [Cross-domain Troubleshooting](TROUBLESHOOTING-GUIDE.md#network--custom-endpoint-issues) steps.
+
 When a user clicks an outbound link to a tracked domain, the tracker intercepts the click and sends an asynchronous `get_user_data` request to the Server-side GTM endpoint. The server extracts the `client_id` and `session_id` from the secure cookies and returns them to the tracker, which then decorates the destination URL with the **`na_id`** parameter (e.g., `https://destination.com/?na_id=...`). This ensures 100% accurate session stitching even across different domains.
 
 To ensure proper DNS resolution, the IP addresses of the Google App Engine, Cloud Run or Stape instances running the server-side GTM container must be correctly associated with each respective domain.
@@ -134,7 +136,6 @@ Follow these guides for:
 - [Google Cloud Run](https://cloud.google.com/run/docs/mapping-custom-domains)
 - [Stape](https://help.stape.io/hc/en-us/articles/4405367809681-How-to-setup-custom-domain-for-server-side-Google-Tag-Manager)
 
-> If IDs are not passing between domains, verify your [Cross-domain Troubleshooting](TROUBLESHOOTING-GUIDE.md#network--custom-endpoint-issues) steps.
 
 
 
