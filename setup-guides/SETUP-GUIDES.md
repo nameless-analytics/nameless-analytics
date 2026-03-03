@@ -219,7 +219,7 @@ In your GTM Client-side Tracker Tag configuration:
 
 The Nameless Analytics Server-side Client Tag receives the request, extracts the `ecommerce` data and stores it directly in the `ecommerce` column of your BigQuery `events_raw` table. 
 
-If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the extraction paths in the BigQuery [transactions](../tables/TABLES.md#transactions) and [products](../tables/TABLES.md#products) Table Functions.
+If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the JSON extraction paths in the BigQuery [transactions](../tables/TABLES.md#transactions) and [products](../tables/TABLES.md#products) Table Functions.
 
 
 ### Advanced Ecommerce Reporting
