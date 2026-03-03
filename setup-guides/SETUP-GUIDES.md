@@ -125,7 +125,7 @@ Nameless Analytics utilizes server-side **HttpOnly cookies** for maximum securit
 
 Since these cookies are inaccessible to client-side JavaScript, the tracker employs a real-time 'handshake' mechanism via a specific event called **`get_user_data`**. 
 
-> If IDs are not passing between domains, verify your [Cross-domain Troubleshooting](TROUBLESHOOTING-GUIDE.md#network--custom-endpoint-issues) steps.
+> If IDs are not passing between domains, verify your [Cross-domain Troubleshooting](TROUBLESHOOTING-GUIDE.md) steps.
 
 When a user clicks an outbound link to a tracked domain, the tracker intercepts the click and sends an asynchronous `get_user_data` request to the Server-side GTM endpoint. The server extracts the `client_id` and `session_id` from the secure cookies and returns them to the tracker, which then decorates the destination URL with the **`na_id`** parameter (e.g., `https://destination.com/?na_id=...`). This ensures 100% accurate session stitching even across different domains.
 
@@ -139,7 +139,7 @@ Follow these guides for:
 
 
 
-### One client-side GTM container for both sites
+### One client-side GTM container for more sites
 To configure cross domain tracking you need to: 
 
 1. Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable and add the domains to the list (one per row).
@@ -192,13 +192,8 @@ Otherwise the Set-Cookie header will be blocked by the browser.
 ![Dynamic endpoint configuration error](https://github.com/user-attachments/assets/66d39b81-6bf3-4af4-8663-273d00ae9515)
 
 
-
 ### Two server-side GTM containers, one per site
-If **Accept requests from authorized domains only** option is enabled in **Nameless Analytics Server-side Client** configuration, ensure that the corrisponding domain involved in the cross-domain setup are explicitly added to the **Authorized domains** list.
-
-![Authorized domain](https://github.com/user-attachments/assets/735a727a-79b5-474b-bf71-a5be2055d1c6)
-
-![Authorized domain](https://github.com/user-attachments/assets/251b58b7-3e2b-4a1a-b036-a349bd5aa0eb)
+No special configuration is required as requests per domain are handled independently by two separate Nameless Analytics Server-side Client Tags.
 
 
 
@@ -206,20 +201,25 @@ If **Accept requests from authorized domains only** option is enabled in **Namel
 Nameless Analytics supports full ecommerce tracking following the standard GA4 schema.
 
 ### Ecommerce Tracking Initialization
-The system is designed to automatically capture ecommerce data from your website's `dataLayer`, provided it follows the standard GA4 format.
+The system is designed to automatically capture ecommerce data from your website's `dataLayer`, provided it follows the standard GA4 format. 
+
+If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the extraction paths in the BigQuery SQL Table Functions.
 
 **1. DataLayer Requirement**
+
 Your website must push ecommerce events to the `dataLayer` using the standard structure (e.g., `view_item`, `add_to_cart`, `begin_checkout`, `purchase`). The tracker will automatically look for the `ecommerce` object within the event that triggers the tag.
 
 **2. Tracker Configuration**
+
 In your GTM Client-side Tracker Tag configuration:
 - Ensure the **"Send ecommerce data"** checkbox is enabled. 
 - This tells the tracker to capture the `ecommerce` object from the current dataLayer state and include it in the payload sent to the server.
 
 **3. Server-side Processing**
+
 The Nameless Analytics Server-side Client Tag receives the request, extracts the `ecommerce` data and stores it directly in the `ecommerce` column of your BigQuery `events_raw` table. 
 
-No additional mapping is required if you follow the standard schema. If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the extraction paths in the BigQuery SQL Table Functions.
+If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the extraction paths in the BigQuery [transactions](../tables/TABLES.md#transactions) and [products](../tables/TABLES.md#products) Table Functions.
 
 
 ### Advanced Ecommerce Reporting
