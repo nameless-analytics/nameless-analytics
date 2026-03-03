@@ -175,7 +175,7 @@ If **Accept requests from authorized domains only** option is enabled in **Namel
 
 The endpoint path must be unique for all domains.
 
-![Authorized domains](https://github.com/user-attachments/assets/63346090-0b14-46b4-ac8f-b659969bccb4)
+![Authorized domains](https://github.com/user-attachments/assets/d6172c1a-4171-46e5-9c57-c6ad0157b082)
 
 The container must be configured as well. Add the domains in the Admin > Container settings of the Server-side Google Tag Manager.
 
@@ -194,7 +194,11 @@ Otherwise the Set-Cookie header will be blocked by the browser.
 
 
 ### Two server-side GTM containers, one per site
-_Section coming soon. This configuration is recommended for multi-region setups or strict data residence requirements._
+If **Accept requests from authorized domains only** option is enabled in **Nameless Analytics Server-side Client** configuration, ensure that the corrisponding domain involved in the cross-domain setup are explicitly added to the **Authorized domains** list.
+
+![Authorized domain](https://github.com/user-attachments/assets/735a727a-79b5-474b-bf71-a5be2055d1c6)
+
+![Authorized domain](https://github.com/user-attachments/assets/251b58b7-3e2b-4a1a-b036-a349bd5aa0eb)
 
 
 
