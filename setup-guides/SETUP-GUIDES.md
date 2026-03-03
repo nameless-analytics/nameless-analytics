@@ -173,6 +173,7 @@ To configure cross-domain tracking across separate containers, follow these step
 ### One server-side GTM container for both sites
 If **Accept requests from authorized domains only** option is enabled in **Nameless Analytics Server-side Client** configuration, ensure that all domains involved in the cross-domain setup are explicitly added to the **Authorized domains** list. This prevents requests from being blocked when the tracker switches domains.
 
+<img width="915" height="380" alt="Screenshot 2026-03-03 alle 21 19 47" src="https://github.com/user-attachments/assets/63346090-0b14-46b4-ac8f-b659969bccb4" />
 
 
 The container must be configured as well. Add the domains in the Admin > Container settings of the Server-side Google Tag Manager.
