@@ -214,7 +214,7 @@ Your website must push ecommerce events to the `dataLayer` using the standard st
 **2. Tracker Configuration**
 
 In your GTM Client-side Tracker Tag configuration:
-- Ensure the **"Send ecommerce data"** checkbox is enabled. 
+- Ensure the **"Add ecommerce data"** checkbox is enabled. 
 - This tells the tracker to capture the `ecommerce` object from the current dataLayer state and include it in the payload sent to the server.
 
 **3. Server-side Processing**
