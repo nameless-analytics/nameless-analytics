@@ -1,6 +1,5 @@
 # Nameless Analytics | Troubleshooting Guide
-
-This guide helps you identify, understand, and resolve the most common issues encountered during the implementation of Nameless Analytics.
+The Nameless Analytics Troubleshooting Guide identifies, explains, and resolves common issues encountered during implementation.
 
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
 
@@ -90,7 +89,7 @@ Server logs show:
 `🔴 Invalid User-Agent header value. Request from bot`
 
 - **Issue:** The request was identified as an automated bot, a scraper, or originated from a common HTTP library.
-- **Solution:** Nameless Analytics blocks requests from non-browser environments to ensure data quality. Verify you are testing from a standard, modern browser. 
+- **Solution:** Nameless Analytics blocks requests from non-browser environments to ensure data quality. Testing must be performed from a standard, modern browser. 
   
   The system currently blocks any User-Agent containing the following keywords:
   - **HTTP Libraries:** `curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.

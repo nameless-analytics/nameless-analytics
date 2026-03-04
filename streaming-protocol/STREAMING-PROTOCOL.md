@@ -1,6 +1,5 @@
 # Nameless Analytics | Streaming Protocol
-
-The Nameless Analytics Streaming Protocol is a robust implementation for sending data to the [Nameless Analytics Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag).
+The Nameless Analytics Streaming Protocol is a specialized implementation for sending data directly to the [Nameless Analytics Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag).
 
 For an overview of how Nameless Analytics works [start from here](../README.md#high-level-data-flow).
 
@@ -31,7 +30,7 @@ Events sent via the Streaming Protocol are recorded in BigQuery but **do not ext
 
 
 ### BigQuery enrichment
-Automatically retrieves page_data from your BigQuery `events_raw` table based on the `na_s` cookie, allowing you to enrich server-side events to send with the correct page data.
+Automatically retrieves page_data from the BigQuery `events_raw` table based on the `na_s` cookie, allowing for enriching server-side events with the correct page context.
 
 
 ### Automatic type handling

@@ -1,6 +1,5 @@
 # Nameless Analytics | Setup guides
-The Nameless Analytics Setup guides are a guide to help you set up Nameless Analytics. 
-
+The Nameless Analytics Setup guides provide instructions for configuring the platform across both client-side and server-side environments.
 For an overview of how Nameless Analytics works [start from here](../README.md#high-level-data-flow).
 
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
@@ -35,18 +34,18 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 
 Setting up Nameless Analytics involves a dual-container strategy that combines Client-side GTM with Server-side GTM. 
 
-This architecture allows you to capture granular interactions in the browser while offloading complex processing and sensitive data handling to your own private server environment.
+This architecture allows for capturing granular interactions in the browser while offloading complex processing and sensitive data handling to a private server environment.
 
-The implementation is streamlined through pre-configured templates that include all the necessary Tags, Triggers, and Variables to get your first-party analytics pipeline running in minutes.
+The implementation is streamlined through pre-configured templates that include all necessary Tags, Triggers, and Variables to activate a first-party analytics pipeline in minutes.
 
 **Encountering issues during setup?** Check the [Troubleshooting guide](TROUBLESHOOTING-GUIDE.md).
 
 
 ### Phase 1: Prerequisites
-Before proceeding, ensure your Google Cloud environment is fully provisioned:
+Before proceeding, ensure the Google Cloud environment is fully provisioned:
 - **BigQuery**: Dataset, `events_raw` and `calendar_dates` tables must be created according to the [SQL schemas](../tables/TABLES.md).
 - **Firestore**: A database instance (Native Mode) should be initialized (usually the `(default)` instance).
-- **Server-side GTM**: Your instance (Cloud Run, App Engine or Stape) must be active and already mapped to a custom first-party domain.
+- **Server-side GTM**: The instance (Cloud Run, App Engine or Stape) must be active and mapped to a custom first-party domain.
 
 
 ### Phase 2: Asset Acquisition
@@ -74,7 +73,7 @@ Configure the tracker to establish a secure handshake with your server:
 
 ### Phase 5: Pipeline Validation & QA
 1. **Synchronized Preview**: Launch **Preview Mode** for both the Web and Server containers simultaneously.
-2. **Client Audit**: Navigate to your website and verify the tracker initialization via the browser console logs.
+2. **Client Audit**: Interacting with the website allows for verifying tracker initialization via browser console logs.
 3. **Server Audit**: In the Server-side GTM preview, ensure that incoming requests are correctly intercepted and parsed by the **Nameless Analytics Server-side Client Tag**.
 4. **Data Verification**: Confirm that the event stream is successfully reaching BigQuery and that session snapshots are updating in Firestore.
 

@@ -2,7 +2,7 @@
 
 An open-source web analytics platform for power users, based on [Google Tag Manager](https://marketingplatform.google.com/intl/it/about/tag-manager/), [Google Firestore](https://cloud.google.com/firestore) and [Google BigQuery](https://cloud.google.com/bigquery).
 
-Collect, analyze, and activate your website data with a free real-time digital analytics suite that respects user privacy.
+Collect, analyze, and activate website interaction data with a free real-time digital analytics suite that respects user privacy.
 
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
 
@@ -57,11 +57,11 @@ Collect, analyze, and activate your website data with a free real-time digital a
 ## What is Nameless Analytics 
 Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. Read the [manifesto](MANIFESTO.md).
 
-Built upon a transparent pipeline hosted entirely on your own Google Cloud Platform environment, at a high level, the platform solves critical challenges in modern analytics:
+Built upon a transparent pipeline hosted entirely on a private Google Cloud Platform environment, the platform solves critical challenges in modern analytics:
 
-1.  **Total Data Ownership**: Unlike commercial tools where data resides on third-party servers, Nameless Analytics pipelines every interaction directly to your BigQuery warehouse. You own the raw data, the retention policies and the reporting.
+1.  **Total Data Ownership**: Unlike commercial tools where data resides on third-party servers, Nameless Analytics pipelines every interaction directly to a private BigQuery warehouse. This ensures ownership of raw data, retention policies, and reporting.
 2.  **Data Quality**: By leveraging a server-side, first-party architecture, the platform can bypasses common client-side restrictions (such as ad blockers and ITP), ensuring granular, unsampled data collection that is far more accurate than the standard client-side tracking.
-3.  **Real-Time Activation**: Stream identical event payloads to external APIs, CRMs, or marketing automation tools the instant an event occurs, enabling true real-time personalization.
+3.  **Real-Time Activation**: identical event payloads can be streamed to external APIs, CRMs, or marketing automation tools the instant an event occurs, enabling real-time personalization.
 4.  **Scaling and Cost-Efficiency**: Engineered to run effectively within the **Google Cloud Free Tier** for small to medium traffic, while scaling to a highly cost-efficient pay-per-use model for enterprise-grade deployments.
 
 
@@ -86,9 +86,7 @@ or read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
 
 
 ## Technical Architecture
-The platform is built on a modern architecture that separates data capture, processing and storage to ensure maximum flexibility and performance.
-
-Since the infrastructure is hosted entirely within your own Google Cloud project, you have complete control over **Data Residency**. By choosing a specific GCP Region (e.g., `europe-west1`), you ensure that your data processing and storage remain within your preferred jurisdiction.
+Since the infrastructure is hosted entirely within a private Google Cloud project, complete control over **Data Residency** is maintained. By choosing a specific GCP Region (e.g., `europe-west1`), data processing and storage remain within the preferred jurisdiction.
 
 
 ### Google Tag Manager templates
