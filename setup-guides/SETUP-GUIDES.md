@@ -21,9 +21,9 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
   - [Via browser history (Route change)](#via-browser-history-route-change)
   - [Via custom dataLayer event](#via-custom-datalayer-event)
 - [How to set up cross-domain tracking](#how-to-set-up-cross-domain-tracking)
-  - [One client-side GTM container for both sites](#one-client-side-gtm-container-for-both-sites)
+  - [One client-side GTM container for multiple sites](#one-client-side-gtm-container-for-multiple-sites)
   - [Two client-side GTM containers, one per site](#two-client-side-gtm-containers-one-per-site)
-  - [One server-side GTM container for both sites](#one-server-side-gtm-container-for-both-sites)
+  - [One server-side GTM container for multiple sites](#one-server-side-gtm-container-for-multiple-sites)
   - [Two server-side GTM containers, one per site](#two-server-side-gtm-containers-one-per-site)
 - [How to setup and customize ecommerce tracking](#how-to-setup-and-customize-ecommerce-tracking)
   - [Ecommerce Tracking Initialization](#ecommerce-tracking-initialization)
@@ -42,8 +42,8 @@ The implementation is streamlined through pre-configured templates that include 
 
 ### Phase 1: Prerequisites
 Before proceeding, ensure your Google Cloud environment is fully provisioned:
-- **BigQuery**: Dataset and tables must be created according to the [SQL schemas](../tables/TABLES.md).
-- **Firestore**: A database instance should be initialized in Native Mode.
+- **BigQuery**: Dataset, `events_raw` and `calendar_dates` tables must be created according to the [SQL schemas](../tables/TABLES.md).
+- **Firestore**: A database instance (Native Mode) should be initialized (usually the `(default)` instance).
 - **Server-side GTM**: Your instance (Cloud Run, App Engine or Stape) must be active and already mapped to a custom first-party domain.
 
 
@@ -116,7 +116,7 @@ dataLayer.push({
 });
 ```
 
-> Make sure to [override the page parameters](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#page-data) in the Nameless Analytics Client-side Tracker Configuration Variable otherwise the updated page data will not set set correctly.
+> Make sure to [override the page parameters](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#page-data) in the Nameless Analytics Client-side Tracker Configuration Variable otherwise the updated page data will not be set correctly.
 
 
 
@@ -139,7 +139,7 @@ Follow these guides for:
 
 
 
-### One client-side GTM container for more sites
+### One client-side GTM container for multiple sites
 To configure cross domain tracking you need to: 
 
 1. Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable and add the domains to the list (one per row).
@@ -170,7 +170,7 @@ To configure cross-domain tracking across separate containers, follow these step
     - For **tommasomoretti.com**, the endpoint will be `gtm.tommasomoretti.com`.
 
 
-### One server-side GTM container for both sites
+### One server-side GTM container for multiple sites
 If **Accept requests from authorized domains only** option is enabled in **Nameless Analytics Server-side Client** configuration, ensure that all domains involved in the cross-domain setup are explicitly added to the **Authorized domains** list. This prevents requests from being blocked when the tracker switches domains.
 
 The endpoint path must be unique for all domains.
