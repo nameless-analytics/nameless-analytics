@@ -29,6 +29,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
   - [Ecommerce Tracking Initialization](#ecommerce-tracking-initialization)
   - [Advanced Ecommerce Reporting](#advanced-ecommerce-reporting)
 - [How to send events via Streaming Protocol](#how-to-send-events-via-streaming-protocol)
+- [Data Governance & Privacy compliance](#data-governance--privacy-compliance)
 
 ## How to set up Nameless Analytics in GTM
 
@@ -242,6 +243,15 @@ The Streaming Protocol is specifically designed for server-to-server communicati
 - **Security**: Supports API Key authentication for secure ingestion.
 
 For implementation examples and technical details, refer to the [Streaming Protocol documentation](../streaming-protocol/STREAMING-PROTOCOL.md).
+
+
+## Data Governance & Privacy compliance
+To comply with GDPR "Right to be Forgotten" (RTBF) requests, data must be removed from both the historical timeline (**BigQuery**) and the real-time snapshots (**Firestore**).
+
+The most efficient way to handle these requests is using the provided automation:
+- **[User Data Deletion Script](../tables/TABLES.md#delete-user-data-deletion-script-recommended)**: A Python utility to delete a specific `client_id` from both BigQuery and Firestore in a single operation.
+
+Alternatively, you can perform manual deletions by following the instructions in the [Reporting Tables documentation](../tables/TABLES.md#manual-user-data-deletion).
 
 
 ---
