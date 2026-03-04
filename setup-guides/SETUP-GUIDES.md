@@ -28,6 +28,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 - [How to setup and customize ecommerce tracking](#how-to-setup-and-customize-ecommerce-tracking)
   - [Ecommerce Tracking Initialization](#ecommerce-tracking-initialization)
   - [Advanced Ecommerce Reporting](#advanced-ecommerce-reporting)
+- [How to send events via Streaming Protocol](#how-to-send-events-via-streaming-protocol)
 
 ## How to set up Nameless Analytics in GTM
 
@@ -229,6 +230,19 @@ Once data is in BigQuery, you can leverage built-in Table Functions for deep ana
 - **[Products](../tables/TABLES.md#products)**: Flattens the items array to show performance per product (quantity sold, item revenue, variants, etc.).
 - **[Shopping stages (Open Funnel)](../tables/TABLES.md#shopping-stages-open-funnel)**: Analyzes the Open Funnel from item view to purchase.
 - **[Shopping stages (Closed Funnel)](../tables/TABLES.md#shopping-stages-closed-funnel)**: Analyzes the Closed Funnel from item view to purchase.
+
+
+
+## How to send events via Streaming Protocol
+The Streaming Protocol is specifically designed for server-to-server communication, allowing you to attribute offline or backend interactions (e.g., status changes, recurring payments, or CRM updates) to a user's session without a browser.
+
+**Key considerations:**
+- **Session Attribution**: These events are mapped to existing sessions using the `na_s` identifier.
+- **Restrictions**: `page_view` events are not allowed via Streaming Protocol; they must be sent via the standard browser tracker to initialize the session.
+- **Security**: Supports API Key authentication for secure ingestion.
+
+For implementation examples and technical details, refer to the [Streaming Protocol documentation](../streaming-protocol/STREAMING-PROTOCOL.md).
+
 
 ---
 
