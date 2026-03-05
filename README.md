@@ -781,13 +781,12 @@ SQL Table Functions can be used as sources for reporting, such in [Google Looker
 
 
 ## AI support
-Get expert help for implementation, technical documentation, and advanced SQL queries.
-
-Choose from: 
-
+Get expert help for implementation, technical documentation, and advanced SQL queries. Choose from: 
 - **[OpenAI ChatGPT](https://chatgpt.com/g/g-6860ef949f94819194c3bc2c08e2f395-nameless-analytics-qna)**: Specialized GPTs trained on the platform docs.
 - **[Google Gemini](https://gemini.google.com/gem/1ZsO2SPn5yqDXDAbwHb6bHJcU0LjVsL6S)**: Specialized Gem trained on the platform docs
 
+
+Get help 
 
 
 ## Pricing & Cloud Costs
@@ -805,10 +804,16 @@ You can choose the compute environment that best fits your traffic and budget:
 ### Data storage
 Data will be stored in two different locations:
 
-* **Google Firestore**: Manages real-time session states. Billing is primarily based on **document operations** (Reads and Writes). The free tier includes **50,000 reads and 20,000 writes per day**. Physical storage usage free tier is **1 GB**.
-* **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** and **streaming ingestion** (the cost to land data into the warehouse). 
+* **Google Firestore**: Manages real-time session states. Billing is based on **document operations** (Reads and Writes). Since every event requires 1 read and 1 write to manage session state, the total cost is approximately **$0.24 per 100,000 events** (excluding the daily free tier).
+
+* **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** (~$0.02/GB) and **streaming ingestion**. Nameless Analytics leverages the **BigQuery Storage Write API**, which includes a **FREE tier of 2 TB per month** for ingestion. This means data ingestion costs are **$0** for all traffic tiers listed below.
 
 Query processing (scanning data in BigQuery for analysis/reporting) is billed separately by Google Cloud based on usage. However, the first **1 TB per month** is always free.
+
+### Data Governance & Deletion
+To comply with GDPR and privacy regulations, Nameless Analytics provides a dedicated **[User Data Deletion Script](setup-guides/SETUP-GUIDES.md#data-governance--privacy-compliance)**. 
+
+This Python utility allows you to remove all data for a specific `client_id` from both BigQuery and Firestore in a single operation, ensuring a complete "Right to be Forgotten" implementation.
 
 
 ### Cost Summary Table
@@ -816,16 +821,19 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 
 **Excluded costs:** BigQuery query processing (1 TB/month free tier)
 
-| Traffic Tier | Monthly Events | Compute (Cloud Run / GAE) | Firestore Ops | BigQuery Ingest & Storage | **Estimated Total (CR / GAE)** |
-|--------------|----------------|---------------------------|---------------|---------------------------|--------------------------------|
-| **Low** | < 500k | $0 / $0* | ~$0 | ~$0 | FREE |
-| **Medium** | 1M – 2M | $0 – $1 / $0* | ~$3 – $4 | < $0.2 | $3 – $5 / $3 – $4 |
-| **High** | 5M | ~$8 – $12 / $0* | ~$10 – $12 | ~$0.3 | $18 – $24 / $10 – $12 |
-| **Enterprise** | 10M | ~$20 – $40 / ~$120** | ~$22 | ~$0.6 | $43 – $65 / $143+ |
-| **Enterprise+** | 50M | ~$40 – $70 / ~$120** | ~$90 | ~$3 | $133 – $163 / $213+ |
+| Traffic Tier | Monthly Events | Compute (Cloud Run / GAE / Stape) | Firestore Reads / Writes | BigQuery Ingest & Storage | **Estimated Total (CR / GAE / Stape)** |
+|--------------|----------------|-----------------------------------|--------------------------|---------------------------|----------------------------------------|
+| **Low** | < 500k | $0 / $0* / $20 | ~$0 | ~$0 | FREE – $20 |
+| **Medium** | 1M – 2M | $0 – $1 / $0* / $20 | ~$3 – $5 | ~$0 | $3 – $6 / $3 – $5 / $23+ |
+| **High** | 5M | ~$8 – $12 / $0* / $100 | ~$12 | < $0.1 | $20 – $24 / $12 – $14 / $112+ |
+| **Enterprise** | 10M | ~$20 – $40 / ~$120** / $100 | ~$24 | ~$0.4 | $44 – $64 / $144+ / $124+ |
+| **Enterprise+** | 50M | ~$40 – $70 / ~$120** / $200 | ~$120 | ~$2.6 | $163 – $193 / $243+ / $323+ |
+
+</br>
 
 \* App Engine **Standard Environment (F1 instance)** – suitable for low/medium traffic  
-\** App Engine **Flexible Environment (multi-instance cluster)** – production / HA setup
+\** App Engine **Flexible Environment (multi-instance cluster)** – suitable for high traffic  
+\*** Stape.io **Personal ($0), Pro ($20), Business ($100), Enterprise ($200)** plans based on traffic
 
 ---
 
