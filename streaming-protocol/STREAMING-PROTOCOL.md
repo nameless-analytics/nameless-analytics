@@ -121,6 +121,8 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
 
 > **Note on `event_type`**: In the standard website tracker, this is automatically set to `page_view` or `event`. For the Streaming Protocol, you should manually set it to `event` (as `page_view` is restricted to the website tracker).
 
+> **Note on `channel_grouping`**: You don't need to provide this parameter. The [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag) will automatically calculate it based on the `source` and `campaign` parameters provided in the `event_data` object.
+
 
 
 

@@ -36,6 +36,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Self-Monitoring & Performance](#self-monitoring-performance)
   - [Bot protection](#bot-protection)
   - [Geolocation & Privacy by Design](#geolocation-privacy-by-design)
+  - [Channel Grouping logic](#channel-grouping-logic)
   - [Cookies](#cookies)
   - [Streaming Protocol](#streaming-protocol)
   - [Debugging requests](#debugging-requests)
@@ -312,7 +313,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 | event_name         |                               | String   | Client-Side | Event name                                    |
 | event_origin       |                               | String   | Client-Side | Event origin (Website or Streaming protocol)  |
 | event_data         | event_type                    | String   | Client-Side | Event classification (automatically set to `page_view` or `event`) |
-|                    | channel_grouping              | String   | Client-Side | Channel grouping for the event (see [detailed logic](https://github.com/nameless-analytics/client-side-tracker-configuration-variable/#channel-grouping)) |
+|                    | channel_grouping              | String   | Server-Side | Channel grouping for the event (see [detailed logic](#channel-grouping-logic)) |
 |                    | source                        | String   | Client-Side | Event traffic source                          |
 |                    | campaign                      | String   | Client-Side | Event campaign                                |
 |                    | campaign_id                   | String   | Client-Side | Event campaign ID                             |
@@ -430,9 +431,8 @@ This is the core engine that supports the GTM tag by exposing utility functions 
 
 It handles the following background operations:
 
-- **Sequential Requests Queue:** Implements a Promise-based queue to ensure that HTTP requests are sent in the exact order they occurred (FIFO), preserving the timeline of user interactions.
 - **Payload Enrichment:** Formats timestamps into BigQuery-compatible date strings and captures browser environment metrics like screen resolution and viewport size.
-- **Channel Grouping Logic:** Categorizes traffic sources into predefined groups (e.g., Organic Search, Paid Social, AI, Email) using regex-based pattern matching.
+- **Sequential Requests Queue:** Implements a Promise-based queue to ensure that HTTP requests are sent in the exact order they occurred (FIFO), preserving the timeline of user interactions.
 - **Cross-domain Handshake:** Manages a global click listener that detects cross-domain links. It triggers a server-side "handshake" via the `get_user_data` function to retrieve the visitor's server-side identities before redirecting and decorating outbound URLs with the `na_id` parameter.
 - **Server Identity Retrieval (`get_user_data`):** A dedicated function that performs an asynchronous POST request to the Server-Side Client Tag to fetch the active `client_id` and `session_id`. This ensures that cross-domain tracking uses the authoritative IDs issued by the server.
 - **Consent State Mapping:** Provides a function to read the current state of all Google Consent Mode types directly from the global GTM data object.
@@ -575,6 +575,54 @@ Actively detects and blocks automated traffic returning a `403 Forbidden` status
 Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations. 
 
 To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us again).
+
+
+### Channel Grouping logic
+Automatically categorizes traffic sources into predefined groups (e.g., Organic Search, Paid Social, AI, Email) using a server-side regex-based pattern matching system. 
+
+The Server-side Client Tag automatically processes attribution data for every incoming request. By analyzing the `source` and `campaign` parameters, it applies a regex-based logic to categorize the traffic into standard groups (e.g., Organic Search, Paid Social, Email, etc.).
+
+This centralized processing ensures that:
+- **Consistency**: All events within a session share the same attribution logic, regardless of the source (Website or Streaming Protocol).
+- **Maintenance**: Updates to channel definitions only need to be applied once at the server level.
+
+<details><summary>See channel grouping rules</summary>
+
+The following table describes how the channel grouping is determined based on the `source` and `campaign` parameters of the event. 
+
+| Source category | Campaign | Channel grouping |
+| :--- | :--- | :--- |
+| **Internal traffic** | Yes | `internal_traffic` |
+| **Direct** | Yes | `direct` |
+| **GTM Debugger** | Yes | `gtm_debugger` |
+| **Search Engine** | Yes | `paid_search_engine` |
+| **Search Engine** | No | `organic_search_engine` |
+| **Social** | Yes | `paid_social` |
+| **Social** | No | `organic_social` |
+| **Shopping** | Yes | `paid_shopping` |
+| **Shopping** | No | `organic_shopping` |
+| **Video** | Yes | `paid_video` |
+| **Video** | No | `organic_video` |
+| **AI** | Yes | `ai` |
+| **Email** | Yes | `email` |
+| None of the above | No | `referral` |
+| None of the above | Yes | `affiliate` |
+
+The channel grouping logic uses the following Source Categories based on the source name:
+
+| Source category | Source |
+| :--- | :--- |
+| **Internal traffic** | `null` |
+| **Direct** | `direct` |
+| **GTM Debugger** | `tagassistant.google.com` |
+| **Search Engine** | `360.cn`, `alice`, `aol`, `yahoo`, `ask`, `bing`, `google`, `yandex`, `baidu`, `ecosia`, `duckduckgo`, `sogou`, `naver`, `seznam` |
+| **Social** | `facebook`, `twitter`, `instagram`, `pinterest`, `linkedin`, `reddit`, `vk.com`, `tiktok`, `snapchat`, `tumblr`, `wechat`, `whatsapp` |
+| **Shopping** | `amazon`, `ebay`, `etsy`, `shopify`, `stripe`, `walmart`, `mercadolibre`, `alibaba`, `naver.shopping` |
+| **Video** | `youtube`, `vimeo`, `netflix`, `twitch`, `dailymotion`, `hulu`, `disneyplus`, `wistia`, `youku` |
+| **AI** | `chatgpt`, `gemini`, `bard`, `claude`, `alexa`, `siri`, `assistant`, `ai` |
+| **Email** | `email`, `e-mail`, `newsletter`, `mailchimp`, `sendgrid`, `sparkpost` |
+
+</details>
 
 
 ### Cookies
