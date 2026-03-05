@@ -13,17 +13,12 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 
 
 ### 🟡 - Medium Priority
-- Move channel-grouping logic from nameless-analytics.js to server side for processing both Web and Streaming protocol requests
-- Add custom channel-grouping rules (Server-side client tag)
+- Add acquisition information in url when respect consent mode is enabled for denied hit (Client-side tracker tag)
 
 
 ### 🟢 - Low Priority
-- Add acquisition information in url when respect consent mode is enabled for denied hit (Client-side tracker tag)
+- Add custom channel-grouping rules (Server-side client tag)
 - Add core web vitals metrics (Client-side tracker tag) for page_load_time event.
-
-
-### 🔵 - TBD
-- Website design
 
 ---
 
