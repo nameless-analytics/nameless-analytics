@@ -15,7 +15,7 @@ from google.cloud import bigquery
 # --------------------------------------------------------------------------------------------------------------
 
 # User cookies
-na_s = '9XYP7ZNT84N750_cOFINXvOO3jhvhs-oLZPPTqcOJPP0qF' # Modify this according to the current user's na_s cookie value
+na_s = '9XYP7ZNT84N750_Qt2ZyjBoG0ukJa-finVjkNftb1L8GD' # Modify this according to the current user's na_s cookie value
 
 # Request settings
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
