@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions`(start_date DATE, end_date DATE) AS (
-with session_logic as (
+  with session_logic as (
     select
       # USER DATA
       user_date, 
@@ -69,7 +69,6 @@ with session_logic as (
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.value') as float64) end), 0) as purchase_revenue,
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.shipping') as float64) end), 0) as purchase_shipping,
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.tax') as float64) end), 0) as purchase_tax,
-      
       ifnull(sum(case when event_name = 'refund' then -safe_cast(json_value(ecommerce, '$.value') as float64) end), 0) as refund_revenue,
       ifnull(sum(case when event_name = 'refund' then -safe_cast(json_value(ecommerce, '$.shipping') as float64) end), 0) as refund_shipping,
       ifnull(sum(case when event_name = 'refund' then -safe_cast(json_value(ecommerce, '$.tax') as float64) end), 0) as refund_tax,
@@ -267,30 +266,32 @@ with session_logic as (
     safe_divide(sum(page_view), count(distinct session_id)) as page_view_per_session,
 
     # EVENTS
-    sum(page_view) as page_view,
-    sum(view_promotion) as view_promotion,
-    sum(view_item_list) as view_item_list,
-    sum(select_item) as select_item,
-    sum(view_item) as view_item,
-    sum(add_to_wishlist) as add_to_wishlist,
-    sum(add_to_cart) as add_to_cart,
-    sum(remove_from_cart) as remove_from_cart,
-    sum(view_cart) as view_cart,
-    sum(begin_checkout) as begin_checkout,
-    sum(add_shipping_info) as add_shipping_info,
-    sum(add_payment_info) as add_payment_info,
-    sum(purchase) as purchase,
-    sum(refund) as refund,
+    page_view,
+    view_promotion,
+    view_item_list,
+    select_item,
+    view_item,
+    add_to_wishlist,
+    add_to_cart,
+    remove_from_cart,
+    view_cart,
+    begin_checkout,
+    add_shipping_info,
+    add_payment_info,
+    purchase,
+    refund,
 
     # ECOMMERCE DATA
     purchase_revenue,
     purchase_shipping,
     purchase_tax,
     ifnull(safe_divide(sum(purchase_revenue), sum(purchase)), 0) as avg_order_value,
+    
     refund_revenue,
     refund_shipping,
     refund_tax,
     ifnull(safe_divide(sum(refund_revenue), sum(refund)), 0) as avg_refund_value,
+
     purchase - refund as purchase_net_refund,
     purchase_revenue + refund_revenue as revenue_net_refund,
     purchase_shipping + refund_shipping as shipping_net_refund,
@@ -321,9 +322,6 @@ with session_logic as (
     1 - safe_divide(sum(session_functionality_storage), count(distinct session_id)) as functionality_storage_denied_percentage,
 
     session_personalization_storage,
-    safe_divide(sum(session_personalization_storage), count(distinct session_id)) as personalization_storage_accepted_percentage,
-    1 - safe_divide(sum(session_personalization_storage), count(distinct session_id)) as personalization_storage_denied_percentage,
-
     session_security_storage,
     safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_accepted_percentage,
     1 - safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_denied_percentage,

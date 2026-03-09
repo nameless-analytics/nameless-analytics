@@ -22,8 +22,8 @@ select
     first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc) as user_last_session_timestamp,
 
     datetime_diff(
-      timestamp_micros(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), 
-      timestamp_micros((select value.int from unnest(user_data) where name = 'user_first_session_timestamp'))
+      timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), 
+      timestamp_millis((select value.int from unnest(user_data) where name = 'user_first_session_timestamp'))
     , day) as days_from_first_to_last_visit,
     datetime_diff(current_timestamp(), timestamp_millis((select value.int from unnest(user_data) where name = 'user_first_session_timestamp')), day) as days_from_first_visit,
     datetime_diff(current_timestamp(), timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), day) as days_from_last_visit,
@@ -226,9 +226,9 @@ select
   from `tom-moretti.nameless_analytics.events_raw`
   where true
     and case 
-      when lower(date_scope) = 'user' then user_date
-      when lower(date_scope) = 'session' then session_date
-      when lower(date_scope) = 'page' then page_date
-      when lower(date_scope) = 'event' then event_date
+      when date_scope = 'user' then user_date
+      when date_scope = 'session' then session_date
+      when date_scope = 'page' then page_date
+      when date_scope = 'event' then event_date
     end between start_date and end_date
 );

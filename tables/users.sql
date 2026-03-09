@@ -1,43 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_date DATE, end_date DATE) AS (
-with base_events as (
-    select 
-      # USER DATA
-      user_date,
-      user_id,
-      client_id,
-      user_type,
-      new_user,
-      returning_user,
-      user_channel_grouping,
-      user_source_cleaned as user_source,
-      user_campaign,
-      user_campaign_id,
-      user_campaign_click_id,
-      user_campaign_term,
-      user_campaign_content,
-      user_device_type,
-      user_country,
-      user_city,
-      user_language,
-      days_from_first_to_last_visit,
-      days_from_first_visit,
-      days_from_last_visit,
-
-      # SESSION DATA
-      session_id,
-      session_number,
-      session_duration_sec,
-
-      # EVENT DATA
-      event_name,
-      event_timestamp,
-
-      # ECOMMERCE DATA
-      ecommerce,
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'user')
-  ),
-
-  user_logic as (
+with user_logic as (
     select
       ## USER DATA
       user_date,
@@ -83,8 +45,8 @@ with base_events as (
       ifnull(safe_divide(sum(case when event_name = 'purchase' then (safe_cast(json_value(items, '$.price') as float64) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end), countif(event_name = 'purchase')), 0) as avg_purchase_value,
       ifnull(safe_divide(sum(case when event_name = 'refund' then -(safe_cast(json_value(items, '$.price') as float64) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end), countif(event_name = 'refund')), 0) as avg_refund_value,
 
-    from base_events
-    left join unnest(json_extract_array(ecommerce, '$.items')) as items
+    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'user')
+      left join unnest(json_extract_array(ecommerce, '$.items')) as items
     group by all
   ),
  
