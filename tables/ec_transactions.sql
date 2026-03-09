@@ -50,7 +50,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions
 
       # EVENT DATA
       event_date,
-      event_timestamp,
+      FORMAT_TIMESTAMP('%H:%M:%S', TIMESTAMP_MILLIS(event_timestamp)) AS hour_and_minute,
       event_name,
       event_origin,
 
@@ -115,17 +115,18 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions
 
     # EVENT DATA
     event_date,
-    FORMAT_TIMESTAMP('%H:%M:%S', TIMESTAMP_MILLIS(event_timestamp)) AS hour_and_minute,
+    hour_and_minute,
     event_name,
-    event_timestamp,
     event_origin,
 
     # ECOMMERCE DATA      
     transaction_id,
+
     case
       when event_name = 'purchase' then 1
       else 0
     end as purchase,
+    countif(event_name = 'purchase') over (partition by transaction_id) as duplicate_purchase, 
     if(event_name = 'purchase', ifnull(transaction_revenue, 0.0), 0) as purchase_revenue,
     if(event_name = 'purchase', ifnull(transaction_tax, 0.0), 0) as purchase_tax,
     if(event_name = 'purchase', ifnull(transaction_shipping, 0.0), 0) as purchase_shipping,
@@ -136,6 +137,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions
       when event_name = 'refund' then 1
       else 0
     end as refund,
+    countif(event_name = 'purchase') over (partition by transaction_id) as duplicate_refund, 
     if(event_name = 'refund', ifnull(transaction_revenue, 0.0), 0) as refund_revenue,
     if(event_name = 'refund', ifnull(transaction_shipping, 0.0), 0) as refund_shipping,
     if(event_name = 'refund', ifnull(transaction_tax, 0.0), 0) as refund_tax,

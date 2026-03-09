@@ -1,76 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions`(start_date DATE, end_date DATE) AS (
-with base_events as (
-    select 
-      # USER DATA
-      user_date, 
-      user_id,
-      client_id, 
-      user_type, 
-      new_user, 
-      returning_user,
-      user_channel_grouping, 
-      user_source_cleaned as user_source,
-      user_campaign, 
-      user_campaign_id,
-      user_campaign_click_id,
-      user_campaign_term,
-      user_campaign_content,
-      user_device_type, 
-      user_country, 
-      user_city,
-      user_language, 
-
-      # SESSION DATA
-      session_date, 
-      session_id, 
-      session_number, 
-      cross_domain_session, 
-      session_start_timestamp, 
-      session_end_timestamp,
-      session_duration_sec,
-      session_type,
-      new_session,
-      returning_session,
-      session_channel_grouping, 
-      session_source_cleaned as session_source,
-      session_campaign,
-      session_campaign_id,
-      session_campaign_click_id,
-      session_campaign_term,
-      session_campaign_content,
-      session_device_type, 
-      session_browser_name,
-      session_country, 
-      session_city,
-      session_language,
-      session_hostname,
-      session_landing_page_category, 
-      session_landing_page_location, 
-      session_landing_page_title, 
-      session_exit_page_category, 
-      session_exit_page_location, 
-      session_exit_page_title,
-
-      # EVENT DATA
-      event_timestamp,
-      event_name,
-
-      # ECOMMERCE DATA
-      ecommerce,
-
-      # CONSENT DATA
-      consent_type,
-      ad_user_data,
-      ad_personalization,
-      ad_storage,
-      analytics_storage,
-      functionality_storage,
-      personalization_storage,
-      security_storage
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
-  ),
-
-  session_logic as (
+with session_logic as (
     select
       # USER DATA
       user_date, 
@@ -140,6 +69,7 @@ with base_events as (
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.value') as float64) end), 0) as purchase_revenue,
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.shipping') as float64) end), 0) as purchase_shipping,
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.tax') as float64) end), 0) as purchase_tax,
+      
       ifnull(sum(case when event_name = 'refund' then -safe_cast(json_value(ecommerce, '$.value') as float64) end), 0) as refund_revenue,
       ifnull(sum(case when event_name = 'refund' then -safe_cast(json_value(ecommerce, '$.shipping') as float64) end), 0) as refund_shipping,
       ifnull(sum(case when event_name = 'refund' then -safe_cast(json_value(ecommerce, '$.tax') as float64) end), 0) as refund_tax,
@@ -170,7 +100,7 @@ with base_events as (
       array_agg(case when consent_type = 'Update' then security_storage end ignore nulls order by event_timestamp asc limit 1)[safe_offset(0)] as upd_security_storage,
       array_agg(security_storage order by event_timestamp asc limit 1)[safe_offset(0)] as def_security_storage
 
-    from base_events
+    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
     group by all
   ),
 
