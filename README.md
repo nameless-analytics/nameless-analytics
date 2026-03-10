@@ -756,8 +756,8 @@ SQL Table Functions can be used as sources for reporting, such in [Google Looker
 </details>
 
 
-### User consents
-<details><summary>See user consents dashboard examples</summary>
+### Consents
+<details><summary>See consents dashboard examples</summary>
 
 </br>
 
