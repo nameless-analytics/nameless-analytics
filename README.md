@@ -603,7 +603,7 @@ The following table describes how the channel grouping is determined based on th
 | `referral` | None of the above | No |
 | `affiliate` | None of the above | Yes |
 
-The channel grouping logic uses the following Source Categories based on the source name:
+The channel grouping logic uses the following Source categories based on the source name:
 
 | Source category | Source |
 | :--- | :--- |
@@ -654,7 +654,7 @@ The Server-Side Client Tag will automatically reject any request where `event_or
 ### Debugging requests
 Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**. 
 
-For detailed information on server-side errors (403 Forbidden) and validation issues, refer to the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md).
+For detailed information on server-side errors and validation issues, refer to the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md).
 
 ## Storage
 Nameless Analytics employs a complementary storage strategy to balance real-time intelligence with deep historical analysis:
@@ -777,7 +777,7 @@ SQL Table Functions can be used as sources for reporting, such in [Google Looker
 
 ## AI support
 Get expert help for implementation, technical documentation, and advanced SQL queries. Choose from: 
-- **[OpenAI ChatGPT](https://chatgpt.com/g/g-6860ef949f94819194c3bc2c08e2f395-nameless-analytics-qna)**: Specialized GPTs trained on the platform docs.
+- **[OpenAI ChatGPT](https://chatgpt.com/g/g-6860ef949f94819194c3bc2c08e2f395-nameless-analytics-qna)**: Specialized GPTs trained on the platform docs, recommended.
 - **[Google Gemini](https://gemini.google.com/gem/1ZsO2SPn5yqDXDAbwHb6bHJcU0LjVsL6S)**: Specialized Gem trained on the platform docs
 
 

@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------------------------------------------------
-# NAMELESS ANALYTICS | GDPR Deletion Script
+# NAMELESS ANALYTICS | Users deletion tool
 # This script removes all data associated with a specific client_id from both BigQuery and Firestore.
 # ------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -13,8 +13,6 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
   - [Create tables](#create-tables)
   - [Create table functions](#create-table-functions)
 - [Raw tables](#raw-tables)
-  - [Events raw table](#events-raw-table)
-  - [Dates table](#dates-table)
 - [Table functions](#table-functions)
   - [Events](#events)
   - [Users](#users)
@@ -263,13 +261,9 @@ The architecture consists of two core tables: the **Events raw table** (`events_
 
 All data is partitioned by date and clustered by key dimensions to ensure optimal query performance and cost efficiency when analyzing large datasets.
 
+The main table is partitioned by `event_date` and clustered by `user_date`, `session_date`, `page_date`, and `event_name`.
 
-### Events raw table
-This main table is partitioned by `event_date` and clustered by `user_date`, `session_date`, `page_date`, and `event_name`.
-
-
-### Dates table
-This table is partitioned by `date` and clustered by `month_name` and `day_name`.
+The dates table is partitioned by `date` and clustered by `month_name` and `day_name`.
 
 
 
@@ -314,43 +308,43 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 
 
 ### Users
-Aggregates data at the user level, calculating lifecycle metrics like total sessions, first/last seen dates, and lifetime values.
+Aggregates event data at user level.
 
 [View SQL code](users.sql)
 
 
 ### Sessions
-Groups events into individual sessions, calculating duration, bounce rates, and landing/exit pages.
+Aggregates event data at session level.
 
 [View SQL code](sessions.sql)
 
 
 ### Pages
-Focuses on page-level performance, aggregating views, time on page, and navigation paths.
+Aggregates event data at page level.
 
 [View SQL code](pages.sql)
 
 
 ### Transactions
-Extracts and structures ecommerce transaction data, including revenue, tax, and shipping details.
+Aggregates ecommerce data at transaction level.
 
 [View SQL code](ec_transactions.sql)
 
 
 ### Products
-Provides a granular view of product performance, including views, add-to-carts, and purchases per SKU.
+Aggregates ecommerce data at product level. 
 
 [View SQL code](ec_products.sql)
 
 
 ### Shopping stages open funnel
-Calculates drop-off rates across the entire shopping journey, regardless of where the user started.
+Aggregates event data at shopping stages level, regardless of where the user started.
 
 [View SQL code](ec_shopping_stages_open_funnel.sql)
 
 
 ### Shopping stages closed funnel
-Analyzes the shopping journey for users who follow a specific, linear sequence of steps.
+Aggregates event data at shopping stages level, for users who follow a specific, linear sequence of steps.
 
 [View SQL code](ec_shopping_stages_closed_funnel.sql)
 
@@ -362,7 +356,7 @@ Provides metrics on GTM container execution times and tag performance to help op
 
 
 ### Consents
-Tracks changes in user consent status over time, ensuring compliance and data transparency.
+Aggregates consent data at session level.
 
 [View SQL code](consents.sql)
 
@@ -645,12 +639,14 @@ Below are SQL templates to help you manage data integrity and comply with privac
 To comply with GDPR "Right to be Forgotten" requests, data must be removed from both the historical timeline (BigQuery) and the real-time snapshots (Firestore).
 
 
-### Delete user data deletion Script (Recommended)
-You can use the provided Python script `users-deletion-tools.py` to handle both deletions in a single command.
+### Delete user data script (Recommended)
+You can use the provided [`Users deletion tool`](users-deletion-tool.py) Python script to handle both deletions in a single command.
 
 ### Manual user data deletion
+If you prefer manual deletion, please remove data from both BigQuery and Firestore.
+
 #### BigQuery user data deletion
-If you prefer manual deletion in BigQuery, use the following DML statement:
+Use the following DML statement to delete all records for a specific client_id. This will remove all user events.
 
 ```sql
 # Delete all records for a specific client_id
