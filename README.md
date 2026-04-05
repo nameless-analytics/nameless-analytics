@@ -12,11 +12,10 @@ Collect, analyze, and activate website interaction data with a free real-time di
 
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
-- [Technical Architecture](#technical-architecture)
+- [Technical architecture and resources](#technical-architecture-and-resources)
   - [Google Tag Manager templates](#google-tag-manager-templates)
   - [Documentation](#documentation)
   - [Resources](#resources)
-  - [High-Level Data Flow](#high-level-data-flow)
 - [Client-Side Collection](#client-side-collection)
   - [Request payload data](#request-payload-data)
   - [ID Management](#id-management)
@@ -25,7 +24,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [SPA & History Management](#spa-history-management)
   - [Core Libraries Functioning](#core-libraries-functioning)
   - [Cross-domain Architecture](#cross-domain-architecture)
-  - [Parameter Hierarchy & Overriding](#parameter-hierarchy-overriding)
+  - [Event parameter hierarchy & overriding](#event-parameter-hierarchy-overriding)
   - [Debugging events](#debugging-events)
 - [Server-Side Processing](#server-side-processing)
   - [Security and Validation](#security-and-validation)
@@ -68,7 +67,7 @@ Built upon a transparent pipeline hosted entirely on a private Google Cloud Plat
 
 
 ## Quick Start
-Ensure you have the following resources under the same account or service account:
+Before starting, ensure you have the following resources under the same account or service account:
 - A Client-side Google Tag Manager container
 - A Server-side Google Tag Manager container running on:
   - [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) (thanks to [Simo Ahava](https://www.simoahava.com/))
@@ -78,7 +77,7 @@ Ensure you have the following resources under the same account or service accoun
 - A Google BigQuery project + dataset, raw tables and table functions created using the provided [SQL scripts](tables/TABLES.md)
 - A Google Firestore database enabled in Native Mode
 
-Download and import the following GTM containers:
+Download and import the following preconfigured GTM containers:
 - [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
 - [Server-side GTM default container](gtm-containers/gtm-server-side-container-template.json)
 
@@ -86,11 +85,13 @@ or read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
 
 
 
-## Technical Architecture
-Since the infrastructure is hosted entirely within a private Google Cloud project, complete control over **Data Residency** is maintained. By choosing a specific GCP Region (e.g., `europe-west1`), data processing and storage remain within the preferred jurisdiction.
+## Technical architecture and resources
+The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
+
+![Nameless Analytics schema](https://github.com/user-attachments/assets/e9ff1593-f7c9-442e-a600-798a51a02a1e)
 
 
-### Google Tag Manager templates
+### Google Tag Manager tag templates
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/client-side-tracker-tag)
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/client-side-tracker-configuration-variable)
 - [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag)
@@ -111,15 +112,9 @@ Since the infrastructure is hosted entirely within a private Google Cloud projec
 - [Manifesto](MANIFESTO.md)
 
 
-### High-Level Data Flow
-The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
-
-![Nameless Analytics schema](https://github.com/user-attachments/assets/e9ff1593-f7c9-442e-a600-798a51a02a1e)
-
-
 
 ## Client-Side Collection
-The **Client-Side Tracker Tag** serves as an intelligent agent in the browser. It abstracts complex logic to ensure reliable data capture under any condition.
+The **Client-Side Tracker Tag** abstracts complex logic to ensure reliable data capture under any condition.
 
 
 ### Request payload data
@@ -474,7 +469,7 @@ While this can introduce very small latency, it eliminates session fragmentation
 </details>
 
 
-### Parameter Hierarchy & Overriding
+### Event parameter hierarchy & overriding
 Since parameters can be set at multiple levels (Client side variable + Client-side tag, Server-side tag), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
 
 System-critical parameters like `client_id`, `session_id`, `page_id` and `event_id` and the standard parameters are protected and cannot be overwritten in any ways.
@@ -507,14 +502,14 @@ User, session, and event parameters follow this hierarchy of overriding:
 
 
 ### Debugging events
-Real-time tracker logs and errors are sent to the **Browser Console**, ensuring immediate feedback during implementation. 
+Real-time tracker logs and errors are logged to the **Browser Console**, ensuring immediate feedback during implementation. 
 
 For a detailed guide on resolving common sequence and integration issues, see the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md).
 
 
 
 ## Server-Side Processing
-The **Server-Side Client Tag** serves as security gateway and data orchestrator. It sits between the public internet and your cloud infrastructure, sanitizing every request.
+The **Server-Side Client Tag** sits between the public internet and your cloud infrastructure, verifying, claiming or rejecting every request.
 
 
 ### Security and Validation
@@ -590,23 +585,23 @@ This centralized processing ensures that:
 
 The following table describes how the channel grouping is determined based on the `source` and `campaign` parameters of the event. 
 
-| Source category | Campaign | Channel grouping |
+| Channel grouping | Source category | Campaign |
 | :--- | :--- | :--- |
-| **Internal traffic** | Yes | `internal_traffic` |
-| **Direct** | Yes | `direct` |
-| **GTM Debugger** | Yes | `gtm_debugger` |
-| **Search Engine** | Yes | `paid_search_engine` |
-| **Search Engine** | No | `organic_search_engine` |
-| **Social** | Yes | `paid_social` |
-| **Social** | No | `organic_social` |
-| **Shopping** | Yes | `paid_shopping` |
-| **Shopping** | No | `organic_shopping` |
-| **Video** | Yes | `paid_video` |
-| **Video** | No | `organic_video` |
-| **AI** | Yes | `ai` |
-| **Email** | Yes | `email` |
-| None of the above | No | `referral` |
-| None of the above | Yes | `affiliate` |
+| `internal_traffic` | **Internal traffic** | Yes |
+| `direct` | **Direct** | Yes |
+| `gtm_debugger` | **GTM Debugger** | Yes |
+| `paid_search_engine` | **Search Engine** | Yes |
+| `organic_search_engine` | **Search Engine** | No |
+| `paid_social` | **Social** | Yes |
+| `organic_social` | **Social** | No |
+| `paid_shopping` | **Shopping** | Yes |
+| `organic_shopping` | **Shopping** | No |
+| `paid_video` | **Video** | Yes |
+| `organic_video` | **Video** | No |
+| `ai` | **AI** | Yes |
+| `email` | **Email** | Yes |
+| `referral` | None of the above | No |
+| `affiliate` | None of the above | Yes |
 
 The channel grouping logic uses the following Source Categories based on the source name:
 
