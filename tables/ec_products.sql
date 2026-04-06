@@ -86,12 +86,12 @@ with product_data_raw as (
       case when event_name = 'remove_from_wishlist' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_removed_from_wishlist,
       
       case when event_name = 'purchase' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_purchased,
-      case when event_name = 'purchase' then safe_cast(json_value(items, '$.price') as float64) * safe_cast(json_value(items, '$.quantity') as int64) end as item_revenue_purchase,
-      case when event_name = 'purchase' then 1 end as item_unique_purchases,
+      case when event_name = 'purchase' then safe_cast(json_value(items, '$.price') as float64) * safe_cast(json_value(items, '$.quantity') as int64) end as item_revenue_purchased,
+      case when event_name = 'purchase' then 1 end as unique_item_purchases,
 
       case when event_name = 'refund' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_refunded,
-      case when event_name = 'refund' then safe_cast(json_value(items, '$.price') as float64) * safe_cast(json_value(items, '$.quantity') as int64) end as item_revenue_refund,
-      case when event_name = 'refund' then 1 end as item_unique_refunds
+      case when event_name = 'refund' then safe_cast(json_value(items, '$.price') as float64) * safe_cast(json_value(items, '$.quantity') as int64) end as item_revenue_refunded,
+      case when event_name = 'refund' then 1 end as unique_item_refunds
     from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items
     where regexp_contains(event_name, 'view_promotion|select_promotion|view_item_list|select_item|view_item|add_to_wishlist|remove_from_wishlist|add_to_cart|remove_from_cart|view_cart|begin_checkout|add_shipping_info|add_payment_info|purchase|refund')
@@ -199,15 +199,15 @@ with product_data_raw as (
     countif(event_name = "add_shipping_info") as add_shipping_info,
     countif(event_name = "add_payment_info") as add_payment_info,
 
-    sum(item_quantity_purchased) as item_quantity_purchase,
-    countif(event_name = 'purchase') as item_unique_purchase,
+    sum(item_quantity_purchased) as item_quantity_purchased,
+    sum(unique_item_purchases) as unique_item_purchases,
     sum(item_quantity_added_to_cart) as item_quantity_added_to_cart,
     sum(item_quantity_removed_from_cart) as item_quantity_removed_from_cart,
-    sum(item_revenue_purchase) as item_revenue_purchase,
+    sum(item_revenue_purchased) as item_revenue_purchased,
 
-    sum(item_quantity_refunded) as item_quantity_refund,
-    countif(event_name = 'refund') as item_unique_refund,
-    sum(item_revenue_refund) as item_revenue_refund
+    sum(item_quantity_refunded) as item_quantity_refunded,
+    sum(unique_item_refunds) as unique_item_refunds,
+    sum(item_revenue_refunded) as item_revenue_refunded
   from product_data_raw
   group by all
-); 
+);

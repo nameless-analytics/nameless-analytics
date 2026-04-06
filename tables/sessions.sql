@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions`(start_date DATE, end_date DATE) AS (
-  with session_logic as (
+with session_logic as (
     select
       # USER DATA
       user_date, 
@@ -52,6 +52,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions`(start
       # EVENTS
       countif(event_name = 'page_view') as page_view,
       countif(event_name = 'view_promotion') as view_promotion,
+      countif(event_name = 'select_promotion') as select_promotion,
       countif(event_name = 'view_item_list') as view_item_list,
       countif(event_name = 'select_item') as select_item,
       countif(event_name = 'view_item') as view_item,
@@ -156,6 +157,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions`(start
       # EVENTS
       page_view,
       view_promotion,
+      select_promotion,
       view_item_list,
       select_item,
       view_item,
@@ -268,6 +270,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions`(start
     # EVENTS
     page_view,
     view_promotion,
+    select_promotion,
     view_item_list,
     select_item,
     view_item,
@@ -322,6 +325,9 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions`(start
     1 - safe_divide(sum(session_functionality_storage), count(distinct session_id)) as functionality_storage_denied_percentage,
 
     session_personalization_storage,
+    safe_divide(sum(session_personalization_storage), count(distinct session_id)) as personalization_storage_accepted_percentage,
+    1 - safe_divide(sum(session_personalization_storage), count(distinct session_id)) as personalization_storage_denied_percentage,
+
     session_security_storage,
     safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_accepted_percentage,
     1 - safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_denied_percentage,

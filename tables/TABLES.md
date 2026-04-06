@@ -379,7 +379,7 @@ This table illustrates the fields available across different table functions, al
 | `ad_user_data_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `ad_user_data_denied_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `add_payment_info` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
-| `add_shipping_info` | Metric | float |  |  | X |  |  | X |  |  |  |  |
+| `add_shipping_info` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `add_to_cart` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `add_to_wishlist` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `analytics_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -414,7 +414,7 @@ This table illustrates the fields available across different table functions, al
 | `creative_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `creative_slot` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `cross_domain_id` (from `na_id`) | Dimension | string | X |  |  |  |  |  |  |  |  |  |
-| `cross_domain_session` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
+| `cross_domain_session` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `cs_container_id` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
 | `cs_hostname` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
 | `cs_tag_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -437,7 +437,7 @@ This table illustrates the fields available across different table functions, al
 | `engaged_sessions_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `event_data` | Dimension | Array | X |  |  |  |  |  |  |  | X |  |
 | `event_date` | Dimension | string | X |  |  |  | X | X | X | X | X |  |
-| `event_datetime` | Dimension | string |  |  |  |  |  |  |  |  | X |  |
+| `event_datetime` | Dimension | timestamp |  |  |  |  |  |  |  |  | X |  |
 | `event_id` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
 | `event_name` | Dimension | string | X |  |  |  | X | X |  |  | X |  |
 | `event_number` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
@@ -463,14 +463,14 @@ This table illustrates the fields available across different table functions, al
 | `item_list_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `item_list_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `item_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
-| `item_purchase_revenue` | Metric | float |  |  |  |  |  | X |  |  |  |  |
+| `item_revenue_purchased` | Metric | float |  |  |  |  |  | X |  |  |  |  |
 | `item_quantity_added_to_cart` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
 | `item_quantity_purchased` | Metric | integer |  | X |  |  |  | X |  |  |  |  |
 | `item_quantity_refunded` | Metric | integer |  | X |  |  |  | X |  |  |  |  |
 | `item_quantity_removed_from_cart` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
-| `item_refund_revenue` | Metric | float |  |  |  |  |  | X |  |  |  |  |
+| `item_revenue_refunded` | Metric | float |  |  |  |  |  | X |  |  |  |  |
 | `item_revenue_net_refund` | Metric | float |  |  |  |  |  | X |  |  |  |  |
-| `item_unique_purchases` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
+| `unique_item_purchases` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
 | `item_variant` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
 | `last_purchase_timestamp` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
 | `list_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
@@ -491,15 +491,15 @@ This table illustrates the fields available across different table functions, al
 | `page_hostname_protocol` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_id` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
 | `page_language` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
-| `page_load_datetime` | Dimension | string |  |  |  | X |  |  |  |  |  |  |
-| `page_load_time_sec` | Dimension | string |  |  |  | X |  |  |  |  |  |  |
+| `page_load_datetime` | Dimension | timestamp |  |  |  | X |  |  |  |  |  |  |
+| `page_load_time_sec` | Dimension | float |  |  |  | X |  |  |  |  |  |  |
 | `page_load_timestamp` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_location` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
 | `page_query` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_referrer` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
-| `page_status_code` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
+| `page_status_code` | Dimension | integer | X |  |  | X |  |  |  |  |  |  |
 | `page_title` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
-| `page_unload_datetime` | Dimension | string |  |  |  | X |  |  |  |  |  |  |
+| `page_unload_datetime` | Dimension | timestamp |  |  |  | X |  |  |  |  |  |  |
 | `page_unload_timestamp` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_view` | Metric | integer |  | X | X | X |  |  |  |  |  |  |
 | `page_view_number` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
@@ -510,18 +510,19 @@ This table illustrates the fields available across different table functions, al
 | `processing_event_timestamp` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
 | `promotion_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `promotion_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
-| `purchase` | Metric | integer |  | X | X |  |  |  |  |  |  |  |
+| `purchase` | Metric | integer |  | X | X |  | X |  |  |  |  |  |
 | `purchase_net_refund` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `purchase_revenue` | Metric | float |  | X | X |  | X |  |  |  |  |  |
 | `purchase_shipping` | Metric | float |  |  | X |  | X |  |  |  |  |  |
 | `purchase_tax` | Metric | float |  |  | X |  | X |  |  |  |  |  |
-| `purchase_transaction_id` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
-| `refund` | Metric | integer |  | X | X |  |  |  |  |  |  |  |
+| `purchase_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
+| `refund` | Metric | integer |  | X | X |  | X |  |  |  |  |  |
+| `refund_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `refund_revenue` | Metric | float |  | X | X |  | X |  |  |  |  |  |
 | `refund_shipping` | Metric | float |  |  | X |  | X |  |  |  |  |  |
 | `refund_tax` | Metric | float |  |  | X |  | X |  |  |  |  |  |
-| `refund_transaction_id` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
 | `remove_from_cart` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
+| `remove_from_wishlist` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `respect_consent_mode` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `returning_customers` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `returning_session` | Metric | integer | X |  | X |  |  |  |  |  |  |  |
@@ -535,7 +536,7 @@ This table illustrates the fields available across different table functions, al
 | `security_storage_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `security_storage_denied_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `select_item` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
-| `select_promotion` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
+| `select_promotion` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `session_ad_personalization` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `session_ad_storage` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `session_ad_user_data` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
@@ -553,28 +554,28 @@ This table illustrates the fields available across different table functions, al
 | `session_data` | Dimension | Array | X |  |  |  |  |  |  |  |  |  |
 | `session_date` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_device_type` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
-| `session_duration_sec` | Metric | integer | X | X | X |  |  |  |  | X |  | X |
-| `session_end_timestamp` | Dimension | string | X |  |  |  | X | X |  | X | X |  |
-| `session_exit_page_category` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
-| `session_exit_page_location` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
-| `session_exit_page_title` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
+| `session_duration_sec` | Metric | integer | X | X | X |  |  |  | X | X |  | X |
+| `session_end_timestamp` | Dimension | string | X |  |  |  | X | X | X | X | X |  |
+| `session_exit_page_category` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
+| `session_exit_page_location` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
+| `session_exit_page_title` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_functionality_storage` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
-| `session_hostname` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
+| `session_hostname` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_id` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_id_consent_expressed` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
 | `session_id_consent_mode_not_present` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
 | `session_id_consent_not_expressed` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
 | `session_id_next_step` | Dimension | string |  |  |  |  |  |  | X | X |  |  |
-| `session_landing_page_category` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
-| `session_landing_page_location` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
-| `session_landing_page_title` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
+| `session_landing_page_category` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
+| `session_landing_page_location` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
+| `session_landing_page_title` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_language` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_number` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_personalization_storage` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `session_security_storage` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `session_source` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_source_cleaned` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
-| `session_start_timestamp` | Dimension | string | X |  | X | X | X | X |  | X | X | X |
+| `session_start_timestamp` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_tld_source` | Dimension | string | X |  |  |  |  |  | X | X |  |  |
 | `session_type` | Dimension | string | X |  |  | X | X | X |  |  | X |  |
 | `session_value` | Metric | float |  |  | X |  |  |  |  |  |  |  |
@@ -593,11 +594,13 @@ This table illustrates the fields available across different table functions, al
 | `step_index_next_step_real` | Dimension | string |  |  |  |  |  |  | X |  |  |  |
 | `step_name` | Dimension | string |  |  |  |  |  |  | X | X |  |  |
 | `tax_net_refund` | Metric | float |  |  | X |  |  |  |  |  |  |  |
-| `time_on_page` | Metric | integer | X |  |  | X |  |  |  |  |  |  |
+| `time_on_page` | Metric | float | X |  |  | X |  |  |  |  |  |  |
 | `tld_source` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `total_page_load_time` | Metric | integer | X |  |  |  |  |  |  |  |  |  |
-| `transaction_coupon` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
-| `transaction_currency` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
+| `purchase_coupon` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
+| `purchase_currency` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
+| `refund_coupon` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
+| `refund_currency` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
 | `transaction_id` | Dimension | string |  |  |  |  | X | X |  |  |  |  |
 | `user_agent` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `user_campaign` | Dimension | string | X | X | X | X | X | X | X | X | X | X |

@@ -12,7 +12,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
 
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
-- [Technical architecture and resources](#technical-architecture-and-resources)
+- [Resources](#resources)
   - [Google Tag Manager templates](#google-tag-manager-templates)
   - [Documentation](#documentation)
   - [Resources](#resources)
@@ -85,7 +85,7 @@ or read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
 
 
 
-## Technical architecture and resources
+## Resources
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
 
 ![Nameless Analytics schema](https://github.com/user-attachments/assets/e9ff1593-f7c9-442e-a600-798a51a02a1e)
