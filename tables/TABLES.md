@@ -137,7 +137,7 @@ declare main_table_sql string default format(
       event_name STRING NOT NULL OPTIONS (description = 'Event name'),
       event_id STRING NOT NULL OPTIONS (description = 'Event ID'),
       event_date DATE NOT NULL OPTIONS (description = 'Event date'),
-      event_timestamp int NOT NULL OPTIONS (description = 'Event timestamp'),
+      event_timestamp INT64 NOT NULL OPTIONS (description = 'Event timestamp'),
       event_origin STRING NOT NULL OPTIONS (description = 'Event origin'),
       event_data ARRAY<
         STRUCT<

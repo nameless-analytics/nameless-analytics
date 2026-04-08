@@ -142,8 +142,7 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
 Open `streaming-protocol.py` and configure the following settings:
  
 1. User Cookies:
-    - Set `na_u` cookie value
-    - Set `na_s` cookie value.
+    - Set the `na_s` cookie value (the user unique identifier `na_u` will be automatically derived from it).
 2. Request Settings:
     - `full_endpoint`: Your GTM Server-side URL (e.g., `https://gtm.yourdomain.com/tm/nameless`).
     - `origin`: The allowed origin domain (e.g., `https://yourdomain.com`).
