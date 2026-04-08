@@ -8,12 +8,25 @@ The Nameless Analytics Troubleshooting Guide identifies, explains, and resolves 
 ## Table of Contents
 
 - [Troubleshooting Tip](#troubleshooting-tip)
-- [Orphan Events & Sequence Issues](#orphan-events-sequence-issues)
+- [Orphan Events & Sequence Issues](#orphan-events--sequence-issues)
+  - [Event error messages](#event-error-messages)
 - [Validation Errors (403 Forbidden)](#validation-errors-403-forbidden)
+  - [Error messages](#error-messages)
 - [Google Consent Mode](#google-consent-mode)
-- [Library Loading & Configuration Issues](#library-loading-configuration-issues)
-- [Storage & Cloud Permissions](#storage-cloud-permissions)
-- [Network & Custom Endpoint Issues](#network-custom-endpoint-issues)
+  - [Error messages](#error-messages-1)
+- [Library Loading & Configuration Issues](#library-loading--configuration-issues)
+  - [Error messages](#error-messages-2)
+- [Storage & Cloud Permissions](#storage--cloud-permissions)
+  - [Error messages](#error-messages-3)
+- [BigQuery & Data Analysis Issues](#bigquery--data-analysis-issues)
+  - [BigQuery Advanced Runtime](#bigquery-advanced-runtime)
+  - [Missing Geolocation Data](#missing-geolocation-data)
+  - [Unexpected Channel Grouping](#unexpected-channel-grouping)
+- [Network & Custom Endpoint Issues](#network--custom-endpoint-issues)
+  - [Error messages](#error-messages-4)
+  - [Link Not Decorated (na_id missing)](#link-not-decorated-na_id-missing)
+
+
 
 ## Troubleshooting Tip
 Use the **Browser console** to check tags execution status and event data sent to the server.
@@ -212,7 +225,26 @@ Server logs show:
 `🔴 Payload data not inserted into BigQuery`
 
 - **Issue:** The streaming insert to BigQuery failed.
-- **Solution:** Check BigQuery dataset/table permissions. Ensure the service account has `roles/bigquery.dataEditor`. Ensure you have created the schema using the provided SQL scripts.
+- **Solution:** Check BigQuery dataset/table permissions. Ensure the service account has `roles/bigquery.dataEditor`. Ensure you have created the schema using the provided SQL scripts. 
+
+
+
+## BigQuery & Data Analysis Issues
+Common issues related to missing data or unexpected values in reporting.
+
+### BigQuery Advanced Runtime 
+If you experience slow query performance or errors with SQL Table Functions, ensure that **BigQuery Advanced Runtime** is enabled for your project (see [TABLES.md](../tables/TABLES.md) for the DDL command).
+
+### Missing Geolocation Data
+- **Issue:** The `country` and `city` fields are `null` in BigQuery.
+- **Solution:** Nameless Analytics relies on server-provided headers. Ensure your environment is configured to forward geolocation:
+    - **App Engine:** Forward `X-Appengine-Country` and `X-Appengine-City`.
+    - **Cloud Run:** Configure the Load Balancer to include `X-Gclb-Country` and `X-Gclb-Region`.
+    - **Stape:** Enable "Geo headers" power-up.
+
+### Unexpected Channel Grouping
+- **Issue:** Events are categorized as `referral` instead of expected channels like `paid_search` or `organic_social`.
+- **Solution:** Nameless Analytics uses a server-side regex system based on `source` and `campaign`. Verify your traffic sources against the [standard grouping rules](../README.md#channel-grouping-logic). If a source is not in the list, it will default to `referral` (or `affiliate` if a campaign is present).
 
 
 
@@ -264,6 +296,13 @@ Server logs show:
 
 - **Issue:** Required user or session cookie is missing on the server for ID retrieval.
 - **Solution:** Ensure the visitor has valid `na_u` and `na_s` cookies.
+
+
+### Link Not Decorated (na_id missing)
+- **Issue:** After clicking a cross-domain link, the destination URL does not contain the `na_id` parameter.
+- **Solution:** 
+    1. Verify that the destination domain is correctly added to the **Authorized domains** in the Client-side configuration.
+    2. **Caveat:** The handshake mechanism intercepts the click event. If a user opens the link via **right-click ("Open in new tab")** or "Open in new window", the decoration logic will not trigger. This is a technical limitation of secure cookie handling.
 
 ---
 
