@@ -304,11 +304,204 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'page')
 
 select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 ```
+
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `ad_personalization` | Dimension | Consent state for ad personalization. |
+| `ad_storage` | Dimension | Consent state for advertising storage (e.g., cookies). |
+| `ad_user_data` | Dimension | Consent state for sending user data to Google for advertising. |
+| `analytics_storage` | Dimension | Consent state for analytics storage (e.g., cookies). |
+| `browser_language` | Dimension | The language setting of the user's browser. |
+| `browser_name` | Dimension | The name of the browser (e.g., Chrome, Safari). |
+| `browser_version` | Dimension | The specific version of the browser. |
+| `campaign` | Dimension | The name of the marketing campaign. |
+| `campaign_click_id` | Dimension | The campaign click ID (e.g., GCLID). |
+| `campaign_content` | Dimension | The content of the marketing campaign. |
+| `campaign_id` | Dimension | The ID of the marketing campaign. |
+| `campaign_term` | Dimension | The term (keyword) of the marketing campaign. |
+| `channel_grouping` | Dimension | The acquisition channel grouping (e.g., Organic Search). |
+| `city` | Dimension | The user's city based on IP address. |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `consent_type` | Dimension | The type of consent being expressed or updated. |
+| `content_length` | Metric | The length of the request content in bytes. |
+| `country` | Dimension | The user's country based on IP address. |
+| `cross_domain_id` | Dimension | Identifier for cross-domain tracking (derived from na_id). |
+| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
+| `cs_container_id` | Dimension | Client-side GTM container ID. |
+| `cs_hostname` | Dimension | Client-side GTM server hostname. |
+| `cs_tag_id` | Dimension | Client-side GTM tag ID. |
+| `cs_tag_name` | Dimension | Client-side GTM tag name. |
+| `datalayer` | Dimension | Current JSON value of the dataLayer. |
+| `days_from_first_to_last_visit` | Metric | Days between the user's first and last visit. |
+| `days_from_first_visit` | Metric | Days since the user's first visit. |
+| `days_from_last_visit` | Metric | Days since the user's last visit. |
+| `device_model` | Dimension | The model of the user's device. |
+| `device_type` | Dimension | The type of device (e.g., Mobile, Desktop). |
+| `device_vendor` | Dimension | The manufacturer of the device. |
+| `ecommerce` | Dimension | Structured ecommerce data in JSON format. |
+| `event_data` | Dimension | Array of custom event parameters. |
+| `event_date` | Dimension | The date the event occurred. |
+| `event_id` | Dimension | Unique identifier for the event. |
+| `event_name` | Dimension | The name of the interaction event. |
+| `event_number` | Dimension | Sequential number of the event in the session. |
+| `event_origin` | Dimension | The origin of the event (e.g., Web, Server). |
+| `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
+| `event_type` | Dimension | Category or type of the event. |
+| `functionality_storage` | Dimension | Consent state for necessary functional storage. |
+| `hostname` | Dimension | The hostname of the website. |
+| `new_session` | Metric | Indicates if this is a new session (1 for yes, 0 for no). |
+| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `os_name` | Dimension | The name of the operating system. |
+| `os_version` | Dimension | The version of the operating system. |
+| `page_category` | Dimension | Logical category of the page. |
+| `page_data` | Dimension | Array of custom page parameters. |
+| `page_date` | Dimension | The date the page was viewed. |
+| `page_extension` | Dimension | The file extension of the page. |
+| `page_fragment` | Dimension | The URL fragment (part after #). |
+| `page_hostname` | Dimension | The hostname of the page viewed. |
+| `page_hostname_protocol` | Dimension | The protocol of the URL (e.g., https). |
+| `page_id` | Dimension | Unique identifier for the page view. |
+| `page_language` | Dimension | The language set for the page. |
+| `page_load_timestamp` | Dimension | Timestamp when the page started loading. |
+| `page_location` | Dimension | The full URL of the page. |
+| `page_query` | Dimension | The URL query string. |
+| `page_referrer` | Dimension | The URL of the referring page. |
+| `page_status_code` | Dimension | HTTP status code of the page. |
+| `page_title` | Dimension | The title (document title) of the page. |
+| `page_unload_timestamp` | Dimension | Timestamp when the page was closed. |
+| `page_view_number` | Dimension | Sequential number of the page view in the session. |
+| `personalization_storage` | Dimension | Consent state for personalization storage. |
+| `processing_event_timestamp` | Dimension | Timestamp when the event was processed by the server. |
+| `respect_consent_mode` | Dimension | Indicates if the system respected Consent Mode settings. |
+| `returning_session` | Metric | Indicates if this is a returning session (1 for yes, 0 for no). |
+| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `screen_size` | Dimension | Physical resolution of the user's screen. |
+| `search_term` | Dimension | The term searched by the user (for search events). |
+| `security_storage` | Dimension | Consent state for security-related storage. |
+| `session_browser_name` | Dimension | Browser name recorded at session start. |
+| `session_campaign` | Dimension | Acquisition campaign for the session. |
+| `session_campaign_click_id` | Dimension | Campaign click ID for the session. |
+| `session_campaign_content` | Dimension | Campaign content for the session. |
+| `session_campaign_id` | Dimension | Campaign ID for the session. |
+| `session_campaign_term` | Dimension | Campaign term for the session. |
+| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
+| `session_city` | Dimension | City detected for the session. |
+| `session_country` | Dimension | Country detected for the session. |
+| `session_data` | Dimension | Array of session level metadata/parameters. |
+| `session_date` | Dimension | The date the session started. |
+| `session_device_type` | Dimension | Primary device type detected for the session. |
+| `session_duration_sec` | Metric | Total duration of the session in seconds. |
+| `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
+| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
+| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
+| `session_hostname` | Dimension | Hostname recorded for the session. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
+| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
+| `session_language` | Dimension | Language recorded for the session. |
+| `session_number` | Dimension | Sequence number of the session for the user. |
+| `session_source` | Dimension | Traffic source for the session. |
+| `session_source_cleaned` | Dimension | Normalized traffic source for the session. |
+| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
+| `session_tld_source` | Dimension | Session source including TLD. |
+| `session_type` | Dimension | Classification of the session (New vs Returning). |
+| `source` | Dimension | Specific source for the event. |
+| `source_cleaned` | Dimension | Normalized source for the event. |
+| `ss_container_id` | Dimension | Server-side GTM container ID. |
+| `ss_hostname` | Dimension | Server-side GTM server hostname. |
+| `ss_tag_id` | Dimension | Server-side GTM tag ID. |
+| `ss_tag_name` | Dimension | Server-side GTM tag name. |
+| `time_on_page` | Metric | Seconds spent on the page. |
+| `tld_source` | Dimension | Event source including TLD. |
+| `total_page_load_time` | Metric | Total page load time in milliseconds. |
+| `user_agent` | Dimension | Browser User Agent string. |
+| `user_campaign` | Dimension | Original acquisition campaign for the user. |
+| `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
+| `user_campaign_content` | Dimension | Original acquisition campaign content. |
+| `user_campaign_id` | Dimension | Original acquisition campaign ID. |
+| `user_campaign_term` | Dimension | Original acquisition campaign term. |
+| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
+| `user_city` | Dimension | User's city at the time of first acquisition. |
+| `user_country` | Dimension | User's country at the time of first acquisition. |
+| `user_data` | Dimension | Array of persistent user metadata. |
+| `user_date` | Dimension | Date the user was first seen. |
+| `user_device_type` | Dimension | Device type used at first acquisition. |
+| `user_first_session_timestamp` | Dimension | Absolute timestamp of the user's first session. |
+| `user_id` | Dimension | Business-level unique user identifier. |
+| `user_language` | Dimension | User language recorded at acquisition. |
+| `user_last_session_timestamp` | Dimension | Timestamp of the user's latest known session. |
+| `user_source` | Dimension | Original source of acquisition. |
+| `user_source_cleaned` | Dimension | Normalized source of acquisition. |
+| `user_tld_source` | Dimension | Source of acquisition with TLD. |
+| `user_type` | Dimension | User type classification (New vs Returning). |
+| `viewport_size` | Metric | Dimensions of the visible browser window area. |
+
+</details>
+
+</br>
+
 [View SQL code](events.sql)
 
 
 ### Users
 Aggregates event data at user level.
+
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `avg_purchase_value` | Metric | Average monetary value of purchases per user. |
+| `avg_refund_value` | Metric | Average monetary value of refunds per user. |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `customer_type` | Dimension | Classification of the customer based on purchase history. |
+| `customers` | Metric | Count of unique customers (users with at least one purchase). |
+| `days_from_first_purchase` | Metric | Number of days since the user's first purchase event. |
+| `days_from_first_to_last_visit` | Metric | Days between the user's first and most recent visits. |
+| `days_from_first_visit` | Metric | Total days since the user's first recorded visit. |
+| `days_from_last_purchase` | Metric | Number of days since the user's most recent purchase. |
+| `days_from_last_visit` | Metric | Number of days since the user's most recent visit. |
+| `first_purchase_timestamp` | Dimension | Timestamp of the user's very first purchase. |
+| `is_customer` | Dimension | Indicates if the user has made at least one purchase. |
+| `item_quantity_purchased` | Metric | Total quantity of items purchased by the user. |
+| `item_quantity_refunded` | Metric | Total quantity of items refunded by the user. |
+| `last_purchase_timestamp` | Dimension | Timestamp of the user's most recent purchase. |
+| `new_customers` | Metric | Number of new customers acquired during the period. |
+| `new_user_client_id` | Dimension | Client ID for users identified as new during the period. |
+| `page_view` | Metric | Total number of page view events triggered by the user. |
+| `purchase` | Metric | Total count of purchase events for the user. |
+| `purchase_revenue` | Metric | Total revenue generated from user purchases. |
+| `refund` | Metric | Total count of refund events for the user. |
+| `refund_revenue` | Metric | Total value of refunds associated with the user. |
+| `returning_customers` | Metric | Number of customers who made repeat purchases. |
+| `returning_user_client_id` | Dimension | Client ID for users identified as returning during the period. |
+| `revenue_net_refund` | Metric | Total revenue minus the total value of refunds. |
+| `session_duration_sec` | Metric | Total accumulated session duration for the user (in seconds). |
+| `sessions` | Metric | Total number of sessions recorded for the user. |
+| `sessions_per_user` | Metric | Average number of sessions per unique user. |
+| `user_campaign` | Dimension | Original acquisition campaign for the user. |
+| `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
+| `user_campaign_content` | Dimension | Original acquisition campaign content. |
+| `user_campaign_id` | Dimension | Original acquisition campaign ID. |
+| `user_campaign_term` | Dimension | Original acquisition campaign term. |
+| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
+| `user_city` | Dimension | User's city at the time of acquisition. |
+| `user_conversion_rate` | Metric | Ratio of conversion events to total sessions for the user. |
+| `user_country` | Dimension | User's country at the time of acquisition. |
+| `user_date` | Dimension | Date when the user was first seen. |
+| `user_device_type` | Dimension | Device type used by the user at acquisition. |
+| `user_id` | Dimension | Business-level unique identifier for the user. |
+| `user_language` | Dimension | Preferred language of the user at acquisition. |
+| `user_source` | Dimension | Original traffic source that acquired the user. |
+| `user_type` | Dimension | User classification (New vs Returning). |
+| `user_value` | Metric | Total lifetime monetary value of the user. |
+
+</details>
+
+</br>
 
 [View SQL code](users.sql)
 
@@ -316,11 +509,185 @@ Aggregates event data at user level.
 ### Sessions
 Aggregates event data at session level.
 
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `ad_personalization_accepted_percentage` | Metric | Percentage of sessions where ad personalization was accepted. |
+| `ad_personalization_denied_percentage` | Metric | Percentage of sessions where ad personalization was denied. |
+| `ad_storage_accepted_percentage` | Metric | Percentage of sessions where ad storage was accepted. |
+| `ad_storage_denied_percentage` | Metric | Percentage of sessions where ad storage was denied. |
+| `ad_user_data_accepted_percentage` | Metric | Percentage of sessions where ad user data was accepted. |
+| `ad_user_data_denied_percentage` | Metric | Percentage of sessions where ad user data was denied. |
+| `add_payment_info` | Metric | Total number of sessions where payment information was added. |
+| `add_shipping_info` | Metric | Total number of sessions where shipping information was added. |
+| `add_to_cart` | Metric | Total number of sessions with at least one add_to_cart event. |
+| `add_to_wishlist` | Metric | Total number of sessions with at least one add_to_wishlist event. |
+| `analytics_storage_accepted_percentage` | Metric | Percentage of sessions where analytics storage was accepted. |
+| `analytics_storage_denied_percentage` | Metric | Percentage of sessions where analytics storage was denied. |
+| `avg_order_value` | Metric | Average order value generated per session. |
+| `avg_refund_value` | Metric | Average value of refunds issued per session. |
+| `begin_checkout` | Metric | Total number of sessions where the checkout process was started. |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `consent_expressed` | Dimension | Indicates if a consent choice was expressed during the session. |
+| `consent_timestamp` | Dimension | Timestamp when consent was recorded in the session. |
+| `cross_domain_session` | Dimension | Indicates if the session spanned multiple domains. |
+| `engaged_session` | Metric | Total number of sessions categorized as engaged. |
+| `engaged_sessions_percentage` | Metric | Percentage of total sessions that were engaged. |
+| `functionality_storage_accepted_percentage` | Metric | Percentage of sessions where functionality storage was accepted. |
+| `functionality_storage_denied_percentage` | Metric | Percentage of sessions where functionality storage was denied. |
+| `new_session` | Metric | Total number of new sessions. |
+| `new_sessions_percentage` | Metric | Percentage of sessions that were new. |
+| `new_user` | Dimension | Identification of users seen for the first time during the session. |
+| `page_view` | Metric | Total number of page view events during the session. |
+| `page_view_per_session` | Metric | Average number of page views per session. |
+| `personalization_storage_accepted_percentage` | Metric | Percentage of sessions where personalization storage was accepted. |
+| `personalization_storage_denied_percentage` | Metric | Percentage of sessions where personalization storage was denied. |
+| `purchase` | Metric | Total number of sessions resulting in a purchase. |
+| `purchase_net_refund` | Metric | Net number of purchases after accounting for refunds. |
+| `purchase_revenue` | Metric | Total revenue generated by purchases in the session. |
+| `purchase_shipping` | Metric | Total shipping charges for purchases in the session. |
+| `purchase_tax` | Metric | Total tax charges for purchases in the session. |
+| `refund` | Metric | Total number of sessions where a refund occurred. |
+| `refund_revenue` | Metric | Total monetary value of refunds in the session. |
+| `refund_shipping` | Metric | Total shipping value of items refunded in the session. |
+| `refund_tax` | Metric | Total tax value of items refunded in the session. |
+| `remove_from_cart` | Metric | Total number of sessions with at least one remove_from_cart event. |
+| `remove_from_wishlist` | Metric | Total number of sessions with at least one remove_from_wishlist event. |
+| `returning_session` | Metric | Total number of returning sessions. |
+| `returning_sessions_percentage` | Metric | Percentage of total sessions that were returning. |
+| `returning_user` | Dimension | Identification of users who had previously visited the site. |
+| `revenue_net_refund` | Metric | Total revenue generated minus the total value of refunds in the session. |
+| `security_storage_accepted_percentage` | Metric | Percentage of sessions where security storage was accepted. |
+| `security_storage_denied_percentage` | Metric | Percentage of sessions where security storage was denied. |
+| `select_item` | Metric | Total number of sessions where an item was selected. |
+| `select_promotion` | Metric | Total number of sessions where a promotion was selected. |
+| `session_ad_personalization` | Metric | Count of sessions with ad personalization consent. |
+| `session_ad_storage` | Metric | Count of sessions with ad storage consent. |
+| `session_ad_user_data` | Metric | Count of sessions with ad user data consent. |
+| `session_analytics_storage` | Metric | Count of sessions with analytics storage consent. |
+| `session_browser_name` | Dimension | Browser name recorded at the start of the session. |
+| `session_campaign` | Dimension | Acquisition campaign associated with the session. |
+| `session_campaign_click_id` | Dimension | Click ID of the campaign associated with the session. |
+| `session_campaign_content` | Dimension | Content of the campaign associated with the session. |
+| `session_campaign_id` | Dimension | ID of the campaign associated with the session. |
+| `session_campaign_term` | Dimension | Keyword/term of the campaign associated with the session. |
+| `session_channel_grouping` | Dimension | Marketing channel grouping for the session. |
+| `session_city` | Dimension | City detected at the start of the session. |
+| `session_conversion_rate` | Metric | Ratio of converted sessions to total sessions. |
+| `session_country` | Dimension | Country detected at the start of the session. |
+| `session_date` | Dimension | Date when the session started. |
+| `session_device_type` | Dimension | Primary device type used during the session. |
+| `session_duration_sec` | Metric | Total active duration of the session (in seconds). |
+| `session_exit_page_category` | Dimension | Category of the page where the session ended. |
+| `session_exit_page_location` | Dimension | URL of the page where the session ended. |
+| `session_exit_page_title` | Dimension | Title of the page where the session ended. |
+| `session_functionality_storage` | Metric | Count of sessions with functionality storage consent. |
+| `session_hostname` | Dimension | Hostname recorded for the session. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
+| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
+| `session_language` | Dimension | Primary language detected for the session. |
+| `session_number` | Dimension | Sequence number of the session for the user. |
+| `session_personalization_storage` | Metric | Count of sessions with personalization storage consent. |
+| `session_security_storage` | Metric | Count of sessions with security storage consent. |
+| `session_source` | Dimension | Traffic source that initiated the session. |
+| `session_start_timestamp` | Dimension | Timestamp when the session officially began. |
+| `session_value` | Metric | Total value assigned to the session based on conversions. |
+| `shipping_net_refund` | Metric | Total shipping revenue minus refunded shipping charges. |
+| `tax_net_refund` | Metric | Total tax revenue minus refunded tax charges. |
+| `user_campaign` | Dimension | Original acquisition campaign for the user. |
+| `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
+| `user_campaign_content` | Dimension | Original acquisition campaign content. |
+| `user_campaign_id` | Dimension | Original acquisition campaign ID. |
+| `user_campaign_term` | Dimension | Original acquisition campaign term. |
+| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
+| `user_city` | Dimension | User's city at acquisition. |
+| `user_country` | Dimension | User's country at acquisition. |
+| `user_date` | Dimension | Date the user was first seen. |
+| `user_device_type` | Dimension | Device type at acquisition. |
+| `user_id` | Dimension | Business-level unique identifier for the user. |
+| `user_language` | Dimension | User language at acquisition. |
+| `user_source` | Dimension | Original source that acquired the user. |
+| `user_type` | Dimension | User classification (New vs Returning). |
+| `view_cart` | Metric | Total number of sessions where the cart was viewed. |
+| `view_item` | Metric | Total number of sessions where an item was viewed. |
+| `view_item_list` | Metric | Total number of sessions where an item list was viewed. |
+| `view_promotion` | Metric | Total number of sessions where a promotion was viewed. |
+
+</details>
+
+</br>
+
 [View SQL code](sessions.sql)
 
 
 ### Pages
 Aggregates event data at page level.
+
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
+| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `page_category` | Dimension | Logical category of the page. |
+| `page_date` | Dimension | The date the page was viewed. |
+| `page_hostname` | Dimension | The hostname of the page viewed. |
+| `page_id` | Dimension | Unique identifier for the page view. |
+| `page_load_datetime` | Dimension | Date and time when the page began loading. |
+| `page_load_time_sec` | Dimension | Time taken to load the page in seconds. |
+| `page_location` | Dimension | The full URL of the page. |
+| `page_status_code` | Dimension | HTTP status code of the page. |
+| `page_title` | Dimension | The title (document title) of the page. |
+| `page_unload_datetime` | Dimension | Date and time when the user left or navigated away from the page. |
+| `page_view` | Metric | Count of page views. |
+| `page_view_number` | Dimension | Sequential number of the page view in the session. |
+| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `session_browser_name` | Dimension | Browser name recorded at session start. |
+| `session_campaign` | Dimension | Acquisition campaign for the session. |
+| `session_campaign_click_id` | Dimension | Campaign click ID for the session. |
+| `session_campaign_content` | Dimension | Campaign content for the session. |
+| `session_campaign_term` | Dimension | Campaign term for the session. |
+| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
+| `session_city` | Dimension | City detected for the session. |
+| `session_country` | Dimension | Country detected for the session. |
+| `session_date` | Dimension | The date the session started. |
+| `session_device_type` | Dimension | Primary device type detected for the session. |
+| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
+| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
+| `session_hostname` | Dimension | Hostname recorded for the session. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
+| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
+| `session_language` | Dimension | Language recorded for the session. |
+| `session_number` | Dimension | Sequence number of the session for the user. |
+| `session_source` | Dimension | Traffic source for the session. |
+| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
+| `session_type` | Dimension | Classification of the session (New vs Returning). |
+| `time_on_page` | Metric | Seconds spent on the page. |
+| `user_campaign` | Dimension | Original acquisition campaign for the user. |
+| `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
+| `user_campaign_content` | Dimension | Original acquisition campaign content. |
+| `user_campaign_id` | Dimension | Original acquisition campaign ID. |
+| `user_campaign_term` | Dimension | Original acquisition campaign term. |
+| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
+| `user_city` | Dimension | User's city at the time of first acquisition. |
+| `user_country` | Dimension | User's country at the time of first acquisition. |
+| `user_date` | Dimension | Date the user was first seen. |
+| `user_device_type` | Dimension | Device type used at first acquisition. |
+| `user_id` | Dimension | Business-level unique user identifier. |
+| `user_language` | Dimension | User language recorded at acquisition. |
+| `user_source` | Dimension | Original source of acquisition. |
+| `user_type` | Dimension | User type classification (New vs Returning). |
+
+</details>
+
+</br>
 
 [View SQL code](pages.sql)
 
@@ -328,11 +695,177 @@ Aggregates event data at page level.
 ### Transactions
 Aggregates ecommerce data at transaction level.
 
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
+| `event_date` | Dimension | The date the event occurred. |
+| `event_name` | Dimension | The name of the interaction event. |
+| `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
+| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `purchase` | Metric | Total number of sessions with at least one purchase event. |
+| `purchase_revenue` | Metric | Total revenue generated from purchases. |
+| `purchase_shipping` | Metric | Total shipping costs for purchases. |
+| `purchase_tax` | Metric | Total tax collected on purchases. |
+| `refund` | Metric | Total number of sessions with at least one refund event. |
+| `refund_revenue` | Metric | Total revenue refunded. |
+| `refund_shipping` | Metric | Total shipping costs refunded. |
+| `refund_tax` | Metric | Total tax refunded. |
+| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `session_browser_name` | Dimension | Browser name recorded at session start. |
+| `session_campaign` | Dimension | Acquisition campaign for the session. |
+| `session_campaign_click_id` | Dimension | Campaign click ID for the session. |
+| `session_campaign_content` | Dimension | Campaign content for the session. |
+| `session_campaign_id` | Dimension | Campaign ID for the session. |
+| `session_campaign_term` | Dimension | Campaign term for the session. |
+| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
+| `session_city` | Dimension | City detected for the session. |
+| `session_country` | Dimension | Country detected for the session. |
+| `session_date` | Dimension | The date the session started. |
+| `session_device_type` | Dimension | Primary device type detected for the session. |
+| `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
+| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
+| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
+| `session_hostname` | Dimension | Hostname recorded for the session. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
+| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
+| `session_language` | Dimension | Language recorded for the session. |
+| `session_number` | Dimension | Sequence number of the session for the user. |
+| `session_source` | Dimension | Traffic source for the session. |
+| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
+| `session_type` | Dimension | Classification of the session (New vs Returning). |
+| `user_campaign` | Dimension | Original acquisition campaign for the user. |
+| `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
+| `user_campaign_content` | Dimension | Original acquisition campaign content. |
+| `user_campaign_id` | Dimension | Original acquisition campaign ID. |
+| `user_campaign_term` | Dimension | Original acquisition campaign term. |
+| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
+| `user_city` | Dimension | User's city at the time of first acquisition. |
+| `user_country` | Dimension | User's country at the time of first acquisition. |
+| `user_date` | Dimension | Date the user was first seen. |
+| `user_device_type` | Dimension | Device type used at first acquisition. |
+| `user_id` | Dimension | Business-level unique user identifier. |
+| `user_language` | Dimension | User language recorded at acquisition. |
+| `user_source` | Dimension | Original source of acquisition. |
+| `user_type` | Dimension | User type classification (New vs Returning). |
+| `purchase_coupon` | Dimension | Coupon code applied to the purchase. |
+| `purchase_currency` | Dimension | Currency used for the purchase. |
+| `refund_coupon` | Dimension | Coupon code applied to the refund. |
+| `refund_currency` | Dimension | Currency used for the refund. |
+| `transaction_id` | Dimension | Unique identifier for the transaction (Order ID). |
+</details>
+
+</br>
+
 [View SQL code](ec_transactions.sql)
 
 
 ### Products
 Aggregates ecommerce data at product level. 
+
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `add_payment_info` | Metric | Total number of sessions where payment information was added. |
+| `add_shipping_info` | Metric | Total number of sessions where shipping information was added. |
+| `add_to_cart` | Metric | Total number of sessions with at least one add_to_cart event. |
+| `add_to_wishlist` | Metric | Total number of sessions with at least one add_to_wishlist event. |
+| `begin_checkout` | Metric | Total number of sessions where the checkout process was started. |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `creative_name` | Dimension | Name of the marketing creative associated with the event. |
+| `creative_slot` | Dimension | The slot or position of the marketing creative. |
+| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
+| `event_date` | Dimension | The date the event occurred. |
+| `event_name` | Dimension | The name of the interaction event. |
+| `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
+| `item_affiliation` | Dimension | The store or branch where the transaction occurred. |
+| `item_brand` | Dimension | The brand associated with the item in the transaction. |
+| `item_category` | Dimension | The primary category of the item. |
+| `item_category_2` | Dimension | The second level category of the item. |
+| `item_category_3` | Dimension | The third level category of the item. |
+| `item_category_4` | Dimension | The fourth level category of the item. |
+| `item_category_5` | Dimension | The fifth level category of the item. |
+| `item_coupon` | Dimension | Coupon code specifically applied to an individual item. |
+| `item_discount` | Metric | The monetary discount applied to the item. |
+| `item_id` | Dimension | Unique identifier (SKU) for the product item. |
+| `item_list_id` | Dimension | ID of the list in which the item was presented. |
+| `item_list_name` | Dimension | Name of the list in which the item was presented. |
+| `item_name` | Dimension | Legal or commercial name of the product item. |
+| `item_revenue_purchased` | Metric | Gross revenue generated by the sale of this item. |
+| `item_quantity_added_to_cart` | Metric | Total quantity of this item added to the cart. |
+| `item_quantity_purchased` | Metric | Total quantity of this item purchased in the transaction. |
+| `item_quantity_refunded` | Metric | Total quantity of this item refunded in the transaction. |
+| `item_quantity_removed_from_cart` | Metric | Total quantity of this item removed from the cart. |
+| `item_revenue_refunded` | Metric | Total value refunded for this specific item. |
+| `item_revenue_net_refund` | Metric | Net revenue from this item after accounting for refunds. |
+| `unique_item_purchases` | Metric | Number of unique product items in the transaction. |
+| `item_variant` | Metric | Specific variant of the item (e.g., size or color). |
+| `list_id` | Dimension | The ID of the product list. |
+| `list_name` | Dimension | The name of the product list. |
+| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `promotion_id` | Dimension | The unique ID of the promotion applied. |
+| `promotion_name` | Dimension | The commercial name of the promotion applied. |
+| `purchase_id` | Dimension | The unique ID of the purchase transaction. |
+| `refund_id` | Dimension | The unique ID of the refund transaction. |
+| `remove_from_cart` | Metric | Total number of sessions with at least one remove_from_cart event. |
+| `remove_from_wishlist` | Metric | Total number of sessions with at least one remove_from_wishlist event. |
+| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `select_item` | Metric | Total number of sessions where an item was selected. |
+| `select_promotion` | Metric | Total number of sessions where a promotion was selected. |
+| `session_browser_name` | Dimension | Browser name recorded at session start. |
+| `session_campaign` | Dimension | Acquisition campaign for the session. |
+| `session_campaign_click_id` | Dimension | Campaign click ID for the session. |
+| `session_campaign_content` | Dimension | Campaign content for the session. |
+| `session_campaign_id` | Dimension | Campaign ID for the session. |
+| `session_campaign_term` | Dimension | Campaign term for the session. |
+| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
+| `session_city` | Dimension | City detected for the session. |
+| `session_country` | Dimension | Country detected for the session. |
+| `session_date` | Dimension | The date the session started. |
+| `session_device_type` | Dimension | Primary device type detected for the session. |
+| `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
+| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
+| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
+| `session_hostname` | Dimension | Hostname recorded for the session. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
+| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
+| `session_language` | Dimension | Language recorded for the session. |
+| `session_number` | Dimension | Sequence number of the session for the user. |
+| `session_source` | Dimension | Traffic source for the session. |
+| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
+| `session_type` | Dimension | Classification of the session (New vs Returning). |
+| `transaction_id` | Dimension | Unique identifier for the transaction (Order ID). |
+| `user_campaign` | Dimension | Original acquisition campaign for the user. |
+| `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
+| `user_campaign_content` | Dimension | Original acquisition campaign content. |
+| `user_campaign_id` | Dimension | Original acquisition campaign ID. |
+| `user_campaign_term` | Dimension | Original acquisition campaign term. |
+| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
+| `user_city` | Dimension | User's city at the time of first acquisition. |
+| `user_country` | Dimension | User's country at the time of first acquisition. |
+| `user_date` | Dimension | Date the user was first seen. |
+| `user_device_type` | Dimension | Device type used at first acquisition. |
+| `user_id` | Dimension | Business-level unique user identifier. |
+| `user_language` | Dimension | User language recorded at acquisition. |
+| `user_source` | Dimension | Original source of acquisition. |
+| `user_type` | Dimension | User type classification (New vs Returning). |
+| `view_cart` | Metric | Total number of sessions where the cart was viewed. |
+| `view_item` | Metric | Total number of sessions where an item was viewed. |
+| `view_item_list` | Metric | Total number of sessions where an item list was viewed. |
+| `view_promotion` | Metric | Total number of sessions where a promotion was viewed. |
+
+</details>
+
+</br>
 
 [View SQL code](ec_products.sql)
 
@@ -340,11 +873,116 @@ Aggregates ecommerce data at product level.
 ### Shopping stages open funnel
 Aggregates event data at shopping stages level, regardless of where the user started.
 
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `client_id_next_step` | Dimension | The client identifier for the next step in the funnel. |
+| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
+| `event_date` | Dimension | The date the event occurred. |
+| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `session_browser_name` | Dimension | Browser name recorded at session start. |
+| `session_campaign` | Dimension | Acquisition campaign for the session. |
+| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
+| `session_city` | Dimension | City detected for the session. |
+| `session_country` | Dimension | Country detected for the session. |
+| `session_date` | Dimension | The date the session started. |
+| `session_device_type` | Dimension | Primary device type detected for the session. |
+| `session_duration_sec` | Metric | Total duration of the session in seconds. |
+| `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
+| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
+| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
+| `session_hostname` | Dimension | Hostname recorded for the session. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_id_next_step` | Dimension | The session identifier for the next step in the funnel. |
+| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
+| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
+| `session_language` | Dimension | Language recorded for the session. |
+| `session_number` | Dimension | Sequence number of the session for the user. |
+| `session_source` | Dimension | Traffic source for the session. |
+| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
+| `session_tld_source` | Dimension | Session source including TLD. |
+| `status` | Dimension | The status of the step in the funnel. |
+| `step_index` | Dimension | The index of the current step in the funnel. |
+| `step_index_next_step` | Dimension | The index of the next step in the funnel. |
+| `step_index_next_step_real` | Dimension | The real index of the next step captured in the funnel. |
+| `step_name` | Dimension | The name of the current step in the funnel. |
+| `user_campaign` | Dimension | Original acquisition campaign for the user. |
+| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
+| `user_city` | Dimension | User's city at the time of first acquisition. |
+| `user_country` | Dimension | User's country at the time of first acquisition. |
+| `user_date` | Dimension | Date the user was first seen. |
+| `user_device_type` | Dimension | Device type used at first acquisition. |
+| `user_id` | Dimension | Business-level unique user identifier. |
+| `user_language` | Dimension | User language recorded at acquisition. |
+| `user_source` | Dimension | Original source of acquisition. |
+| `user_tld_source` | Dimension | Source of acquisition with TLD. |
+| `user_type` | Dimension | User type classification (New vs Returning). |
+
+</details>
+
+</br>
+
 [View SQL code](ec_shopping_stages_open_funnel.sql)
 
 
 ### Shopping stages closed funnel
 Aggregates event data at shopping stages level, for users who follow a specific, linear sequence of steps.
+
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `client_id_next_step` | Dimension | The client identifier for the next step in the funnel. |
+| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
+| `event_date` | Dimension | The date the event occurred. |
+| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `session_browser_name` | Dimension | Browser name recorded at session start. |
+| `session_campaign` | Dimension | Acquisition campaign for the session. |
+| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
+| `session_city` | Dimension | City detected for the session. |
+| `session_country` | Dimension | Country detected for the session. |
+| `session_date` | Dimension | The date the session started. |
+| `session_device_type` | Dimension | Primary device type detected for the session. |
+| `session_duration_sec` | Metric | Total duration of the session in seconds. |
+| `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
+| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
+| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
+| `session_hostname` | Dimension | Hostname recorded for the session. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_id_next_step` | Dimension | The session identifier for the next step in the funnel. |
+| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
+| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
+| `session_language` | Dimension | Language recorded for the session. |
+| `session_number` | Dimension | Sequence number of the session for the user. |
+| `session_source` | Dimension | Traffic source for the session. |
+| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
+| `session_tld_source` | Dimension | Session source including TLD. |
+| `step_name` | Dimension | The name of the current step in the funnel. |
+| `user_campaign` | Dimension | Original acquisition campaign for the user. |
+| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
+| `user_city` | Dimension | User's city at the time of first acquisition. |
+| `user_country` | Dimension | User's country at the time of first acquisition. |
+| `user_date` | Dimension | Date the user was first seen. |
+| `user_device_type` | Dimension | Device type used at first acquisition. |
+| `user_id` | Dimension | Business-level unique user identifier. |
+| `user_id_next_step` | Dimension | The user identifier for the next step in the funnel. |
+| `user_language` | Dimension | User language recorded at acquisition. |
+| `user_source` | Dimension | Original source of acquisition. |
+| `user_tld_source` | Dimension | Source of acquisition with TLD. |
+| `user_type` | Dimension | User type classification (New vs Returning). |
+
+</details>
+
+</br>
 
 [View SQL code](ec_shopping_stages_closed_funnel.sql)
 
@@ -354,11 +992,129 @@ Provides metrics on GTM container execution times and tag performance to help op
 
 [View SQL code](gtm_performances.sql)
 
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `content_length` | Metric | The length of the request content in bytes. |
+| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
+| `cs_container_id` | Dimension | Client-side GTM container ID. |
+| `cs_hostname` | Dimension | Client-side GTM server hostname. |
+| `datalayer` | Dimension | Current JSON value of the dataLayer. |
+| `delay_in_milliseconds` | Metric | Delay in execution in milliseconds. |
+| `delay_in_sec` | Metric | Delay in execution in seconds. |
+| `ecommerce` | Dimension | Structured ecommerce data in JSON format. |
+| `event_data` | Dimension | Array of custom event parameters. |
+| `event_date` | Dimension | The date the event occurred. |
+| `event_datetime` | Dimension | Exact date and time of the event. |
+| `event_id` | Dimension | Unique identifier for the event. |
+| `event_name` | Dimension | The name of the interaction event. |
+| `event_number` | Dimension | Sequential number of the event in the session. |
+| `event_origin` | Dimension | The origin of the event (e.g., Web, Server). |
+| `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
+| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `page_data` | Dimension | Array of custom page parameters. |
+| `processing_event_timestamp` | Dimension | Timestamp when the event was processed by the server. |
+| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `session_browser_name` | Dimension | Browser name recorded at session start. |
+| `session_campaign` | Dimension | Acquisition campaign for the session. |
+| `session_campaign_click_id` | Dimension | Campaign click ID for the session. |
+| `session_campaign_content` | Dimension | Campaign content for the session. |
+| `session_campaign_id` | Dimension | Campaign ID for the session. |
+| `session_campaign_term` | Dimension | Campaign term for the session. |
+| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
+| `session_city` | Dimension | City detected for the session. |
+| `session_country` | Dimension | Country detected for the session. |
+| `session_date` | Dimension | The date the session started. |
+| `session_device_type` | Dimension | Primary device type detected for the session. |
+| `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
+| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
+| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
+| `session_hostname` | Dimension | Hostname recorded for the session. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
+| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
+| `session_language` | Dimension | Language recorded for the session. |
+| `session_number` | Dimension | Sequence number of the session for the user. |
+| `session_source` | Dimension | Traffic source for the session. |
+| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
+| `session_type` | Dimension | Classification of the session (New vs Returning). |
+| `ss_container_id` | Dimension | Server-side GTM container ID. |
+| `ss_hostname` | Dimension | Server-side GTM server hostname. |
+| `user_campaign` | Dimension | Original acquisition campaign for the user. |
+| `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
+| `user_campaign_content` | Dimension | Original acquisition campaign content. |
+| `user_campaign_id` | Dimension | Original acquisition campaign ID. |
+| `user_campaign_term` | Dimension | Original acquisition campaign term. |
+| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
+| `user_city` | Dimension | User's city at the time of first acquisition. |
+| `user_country` | Dimension | User's country at the time of first acquisition. |
+| `user_date` | Dimension | Date the user was first seen. |
+| `user_device_type` | Dimension | Device type used at first acquisition. |
+| `user_id` | Dimension | Business-level unique user identifier. |
+| `user_language` | Dimension | User language recorded at acquisition. |
+| `user_source` | Dimension | Original source of acquisition. |
+| `user_type` | Dimension | User type classification (New vs Returning). |
+
+</details>
+
 
 ### Consents
 Aggregates consent data at session level.
 
 [View SQL code](consents.sql)
+
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `consent_name` | Dimension | The name of the consent category (e.g., ad_storage, analytics_storage). |
+| `consent_state` | Dimension | The current state of the consent (e.g., granted, denied). |
+| `consent_value_int_accepted` | Metric | Integer flag (1/0) indicating if the consent was accepted. |
+| `consent_value_int_denied` | Metric | Integer flag (1/0) indicating if the consent was denied. |
+| `consent_value_string` | Dimension | The raw string value of the consent expressed. |
+| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
+| `engaged_session` | Metric | Count of sessions that met the engagement criteria. |
+| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `session_browser_name` | Dimension | Browser name recorded at session start. |
+| `session_campaign` | Dimension | Acquisition campaign for the session. |
+| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
+| `session_city` | Dimension | City detected for the session. |
+| `session_country` | Dimension | Country detected for the session. |
+| `session_date` | Dimension | The date the session started. |
+| `session_device_type` | Dimension | Primary device type detected for the session. |
+| `session_duration_sec` | Metric | Total duration of the session in seconds. |
+| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
+| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
+| `session_hostname` | Dimension | Hostname recorded for the session. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_id_consent_expressed` | Dimension | Session ID where a consent choice was explicitly expressed. |
+| `session_id_consent_mode_not_present` | Dimension | Session ID where Consent Mode was not detected. |
+| `session_id_consent_not_expressed` | Dimension | Session ID where no consent choice was expressed. |
+| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
+| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
+| `session_language` | Dimension | Language recorded for the session. |
+| `session_number` | Dimension | Sequence number of the session for the user. |
+| `session_source` | Dimension | Traffic source for the session. |
+| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
+| `user_campaign` | Dimension | Original acquisition campaign for the user. |
+| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
+| `user_country` | Dimension | User's country at the time of first acquisition. |
+| `user_date` | Dimension | Date the user was first seen. |
+| `user_device_type` | Dimension | Device type used at first acquisition. |
+| `user_id` | Dimension | Business-level unique user identifier. |
+| `user_language` | Dimension | User language recorded at acquisition. |
+| `user_source` | Dimension | Original source of acquisition. |
+| `user_type` | Dimension | User type classification (New vs Returning). |
+
+</details>
 
 
 
@@ -413,7 +1169,7 @@ This table illustrates the fields available across different table functions, al
 | `country` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `creative_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `creative_slot` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
-| `cross_domain_id` (from `na_id`) | Dimension | string | X |  |  |  |  |  |  |  |  |  |
+| `cross_domain_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `cross_domain_session` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `cs_container_id` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
 | `cs_hostname` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
@@ -551,7 +1307,7 @@ This table illustrates the fields available across different table functions, al
 | `session_city` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_conversion_rate` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `session_country` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
-| `session_data` | Dimension | Array | X |  |  |  |  |  |  |  |  |  |
+| `session_data` | Dimension | array | X |  |  |  |  |  |  |  |  |  |
 | `session_date` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_device_type` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_duration_sec` | Metric | integer | X | X | X |  |  |  | X | X |  | X |
