@@ -160,12 +160,6 @@ def build_payload(page_date_from_bq, page_data_from_bq):
             "functionality_storage": None,
             "personalization_storage": None,
             "security_storage": None
-        },
-        "gtm_data": {
-            "cs_hostname": None,
-            "cs_container_id": None,
-            "cs_tag_name": None,
-            "cs_tag_id": None,
         }
     }
 

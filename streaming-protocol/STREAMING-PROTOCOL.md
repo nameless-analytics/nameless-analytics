@@ -45,84 +45,89 @@ Includes robust error handling for API responses and database queries.
 Supports API Key authentication for secure server-side ingestion.
 
 
+## Validation Requirements
+To ensure requests are accepted by the server, following requirements must be met:
+
+### Mandatory Headers
+- **User-Agent**: To bypass bot protection, you must use following User-Agent: `Nameless Analytics - Streaming protocol`.
+- **API Key**: The `x-api-key` header must match your Server-side Client Tag configuration.
+
+### Mandatory Root Fields
+The server validates the presence of following top-level fields:
+`client_id`, `user_date`, `session_id`, `session_date`, `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
+
+### Data Formats
+- **Dates**: Must be strings in `YYYY-MM-DD` format (e.g., `2026-04-08`).
+- **Timestamps**: Must be an integer representing Unix timestamp in **milliseconds** (e.g., `1712604000000`).
+
+
 ## JSON Payload Structure
 The Streaming Protocol requires a POST request with a JSON body. While the server validates mandatory root fields, `event_type` is an optional but recommended field within `event_data` to maintain consistency with the BigQuery schema.
 
 ### Example Payload
 ```json
 {
-  "user_date": event_date,
-  "client_id": client_id,
-  "user_data": {
-    # Add user property here
-  },
+  "user_date": "2026-04-08",
+  "client_id": "lZc919IBsqlhHks",
+  "user_data": {},
 
-  "session_date": event_date,
-  "session_id": f"{client_id}_{session_id}",
+  "session_date": "2026-04-08",
+  "session_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU",
   "session_data": {
-    # "user_id": user_id, # Optional
+    "user_id": "abcd"
   },
         
-  "page_date": page_date_from_bq,
-  "page_id": na_s,
-  "page_data": page_data_from_bq,
+  "page_date": "2026-04-08",
+  "page_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y",
+  "page_data": {}, // Automatically enriched if page_id exists in BigQuery
 
-  "event_date": event_date,
-  "event_timestamp": event_timestamp,
-  "event_id": event_id,
-  "event_name": event_name,
-  "event_origin": event_origin,
+  "event_date": "2026-04-08",
+  "event_timestamp": 1712604000000,
+  "event_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV",
+  "event_name": "purchase",
+  "event_origin": "Streaming protocol",
   "event_data": {
     "event_type": "event",
-    # "channel_grouping": None,
-    # "source": None,
-    # "campaign": None,
-    # "campaign_id": None,
-    # "campaign_click_id": None,
-    # "campaign_term": None,
-    # "campaign_content": None,
-    "hostname": hostname,
-    # "user_agent": user_agent,
-    # "browser_name": None,
-    # "browser_language": None,
-    # "browser_version": None,
-    # "device_type": None,
-    # "device_vendor": None,
-    # "device_model": None,
-    # "os_name": None,
-    # "os_version": None,
-    # "screen_size": None,
-    # "viewport_size": None
+    "hostname": "yourdomain.com",
+    "source": "backend",
+    "campaign": "conversion_optimization"
   },
 
   "ecommerce": {
-    # Add ecommerce data here
+    "transaction_id": "T_12345",
+    "value": 25.50,
+    "currency": "EUR",
+    "items": [
+      {
+        "item_id": "SKU_001",
+        "item_name": "Product Name",
+        "price": 25.50,
+        "quantity": 1
+      }
+    ]
   },
 
   "consent_data": {
-    "consent_type": None,
-    "respect_consent_mode": None,
-    "ad_user_data": None,
-    "ad_personalization": None,
-    "ad_storage": None,
-    "analytics_storage": None,
-    "functionality_storage": None,
-    "personalization_storage": None,
-    "security_storage": None
-  },
-  "gtm_data": {
-    "cs_hostname": None,
-    "cs_container_id": None,
-    "cs_tag_name": None,
-    "cs_tag_id": None,
+    "consent_type": "Update",
+    "respect_consent_mode": "Yes",
+    "ad_user_data": "Granted",
+    "ad_personalization": "Granted",
+    "ad_storage": "Granted",
+    "analytics_storage": "Granted",
+    "functionality_storage": "Granted",
+    "personalization_storage": "Granted",
+    "security_storage": "Granted"
   }
 }
 ```
 
 > **Note on `event_type`**: In the standard website tracker, this is automatically set to `page_view` or `event`. For the Streaming Protocol, you should manually set it to `event` (as `page_view` is restricted to the website tracker).
 
+> **Note on `event_origin`**: This must be set to `Streaming protocol` to allow API Key authentication and distinguish server-side events.
+
 > **Note on `channel_grouping`**: You don't need to provide this parameter. The [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag) will automatically calculate it based on the `source` and `campaign` parameters provided in the `event_data` object.
 
+> **Note on ID Management**: `client_id` and `session_id` are automatically extracted from the `na_s` cookie.
 
 
 
