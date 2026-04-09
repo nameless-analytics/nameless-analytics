@@ -1,5 +1,5 @@
-# Nameless Analytics 
-## Build your own Data Warehouse analytics platform
+# Nameless Analytics
+## Build your own Data Warehouse Analytics platform
 
 An open-source digital analytics platform for power users, based on [Google Tag Manager](https://marketingplatform.google.com/intl/it/about/tag-manager/), [Google Firestore](https://cloud.google.com/firestore) and [Google BigQuery](https://cloud.google.com/bigquery).
 
