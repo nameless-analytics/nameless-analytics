@@ -44,10 +44,10 @@ select
     (select value.string from unnest(user_data) where name = 'user_language') as user_language,
       
     -- Add user level custom dimension here
-    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name')) over (partition by client_id order by event_timestamp asc) as session_exit_page_category, -- First touch value
-    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name') ignore nulls) over (partition by client_id order by event_timestamp asc) as session_exit_page_category, -- First touch not null value
-    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name')) over (partition by client_id order by event_timestamp desc) as session_parameter_name, -- Last touch value
-    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name') ignore nulls) over (partition by client_id order by event_timestamp desc) as session_parameter_name, -- Last touch not null value
+    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name')) over (partition by client_id order by event_timestamp asc) as user_parameter_name, -- First touch value
+    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name') ignore nulls) over (partition by client_id order by event_timestamp asc) as user_parameter_name, -- First touch not null value
+    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name')) over (partition by client_id order by event_timestamp desc) as user_parameter_name, -- Last touch value
+    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name') ignore nulls) over (partition by client_id order by event_timestamp desc) as user_parameter_name, -- Last touch not null value
     
     
     # SESSION DATA
@@ -60,13 +60,13 @@ select
     (select value.int from unnest(session_data) where name = 'session_start_timestamp') as session_start_timestamp,
     first_value((select value.int from unnest(session_data) where name = 'session_end_timestamp')) over (partition by session_id order by event_timestamp desc) as session_end_timestamp,
     
-    -- Exclude streaming protocol events
+    -- Exclude Streaming protocol events
     datetime_diff(
-      timestamp_millis(first_value(IF(event_origin != 'Streaming Protocol', (SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_end_timestamp'), NULL)) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC)), 
+      timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', (SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_end_timestamp'), NULL)) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC)), 
       timestamp_millis((SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_start_timestamp'))
     , second) AS session_duration_sec,
 
-    -- Include streaming protocol events
+    -- Include Streaming protocol events
     -- datetime_diff(
     --   timestamp_millis(first_value((select value.int from unnest(session_data) where name = 'session_end_timestamp')) over (partition by session_id order by event_timestamp desc)), 
     --   timestamp_millis((select value.int from unnest(session_data) where name = 'session_start_timestamp'))
@@ -102,8 +102,8 @@ select
     first_value((select value.string from unnest(session_data) where name = 'session_exit_page_title')) over (partition by session_id order by event_timestamp desc) as session_exit_page_title,
     
     -- Add session level custom dimension here
-    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name')) over (partition by session_id order by event_timestamp asc) as session_exit_page_category, -- First touch value
-    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name') ignore nulls) over (partition by session_id order by event_timestamp asc) as session_exit_page_category, -- First touch not null value
+    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name')) over (partition by session_id order by event_timestamp asc) as session_parameter_name, -- First touch value
+    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name') ignore nulls) over (partition by session_id order by event_timestamp asc) as session_parameter_name, -- First touch not null value
     -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name')) over (partition by session_id order by event_timestamp desc) as session_parameter_name, -- Last touch value
     -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name') ignore nulls) over (partition by session_id order by event_timestamp desc) as session_parameter_name, -- Last touch not null value
       
@@ -126,13 +126,13 @@ select
     (select value.string from unnest(page_data) where name = 'page_referrer') as page_referrer,
     (select value.int from unnest(page_data) where name = 'page_status_code') as page_status_code,
 
-    -- Exclude streaming protocol events
+    -- Exclude Streaming protocol events
     datetime_diff(
-      timestamp_millis(first_value(IF(event_origin != 'Streaming Protocol', event_timestamp, NULL)) over (partition by page_id order by event_timestamp desc)),
+      timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', event_timestamp, NULL)) over (partition by page_id order by event_timestamp desc)),
       timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
     ,second) as time_on_page,  
 
-    -- Include streaming protocol events
+    -- Include Streaming protocol events
     -- datetime_diff(
     --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp desc)),
     --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))

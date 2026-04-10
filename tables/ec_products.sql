@@ -86,11 +86,11 @@ with product_data_raw as (
       case when event_name = 'remove_from_wishlist' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_removed_from_wishlist,
       
       case when event_name = 'purchase' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_purchased,
-      case when event_name = 'purchase' then safe_cast(json_value(items, '$.price') as float64) * safe_cast(json_value(items, '$.quantity') as int64) end as item_revenue_purchased,
+      case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1) end as item_revenue_purchased,
       case when event_name = 'purchase' then 1 end as unique_item_purchases,
 
       case when event_name = 'refund' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_refunded,
-      case when event_name = 'refund' then safe_cast(json_value(items, '$.price') as float64) * safe_cast(json_value(items, '$.quantity') as int64) end as item_revenue_refunded,
+      case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1) end as item_revenue_refunded,
       case when event_name = 'refund' then 1 end as unique_item_refunds
     from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items

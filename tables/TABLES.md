@@ -489,7 +489,7 @@ Aggregates event data at user level.
 | `user_campaign_term` | Dimension | Original acquisition campaign term. |
 | `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
 | `user_city` | Dimension | User's city at the time of acquisition. |
-| `user_conversion_rate` | Metric | Ratio of conversion events to total sessions for the user. |
+| `user_conversion_rate` | Metric | Percentage of users who completed at least one conversion. |
 | `user_country` | Dimension | User's country at the time of acquisition. |
 | `user_date` | Dimension | Date when the user was first seen. |
 | `user_device_type` | Dimension | Device type used by the user at acquisition. |

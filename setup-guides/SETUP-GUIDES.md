@@ -61,12 +61,12 @@ Integrate the relative template into GTM Client-side and Server-side environment
 ### Phase 4a: Global Configuration (Client-side)
 Configure the tracker tag:
 1. Locate the **Nameless Analytics Client-side Tracker Configuration Variable**.
-2. Update the **Request Endpoint Domain** with your dedicated Server-side GTM URL (e.g., `https://gtm.yourdomain.com/nameless_analytics/`).
+2. Update the **Request Endpoint URL** with your dedicated Server-side GTM URL (e.g., `https://gtm.yourdomain.com/nameless_analytics/`).
 
 
 ### Phase 4b: Global Configuration (Server-side)
 Configure the tracker to establish a secure handshake with your server:
-1. In your Server-side workspace, locate the **Nameless Analytics Server-side Tracker Configuration Variable**.
+1. In your Server-side workspace, locate the **Nameless Analytics Server-side Client Tag**.
 2. Update the **Request Endpoint Domain** with your dedicated Server-side GTM URL (e.g., `https://gtm.yourdomain.com`).
 3. Update the **Request Endpoint Path** with your dedicated Server-side GTM URL (e.g., `/nameless_analytics/`).
 

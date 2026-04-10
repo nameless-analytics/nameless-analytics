@@ -110,7 +110,7 @@ Server logs show:
   - **SEO & Marketing Bots:** `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
   - **Automation & Security:** `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
 
-  If you are using the **Streaming Protocol**, you must send the following mandatory User-Agent to bypass this check: `nameless analytics - streaming protocol`.
+  If you are using the **Streaming Protocol**, you must send the following mandatory User-Agent to bypass this check: `Nameless Analytics - Streaming protocol`.
 
 Server logs show: 
 

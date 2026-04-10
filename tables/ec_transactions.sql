@@ -61,7 +61,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions
       safe_cast(json_value(ecommerce, '$.shipping') as float64) as transaction_shipping,
       json_value(ecommerce, '$.currency') as transaction_currency,
       json_value(ecommerce, '$.coupon') as transaction_coupon
-    from `tom-moretti.nameless_analytics.events`('2026-01-01', '2026-04-01', 'session')
+    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
     where regexp_contains(event_name, 'purchase|refund')
   )
 
@@ -137,7 +137,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions
       when event_name = 'refund' then 1
       else 0
     end as refund,
-    countif(event_name = 'purchase') over (partition by transaction_id) as duplicate_refund, 
+    countif(event_name = 'refund') over (partition by transaction_id) as duplicate_refund, 
     if(event_name = 'refund', ifnull(transaction_revenue, 0.0), 0) as refund_revenue,
     if(event_name = 'refund', ifnull(transaction_shipping, 0.0), 0) as refund_shipping,
     if(event_name = 'refund', ifnull(transaction_tax, 0.0), 0) as refund_tax,

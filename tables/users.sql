@@ -37,13 +37,13 @@ with user_logic as (
       min(if(event_name = 'purchase', timestamp_millis(event_timestamp), null)) as first_purchase_timestamp,
       max(if(event_name = 'purchase', timestamp_millis(event_timestamp), null)) as last_purchase_timestamp,
 
-      sum(case when event_name = 'purchase' then (safe_cast(json_value(items, '$.price') as float64) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as purchase_revenue,
-      sum(case when event_name = 'refund' then -(safe_cast(json_value(items, '$.price') as float64) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as refund_revenue,
+      sum(case when event_name = 'purchase' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as purchase_revenue,
+      sum(case when event_name = 'refund' then -(ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as refund_revenue,
       sum(case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as purchase_qty,
       sum(case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as refund_qty,
 
-      ifnull(safe_divide(sum(case when event_name = 'purchase' then (safe_cast(json_value(items, '$.price') as float64) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end), countif(event_name = 'purchase')), 0) as avg_purchase_value,
-      ifnull(safe_divide(sum(case when event_name = 'refund' then -(safe_cast(json_value(items, '$.price') as float64) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end), countif(event_name = 'refund')), 0) as avg_refund_value,
+      ifnull(safe_divide(sum(case when event_name = 'purchase' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end), countif(event_name = 'purchase')), 0) as avg_purchase_value,
+      ifnull(safe_divide(sum(case when event_name = 'refund' then -(ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end), countif(event_name = 'refund')), 0) as avg_refund_value,
 
     from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'user')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items
@@ -134,7 +134,7 @@ with user_logic as (
     max(days_from_first_visit) as days_from_first_visit,
     max(days_from_last_visit) as days_from_last_visit,
 
-    safe_divide(sum(purchase), count(distinct client_id)) as user_conversion_rate,
+    case when sum(purchase) >= 1 then 1 else 0 end as user_conversion_rate,
     safe_divide(sum(purchase_revenue), count(distinct client_id)) as user_value,
 
     case 
