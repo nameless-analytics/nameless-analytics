@@ -574,7 +574,7 @@ Aggregates event data at session level.
 | `session_campaign_term` | Dimension | Keyword/term of the campaign associated with the session. |
 | `session_channel_grouping` | Dimension | Marketing channel grouping for the session. |
 | `session_city` | Dimension | City detected at the start of the session. |
-| `session_conversion_rate` | Metric | Ratio of converted sessions to total sessions. |
+| `session_conversion_rate` | Metric | Percentage of sessions that resulted in at least one conversion. |
 | `session_country` | Dimension | Country detected at the start of the session. |
 | `session_date` | Dimension | Date when the session started. |
 | `session_device_type` | Dimension | Primary device type used during the session. |
