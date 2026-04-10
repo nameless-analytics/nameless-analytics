@@ -221,7 +221,9 @@ select
     user_data,
     session_data,
     page_data,
-    event_data
+    event_data,
+    consent_data,
+    gtm_data
     
   from `tom-moretti.nameless_analytics.events_raw`
   where true

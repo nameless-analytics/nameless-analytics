@@ -68,7 +68,8 @@ with base_events as (
       # RAW RECORD ARRAYS
       page_data, 
       event_data,
-      datalayer
+      datalayer,
+      consent_data
     from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'event')
   )
 
@@ -163,6 +164,7 @@ with base_events as (
       from unnest(event_data)
     ) as event_data,
     to_json_string(ecommerce) as ecommerce,
-    to_json_string(datalayer) as datalayer
+    to_json_string(datalayer) as datalayer,
+    consent_data
   from base_events
 );
