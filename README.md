@@ -697,7 +697,7 @@ It maintains **every single state transition** for every user and session (for e
 - **dataLayer data**: Stores the current dataLayer state at event occurs, including dataLayer name, timestamp, and dataLayer-specific attributes.
 - **Ecommerce data**: Stores the current ecommerce state at event occurs, including ecommerce metrics, timestamp, and ecommerce-specific attributes.
 - **Consent data**: Stores the current consent state at event occurs, including consent status, timestamp, and consent-specific attributes.
-- **GTM Performance data**: Stores the current GTM performance state at event occurs, including GTM performance metrics, timestamp, and GTM performance-specific attributes.
+- **Events Debug data**: Stores the current events debug state at event occurs, including metrics, timestamp, and specific attributes.
 
 <details><summary>BigQuery schema example</summary>
   
@@ -710,7 +710,7 @@ It maintains **every single state transition** for every user and session (for e
 
 
 ## Reporting
-A suite of SQL Table Functions transforms raw data into business-ready views for [Users](tables/users.sql), [Sessions](tables/sessions.sql), [Pages](tables/pages.sql), [Events](tables/events.sql), [Consents](tables/consents.sql), [GTM Performance](tables/gtm_performances.sql), and specialized Ecommerce views like [Transactions](tables/ec_transactions.sql), [Products](tables/ec_products.sql), and Funnels ([Open](tables/ec_shopping_stages_open_funnel.sql) / [Closed](tables/ec_shopping_stages_closed_funnel.sql)).
+A suite of SQL Table Functions transforms raw data into business-ready views for [Users](tables/users.sql), [Sessions](tables/sessions.sql), [Pages](tables/pages.sql), [Events](tables/events.sql), [Consents](tables/consents.sql), [Events Debug](tables/events_debug.sql), and specialized Ecommerce views like [Transactions](tables/ec_transactions.sql), [Products](tables/ec_products.sql), and Funnels ([Open](tables/ec_shopping_stages_open_funnel.sql) / [Closed](tables/ec_shopping_stages_closed_funnel.sql)).
 
 SQL Table Functions can be used as sources for reporting, such in [Google Looker Studio](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd), which demonstrates the platform's potential with a pre-built template covering all key metrics.
 
@@ -769,7 +769,7 @@ SQL Table Functions can be used as sources for reporting, such in [Google Looker
 
 </br>
 
-- [**Web Hits Latency**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_zlobch0knd): Pipeline latency monitoring. Using [gtm_performances.sql](tables/gtm_performances.sql).
+- [**Web Hits Latency**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_zlobch0knd): Pipeline latency monitoring. Using [events_debug.sql](tables/events_debug.sql).
 - [**Server-to-Server Hits**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_yiouuvwgod): Dedicated view for non-browser events sent via Streaming protocol.
 - [**Raw Data Inspector**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_unnkswttkd): Full table view of individual raw events for granular troubleshooting and verification.
 

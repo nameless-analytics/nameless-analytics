@@ -214,16 +214,10 @@ select
     (select value.string from unnest(gtm_data) where name = 'ss_tag_name') as ss_tag_name,
     (select value.int from unnest(gtm_data) where name = 'ss_tag_id') as ss_tag_id,
 
+    (select value.int from unnest(gtm_data) where name = 'content_length') / 1024 as content_length_in_kb,
     (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') as processing_event_timestamp,
-    (select value.int from unnest(gtm_data) where name = 'content_length') as content_length,
-
-    # RAW ARRAY DATA
-    user_data,
-    session_data,
-    page_data,
-    event_data,
-    consent_data,
-    gtm_data
+    (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp as delay_in_millis,
+    ((select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp) / 1000 as delay_in_sec,
     
   from `tom-moretti.nameless_analytics.events_raw`
   where true

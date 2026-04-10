@@ -22,7 +22,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
   - [Products](#products)
   - [Shopping stages open funnel](#shopping-stages-open-funnel)
   - [Shopping stages closed funnel](#shopping-stages-closed-funnel)
-  - [GTM performances](#gtm-performances)
+  - [Events debug](#events-debug)
   - [Consents](#consents)
 - [Reporting fields](#reporting-fields)
 - [Data Governance and Maintenance](#data-governance-and-maintenance)
@@ -987,79 +987,32 @@ Aggregates event data at shopping stages level, for users who follow a specific,
 [View SQL code](ec_shopping_stages_closed_funnel.sql)
 
 
-### GTM performances
-Provides metrics on GTM container execution times and tag performance to help optimize site speed.
+### Events debug
+Provides a flattened view of events with raw data for debugging and troubleshooting.
 
-[View SQL code](gtm_performances.sql)
+[View SQL code](events_debug.sql)
 
 <details><summary>Output fields</summary>
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
 | `client_id` | Dimension | Unique identifier for the client/browser. |
-| `content_length` | Metric | The length of the request content in bytes. |
-| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
-| `cs_container_id` | Dimension | Client-side GTM container ID. |
-| `cs_hostname` | Dimension | Client-side GTM server hostname. |
-| `datalayer` | Dimension | Current JSON value of the dataLayer. |
-| `delay_in_milliseconds` | Metric | Delay in execution in milliseconds. |
-| `delay_in_sec` | Metric | Delay in execution in seconds. |
-| `ecommerce` | Dimension | Structured ecommerce data in JSON format. |
-| `event_data` | Dimension | Array of custom event parameters. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `page_data` | Dimension | Array of custom page parameters. |
 | `event_date` | Dimension | The date the event occurred. |
 | `event_datetime` | Dimension | Exact date and time of the event. |
-| `event_id` | Dimension | Unique identifier for the event. |
+| `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
+| `event_origin` | Dimension | The origin of the event (e.g., Web, Server). |
 | `event_name` | Dimension | The name of the interaction event. |
 | `event_number` | Dimension | Sequential number of the event in the session. |
-| `event_origin` | Dimension | The origin of the event (e.g., Web, Server). |
-| `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
-| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
-| `page_data` | Dimension | Array of custom page parameters. |
-| `processing_event_timestamp` | Dimension | Timestamp when the event was processed by the server. |
-| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
-| `session_browser_name` | Dimension | Browser name recorded at session start. |
-| `session_campaign` | Dimension | Acquisition campaign for the session. |
-| `session_campaign_click_id` | Dimension | Campaign click ID for the session. |
-| `session_campaign_content` | Dimension | Campaign content for the session. |
-| `session_campaign_id` | Dimension | Campaign ID for the session. |
-| `session_campaign_term` | Dimension | Campaign term for the session. |
-| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
-| `session_city` | Dimension | City detected for the session. |
-| `session_country` | Dimension | Country detected for the session. |
-| `session_date` | Dimension | The date the session started. |
-| `session_device_type` | Dimension | Primary device type detected for the session. |
-| `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
-| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
-| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
-| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
-| `session_hostname` | Dimension | Hostname recorded for the session. |
-| `session_id` | Dimension | Unique identifier for the session. |
-| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
-| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
-| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
-| `session_language` | Dimension | Language recorded for the session. |
-| `session_number` | Dimension | Sequence number of the session for the user. |
-| `session_source` | Dimension | Traffic source for the session. |
-| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
-| `session_type` | Dimension | Classification of the session (New vs Returning). |
-| `ss_container_id` | Dimension | Server-side GTM container ID. |
-| `ss_hostname` | Dimension | Server-side GTM server hostname. |
-| `user_campaign` | Dimension | Original acquisition campaign for the user. |
-| `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
-| `user_campaign_content` | Dimension | Original acquisition campaign content. |
-| `user_campaign_id` | Dimension | Original acquisition campaign ID. |
-| `user_campaign_term` | Dimension | Original acquisition campaign term. |
-| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
-| `user_city` | Dimension | User's city at the time of first acquisition. |
-| `user_country` | Dimension | User's country at the time of first acquisition. |
-| `user_date` | Dimension | Date the user was first seen. |
-| `user_device_type` | Dimension | Device type used at first acquisition. |
-| `user_id` | Dimension | Business-level unique user identifier. |
-| `user_language` | Dimension | User language recorded at acquisition. |
-| `user_source` | Dimension | Original source of acquisition. |
-| `user_type` | Dimension | User type classification (New vs Returning). |
+| `event_id` | Dimension | Unique identifier for the event. |
+| `event_data` | Dimension | Array of custom event parameters. |
+| `ecommerce` | Dimension | Structured ecommerce data in JSON format. |
+| `datalayer` | Dimension | Current JSON value of the dataLayer. |
+| `consent_data` | Dimension | Array of consent parameters. |
 
 </details>
+
 
 
 ### Consents
@@ -1123,7 +1076,7 @@ This table illustrates the fields available across different table functions, al
 
 <details><summary>Output Fields Matrix</summary>
 
-| Field name | Field type | Value type | Events | Users | Sessions | Pages | Transactions | Products | Open_Funnel | Closed_Funnel | GTM_Performances | Consents |
+| Field name | Field type | Value type | Events | Users | Sessions | Pages | Transactions | Products | Open_Funnel | Closed_Funnel | Events_Debug | Consents |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | `ad_personalization` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `ad_personalization_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
@@ -1165,14 +1118,14 @@ This table illustrates the fields available across different table functions, al
 | `consent_value_int_accepted` | Metric | float |  |  |  |  |  |  |  |  |  | X |
 | `consent_value_int_denied` | Metric | float |  |  |  |  |  |  |  |  |  | X |
 | `consent_value_string` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
-| `content_length` | Metric | integer | X |  |  |  |  |  |  |  | X |  |
+| `content_length` | Metric | integer | X |  |  |  |  |  |  |  |  |  |
 | `country` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `creative_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `creative_slot` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `cross_domain_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `cross_domain_session` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
-| `cs_container_id` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
-| `cs_hostname` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
+| `cs_container_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
+| `cs_hostname` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `cs_tag_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `cs_tag_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `customer_type` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
@@ -1183,8 +1136,8 @@ This table illustrates the fields available across different table functions, al
 | `days_from_first_visit` | Metric | integer | X | X |  |  |  |  |  |  |  |  |
 | `days_from_last_purchase` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `days_from_last_visit` | Metric | integer | X | X |  |  |  |  |  |  |  |  |
-| `delay_in_milliseconds` | Metric | integer |  |  |  |  |  |  |  |  | X |  |
-| `delay_in_sec` | Metric | integer |  |  |  |  |  |  |  |  | X |  |
+| `delay_in_milliseconds` | Metric | integer |  |  |  |  |  |  |  |  |  |  |
+| `delay_in_sec` | Metric | integer |  |  |  |  |  |  |  |  |  |  |
 | `device_model` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `device_type` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `device_vendor` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -1263,7 +1216,7 @@ This table illustrates the fields available across different table functions, al
 | `personalization_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `personalization_storage_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |
 | `personalization_storage_denied_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |
-| `processing_event_timestamp` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
+| `processing_event_timestamp` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `promotion_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `promotion_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `purchase` | Metric | integer |  | X | X |  | X |  |  |  |  |  |
@@ -1340,8 +1293,8 @@ This table illustrates the fields available across different table functions, al
 | `shipping_net_refund` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `source` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `source_cleaned` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
-| `ss_container_id` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
-| `ss_hostname` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
+| `ss_container_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
+| `ss_hostname` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `ss_tag_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `ss_tag_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `status` | Dimension | string |  |  |  |  |  |  | X |  |  |  |
