@@ -62,12 +62,15 @@ Supports API Key authentication for secure server-side ingestion.
 To ensure requests are accepted by the server, following requirements must be met:
 
 ### Mandatory Headers
-- **User-Agent**: To bypass bot protection, you must use following User-Agent: `Nameless Analytics - Streaming protocol`.
+- **User-Agent**: To bypass bot protection, you must use the following User-Agent: `Nameless Analytics - Streaming protocol`. Any deviation will result in a 403 error.
 - **API Key**: The `x-api-key` header must match your Server-side Client Tag configuration.
+- **Cookie**: The HTTP request must include the `Cookie` header containing `na_u={client_id}; na_s={na_s_cookie}`. This is the **only** source of truth used by the server to identify the user and session.
 
 ### Mandatory fields
 The server validates the presence of the following top-level fields:
-`client_id`, `user_data`, `session_id`, `session_data`, `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
+`user_data`, `session_data`, `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`, `gtm_data`.
+
+> **⚠️ Critical Note**: Even if you have no additional parameters to pass, `user_data`, `session_data`, and `gtm_data` **must still be present** in the JSON payload as empty objects `{}`. Omitting these root keys entirely will cause the Server-side Tag to crash when it attempts to inject server-side values into them.
 
 ### Data Formats
 - **Dates**: Must be strings in `YYYY-MM-DD` format (e.g., `2026-04-08`).
@@ -81,21 +84,19 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
 ### Example Payload
 ```json
 {
-  "client_id": "lZc919IBsqlhHks", // Extracted from na_s cookie
   "user_data": {}, // Optional
 
-  "session_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU", // Extracted from na_s cookie
   "session_data": {
     "user_id": "abcd" // Optional
   },
         
   "page_date": "2026-04-08", // Automatically retrieved from BigQuery if page_id exists in BigQuery
-  "page_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y", // Extracted from na_s cookie
+  "page_id": "WVTWEorF69ZEk3y", // Extracted from na_s cookie
   "page_data": {}, // Automatically retrieved from BigQuery if page_id exists in BigQuery
 
   "event_date": "2026-04-08",
   "event_timestamp": 1712604000000,
-  "event_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV", // Automatically generated based on na_s cookie
+  "event_id": "WVTWEorF69ZEk3y_XIkjlUOkXKn99IV", // Automatically generated based on na_s cookie
   "event_name": "purchase",
   "event_origin": "Streaming protocol", // Do not modify
   "event_data": {
@@ -145,11 +146,14 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
 
 > **Note on `channel_grouping`**: You don't need to provide this parameter. The [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag) will automatically calculate it based on the `source` and `campaign` parameters provided in the `event_data` object.
 
-> **Note on ID Management**: `client_id` and `session_id` are automatically extracted from the `na_s` cookie.
+> **Note on ID Management**: The tracking of `client_id` and `session_id` is exclusively handled through the HTTP `Cookie` header. Do not include them in the JSON payload, as the server will securely extract and assign them from the cookies context.
 
 
 
 ## Implementation
+
+> **💡 Reference Implementation**: The current script (`streaming-protocol.py`) is provided as a **Proof of Concept (PoC)** to demonstrate the end-to-end data flow. In a production environment, developers should implement this logic dynamically (e.g., via AWS Lambda, Node.js backends, etc.) utilizing Environment Variables or Secret Managers for keys, rather than hardcoding them.
+
 ### Installation
  
 1.  Clone the repository.
@@ -175,7 +179,10 @@ Open `streaming-protocol.py` and configure the following settings:
     - `project_id`: Your Google Cloud Project ID.
     - `dataset_id`: Your BigQuery Dataset ID.
     - `table_id`: Your BigQuery Table ID (e.g., `events_raw`).
-    - `credentials_path`: Path to your Google Cloud Service Account JSON key.
+    - `credentials_path`: Path to your Google Cloud Service Account JSON key. *(Ensure this Service Account has at least the `BigQuery Data Viewer` and `BigQuery Job User` IAM roles).*
+4. Event Settings:
+    - `event_name`: Define the name of the conversion/event (e.g., `purchase`).
+    - `ecommerce_data`: Provide relevant ecommerce or transaction data.
 
 
 ### Usage 
@@ -190,6 +197,18 @@ The script will:
 2.  Construct a robust event payload.
 3.  Send the event to your GTM Server-side endpoint via the Streaming Protocol.
 4.  Print the server response (or any errors) to the console.
+
+**Expected Output:**
+```text
+NAMELESS ANALYTICS
+STREAMING PROTOCOL
+👉 Retrieve page data from BigQuery for page_id: ...
+  🟢 Page data retrieved from BigQuery
+👉 Send request to https://...
+   {"status_code": 200, "response": "🟢 Request claimed successfully", "data": {...}}
+Function execution end: 👍
+```
+*(Note: If you receive a 403 `🔴 Orphan event`, ensure the user/session exists. If you receive a 500 error, verify `user_data` and `session_data` exist in the payload).*
 
 ---
 

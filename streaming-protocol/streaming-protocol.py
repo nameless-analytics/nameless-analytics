@@ -21,7 +21,7 @@ na_s = '9XYP7ZNT84N750_gduwxTIFY1meUv-uYxGDhBFoSbpJqa' # Modify this according t
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
 origin = 'https://tommasomoretti.com' # Modify this according to website origin
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZDdjN2QzNmRhNGU0NzA3ZThjMQ==' # Modify this according to the GTM Server-side preview header
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZDdjOTQ4YTMwYzU3ZWYxZDc0NQ==' # Modify this according to the GTM Server-side preview header
 
 # Event data
 client_id = na_s.split('_')[0]
@@ -114,16 +114,14 @@ def get_page_data_from_bq():
 
 def build_payload(page_date_from_bq, page_data_from_bq):
     payload = {
-        "client_id": client_id, # Extracted from na_s cookie
         "user_data": {}, # Optional
 
-        "session_id": f"{client_id}_{session_id}", # Extracted from na_s cookie
         "session_data": {
             # "user_id": user_id, # Optional
         }, # Optional
         
         "page_date": page_date_from_bq, # Automatically retrieved from BigQuery if page_id exists in BigQuery
-        "page_id": na_s, # Extracted from na_s cookie
+        "page_id": na_s.split('-')[1], # Extracted from na_s cookie
         "page_data": page_data_from_bq, # Automatically retrieved from BigQuery if page_id exists in BigQuery
 
         "event_date": datetime.now(timezone.utc).strftime('%Y-%m-%d'),
