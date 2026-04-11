@@ -15,13 +15,13 @@ from google.cloud import bigquery
 # --------------------------------------------------------------------------------------------------------------
 
 # User cookies
-na_s = '9XYP7ZNT84N750_gduwxTIFY1meUv-uYxGDhBFoSbpJqa' # Modify this according to the current user's na_s cookie value
+na_s = '8BS8oxokGB7yEEv_cOLGenQEihYghBW-4j71XWEjYVB5K9Y' # Modify this according to the current user's na_s cookie value
 
 # Request settings
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
 origin = 'https://tommasomoretti.com' # Modify this according to website origin
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZDdjOTQ4YTMwYzU3ZWYxZDc0NQ==' # Modify this according to the GTM Server-side preview header
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZDdjYzAzMjE1YmU0YmIzNTlkNw==' # Modify this according to the GTM Server-side preview header
 
 # Event data
 client_id = na_s.split('_')[0]
@@ -30,17 +30,54 @@ user_id = '[OPTIONAL_USER_ID]' # Add it if needed
 event_name = 'purchase' # Modify this according to the event name to be sent
 ecommerce_data = {
     "transaction_id": "T_12345",
-    "value": 25.50,
-    "currency": "EUR",
+    "value": 72.05,
+    "tax": 3.60,
+    "shipping": 5.99,
+    "currency": "USD",
+    "coupon": "SUMMER_SALE",
+    "customer_type": "new",
     "items": [
-        {
-            "item_id": "SKU_001",
-            "item_name": "Product Name",
-            "price": 25.50,
-            "quantity": 1
-        }
-    ]
-} # Add ecommerce data here if needed
+    {
+      "item_id": "SKU_12345",
+      "item_name": "Stan and Friends Tee",
+      "affiliation": "Google Merchandise Store",
+      "coupon": "SUMMER_FUN",
+      "discount": 2.22,
+      "item_brand": "Google",
+      "item_category": "Apparel",
+      "item_category2": "Adult",
+      "item_category3": "Shirts",
+      "item_category4": "Crew",
+      "item_category5": "Short sleeve",
+      "item_list_id": "related_products",
+      "item_list_name": "Related Products",
+      "item_variant": "green",
+      "price": 10.01,
+      "quantity": 3
+    },
+    {
+      "item_id": "SKU_12346",
+      "item_name": "Google Grey Women's Tee",
+      "affiliation": "Google Merchandise Store",
+      "coupon": "SUMMER_FUN",
+      "discount": 3.33,
+      "index": 1,
+      "item_brand": "Google",
+      "item_category": "Apparel",
+      "item_category2": "Adult",
+      "item_category3": "Shirts",
+      "item_category4": "Crew",
+      "item_category5": "Short sleeve",
+      "item_list_id": "related_products",
+      "item_list_name": "Related Products",
+      "item_variant": "gray",
+      "location_id": "ChIJIQBpAG2ahYAR_6128GcTUEo",
+      "price": 21.01,
+      "promotion_id": "P_12345",
+      "promotion_name": "Summer Sale",
+      "quantity": 2
+    }]
+  } # Add ecommerce data here if needed
 
 # BigQuery settings
 project_id = 'tom-moretti' # Modify this according to your BigQuery project ID

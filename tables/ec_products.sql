@@ -92,7 +92,7 @@ with product_data_raw as (
       case when event_name = 'refund' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_refunded,
       case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1) end as item_revenue_refunded,
       case when event_name = 'refund' then 1 end as unique_item_refunds
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
+    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'event')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items
     where regexp_contains(event_name, 'view_promotion|select_promotion|view_item_list|select_item|view_item|add_to_wishlist|remove_from_wishlist|add_to_cart|remove_from_cart|view_cart|begin_checkout|add_shipping_info|add_payment_info|purchase|refund')
   )

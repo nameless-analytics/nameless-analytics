@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions`(start_date DATE, end_date DATE) AS (
-  with transaction_data_raw as (
+with transaction_data_raw as (
     select 
       # USER DATA
       user_date,
@@ -61,7 +61,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions
       safe_cast(json_value(ecommerce, '$.shipping') as float64) as transaction_shipping,
       json_value(ecommerce, '$.currency') as transaction_currency,
       json_value(ecommerce, '$.coupon') as transaction_coupon
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
+    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'event')
     where regexp_contains(event_name, 'purchase|refund')
   )
 
