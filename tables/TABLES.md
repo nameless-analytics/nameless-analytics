@@ -489,7 +489,6 @@ Aggregates event data at user level.
 | `user_campaign_term` | Dimension | Original acquisition campaign term. |
 | `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
 | `user_city` | Dimension | User's city at the time of acquisition. |
-| `user_conversion_rate` | Metric | Percentage of users who completed at least one conversion. |
 | `user_country` | Dimension | User's country at the time of acquisition. |
 | `user_date` | Dimension | Date when the user was first seen. |
 | `user_device_type` | Dimension | Device type used by the user at acquisition. |
@@ -497,7 +496,8 @@ Aggregates event data at user level.
 | `user_language` | Dimension | Preferred language of the user at acquisition. |
 | `user_source` | Dimension | Original traffic source that acquired the user. |
 | `user_type` | Dimension | User classification (New vs Returning). |
-| `user_value` | Metric | Total lifetime monetary value of the user. |
+| `user_with_purchase` | Metric | Indicates if the user has completed at least one purchase. |
+| `user_with_refund` | Metric | Indicates if the user has completed at least one refund. |
 
 </details>
 
@@ -574,7 +574,6 @@ Aggregates event data at session level.
 | `session_campaign_term` | Dimension | Keyword/term of the campaign associated with the session. |
 | `session_channel_grouping` | Dimension | Marketing channel grouping for the session. |
 | `session_city` | Dimension | City detected at the start of the session. |
-| `session_conversion_rate` | Metric | Percentage of sessions that resulted in at least one conversion. |
 | `session_country` | Dimension | Country detected at the start of the session. |
 | `session_date` | Dimension | Date when the session started. |
 | `session_device_type` | Dimension | Primary device type used during the session. |
@@ -594,7 +593,8 @@ Aggregates event data at session level.
 | `session_security_storage` | Metric | Count of sessions with security storage consent. |
 | `session_source` | Dimension | Traffic source that initiated the session. |
 | `session_start_timestamp` | Dimension | Timestamp when the session officially began. |
-| `session_value` | Metric | Total value assigned to the session based on conversions. |
+| `session_with_purchase` | Metric | Indicates if the session includes at least one purchase event. |
+| `session_with_refund` | Metric | Indicates if the session includes at least one refund event. |
 | `shipping_net_refund` | Metric | Total shipping revenue minus refunded shipping charges. |
 | `tax_net_refund` | Metric | Total tax revenue minus refunded tax charges. |
 | `user_campaign` | Dimension | Original acquisition campaign for the user. |
@@ -1258,7 +1258,6 @@ This table illustrates the fields available across different table functions, al
 | `session_campaign_term` | Dimension | string | X |  | X | X | X | X |  |  | X |  |
 | `session_channel_grouping` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_city` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
-| `session_conversion_rate` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `session_country` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_data` | Dimension | array | X |  |  |  |  |  |  |  |  |  |
 | `session_date` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
@@ -1287,7 +1286,8 @@ This table illustrates the fields available across different table functions, al
 | `session_start_timestamp` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_tld_source` | Dimension | string | X |  |  |  |  |  | X | X |  |  |
 | `session_type` | Dimension | string | X |  |  | X | X | X |  |  | X |  |
-| `session_value` | Metric | float |  |  | X |  |  |  |  |  |  |  |
+| `session_with_purchase` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
+| `session_with_refund` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `sessions` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `sessions_per_user` | Metric | float |  | X |  |  |  |  |  |  |  |  |
 | `shipping_net_refund` | Metric | float |  |  | X |  |  |  |  |  |  |  |
@@ -1319,7 +1319,6 @@ This table illustrates the fields available across different table functions, al
 | `user_campaign_term` | Dimension | string | X | X | X | X | X | X |  |  | X |  |
 | `user_channel_grouping` | Dimension | string | X | X | X | X | X | X | X | X | X | X |
 | `user_city` | Dimension | string | X | X | X | X | X | X | X | X | X |  |
-| `user_conversion_rate` | Metric | float |  | X |  |  |  |  |  |  |  |  |
 | `user_country` | Dimension | string | X | X | X | X | X | X | X | X | X | X |
 | `user_data` | Dimension | Array | X |  |  |  |  |  |  |  |  |  |
 | `user_date` | Dimension | string | X | X | X | X | X | X | X | X | X | X |
@@ -1333,7 +1332,8 @@ This table illustrates the fields available across different table functions, al
 | `user_source_cleaned` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `user_tld_source` | Dimension | string | X |  |  |  |  |  | X | X |  |  |
 | `user_type` | Dimension | string | X | X | X | X | X | X | X | X | X | X |
-| `user_value` | Metric | float |  | X |  |  |  |  |  |  |  |  |
+| `user_with_purchase` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
+| `user_with_refund` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `view_cart` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `view_item` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `view_item_list` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
