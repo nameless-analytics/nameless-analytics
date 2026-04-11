@@ -15,13 +15,13 @@ from google.cloud import bigquery
 # --------------------------------------------------------------------------------------------------------------
 
 # User cookies
-na_s = '9XYP7ZNT84N750_Qt2ZyjBoG0ukJa-finVjkNftb1L8GD' # Modify this according to the current user's na_s cookie value
+na_s = '9XYP7ZNT84N750_gduwxTIFY1meUv-uYxGDhBFoSbpJqa' # Modify this according to the current user's na_s cookie value
 
 # Request settings
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
 origin = 'https://tommasomoretti.com' # Modify this according to website origin
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5YzYyNTNkMjExODcxMzc1NTJmZQ==' # Modify this according to the GTM Server-side preview header
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZDdjMzllOTJkODA4NTkxZGFjYg==' # Modify this according to the GTM Server-side preview header
 
 # Event data
 client_id = na_s.split('_')[0]
@@ -104,62 +104,61 @@ def run_protocol():
 
 def build_payload(page_date_from_bq, page_data_from_bq):
     payload = {
-        "user_date": event_date,
-        "client_id": client_id,
-        "user_data": {
-        },
+        "client_id": client_id, # Estracted from na_s cookie
+        "user_data": {}, # Optional
 
-        "session_date": event_date,
-        "session_id": f"{client_id}_{session_id}",
+        "session_id": f"{client_id}_{session_id}", # Extracted from na_s cookie
         "session_data": {
-            # "user_id": user_id, # Optional
-        },
+          # "user_id": user_id, # Optional
+        }, # Optional
         
-        "page_date": page_date_from_bq,
-        "page_id": na_s,
-        "page_data": page_data_from_bq,
+        "page_date": page_date_from_bq, # Automatically retrieved from BigQuery if page_id exists in BigQuery
+        "page_id": na_s, # Extracted from na_s cookie
+        "page_data": page_data_from_bq, # Automatically retrieved from BigQuery if page_id exists in BigQuery
 
         "event_date": event_date,
         "event_timestamp": event_timestamp,
-        "event_id": event_id,
+        "event_id": event_id, # Automatically generated based on na_s cookie
         "event_name": event_name,
-        "event_origin": event_origin,
+        "event_origin": event_origin, # Do not modify
         "event_data": {
-            "event_type": "event",
-            "hostname": hostname,
-            # "source": None,
-            # "campaign": None,
-            # "campaign_id": None,
-            # "campaign_click_id": None,
-            # "campaign_term": None,
-            # "campaign_content": None,
-            # "user_agent": user_agent,
-            # "browser_name": None,
-            # "browser_language": None,
-            # "browser_version": None,
-            # "device_type": None,
-            # "device_vendor": None,
-            # "device_model": None,
-            # "os_name": None,
-            # "os_version": None,
-            # "screen_size": None,
-            # "viewport_size": None
+            "event_type": "event", # Do not modify
+            "hostname": hostname, # Website domain origin
+            "source": None, # Do not modify
+            "campaign": None, # Do not modify
+            "campaign_id": None, # Do not modify
+            "campaign_click_id": None, # Do not modify
+            "campaign_term": None, # Do not modify
+            "campaign_content": None, # Do not modify
+            # "user_agent": user_agent, # Optional
+            # "browser_name": None, # Optional
+            # "browser_language": None, # Optional
+            # "browser_version": None, # Optional
+            # "device_type": None, # Optional
+            # "device_vendor": None, # Optional
+            # "device_model": None, # Optional
+            # "os_name": None, # Optional
+            # "os_version": None, # Optional
+            # "screen_size": None, # Optional
+            # "viewport_size": None # Optional
         },
 
         "ecommerce": {
             # Add ecommerce data here
         },
 
+        "gtm_data": {},            
+        
         "consent_data": {
-            "consent_type": None,
-            "respect_consent_mode": None,
-            "ad_user_data": None,
-            "ad_personalization": None,
-            "ad_storage": None,
-            "analytics_storage": None,
-            "functionality_storage": None,
-            "personalization_storage": None,
-            "security_storage": None
+          "consent_type": None,
+          "respect_consent_mode": None,
+          "ad_user_data": None,
+          "ad_personalization": None,
+          "ad_storage": None,
+          "analytics_storage": None,
+          "functionality_storage": None,
+          "personalization_storage": None,
+          "security_storage": None
         }
     }
 
@@ -199,6 +198,7 @@ def send_request(payload):
             print("Function execution end: 👍")
         else:
             print("Function execution end: 🖕")
+            print(response)
     except Exception as e:
         print(f"Error while fetch: {e}")
 

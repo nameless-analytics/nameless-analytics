@@ -9,6 +9,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 
 ## Table of Contents
 
+- [Introduction](#introduction)
 - [Features](#features)
   - [Session enrichment](#session-enrichment)
   - [BigQuery enrichment](#bigquery-enrichment)
@@ -22,15 +23,26 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
   - [Configuration](#configuration)
   - [Usage](#usage)
 
+
+
+## Introduction
+The Streaming Protocol is designed for secondary interactions (conversions, backend events, offline data).
+
+These events are sent to the Server-side Client Tag, which enriches them and writes them to BigQuery just like standard tracking events.
+
+Events sent via the Streaming Protocol **do not extend the session duration** (`session_duration_sec`). By default, duration calculation remains based exclusively on on-site events (`event_origin = 'Website'`).
+
+**`page_view` events are not allowed** via the Streaming Protocol and must be sent through the standard website tracker to correctly initialize the session context.
+
+
+
 ## Features
 ### Session enrichment
-The Streaming Protocol is designed for secondary interactions (conversions, backend events, offline data). **`page_view` events are not allowed** via the Streaming Protocol and must be sent through the standard website tracker to correctly initialize the session context.
-
-Events sent via the Streaming Protocol are recorded in BigQuery but **do not extend the session duration** (`session_duration_sec`). By default, duration calculation remains based exclusively on on-site events (`event_origin = 'Website'`).
+Automatically enriches server-side events with the active session context by extracting relevant `session_data` directly from BigQuery based on the `na_s` cookie. This ensures that offline or backend events are seamlessly tied to the user's original session, inheriting source, campaign, and user metadata without breaking the journey.
 
 
 ### BigQuery enrichment
-Automatically retrieves page_data from the BigQuery `events_raw` table based on the `na_s` cookie, allowing for enriching server-side events with the correct page context.
+Automatically retrieves user, session and page data from the BigQuery `events_raw` table based on the `na_s` cookie, allowing for enriching server-side events with the correct context.
 
 
 ### Automatic type handling
@@ -45,6 +57,7 @@ Includes robust error handling for API responses and database queries.
 Supports API Key authentication for secure server-side ingestion.
 
 
+
 ## Validation Requirements
 To ensure requests are accepted by the server, following requirements must be met:
 
@@ -52,7 +65,7 @@ To ensure requests are accepted by the server, following requirements must be me
 - **User-Agent**: To bypass bot protection, you must use following User-Agent: `Nameless Analytics - Streaming protocol`.
 - **API Key**: The `x-api-key` header must match your Server-side Client Tag configuration.
 
-### Mandatory Root Fields
+### Mandatory fields
 The server validates the presence of following top-level fields:
 `client_id`, `user_date`, `session_id`, `session_date`, `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
 
@@ -61,36 +74,39 @@ The server validates the presence of following top-level fields:
 - **Timestamps**: Must be an integer representing Unix timestamp in **milliseconds** (e.g., `1712604000000`).
 
 
+
 ## JSON Payload Structure
 The Streaming Protocol requires a POST request with a JSON body. While the server validates mandatory root fields, `event_type` is an optional but recommended field within `event_data` to maintain consistency with the BigQuery schema.
 
 ### Example Payload
 ```json
 {
-  "user_date": "2026-04-08",
-  "client_id": "lZc919IBsqlhHks",
-  "user_data": {},
+  "client_id": "lZc919IBsqlhHks", // Estracted from na_s cookie
+  "user_data": {}, // Optional
 
-  "session_date": "2026-04-08",
-  "session_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU",
+  "session_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU", // Estracted from na_s cookie
   "session_data": {
-    "user_id": "abcd"
+    "user_id": "abcd" // Optional
   },
         
-  "page_date": "2026-04-08",
-  "page_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y",
-  "page_data": {}, // Automatically enriched if page_id exists in BigQuery
+  "page_date": "2026-04-08", // Automatically retrieved from BigQuery if page_id exists in BigQuery
+  "page_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y", // Extracted from na_s cookie
+  "page_data": {}, // Automatically retrieved from BigQuery if page_id exists in BigQuery
 
   "event_date": "2026-04-08",
   "event_timestamp": 1712604000000,
-  "event_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV",
+  "event_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV", // Automatically generated based on na_s cookie
   "event_name": "purchase",
-  "event_origin": "Streaming protocol",
+  "event_origin": "Streaming protocol", // Do not modify
   "event_data": {
-    "event_type": "event",
-    "hostname": "yourdomain.com",
-    "source": "backend",
-    "campaign": "conversion_optimization"
+    "event_type": "event", // Do not modify
+    "hostname": "namelessanalytics.com", // Website domain origin
+    "source": null, // Do not modify
+    "campaign": null, // Do not modify
+    "campaign_id": null, // Do not modify
+    "campaign_click_id": null, // Do not modify
+    "campaign_term": null, // Do not modify
+    "campaign_content": null, // Do not modify
   },
 
   "ecommerce": {
@@ -121,7 +137,7 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
 }
 ```
 
-> **Note on `event_type`**: In the standard website tracker, this is automatically set to `page_view` or `event`. For the Streaming Protocol, you should manually set it to `event` (as `page_view` is restricted to the website tracker).
+> **Note on `event_type`**: For the Streaming Protocol, you should always set `event_type` to `event`, as `page_view` is restricted to the website tracker, since **`page_view` events are not allowed** via the Streaming Protocol).
 
 > **Note on `event_origin`**: This must be set to `Streaming protocol` to allow API Key authentication and distinguish server-side events.
 
