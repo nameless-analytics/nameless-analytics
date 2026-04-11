@@ -66,8 +66,8 @@ To ensure requests are accepted by the server, following requirements must be me
 - **API Key**: The `x-api-key` header must match your Server-side Client Tag configuration.
 
 ### Mandatory fields
-The server validates the presence of following top-level fields:
-`client_id`, `user_date`, `session_id`, `session_date`, `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
+The server validates the presence of the following top-level fields:
+`client_id`, `user_data`, `session_id`, `session_data`, `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
 
 ### Data Formats
 - **Dates**: Must be strings in `YYYY-MM-DD` format (e.g., `2026-04-08`).
@@ -81,10 +81,10 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
 ### Example Payload
 ```json
 {
-  "client_id": "lZc919IBsqlhHks", // Estracted from na_s cookie
+  "client_id": "lZc919IBsqlhHks", // Extracted from na_s cookie
   "user_data": {}, // Optional
 
-  "session_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU", // Estracted from na_s cookie
+  "session_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU", // Extracted from na_s cookie
   "session_data": {
     "user_id": "abcd" // Optional
   },
@@ -122,6 +122,8 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
       }
     ]
   },
+
+  "gtm_data": {},
 
   "consent_data": {
     "consent_type": "Update",
@@ -170,10 +172,10 @@ Open `streaming-protocol.py` and configure the following settings:
     - `api_key`: The API key matching your Client Tag configuration.
     - `gtm_preview_header`: (Optional) Your GTM Preview header for debugging.
 3. BigQuery Settings:
-    - `bq_project_id`: Your Google Cloud Project ID.
-    - `bq_dataset_id`: Your BigQuery Dataset ID.
-    - `bq_table_id`: Your BigQuery Table ID (e.g., `events_raw`).
-    - `bq_credentials_path`: Path to your Google Cloud Service Account JSON key.
+    - `project_id`: Your Google Cloud Project ID.
+    - `dataset_id`: Your BigQuery Dataset ID.
+    - `table_id`: Your BigQuery Table ID (e.g., `events_raw`).
+    - `credentials_path`: Path to your Google Cloud Service Account JSON key.
 
 
 ### Usage 

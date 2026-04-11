@@ -21,20 +21,26 @@ na_s = '9XYP7ZNT84N750_gduwxTIFY1meUv-uYxGDhBFoSbpJqa' # Modify this according t
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
 origin = 'https://tommasomoretti.com' # Modify this according to website origin
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZDdjMzllOTJkODA4NTkxZGFjYg==' # Modify this according to the GTM Server-side preview header
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZDdjN2QzNmRhNGU0NzA3ZThjMQ==' # Modify this according to the GTM Server-side preview header
 
 # Event data
 client_id = na_s.split('_')[0]
 session_id = na_s.split('_')[1].split('-')[0]
 user_id = '[OPTIONAL_USER_ID]' # Add it if needed
 event_name = 'purchase' # Modify this according to the event name to be sent
-event_date = datetime.now(timezone.utc).strftime('%Y-%m-%d')
-event_timestamp = int(datetime.now(timezone.utc).timestamp() * 1000)
-event_id = f'{na_s}_{secrets.token_hex(8)}'
-event_origin = "Streaming protocol"
-user_agent = 'Nameless Analytics - Streaming protocol'
-hostname = urlparse(origin).netloc
-
+ecommerce_data = {
+    "transaction_id": "T_12345",
+    "value": 25.50,
+    "currency": "EUR",
+    "items": [
+        {
+            "item_id": "SKU_001",
+            "item_name": "Product Name",
+            "price": 25.50,
+            "quantity": 1
+        }
+    ]
+} # Add ecommerce data here if needed
 
 # BigQuery settings
 project_id = 'tom-moretti' # Modify this according to your BigQuery project ID
@@ -44,9 +50,11 @@ credentials_path = '/Users/tommasomoretti/Library/CloudStorage/GoogleDrive-tomma
 
 
 # --------------------------------------------------------------------------------------------------------------
+# RETRIVE PAGE DATA FROM BIGQUERY
+# --------------------------------------------------------------------------------------------------------------
 
 
-def run_protocol():
+def get_page_data_from_bq():
     print(f'👉 Retrieve page data from BigQuery for page_id: {na_s}')
 
     page_date_from_bq = ""
@@ -100,30 +108,32 @@ def run_protocol():
 
 
 # --------------------------------------------------------------------------------------------------------------
+# BUILD PAYLOAD
+# --------------------------------------------------------------------------------------------------------------
 
 
 def build_payload(page_date_from_bq, page_data_from_bq):
     payload = {
-        "client_id": client_id, # Estracted from na_s cookie
+        "client_id": client_id, # Extracted from na_s cookie
         "user_data": {}, # Optional
 
         "session_id": f"{client_id}_{session_id}", # Extracted from na_s cookie
         "session_data": {
-          # "user_id": user_id, # Optional
+            # "user_id": user_id, # Optional
         }, # Optional
         
         "page_date": page_date_from_bq, # Automatically retrieved from BigQuery if page_id exists in BigQuery
         "page_id": na_s, # Extracted from na_s cookie
         "page_data": page_data_from_bq, # Automatically retrieved from BigQuery if page_id exists in BigQuery
 
-        "event_date": event_date,
-        "event_timestamp": event_timestamp,
-        "event_id": event_id, # Automatically generated based on na_s cookie
+        "event_date": datetime.now(timezone.utc).strftime('%Y-%m-%d'),
+        "event_timestamp": int(datetime.now(timezone.utc).timestamp() * 1000),
+        "event_id": f"{na_s.split('-')[1]}_{secrets.token_hex(8)}", # Automatically generated based on na_s cookie
         "event_name": event_name,
-        "event_origin": event_origin, # Do not modify
+        "event_origin": "Streaming protocol", # Do not modify
         "event_data": {
             "event_type": "event", # Do not modify
-            "hostname": hostname, # Website domain origin
+            "hostname": urlparse(origin).netloc, # Website domain origin
             "source": None, # Do not modify
             "campaign": None, # Do not modify
             "campaign_id": None, # Do not modify
@@ -143,22 +153,20 @@ def build_payload(page_date_from_bq, page_data_from_bq):
             # "viewport_size": None # Optional
         },
 
-        "ecommerce": {
-            # Add ecommerce data here
-        },
+        "ecommerce": ecommerce_data,
 
         "gtm_data": {},            
         
         "consent_data": {
-          "consent_type": None,
-          "respect_consent_mode": None,
-          "ad_user_data": None,
-          "ad_personalization": None,
-          "ad_storage": None,
-          "analytics_storage": None,
-          "functionality_storage": None,
-          "personalization_storage": None,
-          "security_storage": None
+            "consent_type": None,
+            "respect_consent_mode": None,
+            "ad_user_data": None,
+            "ad_personalization": None,
+            "ad_storage": None,
+            "analytics_storage": None,
+            "functionality_storage": None,
+            "personalization_storage": None,
+            "security_storage": None
         }
     }
 
@@ -166,7 +174,8 @@ def build_payload(page_date_from_bq, page_data_from_bq):
 
 
 # --------------------------------------------------------------------------------------------------------------
-
+# SEND REQUEST
+# --------------------------------------------------------------------------------------------------------------
 
 def send_request(payload):
     print('👉 Send request to ' + full_endpoint)
@@ -177,7 +186,7 @@ def send_request(payload):
             'X-Gtm-Server-Preview': gtm_preview_header,
             'Content-Type': 'application/json',
             'Origin': origin,
-            'User-Agent': user_agent,
+            'User-Agent': 'Nameless Analytics - Streaming protocol',
             'Cookie': f'na_u={client_id}; na_s={na_s}' 
         }
     
@@ -193,20 +202,21 @@ def send_request(payload):
                     pass
             print("  ", message)
         except:
-            print("  ", response.text)
+            print("  ", response)
+
         if response.status_code == 200:
             print("Function execution end: 👍")
         else:
             print("Function execution end: 🖕")
-            print(response)
     except Exception as e:
         print(f"Error while fetch: {e}")
 
 
 # --------------------------------------------------------------------------------------------------------------
-
+# RUN PROTOCOL
+# --------------------------------------------------------------------------------------------------------------
 
 if __name__ == "__main__":
     print("NAMELESS ANALYTICS")
     print("STREAMING PROTOCOL")
-    run_protocol()
+    get_page_data_from_bq()
