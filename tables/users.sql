@@ -134,8 +134,8 @@ with user_logic as (
     max(days_from_first_visit) as days_from_first_visit,
     max(days_from_last_visit) as days_from_last_visit,
 
-    case when sum(purchase) >= 1 then 1 else 0 end as user_conversion_rate,
-    safe_divide(sum(purchase_revenue), count(distinct client_id)) as user_value,
+    case when sum(purchase) >= 1 then 1 else 0 end as user_with_purchase,
+    case when sum(purchase) >= 1 then 1 else 0 end as user_with_refund,
 
     case 
       when sum(purchase) = 0 then 'Not customer'
