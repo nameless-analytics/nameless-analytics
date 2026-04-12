@@ -70,7 +70,7 @@ To ensure requests are accepted by the server, following requirements must be me
 The server validates the presence of the following top-level fields:
 `user_data`, `session_data`, `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`, `gtm_data`.
 
-> **⚠️ Critical Note**: Even if you have no additional parameters to pass, `user_data`, `session_data`, and `gtm_data` **must still be present** in the JSON payload as empty objects `{}`. Omitting these root keys entirely will cause the Server-side Tag to crash when it attempts to inject server-side values into them.
+> **Please Note**: Even if you have no additional parameters to pass, `user_data`, `session_data`, and `gtm_data` **must still be present** in the JSON payload as empty objects `{}`. Omitting these root keys entirely will cause the Server-side Tag to crash when it attempts to inject server-side values into them.
 
 ### Data Formats
 - **Dates**: Must be strings in `YYYY-MM-DD` format (e.g., `2026-04-08`).
