@@ -798,7 +798,7 @@ You can choose the compute environment that best fits your traffic and budget:
 ### Data storage
 Data will be stored in two different locations:
 
-* **Google Firestore**: Manages real-time session states. Billing is based on **document operations** (Reads and Writes). Since every event requires 1 read and 1 write to manage session state, the total cost is approximately **$0.24 per 100,000 events** (excluding the daily free tier).
+* **Google Firestore**: Manages real-time session states. Billing is based on **document operations** (Reads and Writes). Since every event requires 1 read and 1 write to manage session state, the total cost is approximately **$0.12 per 100,000 events** (Reads: $0.03/100k + Writes: $0.09/100k, excluding the daily free tier).
 
 * **Google BigQuery**: Your long-term historical data warehouse. These estimates include **data storage** (~$0.02/GB) and **streaming ingestion**. Nameless Analytics leverages the **BigQuery Storage Write API**, which includes a **FREE tier of 2 TB per month** for ingestion. This means data ingestion costs are **$0** for all traffic tiers listed below.
 
@@ -815,19 +815,22 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 
 **Excluded costs:** BigQuery query processing (1 TB/month free tier)
 
-| Traffic Tier | Monthly Events | Compute (Cloud Run / GAE / Stape) | Firestore Reads / Writes | BigQuery Ingest & Storage | **Estimated Total (CR / GAE / Stape)** |
+| Traffic Tier | Monthly Events | Compute (Cloud Run / GAE / Stape) | Firestore Reads / Writes | BigQuery Ingest & Storage | **Estimated Total (Cloud Run / GAE / Stape)** |
 |--------------|----------------|-----------------------------------|--------------------------|---------------------------|----------------------------------------|
 | **Low** | < 500k | $0 / $0* / $20 | ~$0 | ~$0 | FREE – $20 |
-| **Medium** | 1M – 2M | $0 – $1 / $0* / $20 | ~$3 – $5 | ~$0 | $3 – $6 / $3 – $5 / $23+ |
-| **High** | 5M | ~$8 – $12 / $0* / $100 | ~$12 | < $0.1 | $20 – $24 / $12 – $14 / $112+ |
-| **Enterprise** | 10M | ~$20 – $40 / ~$120** / $100 | ~$24 | ~$0.4 | $44 – $64 / $144+ / $124+ |
-| **Enterprise+** | 50M | ~$40 – $70 / ~$120** / $200 | ~$120 | ~$2.6 | $163 – $193 / $243+ / $323+ |
+| **Medium** | 1M – 2M | $0 – $1 / $0* / $20 | ~$0.5 – $1.5 | ~$0 | $1 – $3 / $1 – $2 / $21+ |
+| **High** | 5M | ~$8 – $12 / $0* / $100 | ~$6 | ~$0.3 | $14 – $18 / $6 – $8 / $106+ |
+| **Enterprise** | 10M | ~$20 – $40 / ~$120** / $100 | ~$12 | ~$0.6 | $33 – $53 / $133+ / $113+ |
+| **Enterprise+** | 50M | ~$80 – $130 / ~$120** / $200 | ~$60 | ~$2.8 | $143 – $193 / $183+ / $263+ |
 
 </br>
 
 \* App Engine **Standard Environment (F1 instance)** – suitable for low/medium traffic  
 \** App Engine **Flexible Environment (multi-instance cluster)** – suitable for high traffic  
 \*** Stape.io **Personal ($0), Pro ($20), Business ($100), Enterprise ($200)** plans based on traffic
+
+**Pricing sources** (verified April 2026): [Cloud Run](https://cloud.google.com/run/pricing) · [App Engine Standard](https://cloud.google.com/appengine/pricing#standard_instance_pricing) · [App Engine Flexible](https://cloud.google.com/appengine/pricing#flexible-environment) · [Firestore](https://cloud.google.com/firestore/pricing) · [BigQuery](https://cloud.google.com/bigquery/pricing) · [Stape.io](https://stape.io/pricing)  
+**Note on Cloud Run**: cost varies significantly based on vCPU allocation per instance and average request duration. Estimates above assume 0.25 vCPU and ~300ms average processing time. Use the [Google Cloud Pricing Calculator](https://cloud.google.com/products/calculator) for workload-specific projections.
 
 ---
 
