@@ -126,6 +126,7 @@ with base_events as (
       page_category,
       max(page_load_timestamp) as page_load_timestamp,
       max(page_unload_timestamp) as page_unload_timestamp,
+      time_on_page,
       
       -- Performance metrics
       max(total_page_load_time) as total_page_load_time,
@@ -194,7 +195,7 @@ with base_events as (
     page_category,
     timestamp_millis(page_load_timestamp) as page_load_datetime,
     timestamp_millis(page_unload_timestamp) as page_unload_datetime,
-    (page_unload_timestamp - page_load_timestamp) / 1000 as time_on_page,
+    time_on_page,
     total_page_load_time / 1000 as page_load_time_sec,
     page_status_code as page_status_code,
     

@@ -141,7 +141,7 @@ select
     datetime_diff(
       timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', event_timestamp, NULL) IGNORE NULLS) over (partition by page_id order by event_timestamp desc)),
       timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
-    ,second) as time_on_page, -- Exclude Streaming protocol events
+    , second) as time_on_page, -- Exclude Streaming protocol events
 
     -- datetime_diff(
     --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp desc)),
