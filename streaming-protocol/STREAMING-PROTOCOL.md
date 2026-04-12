@@ -140,7 +140,7 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
 }
 ```
 
-> **Note on `event_type`**: For the Streaming Protocol, you should always set `event_type` to `event`, as `page_view` is restricted to the website tracker, since **`page_view` events are not allowed** via the Streaming Protocol).
+> **Note on `event_type`**: For the Streaming Protocol, set always `event_type` to `event`, as `page_view` is restricted to the website tracker, since **`page_view` events are not allowed** via the Streaming Protocol.
 
 > **Note on `event_origin`**: This must be set to `Streaming protocol` to allow API Key authentication and distinguish server-side events.
 
@@ -208,7 +208,6 @@ STREAMING PROTOCOL
    {"status_code": 200, "response": "🟢 Request claimed successfully", "data": {...}}
 Function execution end: 👍
 ```
-*(Note: If you receive a 403 `🔴 Orphan event`, ensure the user/session exists. If you receive a 500 error, verify `user_data` and `session_data` exist in the payload).*
 
 ---
 

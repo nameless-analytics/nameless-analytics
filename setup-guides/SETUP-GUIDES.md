@@ -28,6 +28,17 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
   - [Ecommerce Tracking Initialization](#ecommerce-tracking-initialization)
   - [Advanced Ecommerce Reporting](#advanced-ecommerce-reporting)
 - [How to send events via Streaming Protocol](#how-to-send-events-via-streaming-protocol)
+- [How to set up First-Party Library Hosting (Ad-Blocker bypass)](#how-to-set-up-first-party-library-hosting-ad-blocker-bypass)
+  - [Step 1: Download the core libraries](#step-1-download-the-core-libraries)
+  - [Step 2: Host the libraries on your infrastructure](#step-2-host-the-libraries-on-your-infrastructure)
+  - [Step 3: Update the GTM Configuration](#step-3-update-the-gtm-configuration)
+  - [Step 4: Authorize the new domain in the template permissions](#step-4-authorize-the-new-domain-in-the-template-permissions)
+- [How to configure Real-time Forwarding (Webhooks)](#how-to-configure-real-time-forwarding-webhooks)
+  - [Configuration Steps](#configuration-steps)
+- [How to enforce Security & Bot Protection](#how-to-enforce-security--bot-protection)
+  - [1. Authorized Domains (CORS-like Protection)](#1-authorized-domains-cors-like-protection)
+  - [2. Bot & Automated Traffic Protection](#2-bot--automated-traffic-protection)
+  - [3. IP Blacklisting](#3-ip-blacklisting)
 - [Data Governance & Privacy compliance](#data-governance--privacy-compliance)
 
 ## How to set up Nameless Analytics in GTM
@@ -234,14 +245,80 @@ Once data is in BigQuery, you can leverage built-in Table Functions for deep ana
 
 
 ## How to send events via Streaming Protocol
-The Streaming Protocol is specifically designed for server-to-server communication, allowing you to attribute offline or backend interactions (e.g., status changes, recurring payments, or CRM updates) to a user's session without a browser.
+The Streaming Protocol is specifically designed for server-to-server communication, allowing you to attribute offline or backend interactions (e.g., status changes, recurring payments, or CRM updates) to a user's session without a browser. For implementation examples and technical details, refer to the [Streaming Protocol documentation](../streaming-protocol/STREAMING-PROTOCOL.md).
 
-**Key considerations:**
-- **Session Attribution**: These events are mapped to existing sessions using the `na_s` identifier.
-- **Restrictions**: `page_view` events are not allowed via Streaming Protocol; they must be sent via the standard browser tracker to initialize the session.
-- **Security**: Supports API Key authentication for secure ingestion.
 
-For implementation examples and technical details, refer to the [Streaming Protocol documentation](../streaming-protocol/STREAMING-PROTOCOL.md).
+
+## How to set up First-Party Library Hosting (Ad-Blocker bypass)
+To maximize data collection accuracy and prevent ad-blockers or Intelligent Tracking Prevention (ITP) algorithms from blocking the tracker execution, Nameless Analytics allows you to serve its core dependencies directly from your own domain rather than relying on public CDNs (like `jsdelivr.net`).
+
+By doing so, the browser will treat the tracker scripts as critical, first-party website assets, significantly reducing the chances of them being blocked by privacy extensions.
+
+### Step 1: Download the core libraries
+Download the raw code of the two required JavaScript files:
+1. **[nameless-analytics.js](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/nameless-analytics.js)**: The main execution engine.
+2. **[ua-parser.min.js](https://github.com/faisalman/ua-parser-js/blob/master/dist/ua-parser.min.js)**: The dependency used for precise User-Agent parsing.
+
+### Step 2: Host the libraries on your infrastructure
+Upload both `.js` files to your own server or Content Delivery Network (CDN). 
+Ensure they are served over HTTPS and from the exact same primary domain as your website (for example: `https://www.yourdomain.com/assets/js/nameless-analytics.js`).
+
+### Step 3: Update the GTM Configuration
+1. Open your Client-side Google Tag Manager workspace.
+2. Navigate to the **Nameless Analytics Client-side Tracker Configuration Variable**.
+3. Expand the **Advanced settings** section.
+4. Replace the default CDN URLs with the absolute URLs of your newly hosted first-party scripts.
+
+### Step 4: Authorize the new domain in the template permissions
+Google Tag Manager blocks script injections from unauthorized domains by default to protect the site from XSS.
+1. In your GTM workspace, go to the **Templates** section.
+2. Open the **Nameless Analytics Client-Side Tracker Tag** template.
+3. Switch to the **Permissions** tab.
+4. Expand the **Injects scripts** permission.
+5. Add your new custom domain URL pattern (e.g., `https://www.yourdomain.com/*`) so that GTM allows the template to fetch the scripts from it.
+6. Save the template and publish the container.
+
+> **Note on Content Security Policy (CSP)**: If your website enforces a strict CSP, ensuring these libraries are loaded from your own origin will also prevent CSP violation errors that normally occur when pulling scripts from third-party networks.
+
+
+
+## How to configure Real-time Forwarding (Webhooks)
+Nameless Analytics supports instantaneous data streaming to external HTTP endpoints immediately after an event is processed. This is ideal for activating your data in real-time across CRMs, marketing automation tools, or custom backend services.
+
+The payload forwarded to the custom endpoint is the exact same enriched JSON that is stored in BigQuery, including server-side metadata like geolocation and channel grouping.
+
+### Configuration Steps
+1. Open the **Nameless Analytics Server-side Client Tag**.
+2. Scroll down to **Advanced settings** and check **Send data to custom endpoint**.
+3. Enter your **Destination URL** (e.g., `https://api.yourcrm.com/v1/events`).
+4. If your API requires authentication, check **Add custom request headers**.
+5. Populate the headers table with the required keys and values (e.g., `Authorization: Bearer your_token` or `x-api-key: your_key`).
+6. Save the tag and publish the container.
+
+> **Security Tip**: Since this request originates from your private server-side environment, sensitive credentials like API keys remain invisible to the user's browser, ensuring a secure server-to-server communication.
+
+
+
+## How to enforce Security & Bot Protection
+The Nameless Analytics Server-side Client Tag acts as a security gateway, allowing you to control which requests are processed and which are discarded.
+
+### 1. Authorized Domains (CORS-like Protection)
+To prevent unauthorized websites from sending data to your endpoint, you can restrict access to specific domains.
+1. Open the **Nameless Analytics Server-side Client Tag**.
+2. Scroll down to **Advanced settings** and check **Accept requests from authorized domains only**.
+3. Add your domains to the **Authorized domains** list (e.g., `https://www.yourdomain.com`).
+4. Ensure you include all production, staging, and development domains.
+
+### 2. Bot & Automated Traffic Protection
+Nameless Analytics includes a built-in filter to block requests from known bots, scrapers, and automated libraries (e.g., curl, python-requests, chatgpt).
+1. Scroll down to **Advanced settings** and check **Enable bot protection**.
+2. All identified automated requests will be rejected with a `403 Forbidden` status. See the full list of blocked agents in the [Troubleshooting Guide](TROUBLESHOOTING-GUIDE.md#validation-errors-403-forbidden).
+
+### 3. IP Blacklisting
+If you identify specific IP addresses that are spamming your endpoint, you can manually block them.
+1. Scroll down to **Advanced settings** and check **Add banned IPs**.
+2. Add the target IP addresses to the **Banned IPs** list.
+
 
 
 ## Data Governance & Privacy compliance
