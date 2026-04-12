@@ -26,7 +26,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
   - [Consents](#consents)
 - [Reporting fields](#reporting-fields)
 - [Data Governance and Maintenance](#data-governance-and-maintenance)
-  - [Delete user data deletion Script (Recommended)](#delete-user-data-deletion-script-recommended)
+  - [Delete user data script (Recommended)](#delete-user-data-script-recommended)
   - [Manual user data deletion](#manual-user-data-deletion)
   - [Data Health Check](#data-health-check)
 

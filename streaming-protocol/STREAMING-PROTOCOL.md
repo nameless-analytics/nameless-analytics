@@ -16,6 +16,10 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
   - [Automatic type handling](#automatic-type-handling)
   - [Error handling](#error-handling)
   - [Security](#security)
+- [Validation requirements](#validation-requirements)
+  - [Mandatory headers](#mandatory-headers)
+  - [Mandatory fields](#mandatory-fields)
+  - [Data formats](#data-formats)
 - [JSON Payload Structure](#json-payload-structure)
   - [Example Payload](#example-payload)
 - [Implementation](#implementation)
@@ -58,10 +62,10 @@ Supports API Key authentication for secure server-side ingestion.
 
 
 
-## Validation Requirements
+## Validation requirements
 To ensure requests are accepted by the server, following requirements must be met:
 
-### Mandatory Headers
+### Mandatory headers
 - **User-Agent**: To bypass bot protection, you must use the following User-Agent: `Nameless Analytics - Streaming protocol`. Any deviation will result in a 403 error.
 - **API Key**: The `x-api-key` header must match your Server-side Client Tag configuration.
 - **Cookie**: The HTTP request must include the `Cookie` header containing `na_u={client_id}; na_s={na_s_cookie}`. This is the **only** source of truth used by the server to identify the user and session.
@@ -72,7 +76,7 @@ The server validates the presence of the following top-level fields:
 
 > **Please Note**: Even if you have no additional parameters to pass, `user_data`, `session_data`, and `gtm_data` **must still be present** in the JSON payload as empty objects `{}`. Omitting these root keys entirely will cause the Server-side Tag to crash when it attempts to inject server-side values into them.
 
-### Data Formats
+### Data formats
 - **Dates**: Must be strings in `YYYY-MM-DD` format (e.g., `2026-04-08`).
 - **Timestamps**: Must be an integer representing Unix timestamp in **milliseconds** (e.g., `1712604000000`).
 

@@ -14,8 +14,8 @@ Collect, analyze, and activate website interaction data with a free real-time di
 
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
-- [Resources](#resources)
-  - [Google Tag Manager templates](#google-tag-manager-templates)
+- [Overview](#overview)
+  - [Google Tag Manager tag templates](#google-tag-manager-tag-templates)
   - [Documentation](#documentation)
   - [Resources](#resources)
 - [Client-Side Collection](#client-side-collection)
@@ -48,12 +48,13 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Acquisition](#acquisition)
   - [Behaviour](#behaviour)
   - [Ecommerce](#ecommerce)
-  - [User consents](#user-consents)
+  - [Consents](#consents)
   - [Debugging & Tech](#debugging-tech)
 - [AI support](#ai-support)
 - [Pricing & Cloud Costs](#pricing-cloud-costs)
   - [Data processing](#data-processing)
   - [Data storage](#data-storage)
+  - [Data Governance & Deletion](#data-governance-deletion)
   - [Cost Summary Table](#cost-summary-table)
 
 ## What is Nameless Analytics 
@@ -67,6 +68,11 @@ Built upon a transparent pipeline hosted entirely on a private Google Cloud Plat
 4.  **Scaling and Cost-Efficiency**: Engineered to run effectively within the **Google Cloud Free Tier** for small to medium traffic, while scaling to a highly cost-efficient pay-per-use model for enterprise-grade deployments.
 
 
+
+## Overview
+The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
+
+![Nameless Analytics schema](https://github.com/user-attachments/assets/e9ff1593-f7c9-442e-a600-798a51a02a1e)
 
 ## Quick Start
 Before starting, ensure you have the following resources under the same account or service account:
@@ -84,13 +90,6 @@ Download and import the following preconfigured GTM containers:
 - [Server-side GTM default container](gtm-containers/gtm-server-side-container-template.json)
 
 or read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
-
-
-
-## Resources
-The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
-
-![Nameless Analytics schema](https://github.com/user-attachments/assets/e9ff1593-f7c9-442e-a600-798a51a02a1e)
 
 
 ### Google Tag Manager tag templates
