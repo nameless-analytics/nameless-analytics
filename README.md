@@ -408,7 +408,18 @@ Implements specific logic to handle high-frequency events (e.g., rapid clicks), 
 ### Smart Consent Management
 Fully integrated with Google Consent Mode. Choose between respect or not respect consent mode:
 - When respect_consent_mode is disabled, the tracker will send requests even when consent is not granted.
-- When respect_consent_mode is enabled, the tracker will send requests only when consent is granted (`analytics_storage` granted), otherwise it will automatically queue events and release them only when consent is granted, in the context of the same page, preventing data loss.
+- When respect_consent_mode is enabled, the tracker will send requests only when consent is granted (`analytics_storage` granted), otherwise it will automatically queue events and release them only when consent is granted. To prevent attribution loss, it automatically preserves acquisition data (UTMs, Click IDs, Referrer) in a temporary first-party cookie if consent is denied on arrival, restoring it once the user eventually opts in.
+
+<details> <summary>See temp cookie value</summary>
+
+</br>
+
+| Cookie Name | Default expiration | Example values | Value composition | Usage |
+| :--- | :--- | :--- | :--- | :--- |
+| **na_temp** | Session | {<br> &nbsp; &nbsp; "source": "google", <br> &nbsp; &nbsp; "medium": "cpc", <br> &nbsp; &nbsp; "campaign": "summer_sale", <br> &nbsp; &nbsp; "campaign_id": "12345", <br> &nbsp; &nbsp; "campaign_click_id": "67890", <br> &nbsp; &nbsp; "campaign_content": "ad_group_1", <br> &nbsp; &nbsp; "campaign_term": "running_shoes", <br> &nbsp; &nbsp; "page_referrer": "https://www.google.com/" <br>}| JSON object of acquisition parameters | Temporarily stores acquisition parameters when `analytics_storage` is denied to ensure correct session attribution once consent is granted. |
+
+</details>
+
 
 ### SPA & History Management
 Native support for Single Page Applications. See the [Page View Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-track-page-views) for implementation examples.
