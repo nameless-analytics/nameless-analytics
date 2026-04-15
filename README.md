@@ -407,8 +407,11 @@ Implements specific logic to handle high-frequency events (e.g., rapid clicks), 
 
 ### Smart Consent Management
 Fully integrated with Google Consent Mode. Choose between respect or not respect consent mode:
-- When respect_consent_mode is disabled, the tracker will send requests even when consent is not granted.
-- When respect_consent_mode is enabled, the tracker will send requests only when consent is granted (`analytics_storage` granted), otherwise it will automatically queue events and release them only when consent is granted. To prevent attribution loss, it automatically preserves acquisition data (UTMs, Click IDs, Referrer) in a temporary first-party cookie if consent is denied on arrival, restoring it once the user eventually opts in.
+- When Google Consent Mode is present and `respect_consent_mode` is enabled, the events are sent only if a user consents. 
+  - `analytics_storage` is equal to `denied`, the Nameless Analytics Client-side Tracker waits until consent is granted. The tag automatically preserves the original acquisition context (source and campaign data and page referrer) using a temporary first-party cookie named `na_temp`. Once consent is granted (even multiple pages later), the tag retrieves the data from the cookie and correctly attributes the session, preventing incorrect "direct" or "internal" referral attribution. 
+  - `analytics_storage` changes from `denied` to `granted`, all pending tags for that page will be fired in execution order
+- When Google Consent Mode not present and `respect_consent_mode` is enabled, none of the events are sent. 
+- When `respect_consent_mode` is disabled, all events are sent regardless of presence of Google Consent Mode.
 
 <details> <summary>See temp cookie value</summary>
 
@@ -416,7 +419,7 @@ Fully integrated with Google Consent Mode. Choose between respect or not respect
 
 | Cookie Name | Default expiration | Example values | Value composition | Usage |
 | :--- | :--- | :--- | :--- | :--- |
-| **na_temp** | Session | {<br> &nbsp; &nbsp; "source": "google", <br> &nbsp; &nbsp; "medium": "cpc", <br> &nbsp; &nbsp; "campaign": "summer_sale", <br> &nbsp; &nbsp; "campaign_id": "12345", <br> &nbsp; &nbsp; "campaign_click_id": "67890", <br> &nbsp; &nbsp; "campaign_content": "ad_group_1", <br> &nbsp; &nbsp; "campaign_term": "running_shoes", <br> &nbsp; &nbsp; "page_referrer": "https://www.google.com/" <br>}| JSON object of acquisition parameters | Temporarily stores acquisition parameters when `analytics_storage` is denied to ensure correct session attribution once consent is granted. |
+| **na_temp** | Session | {<br> &nbsp; &nbsp; "source": "google", <br> &nbsp; &nbsp; "campaign": "summer_sale", <br> &nbsp; &nbsp; "campaign_id": "12345", <br> &nbsp; &nbsp; "campaign_click_id": "67890", <br> &nbsp; &nbsp; "campaign_content": "ad_group_1", <br> &nbsp; &nbsp; "campaign_term": "running_shoes", <br> &nbsp; &nbsp; "page_referrer": "https://www.google.com/" <br>}| JSON object of acquisition parameters | Temporarily stores acquisition parameters when `analytics_storage` is denied to ensure correct session attribution once consent is granted. |
 
 </details>
 
