@@ -13,7 +13,6 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 
 
 ### 🟡 - Medium Priority
-- Add acquisition information in url when respect consent mode is enabled for denied hit (Client-side tracker tag)
 
 
 ### 🟢 - Low Priority
