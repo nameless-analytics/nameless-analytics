@@ -408,7 +408,7 @@ Implements specific logic to handle high-frequency events (e.g., rapid clicks), 
 ### Smart Consent Management
 Fully integrated with Google Consent Mode. Choose between respect or not respect consent mode:
 - When Google Consent Mode is present and `respect_consent_mode` is enabled, the events are sent only if a user consents. 
-  - `analytics_storage` is equal to `denied`, the Nameless Analytics Client-side Tracker waits until consent is granted. The tag automatically preserves the original acquisition context (source and campaign data and page referrer) using a temporary first-party cookie named `na_temp`. Once consent is granted (even multiple pages later), the tag retrieves the data from the cookie and correctly attributes the session, preventing incorrect "direct" or "internal" referral attribution. 
+  - `analytics_storage` is equal to `denied`, the Nameless Analytics Client-side Tracker waits until consent is granted. The tag automatically preserves the original acquisition context (source and campaign data and page referrer) using a temporary first-party cookie named `na_temp`. Once consent is granted (even multiple pages later), the tag retrieves the data from the cookie and correctly attributes the session, preventing incorrect "direct" or "internal" referral attribution.    
   - `analytics_storage` changes from `denied` to `granted`, all pending tags for that page will be fired in execution order
 - When Google Consent Mode not present and `respect_consent_mode` is enabled, none of the events are sent. 
 - When `respect_consent_mode` is disabled, all events are sent regardless of presence of Google Consent Mode.
@@ -471,15 +471,25 @@ Since link decoration happens dynamically upon clicking (to ensure ID freshness 
 
 </br>
 
-1. **Handshake Initialization**: When a user clicks a link toward a configured cross-domain, the tracker intercepts the event, **pauses navigation**, and performs a real-time asynchronous POST call to the Server-side GTM endpoint with `event_name: 'get_user_data'`.
-2. **Identity Extraction (`HttpOnly` bypass)**: The Server-side Client Tag receives the request. Since the call is directed to its own domain, it has access to the `HttpOnly` cookies (`na_u` and `na_s`). It securely extracts the `client_id` and `session_id`.
-3. **Real-time Response**: Instead of streaming the data to BigQuery, the server immediately responds to the browser by providing both identifiers in a JSON payload. 
-4. **URL Decoration**: The tracker receives the response and decorates the destination URL with the session ID value (e.g., `https://destination.com/?na_id={session_id}`) before allowing the redirect to proceed.
-5. **Session Stitching**: On the destination domain, the tracker detects the `na_id` parameter and sends it to its own server. The server "unpacks" the session ID value and sets the corresponding `HttpOnly` cookies, effectively merging the user’s session.
+- When `respect_consent_mode` is disabled or `respect_consent_mode` is enable and `analytics_storage` = granted:
+  - **Handshake Initialization**: When a user clicks a link toward a configured cross-domain, the tracker intercepts the event, **pauses navigation**, and performs a real-time asynchronous POST call to the Server-side GTM endpoint with `event_name: 'get_user_data'`.
+  - **Identity Extraction (`HttpOnly` bypass)**: The Server-side Client Tag receives the request. Since the call is directed to its own domain, it has access to the `HttpOnly` cookies (`na_u` and `na_s`). It securely extracts the `client_id` and `session_id`.
+  - **Real-time Response**: Instead of streaming the data to BigQuery, the server immediately responds to the browser by providing both identifiers in a JSON payload. 
+  - **URL Decoration**: The tracker receives the response and decorates the destination URL with the session ID value (e.g., `https://destination.com/?na_id={session_id}`) before allowing the redirect to proceed.
+  - **Session Stitching**: On the destination domain, the tracker detects the `na_id` parameter and sends it to its own server. If identifying parameters are missing but `na_*` acquisition parameters are present, it instead initializes a local `na_temp` cookie to preserve attribution context.
+  
+  By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics ensures that the identifiers passed to the destination domain are 100% correct. 
 
-By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics ensures that the identifiers passed to the destination domain are 100% correct. 
+  While this can introduce very small latency, it eliminates session fragmentation and ensures reliable cross-domain attribution in environments with strict privacy restrictions.
 
-While this can introduce very small latency, it eliminates session fragmentation and ensures reliable cross-domain attribution in environments with strict privacy restrictions.
+- When `respect_consent_mode` is enabled and `analytics_storage` = denied:
+  - **Handshake Bypass**: To protect user privacy and comply with consent policies, the server-side identity handshake is skipped. No identifiers (`client_id` or `session_id`) are retrieved or transferred.
+  - **Acquisition Extraction**: The tracker reads the current marketing context (UTMs, Click IDs, and Referrer) directly from the `na_temp` first-party cookie.
+  - **URL Decoration**: The target URL is decorated with specific acquisition parameters (e.g., `?na_source=google&na_campaign=summer_sale`) instead of the `na_id` parameter. Only non-null parameters are appended.
+  - **Local Attribution Persistence**: Upon landing on the destination domain, the tracker detects the `na_` parameters and immediately initializes a local `na_temp` cookie.
+
+  This ensures that the original marketing source is preserved across the entire domain ecosystem, even in a consent-denied state, without compromising privacy.
+
 
 </details>
 
