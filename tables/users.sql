@@ -78,7 +78,6 @@ with user_logic as (
       session_id,
       session_duration_sec,
       session_number,
-      returning_user,
       max(session_number) over (partition by client_id) as total_sessions,
  
       # EVENT DATA
