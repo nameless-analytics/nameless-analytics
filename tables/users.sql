@@ -135,7 +135,7 @@ with user_logic as (
     max(days_from_last_visit) as days_from_last_visit,
 
     case when sum(purchase) >= 1 then 1 else 0 end as user_with_purchase,
-    case when sum(purchase) >= 1 then 1 else 0 end as user_with_refund,
+    case when sum(refund) >= 1 then 1 else 0 end as user_with_refund,
 
     case 
       when sum(purchase) = 0 then 'Not customer'
