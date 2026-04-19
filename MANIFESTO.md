@@ -11,10 +11,7 @@ It is a living document and will evolve as the project evolves.
 
 If you are like me, completely disillusioned by modern analytics platforms, a compulsive geek, a cloud-obsessed experimenter, a data lover searching for advanced, clever, and actually functional solutions, then you are in the right place.
 
-Welcome.
-
-We also have cookies.  
-And they are good and safe.
+Welcome to the club.
 
 We are tired of proprietary platforms that promise **“simplicity”** but only deliver **dependency** and **skyrocketing costs**.  
 We are tired of analytics platforms and their closed ecosystems that stand between us and our data.
@@ -60,14 +57,17 @@ If you don't control the flow, you're just a tenant.
 **Dashboards are an output, not the truth.**  
 Don't let pretty charts hide ugly realities.
 
+**First-party is the only party.**  
+Stop relying on guests in your own house.
+
 **Privacy is a consequence of architecture.**  
 It's about not collecting what you don't need and owning what you do.
 
 
 
-## Let go
+## Let's go
 
-[Start from here](README.md).
+If you are ready to take back control of your analytics infrastructure and start collecting your own proprietary first-party data, [start from here](README.md).
 
 ---
 
