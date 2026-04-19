@@ -9,22 +9,16 @@ The Nameless Analytics Troubleshooting Guide identifies, explains, and resolves 
 
 - [Troubleshooting Tip](#troubleshooting-tip)
 - [Orphan Events & Sequence Issues](#orphan-events--sequence-issues)
-  - [Event error messages](#event-error-messages)
 - [Validation Errors (403 Forbidden)](#validation-errors-403-forbidden)
-  - [Error messages](#error-messages)
 - [Google Consent Mode](#google-consent-mode)
-  - [Error messages](#error-messages-1)
 - [Library Loading & Configuration Issues](#library-loading--configuration-issues)
-  - [Error messages](#error-messages-2)
 - [Storage & Cloud Permissions](#storage--cloud-permissions)
-  - [Error messages](#error-messages-3)
 - [BigQuery & Data Analysis Issues](#bigquery--data-analysis-issues)
   - [BigQuery Advanced Runtime](#bigquery-advanced-runtime)
   - [Missing Geolocation Data](#missing-geolocation-data)
   - [Unexpected Channel Grouping](#unexpected-channel-grouping)
 - [Network & Custom Endpoint Issues](#network--custom-endpoint-issues)
-  - [Error messages](#error-messages-4)
-  - [Link Not Decorated (na_id missing)](#link-not-decorated-na_id-missing)
+- [Link Not Decorated (na_id missing)](#link-not-decorated-na_id-missing)
 
 
 
@@ -41,7 +35,6 @@ Inspect a network request to see the data sent by client from Preview and data r
 An **Orphan Event** is any interaction (click, scroll, etc.) that reaches the server without a valid session context established by a preceding `page_view` event or the request is without a valid user and session cookie.
 
 
-### Event error messages
 Browser console shows: 
 
 `[event_name] > 🔴 Event fired before a page view event. The first event on a page view ever must be page_view. Request aborted`
@@ -73,7 +66,6 @@ Server logs show:
 The Server-Side Client Tag acts as a security gateway. If a request doesn't meet strict criteria, it is rejected with a `403 Forbidden` status.
 
 
-### Error messages
 Browser console shows: 
 
 `[event_name] > 🔴 Request refused`
@@ -155,7 +147,6 @@ Server logs show:
 Nameless Analytics is deeply integrated with GCM. If consent isn't handled correctly, data might be lost or delayed.
 
 
-### Error messages
 Browser console shows: 
 
 `[event_name] > 🔴 analytics_storage denied`
@@ -176,7 +167,6 @@ Browser console shows:
 The tracker requires its core libraries and a valid configuration to initiate.
 
 
-### Error messages
 Browser console shows: 
 
 `[event_name] > 🔴 Tracker configuration error: event has invalid Nameless Analytics Client-Side tracker configuration variable`
@@ -208,7 +198,6 @@ Browser console shows:
 Errors occurring when the server attempts to persist data to Firestore or BigQuery.
 
 
-### Error messages
 Server logs show: 
 
 `🔴 User or session data not created in Firestore`
@@ -218,7 +207,7 @@ Server logs show:
 `🔴 User or session data not updated in Firestore`
 
 - **Issue:** The Firestore write operation failed.
-- **Solution:** Check GCP project permissions and quotas. Ensure the service account running your GTM Server has `roles/datastore.user`. Also verify Firestore is in **Native Mode**.
+- **Solution:** Verify the Google Cloud Project permissions and quotas. Ensure the **Service Account** running your GTM Server (e.g., the Cloud Run or App Engine default service account) has the `roles/datastore.user` role. Also, verify that Firestore is initialized in **Native Mode**, as Datastore Mode is not supported.
 
 Server logs show: 
 
@@ -239,8 +228,9 @@ If you experience slow query performance or errors with SQL Table Functions, ens
 - **Issue:** The `country` and `city` fields are `null` in BigQuery.
 - **Solution:** Nameless Analytics relies on server-provided headers. Ensure your environment is configured to forward geolocation:
     - **App Engine:** Forward `X-Appengine-Country` and `X-Appengine-City`.
-    - **Cloud Run:** Configure the Load Balancer to include `X-Gclb-Country` and `X-Gclb-Region`.
-    - **Stape:** Enable "Geo headers" power-up.
+- **Cloud Run:** Configure the Load Balancer to include `X-Gclb-Country` and `X-Gclb-Region`.
+- **Custom Proxy / External LB:** Ensure headers like `X-GEO-Country` and `X-GEO-Region` are correctly populated and forwarded.
+- **Stape:** Enable "Geo headers" power-up.
 
 ### Unexpected Channel Grouping
 - **Issue:** Events are categorized as `referral` instead of expected channels like `paid_search` or `organic_social`.
@@ -252,7 +242,6 @@ If you experience slow query performance or errors with SQL Table Functions, ens
 Technical issues preventing communication between the browser and the GTM Server, or between the server and external destinations.
 
 
-### Error messages
 Browser console shows: 
 
 `[event_name] > 🔴 Request not sent successfully`
@@ -281,6 +270,8 @@ Server logs show:
 - **Issue:** Forwarding to the custom endpoint failed.
 - **Solution:** Verify the custom endpoint URL and ensure your server-side environment has the necessary network access.
 
+
+## Link Not Decorated (na_id missing)
 Browser console shows: 
 
 `cross-domain > 🔴 Error while fetch user data: [error]`
@@ -297,12 +288,7 @@ Server logs show:
 - **Issue:** Required user or session cookie is missing on the server for ID retrieval.
 - **Solution:** Ensure the visitor has valid `na_u` and `na_s` cookies.
 
-
-### Link Not Decorated (na_id missing)
-- **Issue:** After clicking a cross-domain link, the destination URL does not contain the `na_id` parameter.
-- **Solution:** 
-    1. Verify that the destination domain is correctly added to the **Authorized domains** in the Client-side configuration.
-    2. **Caveat:** The handshake mechanism intercepts the click event. If a user opens the link via **right-click ("Open in new tab")** or "Open in new window", the decoration logic will not trigger. This is a technical limitation of secure cookie handling.
+**Caveat:** The handshake mechanism intercepts the click event. If a user opens the link via **right-click ("Open in new tab")** or "Open in new window", the decoration logic will not trigger. This is a technical limitation of secure cookie handling.
 
 ---
 
