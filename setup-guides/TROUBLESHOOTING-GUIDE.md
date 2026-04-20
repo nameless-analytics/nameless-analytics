@@ -227,10 +227,9 @@ If you experience slow query performance or errors with SQL Table Functions, ens
 ### Missing Geolocation Data
 - **Issue:** The `country` and `city` fields are `null` in BigQuery.
 - **Solution:** Nameless Analytics relies on server-provided headers. Ensure your environment is configured to forward geolocation:
-    - **App Engine:** Forward `X-Appengine-Country` and `X-Appengine-City`.
-- **Cloud Run:** Configure the Load Balancer to include `X-Gclb-Country` and `X-Gclb-Region`.
-- **Custom Proxy / External LB:** Ensure headers like `X-GEO-Country` and `X-GEO-Region` are correctly populated and forwarded.
-- **Stape:** Enable "Geo headers" power-up.
+  - **App Engine:** Forward `X-Appengine-Country` and `X-Appengine-City`.
+  - **Cloud Run:** Configure the Load Balancer to include `X-Gclb-Country` and `X-Gclb-Region`.
+  - **Stape:** Enable "Geo headers" power-up.
 
 ### Unexpected Channel Grouping
 - **Issue:** Events are categorized as `referral` instead of expected channels like `paid_search` or `organic_social`.
