@@ -5,7 +5,7 @@ Nameless Analytics contributing guidelines.
 
 
 ## How to Contribute
-Appreciation for the interest in contributing to Nameless Analytics! Currently, external contributions are not currently being accepted. 
+Appreciation for the interest in contributing to Nameless Analytics! External contributions are not currently being accepted. 
 
 To discuss the project or potential future collaborations, reach out via [email](mailto:hello@namelessanalytics.com).
 

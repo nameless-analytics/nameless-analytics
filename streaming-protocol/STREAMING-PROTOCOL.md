@@ -111,7 +111,7 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
     "campaign_id": null, // Do not modify
     "campaign_click_id": null, // Do not modify
     "campaign_term": null, // Do not modify
-    "campaign_content": null, // Do not modify
+    "campaign_content": null // Do not modify
   },
 
   "ecommerce": {
