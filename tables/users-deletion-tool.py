@@ -37,7 +37,7 @@ def delete_user_data():
 
     print(f"👉 Delete data for client_id: {client_id}")
 
-    # 1. BIGQUERY DELETION
+    # Delete BigQuery data
     print("👉 Delete data from BigQuery")
     
     try:
@@ -62,7 +62,7 @@ def delete_user_data():
         return 
 
 
-    # 2. FIRESTORE DELETION
+    # Delete Firestore data
     print("👉 Delete data from Firestore")
 
     try:
