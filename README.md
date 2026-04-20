@@ -616,9 +616,8 @@ The following table describes how the channel grouping is determined based on th
 
 | Channel grouping | Source category | Campaign |
 | :--- | :--- | :--- |
-| `internal_traffic` | **Internal traffic** | Yes |
-| `direct` | **Direct** | Yes |
-| `gtm_debugger` | **GTM Debugger** | Yes |
+| `direct` | **Direct** | Any |
+| `gtm_debugger` | **GTM Debugger** | Any |
 | `paid_search_engine` | **Search Engine** | Yes |
 | `organic_search_engine` | **Search Engine** | No |
 | `paid_social` | **Social** | Yes |
@@ -636,8 +635,7 @@ The channel grouping logic uses the following Source categories based on the sou
 
 | Source category | Source |
 | :--- | :--- |
-| **Internal traffic** | `null` |
-| **Direct** | `direct` |
+| **Direct** | `null`, `direct` |
 | **GTM Debugger** | `tagassistant.google.com` |
 | **Search Engine** | `360.cn`, `alice`, `aol`, `yahoo`, `ask`, `bing`, `google`, `yandex`, `baidu`, `ecosia`, `duckduckgo`, `sogou`, `naver`, `seznam` |
 | **Social** | `facebook`, `twitter`, `instagram`, `pinterest`, `linkedin`, `reddit`, `vk.com`, `tiktok`, `snapchat`, `tumblr`, `wechat`, `whatsapp` |
