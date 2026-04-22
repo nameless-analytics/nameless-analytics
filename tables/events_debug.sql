@@ -7,11 +7,16 @@ with base_events as (
       # SESSION DATA
       session_id,
 
+      # PAGE DATA
+      page_date,
+      page_id,
+      (select value.int from unnest(page_data) where name = 'page_number') as page_number,
+
       # EVENT DATA
       event_date,
       event_timestamp,
       event_name,
-      (select value.int from unnest(session_data) where name = 'total_events') as event_number,
+      (select value.int from unnest(event_data) where name = 'event_number') as event_number,
       event_origin,
       event_id,
 
@@ -35,6 +40,9 @@ with base_events as (
     session_id,
     
     # PAGE DATA
+    page_date,
+    page_id,
+    page_number,
     array(
       select as struct
         name,
@@ -54,8 +62,8 @@ with base_events as (
     event_timestamp,
     event_origin,
     event_name,
-    event_number,
     event_id,
+    event_number,
     array(
       select as struct
         name,

@@ -122,7 +122,7 @@ select
     # PAGE DATA
     page_date,
     page_id,
-    (select value.int from unnest(session_data) where name = 'total_page_views') as page_view_number,	
+    (select value.int from unnest(page_data) where name = 'page_number') as page_view_number,	
     (select value.int from unnest(page_data) where name = 'page_timestamp') as page_load_timestamp,
     first_value(IF(event_origin != 'Streaming protocol', event_timestamp, NULL) IGNORE NULLS) over (partition by page_id order by event_timestamp desc) as page_unload_timestamp,
     
@@ -153,7 +153,7 @@ select
     event_timestamp,	
     event_name,	
     event_id,	
-    (select value.int from unnest(session_data) where name = 'total_events') as event_number,
+    (select value.int from unnest(event_data ) where name = 'event_number') as event_number,
     (select value.string from unnest(event_data) where name = 'event_type') as event_type, 
     
     (select value.string from unnest(event_data) where name = 'channel_grouping') as channel_grouping, 

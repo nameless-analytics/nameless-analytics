@@ -325,7 +325,7 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 | `city` | Dimension | The user's city based on IP address. |
 | `client_id` | Dimension | Unique identifier for the client/browser. |
 | `consent_type` | Dimension | The type of consent being expressed or updated. |
-| `content_length` | Metric | The length of the request content in bytes. |
+| `content_length_in_kb` | Metric | The length of the request content in kilobytes. |
 | `country` | Dimension | The user's country based on IP address. |
 | `cross_domain_id` | Dimension | Identifier for cross-domain tracking (derived from na_id). |
 | `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
@@ -337,6 +337,8 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 | `days_from_first_to_last_visit` | Metric | Days between the user's first and last visit. |
 | `days_from_first_visit` | Metric | Days since the user's first visit. |
 | `days_from_last_visit` | Metric | Days since the user's last visit. |
+| `delay_in_millis` | Metric | Delay between event occurrence and processing in milliseconds. |
+| `delay_in_sec` | Metric | Delay between event occurrence and processing in seconds. |
 | `device_model` | Dimension | The model of the user's device. |
 | `device_type` | Dimension | The type of device (e.g., Mobile, Desktop). |
 | `device_vendor` | Dimension | The manufacturer of the device. |
@@ -998,6 +1000,9 @@ Provides a flattened view of events with raw data for debugging and troubleshoot
 | :--- | :--- | :--- |
 | `client_id` | Dimension | Unique identifier for the client/browser. |
 | `session_id` | Dimension | Unique identifier for the session. |
+| `page_date` | Dimension | The date the page was viewed. |
+| `page_id` | Dimension | Unique identifier for the page view. |
+| `page_number` | Dimension | Sequential number of the page view in the session. |
 | `page_data` | Dimension | Array of custom page parameters. |
 | `event_date` | Dimension | The date the event occurred. |
 | `event_datetime` | Dimension | Exact date and time of the event. |
@@ -1118,7 +1123,7 @@ This table illustrates the fields available across different table functions, al
 | `consent_value_int_accepted` | Metric | float |  |  |  |  |  |  |  |  |  | X |
 | `consent_value_int_denied` | Metric | float |  |  |  |  |  |  |  |  |  | X |
 | `consent_value_string` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
-| `content_length` | Metric | integer | X |  |  |  |  |  |  |  |  |  |
+| `content_length_in_kb` | Metric | integer | X |  |  |  |  |  |  |  |  |  |
 | `country` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `creative_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `creative_slot` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
@@ -1136,8 +1141,8 @@ This table illustrates the fields available across different table functions, al
 | `days_from_first_visit` | Metric | integer | X | X |  |  |  |  |  |  |  |  |
 | `days_from_last_purchase` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `days_from_last_visit` | Metric | integer | X | X |  |  |  |  |  |  |  |  |
-| `delay_in_milliseconds` | Metric | integer |  |  |  |  |  |  |  |  |  |  |
-| `delay_in_sec` | Metric | integer |  |  |  |  |  |  |  |  |  |  |
+| `delay_in_millis` | Metric | integer | X |  |  |  |  |  |  |  |  |  |
+| `delay_in_sec` | Metric | integer | X |  |  |  |  |  |  |  |  |  |
 | `device_model` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `device_type` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `device_vendor` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -1149,7 +1154,7 @@ This table illustrates the fields available across different table functions, al
 | `event_datetime` | Dimension | timestamp |  |  |  |  |  |  |  |  | X |  |
 | `event_id` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
 | `event_name` | Dimension | string | X |  |  |  | X | X |  |  | X |  |
-| `event_number` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
+| `event_number` | Dimension | integer | X |  |  |  |  |  |  |  | X |  |
 | `event_origin` | Dimension | string | X |  |  |  |  |  |  |  | X |  |
 | `event_timestamp` | Metric | integer | X |  |  |  | X | X |  |  | X |  |
 | `event_type` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -1193,12 +1198,12 @@ This table illustrates the fields available across different table functions, al
 | `os_version` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_category` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
 | `page_data` | Dimension | Array | X |  |  |  |  |  |  |  | X |  |
-| `page_date` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
+| `page_date` | Dimension | string | X |  |  | X |  |  |  |  | X |  |
 | `page_extension` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_fragment` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_hostname` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
 | `page_hostname_protocol` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
-| `page_id` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
+| `page_id` | Dimension | string | X |  |  | X |  |  |  |  | X |  |
 | `page_language` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_load_datetime` | Dimension | timestamp |  |  |  | X |  |  |  |  |  |  |
 | `page_load_time_sec` | Dimension | float |  |  |  | X |  |  |  |  |  |  |
@@ -1211,7 +1216,8 @@ This table illustrates the fields available across different table functions, al
 | `page_unload_datetime` | Dimension | timestamp |  |  |  | X |  |  |  |  |  |  |
 | `page_unload_timestamp` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_view` | Metric | integer |  | X | X | X |  |  |  |  |  |  |
-| `page_view_number` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
+| `page_view_number` | Dimension | integer | X |  |  | X |  |  |  |  |  |  |
+| `page_number` | Dimension | integer |  |  |  |  |  |  |  |  | X |  |
 | `page_view_per_session` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `personalization_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `personalization_storage_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |
