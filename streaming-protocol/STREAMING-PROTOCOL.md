@@ -68,7 +68,7 @@ To ensure requests are accepted by the server, following requirements must be me
 ### Mandatory headers
 - **User-Agent**: To bypass bot protection, you must use the following User-Agent: `Nameless Analytics - Streaming protocol`. Any deviation will result in a 403 error.
 - **API Key**: The `x-api-key` header must match your Server-side Client Tag configuration.
-- **Cookie**: The HTTP request must include the `Cookie` header containing `na_u={client_id}; na_s={na_s_cookie}`. This is the **only** source of truth used by the server to identify the user and session.
+- **Cookie**: The HTTP request must include the `Cookie` header containing `na_u={client_id}; na_s={na_s_cookie}`. This is the **only** source of truth used by the server to identify the user and session. **Note**: Both cookies must follow the strict alphanumeric format (15 characters for each segment) or the request will be rejected with a `403 Invalid cookie format` error.
 
 ### Mandatory fields
 The server validates the presence of the following top-level fields:
