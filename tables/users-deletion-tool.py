@@ -44,10 +44,15 @@ def delete_user_data():
         client = bigquery.Client.from_service_account_json(credentials_path)
         query = f"""
             DELETE FROM `{project_id}.{dataset_id}.{table_id}`
-            WHERE client_id = '{client_id}'
+            WHERE client_id = @client_id
         """
+        job_config = bigquery.QueryJobConfig(
+            query_parameters=[
+                bigquery.ScalarQueryParameter("client_id", "STRING", client_id),
+            ]
+        )
 
-        query_job = client.query(query)
+        query_job = client.query(query, job_config=job_config)
         results = query_job.result()
 
 
