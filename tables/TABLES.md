@@ -352,7 +352,6 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 | `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
 | `event_type` | Dimension | Category or type of the event. |
 | `functionality_storage` | Dimension | Consent state for necessary functional storage. |
-| `hostname` | Dimension | The hostname of the website. |
 | `new_session` | Metric | Indicates if this is a new session (1 for yes, 0 for no). |
 | `new_user` | Dimension | Client ID if this is the user's first session, else null. |
 | `os_name` | Dimension | The name of the operating system. |
@@ -639,12 +638,12 @@ Aggregates event data at page level.
 | `page_date` | Dimension | The date the page was viewed. |
 | `page_hostname` | Dimension | The hostname of the page viewed. |
 | `page_id` | Dimension | Unique identifier for the page view. |
-| `page_load_datetime` | Dimension | Date and time when the page began loading. |
+| `page_load_timestamp` | Dimension | Timestamp when the page started loading. |
 | `page_load_time_sec` | Dimension | Time taken to load the page in seconds. |
 | `page_location` | Dimension | The full URL of the page. |
 | `page_status_code` | Dimension | HTTP status code of the page. |
 | `page_title` | Dimension | The title (document title) of the page. |
-| `page_unload_datetime` | Dimension | Date and time when the user left or navigated away from the page. |
+| `page_unload_timestamp` | Dimension | Timestamp when the page was closed. |
 | `page_view` | Metric | Count of page views. |
 | `page_view_number` | Dimension | Sequential number of the page view in the session. |
 | `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
@@ -1162,7 +1161,6 @@ This table illustrates the fields available across different table functions, al
 | `functionality_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `functionality_storage_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `functionality_storage_denied_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
-| `hostname` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `is_customer` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
 | `item_affiliation` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `item_brand` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
@@ -1205,16 +1203,14 @@ This table illustrates the fields available across different table functions, al
 | `page_hostname_protocol` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_id` | Dimension | string | X |  |  | X |  |  |  |  | X |  |
 | `page_language` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
-| `page_load_datetime` | Dimension | timestamp |  |  |  | X |  |  |  |  |  |  |
+| `page_load_timestamp` | Dimension | integer | X |  |  | X |  |  |  |  |  |  |
 | `page_load_time_sec` | Dimension | float |  |  |  | X |  |  |  |  |  |  |
-| `page_load_timestamp` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_location` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
 | `page_query` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_referrer` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_status_code` | Dimension | integer | X |  |  | X |  |  |  |  |  |  |
 | `page_title` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
-| `page_unload_datetime` | Dimension | timestamp |  |  |  | X |  |  |  |  |  |  |
-| `page_unload_timestamp` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
+| `page_unload_timestamp` | Dimension | integer | X |  |  | X |  |  |  |  |  |  |
 | `page_view` | Metric | integer |  | X | X | X |  |  |  |  |  |  |
 | `page_view_number` | Dimension | integer | X |  |  | X |  |  |  |  |  |  |
 | `page_number` | Dimension | integer |  |  |  |  |  |  |  |  | X |  |
