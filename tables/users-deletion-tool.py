@@ -3,9 +3,6 @@
 # This script removes all data associated with a specific client_id from both BigQuery and Firestore.
 # ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-import sys
-import os
 from google.cloud import bigquery
 from google.cloud import firestore
 

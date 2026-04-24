@@ -15,13 +15,13 @@ from google.cloud import bigquery
 # --------------------------------------------------------------------------------------------------------------
 
 # User cookies
-na_s = '8BS8oxokGB7yEEv_BP3nvPMqh02dLZF-tgp3R6jiDGhxo3' # Modify this according to the current user's na_s cookie value
+na_s = 'n8PdJ87PvUnojvi_wjiTlsBSdaZyY9o-3gYMdoGRepYrb0o' # Modify this according to the current user's na_s cookie value
 
 # Request settings
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
 origin = 'https://tommasomoretti.com' # Modify this according to website origin
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZDgxZDI4NjFlYTk1Y2QzNzMwMA==' # Modify this according to the GTM Server-side preview header
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA==' # Modify this according to the GTM Server-side preview header
 
 # Event data
 client_id = na_s.split('_')[0]
