@@ -123,7 +123,7 @@ select
     # PAGE DATA
     page_date,
     page_id,
-    DENSE_RANK() over (partition by session_id order by (select value.int from unnest(page_data) where name = 'page_timestamp') asc) as page_view_number,
+    dense_rank() over (partition by session_id order by (select value.int from unnest(page_data) where name = 'page_timestamp') asc) as page_view_number,
     (select value.int from unnest(page_data) where name = 'page_timestamp') as page_load_timestamp,
     first_value(IF(event_origin != 'Streaming protocol', event_timestamp, NULL) IGNORE NULLS) over (partition by page_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as page_unload_timestamp,
     
@@ -154,7 +154,7 @@ select
     event_timestamp,	
     event_name,	
     event_id,	
-    (select value.int from unnest(event_data ) where name = 'event_number') as event_number,
+    rank() over (partition by session_id order by event_timestamp asc) as event_number,
     (select value.string from unnest(event_data) where name = 'event_type') as event_type, 
     
     (select value.string from unnest(event_data) where name = 'channel_grouping') as channel_grouping, 

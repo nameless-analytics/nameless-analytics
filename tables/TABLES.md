@@ -1001,7 +1001,7 @@ Provides a flattened view of events with raw data for debugging and troubleshoot
 | `session_id` | Dimension | Unique identifier for the session. |
 | `page_date` | Dimension | The date the page was viewed. |
 | `page_id` | Dimension | Unique identifier for the page view. |
-| `page_number` | Dimension | Sequential number of the page view in the session. |
+| `page_view_number` | Dimension | Sequential number of the page view in the session. |
 | `page_data` | Dimension | Array of custom page parameters. |
 | `event_date` | Dimension | The date the event occurred. |
 | `event_datetime` | Dimension | Exact date and time of the event. |
@@ -1212,8 +1212,7 @@ This table illustrates the fields available across different table functions, al
 | `page_title` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
 | `page_unload_timestamp` | Dimension | integer | X |  |  | X |  |  |  |  |  |  |
 | `page_view` | Metric | integer |  | X | X | X |  |  |  |  |  |  |
-| `page_view_number` | Dimension | integer | X |  |  | X |  |  |  |  |  |  |
-| `page_number` | Dimension | integer |  |  |  |  |  |  |  |  | X |  |
+| `page_view_number` | Dimension | integer | X |  |  | X |  |  |  |  | X |  |
 | `page_view_per_session` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `personalization_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `personalization_storage_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |

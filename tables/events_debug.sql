@@ -10,13 +10,13 @@ with base_events as (
       # PAGE DATA
       page_date,
       page_id,
-      (select value.int from unnest(page_data) where name = 'page_number') as page_number,
+      dense_rank() over (partition by session_id order by (select value.int from unnest(page_data) where name = 'page_timestamp') asc) as page_view_number,
 
       # EVENT DATA
       event_date,
       event_timestamp,
       event_name,
-      (select value.int from unnest(event_data) where name = 'event_number') as event_number,
+      rank() over (partition by session_id order by event_timestamp asc) as event_number,
       event_origin,
       event_id,
 
@@ -42,7 +42,7 @@ with base_events as (
     # PAGE DATA
     page_date,
     page_id,
-    page_number,
+    page_view_number,
     array(
       select as struct
         name,
