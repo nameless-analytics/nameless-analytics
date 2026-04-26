@@ -2,10 +2,14 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events_debug`(s
 with base_events as (
     select 
       # USER DATA
+      user_date,
       client_id,
+      user_data,
 
       # SESSION DATA
+      session_date,
       session_id,
+      session_data,
 
       # PAGE DATA
       page_date,
@@ -34,10 +38,36 @@ with base_events as (
 
   select
     # USER DATA
+    user_date,
     client_id,
+    array(
+      select as struct
+        name,
+        struct(
+          value.string as string,
+          value.int as int,
+          value.float as float,
+          to_json_string(value.json) as json,
+          value.bool as bool
+        ) as value
+      from unnest(user_data)
+    ) as user_data,
   
     # SESSION DATA
+    session_date,
     session_id,
+    array(
+      select as struct
+        name,
+        struct(
+          value.string as string,
+          value.int as int,
+          value.float as float,
+          to_json_string(value.json) as json,
+          value.bool as bool
+        ) as value
+      from unnest(session_data)
+    ) as session_data,
     
     # PAGE DATA
     page_date,
