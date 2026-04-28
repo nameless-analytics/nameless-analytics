@@ -84,6 +84,7 @@ with user_logic as (
       countif(event_name = 'page_view') as page_view,
       countif(event_name = 'purchase') as purchase,
       countif(event_name = 'refund') as refund,
+      count(*) as total_events,
  
       # ECOMMERCE DATA
       first_purchase_timestamp,
@@ -120,6 +121,9 @@ with user_logic as (
       when max(total_sessions) > 1 then 'Returning user'
     end as user_type,
 
+    new_user,
+    returning_user,
+
     case 
       when max(total_sessions) = 1 then client_id
       else null
@@ -140,11 +144,21 @@ with user_logic as (
       when sum(purchase) = 0 then 'Not customer'
       when sum(purchase) > 0 then 'Customer'
     end as is_customer,
+
     case 
       when sum(purchase) = 1 then 'New customer'
       when sum(purchase) > 1 then 'Returning customer'
-      else 'Not customer'
+      else null
     end as customer_type,
+
+    case 
+      when sum(purchase) = 1 then client_id
+      else null
+    end as new_customer_client_id,
+    case 
+      when sum(purchase) > 1 then client_id
+      else null
+    end as returning_customer_client_id,
 
     case when sum(purchase) >= 1 then 1 end as customers,
     case when sum(purchase) = 1 then 1 end as new_customers,
@@ -156,6 +170,7 @@ with user_logic as (
     avg(session_duration_sec) as session_duration_sec,
     count(distinct session_id) / count(distinct client_id) as sessions_per_user,
     sum(page_view) as page_view,
+    sum(total_events) as total_events,
     date_diff(current_date(), date(max(first_purchase_timestamp)), day) as days_from_first_purchase,
     date_diff(current_date(), date(max(last_purchase_timestamp)), day) as days_from_last_purchase,
     sum(purchase) as purchase,
