@@ -23,8 +23,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_d
 
     datetime_diff(
       timestamp_millis((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')), 
-      timestamp_millis((select value.int from unnest(user_data) where name = 'user_first_session_timestamp'))
-    , day) as days_from_first_to_last_visit,
+      timestamp_millis((select value.int from unnest(user_data) where name = 'user_first_session_timestamp')), 
+    day) as days_from_first_to_last_visit,
 
     datetime_diff(current_timestamp(), timestamp_millis((select value.int from unnest(user_data) where name = 'user_first_session_timestamp')), day) as days_from_first_visit,
     datetime_diff(current_timestamp(), timestamp_millis((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')), day) as days_from_last_visit,
