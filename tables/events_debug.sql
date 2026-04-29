@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events_debug`(start_date DATE, end_date DATE) AS (
-with base_events as (
+  with raw_event_data as (
     select 
       # USER DATA
       user_date,
@@ -110,5 +110,5 @@ with base_events as (
     to_json_string(ecommerce) as ecommerce,
     to_json_string(datalayer) as datalayer,
     consent_data
-  from base_events
+  from raw_event_data
 );

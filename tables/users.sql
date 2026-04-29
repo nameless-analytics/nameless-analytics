@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_date DATE, end_date DATE) AS (
-with user_logic as (
+  with raw_user_data as (
     select
       ## USER DATA
       user_date,
@@ -50,7 +50,7 @@ with user_logic as (
     group by all
   ),
  
-  user_prep as (
+  user_data as (
     select
       # USER DATA
       user_date,
@@ -96,7 +96,7 @@ with user_logic as (
       sum(avg_purchase_value) as avg_purchase_value,
       sum(avg_refund_value) as avg_refund_value,
       
-    from user_logic
+    from raw_user_data
     group by all
   )
 
@@ -182,6 +182,6 @@ with user_logic as (
     sum(purchase_revenue) + sum(refund_revenue) as revenue_net_refund,
     safe_divide(sum(purchase_revenue), sum(purchase)) as avg_purchase_value,
     safe_divide(sum(refund_revenue), sum(refund)) as avg_refund_value,
-  from user_prep
+  from user_data
   group by all
 );

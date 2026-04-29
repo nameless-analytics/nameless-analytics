@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_products`(start_date DATE, end_date DATE) AS (
-with product_data_raw as (
+  with raw_product_data as (
     select 
       # USER DATA
       user_date,
@@ -208,6 +208,6 @@ with product_data_raw as (
     sum(item_quantity_refunded) as item_quantity_refunded,
     sum(unique_item_refunds) as unique_item_refunds,
     sum(item_revenue_refunded) as item_revenue_refunded
-  from product_data_raw
+  from raw_product_data
   group by all
 );

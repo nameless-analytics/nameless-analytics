@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions`(start_date DATE, end_date DATE) AS (
-with session_logic as (
+  with raw_session_data as (
     select
       # USER DATA
       user_date, 
@@ -104,7 +104,7 @@ with session_logic as (
     group by all
   ),
 
-  session_prep as (
+  session_data as (
     select
       # USER DATA
       user_date, 
@@ -211,7 +211,7 @@ with session_logic as (
       if(if(has_update, upd_functionality_storage, def_functionality_storage) = 'Granted', 1, 0) as session_functionality_storage,
       if(if(has_update, upd_personalization_storage, def_personalization_storage) = 'Granted', 1, 0) as session_personalization_storage,
       if(if(has_update, upd_security_storage, def_security_storage) = 'Granted', 1, 0) as session_security_storage
-    from session_logic
+    from raw_session_data
   )
 
   select
@@ -335,6 +335,6 @@ with session_logic as (
     safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_accepted_percentage,
     1 - safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_denied_percentage,
 
-  from session_prep
+  from session_data
   group by all
 );

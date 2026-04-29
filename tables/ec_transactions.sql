@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions`(start_date DATE, end_date DATE) AS (
-with transaction_data_raw as (
+with raw_transaction_data as (
     select 
       # USER DATA
       user_date,
@@ -143,5 +143,5 @@ with transaction_data_raw as (
     if(event_name = 'refund', ifnull(transaction_tax, 0.0), 0) as refund_tax,
     if(event_name = 'refund', ifnull(transaction_currency, null), null) as refund_currency,
     if(event_name = 'refund', ifnull(transaction_coupon, null), null) as refund_coupon
-  from transaction_data_raw
+  from raw_transaction_data
 );

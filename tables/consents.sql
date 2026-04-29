@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.consents`(start_date DATE, end_date DATE) AS (
-with session_base as (
+  with raw_consent_data as (
     select
       # USER DATA
       user_date,
@@ -56,7 +56,7 @@ with session_base as (
     from `tom-moretti.nameless_analytics.sessions`(start_date, end_date)
   ),
 
-  event_data as (
+  consent_data as (
     select
       # USER DATA
       user_date, 
@@ -104,7 +104,7 @@ with session_base as (
       end as consent_state,
       consent_name,
       consent_value_int_accepted_raw
-    from session_base
+    from raw_consent_data
     unpivot (
       consent_value_int_accepted_raw for consent_name in (
         session_ad_user_data, 
@@ -169,6 +169,6 @@ with session_base as (
     end as consent_value_string,
     case when consent_state = 'Consent expressed' and consent_value_int_accepted_raw = 1 then 1 end as consent_value_int_accepted,
     case when consent_state = 'Consent expressed' and consent_value_int_accepted_raw = 0 then 1 end as consent_value_int_denied
-  from event_data
+  from consent_data
   group by all
 );
