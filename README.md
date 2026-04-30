@@ -51,6 +51,8 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Consents](#consents)
   - [Debugging & Tech](#debugging-tech)
 - [AI support](#ai-support)
+  - [Q&A Agents](#q-a-agents)
+  - [Conversational Analysis Agent in BigQuery Studio](#conversational-analysis-agent-in-bigquery-studio)
 - [Pricing & Cloud Costs](#pricing-cloud-costs)
   - [Data processing](#data-processing)
   - [Data storage](#data-storage)
@@ -802,9 +804,17 @@ SQL Table Functions can be used as sources for reporting, such in [Google Looker
 
 
 ## AI support
+### Q&A Agents
 Get expert help for implementation, technical documentation, and advanced SQL queries. Choose from: 
 - **[OpenAI ChatGPT](https://chatgpt.com/g/g-6860ef949f94819194c3bc2c08e2f395-nameless-analytics-qna)**: Specialized GPTs trained on the platform docs, recommended.
 - **[Google Gemini](https://gemini.google.com/gem/1ZsO2SPn5yqDXDAbwHb6bHJcU0LjVsL6S)**: Specialized Gem trained on the platform docs
+
+### Conversational Analysis Agent in BigQuery Studio
+In BigQuery Studio, it is possible to configure a Data Agent (powered by Gemini) for conversational analysis, allowing users to explore and query datasets using simple natural language. These agents leverage tables, views, and **table functions** as "knowledge sources" to learn the data schema and business logic. 
+
+Table functions are particularly strategic in this scenario: by accepting parameters, they allow encapsulating and centralizing complex metrics and business logic, providing the agent with a clean and reusable interface to filter results dynamically. 
+
+To maximize the accuracy of the agent's responses, it is crucial to enrich these sources with well-defined metadata descriptions at the schema level, provide contextual system instructions, and include a set of "golden queries" to train the model on the organization's specific use cases. To learn how to configure this agent with your data, check the [Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-configure-a-conversational-analysis-agent-in-bigquery-studio).
 
 
 

@@ -19,6 +19,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 - [How to set up First-Party Library Hosting](#how-to-set-up-first-party-library-hosting)
 - [How to configure Real-time Forwarding](#how-to-configure-real-time-forwarding)
 - [How to enforce Security & Bot Protection](#how-to-enforce-security--bot-protection)
+- [How to configure a Conversational Analysis Agent in BigQuery Studio](#how-to-configure-a-conversational-analysis-agent-in-bigquery-studio)
 - [Data Governance & Privacy compliance](#data-governance--privacy-compliance)
 
 ## How to set up Nameless Analytics in GTM
@@ -383,6 +384,21 @@ Nameless Analytics includes a built-in filter to block requests from known bots,
 If you identify specific IP addresses that are spamming your endpoint, you can manually block them.
 1. Scroll down to **Advanced settings** and check **Add banned IPs**.
 2. Add the target IP addresses to the **Banned IPs** list.
+
+
+
+## How to configure a Conversational Analysis Agent in BigQuery Studio
+In BigQuery Studio, you can configure a Data Agent (powered by Gemini) for conversational analysis, allowing users to query data in natural language. In order for the agent to provide accurate answers (in the form of text, tables, or charts) leveraging pre-calculated business logic, it must be properly configured by setting both raw tables and table functions as its knowledge sources.
+
+### Knowledge Sources Configuration
+During the agent creation in the BigQuery Studio Agent Catalog, ensure to:
+1. **Select the Raw Tables:** Add the `events_raw` and `calendar_dates` tables to provide direct access to granular data and the time dimension.
+2. **Select the Table Functions:** Add all the table functions provided in the project (such as `users`, `sessions`, `pages`, `events`, etc.). The agent will leverage their parameterized interface to query aggregated metrics and pre-calculated logic (e.g., session duration, acquisition channel).
+
+### Best Practices for Accuracy
+- **Metadata:** Carefully populate the parameter descriptions (metadata) within the functions and tables to help the agent understand the meaning of the various fields.
+- **System Instructions:** Provide clear and contextual instructions to the agent on how to interpret and cross-reference the data.
+- **Golden Queries:** Include real examples of questions and their corresponding verified SQL queries. This step is essential to train the model to understand your specific business context and ensure it always returns syntactically and logically correct queries.
 
 
 
