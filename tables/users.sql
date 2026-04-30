@@ -1,7 +1,7 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_date DATE, end_date DATE) AS (
-  with raw_user_data as (
+with raw_user_data as (
     select
-      ## USER DATA
+      # USER DATA
       user_date,
       user_id,
       client_id,
@@ -22,16 +22,16 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
       days_from_first_visit,
       days_from_last_visit,
       
-      ## SESSION DATA
+      # SESSION DATA
       session_id,
       session_duration_sec,
       session_number,
 
-      ## EVENT DATA
+      # EVENT DATA
       event_name,
       event_timestamp,
 
-      ## ECOMMERCE DATA
+      # ECOMMERCE DATA
       json_value(ecommerce, '$.transaction_id') as transaction_id,
       if(event_name = 'purchase', timestamp_millis(event_timestamp), null) as first_purchase_timestamp,
       if(event_name = 'purchase', timestamp_millis(event_timestamp), null) as last_purchase_timestamp,
@@ -40,9 +40,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
       sum(case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as purchase_qty,
       sum(case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as refund_qty,
 
-    from `tom-moretti.nameless_analytics.events`('2026-04-01', '2026-04-30', 'user')
+    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'user')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items
-    where client_id = 'n8PdJ87PvUnojvi'
     group by all
   ),
  
@@ -95,7 +94,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
   )
     
   select
-    ## USER DATA
+    # USER DATA
     user_date,
     user_id,
     client_id,
@@ -126,18 +125,24 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
     case 
       when sum(purchase) = 0 then 'Not customer'
       when sum(purchase) > 0 then 'Customer'
-    end as is_customer,
+    end as customer_status,
   
     case 
       when sum(purchase) = 1 then 'New customer'
       when sum(purchase) > 1 then 'Returning customer'
-      else null
+      else 'Not customer'
     end as customer_type,
   
+    case 
+      when sum(purchase) >= 1 then client_id
+      else null
+    end as customer_client_id,
+
     case 
       when sum(purchase) = 1 then client_id
       else null
     end as new_customer_client_id,
+
     case 
       when sum(purchase) > 1 then client_id
       else null

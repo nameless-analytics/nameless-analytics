@@ -1,12 +1,12 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_date DATE, end_date DATE) AS (
-  select
+select
     # USER DATA
     user_date,
     user_id, 
     client_id, 
     user_type, 
-    new_user, 
-    returning_user,
+    new_user_client_id, 
+    returning_user_client_id,
     user_channel_grouping, 
     user_source_cleaned as user_source,
     user_campaign, 

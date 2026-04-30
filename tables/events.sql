@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_date DATE, end_date DATE, date_scope STRING) AS (
-  select
+select
     # USER DATA
     user_date,
     first_value((select value.string from unnest(session_data) where name = 'user_id') IGNORE NULLS) over (partition by session_id order by event_timestamp desc) as user_id,
@@ -12,11 +12,11 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_d
     case 
       when (select value.int from unnest(session_data) where name = 'session_number') = 1 then client_id
       else null
-    end as new_user,
+    end as new_user_client_id,
     case 
       when (select value.int from unnest(session_data) where name = 'session_number') > 1 then client_id
       else null
-    end as returning_user,
+    end as returning_user_client_id,
 
     (select value.int from unnest(user_data) where name = 'user_first_session_timestamp') as user_first_session_timestamp,
     (select value.int from unnest(user_data) where name = 'user_last_session_timestamp') as user_last_session_timestamp,

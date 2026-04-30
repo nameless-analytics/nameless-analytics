@@ -1,13 +1,13 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_products`(start_date DATE, end_date DATE) AS (
-  with raw_product_data as (
+with raw_product_data as (
     select 
       # USER DATA
       user_date,
       user_id,
       client_id, 
       user_type, 
-      new_user, 
-      returning_user,
+      new_user_client_id, 
+      returning_user_client_id,
       user_channel_grouping, 
       user_source_cleaned as user_source,
       user_campaign, 
@@ -103,8 +103,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_products`(st
     user_id,
     client_id, 
     user_type, 
-    new_user, 
-    returning_user,
+    new_user_client_id, 
+    returning_user_client_id,
     user_channel_grouping, 
     user_source,
     user_campaign, 
