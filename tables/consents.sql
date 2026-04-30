@@ -1,13 +1,13 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.consents`(start_date DATE, end_date DATE) AS (
-  with raw_consent_data as (
+with raw_consent_data as (
     select
       # USER DATA
       user_date,
       user_id,
       client_id,
       user_type,
-      new_user,
-      returning_user,
+      new_user_client_id,
+      returning_user_client_id,
       user_channel_grouping,
       user_source,
       user_campaign,
@@ -69,8 +69,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.consents`(start
       user_country, 
       user_language, 
       user_type, 
-      new_user, 
-      returning_user,
+      new_user_client_id, 
+      returning_user_client_id,
 
       # SESSION DATA
       session_date,
@@ -130,8 +130,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.consents`(start
     user_country,
     user_language,
     user_type,
-    new_user,
-    returning_user,
+    new_user_client_id,
+    returning_user_client_id,
   
     # SESSION DATA
     session_date,

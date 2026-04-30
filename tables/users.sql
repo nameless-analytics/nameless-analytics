@@ -5,9 +5,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
       user_date,
       user_id,
       client_id,
-      user_type,
-      max(new_user) as new_user,
-      max(returning_user) as returning_user,
+      new_user_client_id,
+      returning_user_client_id,
       user_channel_grouping,
       user_source,
       user_campaign,
@@ -19,14 +18,14 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
       user_country,
       user_city,
       user_language,
-      max(days_from_first_to_last_visit) as days_from_first_to_last_visit,
-      max(days_from_first_visit) as days_from_first_visit,
-      max(days_from_last_visit) as days_from_last_visit,
+      days_from_first_to_last_visit,
+      days_from_first_visit,
+      days_from_last_visit,
       
       ## SESSION DATA
       session_id,
-      max(session_duration_sec) as session_duration_sec,
-      max(session_number) as session_number,
+      session_duration_sec,
+      session_number,
 
       ## EVENT DATA
       event_name,
@@ -34,19 +33,16 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
 
       ## ECOMMERCE DATA
       json_value(ecommerce, '$.transaction_id') as transaction_id,
-      min(if(event_name = 'purchase', timestamp_millis(event_timestamp), null)) as first_purchase_timestamp,
-      max(if(event_name = 'purchase', timestamp_millis(event_timestamp), null)) as last_purchase_timestamp,
-
+      if(event_name = 'purchase', timestamp_millis(event_timestamp), null) as first_purchase_timestamp,
+      if(event_name = 'purchase', timestamp_millis(event_timestamp), null) as last_purchase_timestamp,
       sum(case when event_name = 'purchase' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as purchase_revenue,
       sum(case when event_name = 'refund' then -(ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as refund_revenue,
       sum(case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as purchase_qty,
       sum(case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as refund_qty,
 
-      ifnull(safe_divide(sum(case when event_name = 'purchase' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end), countif(event_name = 'purchase')), 0) as avg_purchase_value,
-      ifnull(safe_divide(sum(case when event_name = 'refund' then - (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end), countif(event_name = 'refund')), 0) as avg_refund_value,
-
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'user')
+    from `tom-moretti.nameless_analytics.events`('2026-04-01', '2026-04-30', 'user')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items
+    where client_id = 'n8PdJ87PvUnojvi'
     group by all
   ),
  
@@ -56,9 +52,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
       user_date,
       user_id,
       client_id,
-      user_type,
-      new_user,
-      returning_user,
+      new_user_client_id,
+      returning_user_client_id,
       user_channel_grouping,
       user_source,
       user_campaign,
@@ -87,24 +82,29 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
       count(*) as total_events,
  
       # ECOMMERCE DATA
-      first_purchase_timestamp,
-      last_purchase_timestamp,
+      min(first_purchase_timestamp) as first_purchase_timestamp,
+      max(last_purchase_timestamp) as last_purchase_timestamp,
       sum(purchase_revenue) as purchase_revenue,
       sum(refund_revenue) as refund_revenue,
       sum(purchase_qty) as purchase_qty,
       sum(refund_qty) as refund_qty,
-      sum(avg_purchase_value) as avg_purchase_value,
-      sum(avg_refund_value) as avg_refund_value,
-      
+      safe_divide(sum(purchase_revenue), countif(event_name = 'purchase')) as avg_purchase_value,
+      safe_divide(sum(refund_revenue), countif(event_name = 'refund')) as avg_refund_value,      
     from raw_user_data
     group by all
   )
-
+    
   select
     ## USER DATA
     user_date,
-    client_id,
     user_id,
+    client_id,
+    case 
+      when total_sessions = 1 then 'new_user'
+      when total_sessions > 1 then 'returning_user'
+    end as user_type,
+    max(new_user_client_id) as new_user_client_id,
+    max(returning_user_client_id) as returning_user_client_id,
     user_channel_grouping,
     user_source,
     user_campaign,
@@ -116,41 +116,24 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
     user_country,
     user_city,
     user_language,
-    case 
-      when max(total_sessions) = 1 then 'New user'
-      when max(total_sessions) > 1 then 'Returning user'
-    end as user_type,
-
-    new_user,
-    returning_user,
-
-    case 
-      when max(total_sessions) = 1 then client_id
-      else null
-    end as new_user_client_id,
-    case 
-      when max(total_sessions) > 1 then client_id
-      else null
-    end as returning_user_client_id,
- 
     max(days_from_first_to_last_visit) as days_from_first_to_last_visit,
     max(days_from_first_visit) as days_from_first_visit,
     max(days_from_last_visit) as days_from_last_visit,
-
+  
     case when sum(purchase) >= 1 then 1 else 0 end as user_with_purchase,
     case when sum(refund) >= 1 then 1 else 0 end as user_with_refund,
-
+  
     case 
       when sum(purchase) = 0 then 'Not customer'
       when sum(purchase) > 0 then 'Customer'
     end as is_customer,
-
+  
     case 
       when sum(purchase) = 1 then 'New customer'
       when sum(purchase) > 1 then 'Returning customer'
       else null
     end as customer_type,
-
+  
     case 
       when sum(purchase) = 1 then client_id
       else null
@@ -159,13 +142,10 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
       when sum(purchase) > 1 then client_id
       else null
     end as returning_customer_client_id,
-
-    case when sum(purchase) >= 1 then 1 end as customers,
-    case when sum(purchase) = 1 then 1 end as new_customers,
-    case when sum(purchase) > 1 then 1 end as returning_customers,
+  
     max(first_purchase_timestamp) as first_purchase_timestamp,
     max(last_purchase_timestamp) as last_purchase_timestamp,
-
+  
     count(distinct session_id) as sessions,
     avg(session_duration_sec) as session_duration_sec,
     count(distinct session_id) / count(distinct client_id) as sessions_per_user,
@@ -180,8 +160,8 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_da
     sum(purchase_revenue) as purchase_revenue,
     sum(refund_revenue) as refund_revenue,
     sum(purchase_revenue) + sum(refund_revenue) as revenue_net_refund,
-    safe_divide(sum(purchase_revenue), sum(purchase)) as avg_purchase_value,
-    safe_divide(sum(refund_revenue), sum(refund)) as avg_refund_value,
+    avg(avg_purchase_value) as avg_purchase_value,
+    avg(avg_refund_value) as avg_refund_value,
   from user_data
   group by all
 );
