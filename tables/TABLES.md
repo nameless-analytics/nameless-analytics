@@ -353,7 +353,7 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 | `event_type` | Dimension | Category or type of the event. |
 | `functionality_storage` | Dimension | Consent state for necessary functional storage. |
 | `new_session` | Metric | Indicates if this is a new session (1 for yes, 0 for no). |
-| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `new_user_client_id` | Dimension | Client ID if this is the user's first session, else null. |
 | `os_name` | Dimension | The name of the operating system. |
 | `os_version` | Dimension | The version of the operating system. |
 | `page_category` | Dimension | Logical category of the page. |
@@ -377,7 +377,7 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 | `processing_event_timestamp` | Dimension | Timestamp when the event was processed by the server. |
 | `respect_consent_mode` | Dimension | Indicates if the system respected Consent Mode settings. |
 | `returning_session` | Metric | Indicates if this is a returning session (1 for yes, 0 for no). |
-| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
 | `screen_size` | Dimension | Physical resolution of the user's screen. |
 | `search_term` | Dimension | The term searched by the user (for search events). |
 | `security_storage` | Dimension | Consent state for security-related storage. |
@@ -453,36 +453,35 @@ Aggregates event data at user level.
 
 <details><summary>Output fields</summary>
 
-| Field | Type | Description |
-| :--- | :--- | :--- |
 | `avg_purchase_value` | Metric | Average monetary value of purchases per user. |
 | `avg_refund_value` | Metric | Average monetary value of refunds per user. |
 | `client_id` | Dimension | Unique identifier for the client/browser. |
+| `customer_client_id` | Dimension | Client ID of customers. |
+| `customer_status` | Dimension | Status of the customer. |
 | `customer_type` | Dimension | Classification of the customer based on purchase history. |
-| `customers` | Metric | Count of unique customers (users with at least one purchase). |
 | `days_from_first_purchase` | Metric | Number of days since the user's first purchase event. |
 | `days_from_first_to_last_visit` | Metric | Days between the user's first and most recent visits. |
 | `days_from_first_visit` | Metric | Total days since the user's first recorded visit. |
 | `days_from_last_purchase` | Metric | Number of days since the user's most recent purchase. |
 | `days_from_last_visit` | Metric | Number of days since the user's most recent visit. |
 | `first_purchase_timestamp` | Dimension | Timestamp of the user's very first purchase. |
-| `is_customer` | Dimension | Indicates if the user has made at least one purchase. |
 | `item_quantity_purchased` | Metric | Total quantity of items purchased by the user. |
 | `item_quantity_refunded` | Metric | Total quantity of items refunded by the user. |
 | `last_purchase_timestamp` | Dimension | Timestamp of the user's most recent purchase. |
-| `new_customers` | Metric | Number of new customers acquired during the period. |
+| `new_customer_client_id` | Dimension | Client ID of new customers. |
 | `new_user_client_id` | Dimension | Client ID for users identified as new during the period. |
 | `page_view` | Metric | Total number of page view events triggered by the user. |
 | `purchase` | Metric | Total count of purchase events for the user. |
 | `purchase_revenue` | Metric | Total revenue generated from user purchases. |
 | `refund` | Metric | Total count of refund events for the user. |
 | `refund_revenue` | Metric | Total value of refunds associated with the user. |
-| `returning_customers` | Metric | Number of customers who made repeat purchases. |
+| `returning_customer_client_id` | Dimension | Client ID of returning customers. |
 | `returning_user_client_id` | Dimension | Client ID for users identified as returning during the period. |
 | `revenue_net_refund` | Metric | Total revenue minus the total value of refunds. |
 | `session_duration_sec` | Metric | Total accumulated session duration for the user (in seconds). |
 | `sessions` | Metric | Total number of sessions recorded for the user. |
 | `sessions_per_user` | Metric | Average number of sessions per unique user. |
+| `total_events` | Metric | Total number of events. |
 | `user_campaign` | Dimension | Original acquisition campaign for the user. |
 | `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
 | `user_campaign_content` | Dimension | Original acquisition campaign content. |
@@ -499,6 +498,8 @@ Aggregates event data at user level.
 | `user_type` | Dimension | User classification (New vs Returning). |
 | `user_with_purchase` | Metric | Indicates if the user has completed at least one purchase. |
 | `user_with_refund` | Metric | Indicates if the user has completed at least one refund. |
+| :--- | :--- | :--- |
+| Field | Type | Description |
 
 </details>
 
@@ -539,7 +540,7 @@ Aggregates event data at session level.
 | `functionality_storage_denied_percentage` | Metric | Percentage of sessions where functionality storage was denied. |
 | `new_session` | Metric | Total number of new sessions. |
 | `new_sessions_percentage` | Metric | Percentage of sessions that were new. |
-| `new_user` | Dimension | Identification of users seen for the first time during the session. |
+| `new_user_client_id` | Dimension | Identification of users seen for the first time during the session. |
 | `page_view` | Metric | Total number of page view events during the session. |
 | `page_view_per_session` | Metric | Average number of page views per session. |
 | `personalization_storage_accepted_percentage` | Metric | Percentage of sessions where personalization storage was accepted. |
@@ -554,10 +555,9 @@ Aggregates event data at session level.
 | `refund_shipping` | Metric | Total shipping value of items refunded in the session. |
 | `refund_tax` | Metric | Total tax value of items refunded in the session. |
 | `remove_from_cart` | Metric | Total number of sessions with at least one remove_from_cart event. |
-| `remove_from_wishlist` | Metric | Total number of sessions with at least one remove_from_wishlist event. |
 | `returning_session` | Metric | Total number of returning sessions. |
 | `returning_sessions_percentage` | Metric | Percentage of total sessions that were returning. |
-| `returning_user` | Dimension | Identification of users who had previously visited the site. |
+| `returning_user_client_id` | Dimension | Identification of users who had previously visited the site. |
 | `revenue_net_refund` | Metric | Total revenue generated minus the total value of refunds in the session. |
 | `security_storage_accepted_percentage` | Metric | Percentage of sessions where security storage was accepted. |
 | `security_storage_denied_percentage` | Metric | Percentage of sessions where security storage was denied. |
@@ -629,28 +629,27 @@ Aggregates event data at page level.
 
 <details><summary>Output fields</summary>
 
-| Field | Type | Description |
-| :--- | :--- | :--- |
 | `client_id` | Dimension | Unique identifier for the client/browser. |
 | `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
-| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `new_user_client_id` | Dimension | Client ID if this is the user's first session, else null. |
 | `page_category` | Dimension | Logical category of the page. |
 | `page_date` | Dimension | The date the page was viewed. |
 | `page_hostname` | Dimension | The hostname of the page viewed. |
 | `page_id` | Dimension | Unique identifier for the page view. |
-| `page_load_timestamp` | Dimension | Timestamp when the page started loading. |
 | `page_load_time_sec` | Dimension | Time taken to load the page in seconds. |
+| `page_load_timestamp` | Dimension | Timestamp when the page started loading. |
 | `page_location` | Dimension | The full URL of the page. |
 | `page_status_code` | Dimension | HTTP status code of the page. |
 | `page_title` | Dimension | The title (document title) of the page. |
 | `page_unload_timestamp` | Dimension | Timestamp when the page was closed. |
 | `page_view` | Metric | Count of page views. |
 | `page_view_number` | Dimension | Sequential number of the page view in the session. |
-| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
 | `session_browser_name` | Dimension | Browser name recorded at session start. |
 | `session_campaign` | Dimension | Acquisition campaign for the session. |
 | `session_campaign_click_id` | Dimension | Campaign click ID for the session. |
 | `session_campaign_content` | Dimension | Campaign content for the session. |
+| `session_campaign_id` | Dimension | Campaign ID for the session. |
 | `session_campaign_term` | Dimension | Campaign term for the session. |
 | `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
 | `session_city` | Dimension | City detected for the session. |
@@ -685,6 +684,8 @@ Aggregates event data at page level.
 | `user_language` | Dimension | User language recorded at acquisition. |
 | `user_source` | Dimension | Original source of acquisition. |
 | `user_type` | Dimension | User type classification (New vs Returning). |
+| :--- | :--- | :--- |
+| Field | Type | Description |
 
 </details>
 
@@ -698,23 +699,28 @@ Aggregates ecommerce data at transaction level.
 
 <details><summary>Output fields</summary>
 
-| Field | Type | Description |
-| :--- | :--- | :--- |
 | `client_id` | Dimension | Unique identifier for the client/browser. |
 | `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
+| `duplicate_purchase` | Metric | Count of duplicate purchases. |
+| `duplicate_refund` | Metric | Count of duplicate refunds. |
 | `event_date` | Dimension | The date the event occurred. |
 | `event_name` | Dimension | The name of the interaction event. |
-| `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
-| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `event_origin` | Dimension | The origin of the event. |
+| `hour_and_minute` | Dimension | Hour and minute of the event. |
+| `new_user_client_id` | Dimension | Client ID if this is the user's first session, else null. |
 | `purchase` | Metric | Total number of sessions with at least one purchase event. |
+| `purchase_coupon` | Dimension | Coupon code applied to the purchase. |
+| `purchase_currency` | Dimension | Currency used for the purchase. |
 | `purchase_revenue` | Metric | Total revenue generated from purchases. |
 | `purchase_shipping` | Metric | Total shipping costs for purchases. |
 | `purchase_tax` | Metric | Total tax collected on purchases. |
 | `refund` | Metric | Total number of sessions with at least one refund event. |
+| `refund_coupon` | Dimension | Coupon code applied to the refund. |
+| `refund_currency` | Dimension | Currency used for the refund. |
 | `refund_revenue` | Metric | Total revenue refunded. |
 | `refund_shipping` | Metric | Total shipping costs refunded. |
 | `refund_tax` | Metric | Total tax refunded. |
-| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
 | `session_browser_name` | Dimension | Browser name recorded at session start. |
 | `session_campaign` | Dimension | Acquisition campaign for the session. |
 | `session_campaign_click_id` | Dimension | Campaign click ID for the session. |
@@ -740,6 +746,7 @@ Aggregates ecommerce data at transaction level.
 | `session_source` | Dimension | Traffic source for the session. |
 | `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
 | `session_type` | Dimension | Classification of the session (New vs Returning). |
+| `transaction_id` | Dimension | Unique identifier for the transaction (Order ID). |
 | `user_campaign` | Dimension | Original acquisition campaign for the user. |
 | `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
 | `user_campaign_content` | Dimension | Original acquisition campaign content. |
@@ -754,11 +761,9 @@ Aggregates ecommerce data at transaction level.
 | `user_language` | Dimension | User language recorded at acquisition. |
 | `user_source` | Dimension | Original source of acquisition. |
 | `user_type` | Dimension | User type classification (New vs Returning). |
-| `purchase_coupon` | Dimension | Coupon code applied to the purchase. |
-| `purchase_currency` | Dimension | Currency used for the purchase. |
-| `refund_coupon` | Dimension | Coupon code applied to the refund. |
-| `refund_currency` | Dimension | Currency used for the refund. |
-| `transaction_id` | Dimension | Unique identifier for the transaction (Order ID). |
+| :--- | :--- | :--- |
+| Field | Type | Description |
+
 </details>
 
 </br>
@@ -771,8 +776,6 @@ Aggregates ecommerce data at product level.
 
 <details><summary>Output fields</summary>
 
-| Field | Type | Description |
-| :--- | :--- | :--- |
 | `add_payment_info` | Metric | Total number of sessions where payment information was added. |
 | `add_shipping_info` | Metric | Total number of sessions where shipping information was added. |
 | `add_to_cart` | Metric | Total number of sessions with at least one add_to_cart event. |
@@ -784,7 +787,8 @@ Aggregates ecommerce data at product level.
 | `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
 | `event_date` | Dimension | The date the event occurred. |
 | `event_name` | Dimension | The name of the interaction event. |
-| `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
+| `event_origin` | Dimension | The origin of the event. |
+| `hour_and_minute` | Dimension | Hour and minute of the event. |
 | `item_affiliation` | Dimension | The store or branch where the transaction occurred. |
 | `item_brand` | Dimension | The brand associated with the item in the transaction. |
 | `item_category` | Dimension | The primary category of the item. |
@@ -798,25 +802,23 @@ Aggregates ecommerce data at product level.
 | `item_list_id` | Dimension | ID of the list in which the item was presented. |
 | `item_list_name` | Dimension | Name of the list in which the item was presented. |
 | `item_name` | Dimension | Legal or commercial name of the product item. |
-| `item_revenue_purchased` | Metric | Gross revenue generated by the sale of this item. |
 | `item_quantity_added_to_cart` | Metric | Total quantity of this item added to the cart. |
 | `item_quantity_purchased` | Metric | Total quantity of this item purchased in the transaction. |
 | `item_quantity_refunded` | Metric | Total quantity of this item refunded in the transaction. |
 | `item_quantity_removed_from_cart` | Metric | Total quantity of this item removed from the cart. |
+| `item_revenue_purchased` | Metric | Gross revenue generated by the sale of this item. |
 | `item_revenue_refunded` | Metric | Total value refunded for this specific item. |
-| `item_revenue_net_refund` | Metric | Net revenue from this item after accounting for refunds. |
-| `unique_item_purchases` | Metric | Number of unique product items in the transaction. |
 | `item_variant` | Metric | Specific variant of the item (e.g., size or color). |
 | `list_id` | Dimension | The ID of the product list. |
 | `list_name` | Dimension | The name of the product list. |
-| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
+| `new_user_client_id` | Dimension | Client ID if this is the user's first session, else null. |
 | `promotion_id` | Dimension | The unique ID of the promotion applied. |
 | `promotion_name` | Dimension | The commercial name of the promotion applied. |
 | `purchase_id` | Dimension | The unique ID of the purchase transaction. |
 | `refund_id` | Dimension | The unique ID of the refund transaction. |
 | `remove_from_cart` | Metric | Total number of sessions with at least one remove_from_cart event. |
 | `remove_from_wishlist` | Metric | Total number of sessions with at least one remove_from_wishlist event. |
-| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
 | `select_item` | Metric | Total number of sessions where an item was selected. |
 | `select_promotion` | Metric | Total number of sessions where a promotion was selected. |
 | `session_browser_name` | Dimension | Browser name recorded at session start. |
@@ -845,6 +847,8 @@ Aggregates ecommerce data at product level.
 | `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
 | `session_type` | Dimension | Classification of the session (New vs Returning). |
 | `transaction_id` | Dimension | Unique identifier for the transaction (Order ID). |
+| `unique_item_purchases` | Metric | Number of unique product items in the transaction. |
+| `unique_item_refunds` | Metric | Number of unique product items refunded. |
 | `user_campaign` | Dimension | Original acquisition campaign for the user. |
 | `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
 | `user_campaign_content` | Dimension | Original acquisition campaign content. |
@@ -863,6 +867,8 @@ Aggregates ecommerce data at product level.
 | `view_item` | Metric | Total number of sessions where an item was viewed. |
 | `view_item_list` | Metric | Total number of sessions where an item list was viewed. |
 | `view_promotion` | Metric | Total number of sessions where a promotion was viewed. |
+| :--- | :--- | :--- |
+| Field | Type | Description |
 
 </details>
 
@@ -882,8 +888,8 @@ Aggregates event data at shopping stages level, regardless of where the user sta
 | `client_id_next_step` | Dimension | The client identifier for the next step in the funnel. |
 | `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
 | `event_date` | Dimension | The date the event occurred. |
-| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
-| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `new_user_client_id` | Dimension | Client ID if this is the user's first session, else null. |
+| `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
 | `session_browser_name` | Dimension | Browser name recorded at session start. |
 | `session_campaign` | Dimension | Acquisition campaign for the session. |
 | `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
@@ -906,7 +912,6 @@ Aggregates event data at shopping stages level, regardless of where the user sta
 | `session_number` | Dimension | Sequence number of the session for the user. |
 | `session_source` | Dimension | Traffic source for the session. |
 | `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
-| `session_tld_source` | Dimension | Session source including TLD. |
 | `status` | Dimension | The status of the step in the funnel. |
 | `step_index` | Dimension | The index of the current step in the funnel. |
 | `step_index_next_step` | Dimension | The index of the next step in the funnel. |
@@ -942,8 +947,8 @@ Aggregates event data at shopping stages level, for users who follow a specific,
 | `client_id_next_step` | Dimension | The client identifier for the next step in the funnel. |
 | `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
 | `event_date` | Dimension | The date the event occurred. |
-| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
-| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `new_user_client_id` | Dimension | Client ID if this is the user's first session, else null. |
+| `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
 | `session_browser_name` | Dimension | Browser name recorded at session start. |
 | `session_campaign` | Dimension | Acquisition campaign for the session. |
 | `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
@@ -1036,8 +1041,8 @@ Aggregates consent data at session level.
 | `consent_value_string` | Dimension | The raw string value of the consent expressed. |
 | `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
 | `engaged_session` | Metric | Count of sessions that met the engagement criteria. |
-| `new_user` | Dimension | Client ID if this is the user's first session, else null. |
-| `returning_user` | Dimension | Client ID if this is not the user's first session, else null. |
+| `new_user_client_id` | Dimension | Client ID if this is the user's first session, else null. |
+| `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
 | `session_browser_name` | Dimension | Browser name recorded at session start. |
 | `session_campaign` | Dimension | Acquisition campaign for the session. |
 | `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
@@ -1132,8 +1137,9 @@ This table illustrates the fields available across different table functions, al
 | `cs_hostname` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `cs_tag_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `cs_tag_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
+| `customer_client_id` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
+| `customer_status` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
 | `customer_type` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
-| `customers` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `datalayer` | Dimension | JSON | X |  |  |  |  |  |  |  | X |  |
 | `days_from_first_purchase` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `days_from_first_to_last_visit` | Metric | integer | X | X |  |  |  |  |  |  |  |  |
@@ -1145,6 +1151,8 @@ This table illustrates the fields available across different table functions, al
 | `device_model` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `device_type` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `device_vendor` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
+| `duplicate_purchase` | Metric | integer |  |  |  |  | X |  |  |  |  |  |
+| `duplicate_refund` | Metric | integer |  |  |  |  | X |  |  |  |  |  |
 | `ecommerce` | Dimension | JSON | X |  |  |  |  |  |  |  | X |  |
 | `engaged_session` | Metric | integer |  |  | X |  |  |  |  |  |  | X |
 | `engaged_sessions_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
@@ -1161,7 +1169,7 @@ This table illustrates the fields available across different table functions, al
 | `functionality_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `functionality_storage_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `functionality_storage_denied_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
-| `is_customer` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
+| `hour_and_minute` | Dimension | string |  |  |  |  | X | X |  |  |  |  |
 | `item_affiliation` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `item_brand` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `item_category` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
@@ -1175,23 +1183,21 @@ This table illustrates the fields available across different table functions, al
 | `item_list_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `item_list_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `item_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
-| `item_revenue_purchased` | Metric | float |  |  |  |  |  | X |  |  |  |  |
 | `item_quantity_added_to_cart` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
 | `item_quantity_purchased` | Metric | integer |  | X |  |  |  | X |  |  |  |  |
 | `item_quantity_refunded` | Metric | integer |  | X |  |  |  | X |  |  |  |  |
 | `item_quantity_removed_from_cart` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
-| `item_revenue_refunded` | Metric | float |  |  |  |  |  | X |  |  |  |  |
 | `item_revenue_net_refund` | Metric | float |  |  |  |  |  | X |  |  |  |  |
-| `unique_item_purchases` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
+| `item_revenue_purchased` | Metric | float |  |  |  |  |  | X |  |  |  |  |
+| `item_revenue_refunded` | Metric | float |  |  |  |  |  | X |  |  |  |  |
 | `item_variant` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
 | `last_purchase_timestamp` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
 | `list_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `list_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
-| `new_customers` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
+| `new_customer_client_id` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
 | `new_session` | Metric | integer | X |  | X |  |  |  |  |  |  |  |
 | `new_sessions_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
-| `new_user` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
-| `new_user_client_id` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
+| `new_user_client_id` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `os_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `os_version` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_category` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
@@ -1203,8 +1209,8 @@ This table illustrates the fields available across different table functions, al
 | `page_hostname_protocol` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_id` | Dimension | string | X |  |  | X |  |  |  |  | X |  |
 | `page_language` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
-| `page_load_timestamp` | Dimension | integer | X |  |  | X |  |  |  |  |  |  |
 | `page_load_time_sec` | Dimension | float |  |  |  | X |  |  |  |  |  |  |
+| `page_load_timestamp` | Dimension | integer | X |  |  | X |  |  |  |  |  |  |
 | `page_location` | Dimension | string | X |  |  | X |  |  |  |  |  |  |
 | `page_query` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `page_referrer` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -1221,12 +1227,16 @@ This table illustrates the fields available across different table functions, al
 | `promotion_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `promotion_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `purchase` | Metric | integer |  | X | X |  | X |  |  |  |  |  |
+| `purchase_coupon` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
+| `purchase_currency` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
+| `purchase_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `purchase_net_refund` | Metric | integer |  |  | X |  |  |  |  |  |  |  |
 | `purchase_revenue` | Metric | float |  | X | X |  | X |  |  |  |  |  |
 | `purchase_shipping` | Metric | float |  |  | X |  | X |  |  |  |  |  |
 | `purchase_tax` | Metric | float |  |  | X |  | X |  |  |  |  |  |
-| `purchase_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `refund` | Metric | integer |  | X | X |  | X |  |  |  |  |  |
+| `refund_coupon` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
+| `refund_currency` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
 | `refund_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `refund_revenue` | Metric | float |  | X | X |  | X |  |  |  |  |  |
 | `refund_shipping` | Metric | float |  |  | X |  | X |  |  |  |  |  |
@@ -1234,11 +1244,10 @@ This table illustrates the fields available across different table functions, al
 | `remove_from_cart` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `remove_from_wishlist` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `respect_consent_mode` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
-| `returning_customers` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
+| `returning_customer_client_id` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
 | `returning_session` | Metric | integer | X |  | X |  |  |  |  |  |  |  |
 | `returning_sessions_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
-| `returning_user` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
-| `returning_user_client_id` | Dimension | string |  | X |  |  |  |  |  |  |  |  |
+| `returning_user_client_id` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `revenue_net_refund` | Metric | float |  | X | X |  |  |  |  |  |  |  |
 | `screen_size` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `search_term` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -1306,12 +1315,11 @@ This table illustrates the fields available across different table functions, al
 | `tax_net_refund` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `time_on_page` | Metric | float | X |  |  | X |  |  |  |  |  |  |
 | `tld_source` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
+| `total_events` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `total_page_load_time` | Metric | integer | X |  |  |  |  |  |  |  |  |  |
-| `purchase_coupon` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
-| `purchase_currency` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
-| `refund_coupon` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
-| `refund_currency` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
 | `transaction_id` | Dimension | string |  |  |  |  | X | X |  |  |  |  |
+| `unique_item_purchases` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
+| `unique_item_refunds` | Metric | integer |  |  |  |  |  | X |  |  |  |  |
 | `user_agent` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `user_campaign` | Dimension | string | X | X | X | X | X | X | X | X | X | X |
 | `user_campaign_click_id` | Dimension | string | X | X | X | X | X | X |  |  | X |  |

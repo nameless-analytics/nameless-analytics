@@ -1,62 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.consents`(start_date DATE, end_date DATE) AS (
-with raw_consent_data as (
-    select
-      # USER DATA
-      user_date,
-      user_id,
-      client_id,
-      user_type,
-      new_user_client_id,
-      returning_user_client_id,
-      user_channel_grouping,
-      user_source,
-      user_campaign,
-      user_campaign_id,
-      user_campaign_click_id,
-      user_campaign_term,
-      user_campaign_content,
-      user_device_type,
-      user_country,
-      user_city,
-      user_language,
-
-      # SESSION DATA
-      session_date,
-      session_number,
-      session_id,
-      session_start_timestamp,
-      session_duration_sec,
-      engaged_session,
-      session_channel_grouping,
-      session_source, 
-      session_campaign,
-      session_device_type,
-      session_country, 
-      session_city,
-      session_browser_name,
-      session_language,
-      cross_domain_session,
-      session_landing_page_category,
-      session_landing_page_location,
-      session_landing_page_title,
-      session_exit_page_category,
-      session_exit_page_location,
-      session_exit_page_title,
-      session_hostname,
-
-      # CONSENT DATA
-      consent_expressed,
-      session_ad_user_data,
-      session_ad_personalization,
-      session_ad_storage,
-      session_analytics_storage,
-      session_functionality_storage,
-      session_personalization_storage,
-      session_security_storage
-    from `tom-moretti.nameless_analytics.sessions`(start_date, end_date)
-  ),
-
-  consent_data as (
+  with consent_data as (
     select
       # USER DATA
       user_date, 
@@ -104,7 +47,7 @@ with raw_consent_data as (
       end as consent_state,
       consent_name,
       consent_value_int_accepted_raw
-    from raw_consent_data
+    from `tom-moretti.nameless_analytics.sessions`(start_date, end_date)
     unpivot (
       consent_value_int_accepted_raw for consent_name in (
         session_ad_user_data, 
