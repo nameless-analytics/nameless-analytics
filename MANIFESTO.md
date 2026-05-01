@@ -65,6 +65,16 @@ It's about not collecting what you don't need and owning what you do.
 
 
 
+## The Infrastructure Paradox
+
+Some might find it ironic: we declare war on Big Tech tracking, yet we build our infrastructure on top of Big Tech clouds like GCP. 
+
+This is not a contradiction; it is a tactical choice. When you use proprietary analytics, your data is the product. When you host your own pipeline on a cloud provider, **you are the customer**. 
+
+You own the architecture. You control the flow. The raw data sits in your private tenant, under your rules. We use the empire's tools to escape the empire's rules. Data sovereignty means owning the truth, regardless of whose silicon it sits on.
+
+
+
 ## Let's go
 
 If you are ready to take back control of your analytics infrastructure and start collecting your own proprietary first-party data, [start from here](README.md).
