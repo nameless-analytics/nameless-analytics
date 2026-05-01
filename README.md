@@ -806,8 +806,11 @@ SQL Table Functions can be used as sources for reporting, such in [Google Looker
 ## AI support
 ### Q&A Agents
 Get expert help for implementation, technical documentation, and advanced SQL queries. Choose from: 
-- **[OpenAI ChatGPT](https://chatgpt.com/g/g-6860ef949f94819194c3bc2c08e2f395-nameless-analytics-qna)**: Specialized GPTs trained on the platform docs, recommended.
-- **[Google Gemini](https://gemini.google.com/gem/1ZsO2SPn5yqDXDAbwHb6bHJcU0LjVsL6S)**: Specialized Gem trained on the platform docs
+
+- **[Nameless Analytics QnA](https://gemini.google.com/gem/1O6zM0hnz8NhHwjRT3weJc28pa8WlFkj1)**: Specialized Google Gemini Gem trained on the platform docs
+- **[Nameless Analytics Query helper](https://gemini.google.com/gem/1zedGCSZrBLwpHalZ294c9QoOi5wyGL95)**: Specialized Google Gemini Gem trained on the platform SQL scripts
+
+
 
 ### Conversational Analysis Agent in BigQuery Studio
 In BigQuery Studio, it is possible to configure a Data Agent (powered by Gemini) for conversational analysis, allowing users to explore and query datasets using simple natural language. These agents leverage tables, views, and **table functions** as "knowledge sources" to learn the data schema and business logic. 
