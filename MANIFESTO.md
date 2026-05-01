@@ -69,9 +69,11 @@ It's about not collecting what you don't need and owning what you do.
 
 Some might find it ironic: we declare war on Big Tech tracking, yet we build our infrastructure on top of Big Tech clouds like GCP. 
 
-This is not a contradiction; it is a tactical choice. When you use proprietary analytics, your data is the product. When you host your own pipeline on a cloud provider, **you are the customer**. 
+This is not a contradiction, it is a tactical choice.  
 
-You own the architecture. You control the flow. The raw data sits in your private tenant, under your rules. We use the empire's tools to escape the empire's rules. Data sovereignty means owning the truth, regardless of whose silicon it sits on.
+When you use proprietary analytics, your data is the product. 
+
+When you host your own pipeline on a cloud provider, **you are the customer**. You own the architecture. You control the flow. The raw data sits in your private tenant, under your rules. We use the empire's tools to escape the empire's rules.
 
 
 
