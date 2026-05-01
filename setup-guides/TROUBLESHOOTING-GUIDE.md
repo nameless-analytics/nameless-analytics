@@ -37,7 +37,7 @@ An **Orphan Event** is any interaction (click, scroll, etc.) that reaches the se
 
 Browser console shows: 
 
-`[event_name] > 🔴 Event fired before a page view event. The first event on a page view ever must be page_view. Request aborted`
+`[event_name] > 🔴 Event fired before a page view event. The first event on any page must be page_view. Request aborted`
 
 - **Issue:** An interaction event is fired before the `page_view` event has been dispatched.
 - **Solution:** Nameless Analytics utilizes an internal fetch queue to manage requests, which prevents most race conditions. However, every event must be preceded by a `page_view` event. Ensure the page view is the first event sent at every page load.
@@ -207,11 +207,11 @@ Errors occurring when the server attempts to persist data to Firestore or BigQue
 
 Server logs show: 
 
-`🔴 User or session data not created in Firestore`
+`🔴 User or session data not created to Firestore`
 
-`🔴 User or session data not added in Firestore`
+`🔴 User or session data not added to Firestore`
 
-`🔴 User or session data not updated in Firestore`
+`🔴 User or session data not updated to Firestore`
 
 - **Issue:** The Firestore write operation failed.
 - **Solution:** Verify the Google Cloud Project permissions and quotas. Ensure the **Service Account** running your GTM Server (e.g., the Cloud Run or App Engine default service account) has the `roles/datastore.user` role. Also, verify that Firestore is initialized in **Native Mode**, as Datastore Mode is not supported.

@@ -1,7 +1,7 @@
 # Nameless Analytics | Reporting Tables
 The Nameless Analytics Reporting Tables provide a structured set of BigQuery resources where user, session, and event data are centrally stored and processed.
 
-For an overview of how Nameless Analytics works [start from here](../README.md#high-level-data-flow).
+For an overview of how Nameless Analytics works [start from here](../README.md#overview).
 
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
 
@@ -77,7 +77,7 @@ declare main_dataset_sql string default format(
       # default_partition_expiration_days = PARTITION_EXPIRATION,
       # default_table_expiration_days = TABLE_EXPIRATION,
       # max_time_travel_hours = HOURS, # default 168 hours => 7 days 
-      # storage_billing_model = BILLING_MODEL # Phytical or logical (default)  
+      # storage_billing_model = BILLING_MODEL # Physical or logical (default)  
       description = 'Nameless Analytics',
       location = '%s'
     );
