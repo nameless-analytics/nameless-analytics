@@ -145,8 +145,8 @@ Server logs show:
 
 `🔴 Missing required parameters: [parameters]`
 
-- **Issue:** The server rejected the JSON payload because it's missing one or more mandatory top-level fields: `client_id`, `user_date`, `session_id`, `session_date`, `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
-- **Solution:** If you are using the standard GTM tags, this shouldn't happen. If implementing a custom tracker or using the **Streaming Protocol**, verify that the JSON payload includes all the mandatory root fields listed above.
+- **Issue:** The server rejected the JSON payload because it's missing one or more mandatory top-level fields: `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
+- **Solution:** If you are using the standard GTM tags, this shouldn't happen. If implementing a custom tracker or using the **Streaming Protocol**, verify that the JSON payload includes all the mandatory root fields listed above. *(Note: The Streaming Protocol JSON payload must also include objects for `user_data`, `session_data`, and `gtm_data` to prevent server-side errors).*
 
 
 

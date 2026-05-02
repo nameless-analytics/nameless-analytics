@@ -70,11 +70,13 @@ To ensure requests are accepted by the server, following requirements must be me
 - **API Key**: The `x-api-key` header must match your Server-side Client Tag configuration.
 - **Cookie**: The HTTP request must include the `Cookie` header containing `na_u={client_id}; na_s={na_s_cookie}`. This is the **only** source of truth used by the server to identify the user and session. **Note**: Both cookies must follow the strict alphanumeric format (15 characters for each segment) or the request will be rejected with a `403 Invalid cookie format` error.
 
-### Mandatory fields
-The server validates the presence of the following top-level fields:
-`user_data`, `session_data`, `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`, `gtm_data`.
 
-> **Please Note**: Even if you have no additional parameters to pass, `user_data`, `session_data`, and `gtm_data` **must still be present** in the JSON payload as empty objects `{}`. Omitting these root keys entirely will cause the Server-side Tag to crash when it attempts to inject server-side values into them.
+### Mandatory fields
+The JSON payload must include the following top-level fields:
+`page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
+
+> **Please Note**: Even if you have no additional parameters to pass, `user_data`, `session_data`, and `gtm_data` **must also be present** in the JSON payload as objects `{}`. Omitting these root keys entirely will cause the Server-side Tag to crash when it attempts to inject server-side values into them.
+
 
 ### Data formats
 - **Dates**: Must be strings in `YYYY-MM-DD` format (e.g., `2026-04-08`).

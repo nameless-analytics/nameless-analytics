@@ -578,7 +578,7 @@ The system transparently tracks pipeline health by measuring **ingestion latency
 
 
 ### Bot protection
-Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of over 45 User-Agent strings.
+Actively detects and blocks automated traffic returning a `403 Forbidden` status. The system filters requests based on a predefined blacklist of 45 User-Agent strings.
 
 <details><summary>See bot protection list</summary>
 

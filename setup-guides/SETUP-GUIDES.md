@@ -10,6 +10,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 
 - [How to set up Nameless Analytics in GTM](#how-to-set-up-nameless-analytics-in-gtm)
 - [How to track page views](#how-to-track-page-views)
+- [How to track search results](#how-to-track-search-results)
 - [How to track custom events](#how-to-track-custom-events)
 - [How to set up User ID and user properties](#how-to-set-up-user-id-and-user-properties)
 - [How to respect user consents](#how-to-respect-user-consents)
@@ -110,6 +111,27 @@ dataLayer.push({
 ```
 
 > Make sure to [override the page parameters](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#page-data) in the Nameless Analytics Client-side Tracker Configuration Variable otherwise the updated page data will not be set correctly.
+
+
+
+## How to track search results
+To track internal site searches, you can push a custom event to the `dataLayer` when a user performs a search.
+
+### 1. Fire a search event
+Push the `view_search_results` event and the `search_term` parameter to the `dataLayer`:
+
+```javascript
+dataLayer.push({
+  event: 'view_search_results',
+  search_term: 'analytics'
+});
+```
+
+### 2. Configure the GTM Tag
+1. **Create a DataLayer Variable**: In GTM, create a Data Layer Variable for the `search_term`.
+2. **Create the Trigger**: Create a Custom Event Trigger matching the event name `view_search_results`.
+3. **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag** and assign the trigger to it.
+4. **Map the Parameter**: Expand the **Event Parameters** section within the tag configuration and add the `search_term` parameter, assigning the DataLayer Variable you created as its value.
 
 
 
@@ -378,7 +400,7 @@ To prevent unauthorized websites from sending data to your endpoint, you can res
 ### 2. Bot & Automated Traffic Protection
 Nameless Analytics includes a built-in filter to block requests from known bots, scrapers, and automated libraries (e.g., curl, python-requests, chatgpt).
 1. Scroll down to **Advanced settings** and check **Enable bot protection**.
-2. All identified automated requests will be rejected with a `403 Forbidden` status. See the full list of blocked agents in the [Troubleshooting Guide](TROUBLESHOOTING-GUIDE.md#validation-errors-403-forbidden).
+2. All identified automated requests will be rejected with a `403 Forbidden` status. See the full list of blocked agents in the [main README](../README.md#bot-protection).
 
 ### 3. IP Blacklisting
 If you identify specific IP addresses that are spamming your endpoint, you can manually block them.
