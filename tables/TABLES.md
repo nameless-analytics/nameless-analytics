@@ -26,7 +26,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Consents](#consents)
 - [Reporting fields](#reporting-fields)
 - [Data Governance and Maintenance](#data-governance-and-maintenance)
-  - [Delete user data script (Recommended)](#delete-user-data-script-recommended)
+  - [Delete user data script](#delete-user-data-script)
   - [Manual user data deletion](#manual-user-data-deletion)
   - [Data Health Check](#data-health-check)
 
@@ -1360,8 +1360,10 @@ Below are SQL templates to help you manage data integrity and comply with privac
 To comply with GDPR "Right to be Forgotten" requests, data must be removed from both the historical timeline (BigQuery) and the real-time snapshots (Firestore).
 
 
-### Delete user data script (Recommended)
-You can use the provided [`Users deletion tool`](users-deletion-tool.py) Python script to handle both deletions in a single command.
+### Delete user data script
+You can use the provided [`Users deletion tool`](users-deletion-tool.py) Python script to handle both deletions in a single command. 
+
+This is the recommended method.
 
 ### Manual user data deletion
 If you prefer manual deletion, please remove data from both BigQuery and Firestore.

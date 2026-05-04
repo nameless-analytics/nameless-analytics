@@ -226,9 +226,9 @@ dataLayer.push({
 ```
 
 Setup:
-- **Create the Trigger**: Create a Custom Event Trigger matching the event name (e.g., `login`, `logout`, or `signup`).
+- **Create the Trigger**: Create a Custom Event Trigger matching the event name (e.g., `login`, `logout`, or `sign_up`).
 - **Create a Variable**: Create a Data Layer Variable for the `user_id`.
-- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `login` event (or `logout` or `signup`) and assign the trigger to it.
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `login` event (or `logout` or `sign_up`) and assign the trigger to it.
 - **Map the Parameter**: Open the **Nameless Analytics Client-side Tracker Configuration Variable**. Under the **Session Data** section, map the `user_id` field to the DataLayer Variable you created.
 
 
@@ -526,9 +526,9 @@ During the agent creation in the BigQuery Studio Agent Catalog, ensure to:
 To comply with GDPR "Right to be Forgotten" (RTBF) requests, data must be removed from both the historical timeline (**BigQuery**) and the real-time snapshots (**Firestore**).
 
 The most efficient way to handle these requests is using the provided automation:
-- **[User Data Deletion Script](../tables/TABLES.md#delete-user-data-deletion-script-recommended)**: A Python utility to delete a specific `client_id` from both BigQuery and Firestore in a single operation.
+**[User Data Deletion Script](../tables/TABLES.md#delete-user-data-script)**: A Python utility to delete a specific `client_id` from both BigQuery and Firestore in a single operation. This is the recommended method.
 
-Alternatively, you can perform manual deletions by following the instructions in the [Reporting Tables documentation](../tables/TABLES.md#manual-user-data-deletion).
+Alternatively, you can perform [manual deletions](../tables/TABLES.md#manual-user-data-deletion).
 
 
 ---
