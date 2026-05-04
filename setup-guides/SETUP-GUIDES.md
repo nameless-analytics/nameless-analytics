@@ -23,6 +23,8 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 - [How to configure a Conversational Analysis Agent in BigQuery Studio](#how-to-configure-a-conversational-analysis-agent-in-bigquery-studio)
 - [Data Governance & Privacy compliance](#data-governance--privacy-compliance)
 
+
+
 ## How to set up Nameless Analytics in GTM
 
 Setting up Nameless Analytics involves a dual-container strategy that combines Client-side GTM with Server-side GTM. 
@@ -40,31 +42,29 @@ Before proceeding, ensure the Google Cloud environment is fully provisioned:
 - **Firestore**: A database instance (Native Mode) should be initialized (usually the `(default)` instance).
 - **Server-side GTM**: The instance (Cloud Run, App Engine or Stape) must be active and mapped to a custom first-party domain.
 
-
-### 2. Asset Acquisition
 Download the containers templates from [GTM containers](../gtm-containers/) folder. These JSON files contain the standardized logic for event capture, sequential execution queuing, and server-side orchestration.
 
 
-### 3. Container Integration & Merging
+### 2. Container Integration & Merging
 Integrate the relative template into GTM Client-side and Server-side environments with the following steps: 
 1. Navigate to **Admin > Import Container**
 2. Upload the corresponding JSON template and merge it with your existing container.
 
 
-### 4a. Global Configuration (Client-side)
+### 3a. Global Configuration (Client-side)
 Configure the tracker tag:
 1. Locate the **Nameless Analytics Client-side Tracker Configuration Variable**.
 2. Update the **Request Endpoint URL** with your dedicated Server-side GTM URL (e.g., `https://gtm.yourdomain.com/nameless_analytics/`).
 
 
-### 4b. Global Configuration (Server-side)
+### 3b. Global Configuration (Server-side)
 Configure the tracker to establish a secure handshake with your server:
 1. In your Server-side workspace, locate the **Nameless Analytics Server-side Client Tag**.
 2. Update the **Request Endpoint Domain** with your dedicated Server-side GTM URL (e.g., `https://gtm.yourdomain.com`).
 3. Update the **Request Endpoint Path** with your dedicated Server-side GTM URL (e.g., `/nameless_analytics/`).
 
 
-### 5. Pipeline Validation & QA
+### 4. Pipeline Validation & QA
 1. **Synchronized Preview**: Launch **Preview Mode** for both the Web and Server containers simultaneously.
 2. **Client Audit**: Interacting with the website allows for verifying tracker initialization via browser console logs.
 3. **Server Audit**: In the Server-side GTM preview, ensure that incoming requests are correctly intercepted and parsed by the **Nameless Analytics Server-side Client Tag**.
@@ -110,7 +110,7 @@ dataLayer.push({
 });
 ```
 
-> Make sure to [override the page parameters](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#page-data) in the Nameless Analytics Client-side Tracker Configuration Variable otherwise the updated page data will not be set correctly.
+Make sure to [override the page parameters](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#page-data) in the Nameless Analytics Client-side Tracker Configuration Variable otherwise the updated page data will not be set correctly.
 
 
 
