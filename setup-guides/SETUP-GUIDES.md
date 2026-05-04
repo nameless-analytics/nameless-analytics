@@ -10,12 +10,12 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 
 - [How to set up Nameless Analytics in GTM](#how-to-set-up-nameless-analytics-in-gtm)
 - [How to track page views](#how-to-track-page-views)
-- [How to track search results](#how-to-track-search-results)
+- [How to track standard events](#how-to-track-standard-events)
 - [How to track custom events](#how-to-track-custom-events)
 - [How to set up User ID and user properties](#how-to-set-up-user-id-and-user-properties)
 - [How to respect user consents](#how-to-respect-user-consents)
 - [How to set up cross-domain tracking](#how-to-set-up-cross-domain-tracking)
-- [How to setup and customize ecommerce tracking](#how-to-setup-and-customize-ecommerce-tracking)
+- [How to set up and customize ecommerce tracking](#how-to-set-up-and-customize-ecommerce-tracking)
 - [How to send events via Streaming Protocol](#how-to-send-events-via-streaming-protocol)
 - [How to set up First-Party Library Hosting](#how-to-set-up-first-party-library-hosting)
 - [How to configure Real-time Forwarding](#how-to-configure-real-time-forwarding)
@@ -114,24 +114,122 @@ dataLayer.push({
 
 
 
-## How to track search results
-To track internal site searches, you can push a custom event to the `dataLayer` when a user performs a search.
+## How to track standard events
+Nameless Analytics supports several standard events to measure common user interactions and performance metrics. To track these, push the specific event to the `dataLayer` and map any required variables in Google Tag Manager using the **Nameless Analytics Client-side Tracker Tag**.
 
-### 1. Fire a search event
-Push the `view_search_results` event and the `search_term` parameter to the `dataLayer`:
+### Consent Update
+Fired when a user updates their privacy consent preferences. No custom parameters are required.
+
+Setup:
+- **Create the Trigger**: Create a Custom Event Trigger matching the event name `consent_update` (or whatever your Consent Management Platform calls it).
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `consent_update` event and assign the trigger to it.
+
+
+### Page Load Time
+Measures the time it takes for a page to fully load. 
+
+Setup:
+- **Create the Trigger**: Create a Trigger for when the page has fully loaded using the **Window Loaded** event.
+- **Create a Variable**: Create a Custom JavaScript Variable for `total_page_load_time`.
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `page_load_time` event and assign the trigger to it.
+- **Map the Parameter**: Expand the **Event Parameters** section within the tag configuration and add the `total_page_load_time` parameter, assigning the Custom JavaScript Variable you created as its value.
+
+Custom JavaScript Variable code for total_page_load_time:
+
+```javascript
+function() {
+  if (!window.performance) return;
+
+  try {
+    if (performance.getEntriesByType) {
+      var navEntries = performance.getEntriesByType("navigation");
+      if (navEntries && navEntries.length > 0) {
+        var nav = navEntries[0];
+        if (nav.loadEventEnd > 0) {
+          return Math.round(nav.loadEventEnd - nav.startTime);
+        }
+      }
+    }
+  } catch (e) {}
+
+  try {
+    if (performance.timing) {
+      var t = performance.timing;
+      if (t.loadEventEnd > 0) {
+        return t.loadEventEnd - t.navigationStart;
+      }
+    }
+  } catch (e) {}
+
+  return;
+}
+```
+
+
+### Page Closed
+Fired when a user leaves or closes the page.
+
+Setup:
+- **Enable scroll depth trigger**: Enable **scroll depth trigger** built-in feature in GTM.
+- **Create the Trigger**: Create a Custom Event Trigger matching the event name `scrollDepth`.
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `page_closed` event and assign the trigger to it.
+
+
+### Search Results View
+Fired when a user views a search results page.
+
+Setup:
+- **Push dataLayer**: push the `search_result_view` event to the `dataLayer` along with `search_term` parameter.
 
 ```javascript
 dataLayer.push({
-  event: 'view_search_results',
+  event: 'search_result_view',
   search_term: 'analytics'
 });
 ```
 
-### 2. Configure the GTM Tag
-1. **Create a DataLayer Variable**: In GTM, create a Data Layer Variable for the `search_term`.
-2. **Create the Trigger**: Create a Custom Event Trigger matching the event name `view_search_results`.
-3. **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag** and assign the trigger to it.
-4. **Map the Parameter**: Expand the **Event Parameters** section within the tag configuration and add the `search_term` parameter, assigning the DataLayer Variable you created as its value.
+- **Create the Trigger**: Create a Custom Event Trigger matching the event name `search_result_view`.
+- **Create a Variable**: Create a Data Layer Variable for the `search_term`.
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `search_result_view` event and assign the trigger to it.
+- **Map the Parameter**: Expand the **Event Parameters** section within the tag configuration and add the `search_term` parameter, assigning the DataLayer Variable you created as its value.
+
+
+### Search Result Click
+Fired when a user clicks on a specific search result.
+
+Setup:
+- **Push dataLayer**: push the `search_result_click` event to the `dataLayer` along with `search_term` and `search_results_name` parameters.
+
+```javascript
+dataLayer.push({
+  event: 'search_result_click',
+  search_term: 'analytics',
+  search_results_name: 'Introduction to Web Analytics'
+});
+```
+
+- **Create the Trigger**: Create a Custom Event Trigger matching the event name `search_result_click`.
+- **Create Variables**: Create two Data Layer Variables for `search_term` and `search_results_name`.
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `search_result_click` event and assign the trigger to it.
+- **Map the Parameter**: Expand the **Event Parameters** section within the tag configuration and add both the `search_term` and `search_results_name` parameters, assigning the DataLayer Variables you created as their values.
+
+
+### Authentication
+Fired when a user logs in, logs out, or signs up. 
+For these events, the `user_id` must be mapped within the Nameless Analytics Client-side Tracker Configuration Variable, under the **Session Data** section using the **User ID** field.
+
+```javascript
+dataLayer.push({
+  event: 'login', // Or 'logout', 'sign_up'
+  user_id: 'ABC-12345'
+});
+```
+
+Setup:
+- **Create the Trigger**: Create a Custom Event Trigger matching the event name (e.g., `login`, `logout`, or `signup`).
+- **Create a Variable**: Create a Data Layer Variable for the `user_id`.
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `login` event (or `logout` or `signup`) and assign the trigger to it.
+- **Map the Parameter**: Open the **Nameless Analytics Client-side Tracker Configuration Variable**. Under the **Session Data** section, map the `user_id` field to the DataLayer Variable you created.
 
 
 
@@ -150,10 +248,10 @@ dataLayer.push({
 ```
 
 ### 2. Configure the GTM Tag
-1. **Create DataLayer Variables**: In GTM, create Data Layer Variables for the custom parameters (e.g., `lead_type` and `lead_value`).
-2. **Create the Trigger**: Create a Custom Event Trigger matching your event name (e.g., `generate_lead`).
-3. **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag** and assign the trigger to it.
-4. **Map the Parameters**: Expand the **Event Parameters** section within the tag configuration and add your custom parameters in the table, assigning the DataLayer Variables you created as their values.
+- **Create the Trigger**: Create a Custom Event Trigger matching your event name (e.g., `generate_lead`).
+- **Create DataLayer Variables**: Create Data Layer Variables for the custom parameters (e.g., `lead_type` and `lead_value`).
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag** and assign the trigger to it.
+- **Map the Parameters**: Expand the **Event Parameters** section within the tag configuration and add your custom parameters in the table, assigning the DataLayer Variables you created as their values.
 
 When the tag fires, it will automatically use the `event` key as the final `event_name` in BigQuery and map all the configured parameters into the `event_data` array column.
 
@@ -297,7 +395,7 @@ No special configuration is required as requests per domain are handled independ
 
 
 
-## How to setup and customize ecommerce tracking
+## How to set up and customize ecommerce tracking
 Nameless Analytics supports full ecommerce tracking following the standard GA4 schema.
 
 ### Ecommerce Tracking Initialization
