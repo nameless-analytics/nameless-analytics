@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions`(start_date DATE, end_date DATE) AS (
-with raw_transaction_data as (
+  with raw_transaction_data as (
     select 
       # USER DATA
       user_date,

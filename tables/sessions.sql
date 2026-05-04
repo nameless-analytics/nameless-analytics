@@ -134,6 +134,10 @@ with raw_session_data as (
       session_duration_sec,
       new_session,
       returning_session,
+      case 
+        when page_view >= 2 or session_duration_sec >= 10 or purchase >= 1 then 1 
+        else 0 
+      end as engaged_session,
       session_channel_grouping, 
       session_source,
       session_campaign,
@@ -198,10 +202,6 @@ with raw_session_data as (
       upd_security_storage,
       def_security_storage,
 
-      case 
-        when page_view >= 2 or session_duration_sec >= 10 or purchase >= 1 then 1 
-        else 0 
-      end as engaged_session,
       if(has_update, update_timestamp, first_timestamp) as consent_timestamp,
       if(has_update, 'Yes', 'No') as consent_expressed,
       if(if(has_update, upd_ad_user_data, def_ad_user_data) = 'Granted', 1, 0) as session_ad_user_data,

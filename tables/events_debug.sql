@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events_debug`(start_date DATE, end_date DATE) AS (
-with raw_event_data as (
+  with raw_event_data as (
     select 
       # USER DATA
       user_date,
