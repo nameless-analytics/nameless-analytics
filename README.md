@@ -91,13 +91,12 @@ Download and import the following preconfigured GTM containers:
 - [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
 - [Server-side GTM default container](gtm-containers/gtm-server-side-container-template.json)
 
-or read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
-
-
-### Google Tag Manager tag templates
+or download and import the .tpl files from the repos:
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/client-side-tracker-tag)
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/client-side-tracker-configuration-variable)
 - [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag)
+
+Read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
 
 
 ### Documentation
