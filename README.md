@@ -15,7 +15,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
 - [Overview](#overview)
-  - [Google Tag Manager tag templates](#google-tag-manager-tag-templates)
+  - [Quick Start](#quick-start)
   - [Documentation](#documentation)
   - [Resources](#resources)
 - [Client-Side Collection](#client-side-collection)
