@@ -804,7 +804,7 @@ SQL Table Functions can be used as sources for reporting, such in [Google Looker
 ### Q&A Agents
 Get expert help for implementation, technical documentation, and advanced SQL queries: 
 
-- **[Nameless Analytics QnA]()**: Specialized Google Gemini Gem trained on the platform docs. **Coming soon**.
+- **[Nameless Analytics QnA](https://notebooklm.google.com/notebook/73cd9ce3-9873-40cf-9d52-110d74dff5f9)**: Specialized Google Notebook LM trained on the platform docs.
 
 
 ### Conversational Analysis Agent in BigQuery Studio
