@@ -264,39 +264,36 @@ When the tag fires, it will automatically use the `event` key as the final `even
 ## How to set up User ID and user properties
 To track authenticated users across devices and enrich their profiles with custom metadata (e.g., subscription tier, company size), use the `user_id` and custom User Properties. 
 
-User data is permanently attached to the session context and stored in the Firestore user profile and the BigQuery `user_data` array.
+User ID will be applied at session level and will be stored in Firestore and as well as in the BigQuery `session_data` array for each event.
+
+User Properties will be applied at user level and will be stored in Firestore and as well as in the BigQuery `user_data` array for each event.
+
 
 ### 1. Expose user data to the dataLayer
 When a user logs in or is identified, push their unique ID and any relevant profile properties to the `dataLayer` prior to firing any tags:
 
 ```javascript
 dataLayer.push({
-  user_id: 'USR-987654321', // Secure, hashed, or internal ID
-  user_tier: 'Premium',
-  company_size: 'Enterprise'
+  user_id: 'USR-987654321',
+  user_tier: 'Premium'
 });
 ```
 
-### 2. Configure the GTM Variables
-In GTM, create Data Layer Variables for `user_id` and any custom properties you exposed (e.g., `user_tier`, `company_size`).
-
-### 3. Update the Global Configuration
-Because user properties apply to the entire session and not just a single event, they must be configured at the global variable level.
-
-1. Open the **Nameless Analytics Client-side Tracker Configuration Variable**.
-2. Go to the **User Data** section.
-3. Map the `user_id` field to your newly created `user_id` DataLayer Variable.
-4. Expand the **User Properties** table and add your custom metadata (e.g., `user_tier`, `company_size`), mapping them to their respective DataLayer Variables.
-
-From this point on, every event dispatched by the tracker will automatically be enriched with the `user_id` and all mapped profile properties.
+### 2. Configure Nameless Analytics Client-side Tracker Configuration Variable
+1. Create Data Layer Variables for `user_id` and any custom properties you exposed (e.g., `user_tier`).
+2. Open the **Nameless Analytics Client-side Tracker Configuration Variable**.
+3. Under **Session parameters** section, map the `user_id` field to the `user_id` DataLayer Variable.
+4. Under **User parameters** section, map your custom metadata (e.g., `user_tier`) to their respective DataLayer Variables.
 
 
 
 ## How to respect user consents
 Nameless Analytics natively integrates with Google Consent Mode to ensure privacy compliance while maximizing data attribution accuracy.
 
+
 ### 1. Enable Consent Initialization
 Ensure that your Consent Management Platform (CMP) or custom HTML script triggers the default `gtag('consent', 'default', ...)` command **before** the Google Tag Manager container loads.
+
 
 ### 2. Configure the Tracker Variable
 In your GTM Client-side workspace, locate the **Nameless Analytics Client-side Tracker Configuration Variable**.
@@ -307,7 +304,8 @@ When this option is enabled:
 - If `analytics_storage` is `denied`, the tracker halts all request transmissions and waits for the user's consent update.
 - If Consent Mode is entirely missing from the page, the tag aborts execution to prevent accidental non-compliant tracking.
 
-### 3. Preserving Acquisition Data (The na_temp cookie)
+
+### 3. Preserving Acquisition Data (the na_temp cookie)
 Nameless Analytics features a "Smart Consent Management" system to prevent attribution loss (like turning organic traffic into "direct" traffic) while users navigate your site before accepting cookies.
 
 When a user lands on the site and `analytics_storage` is `denied`, the Client-side Tracker intercepts the acquisition parameters (UTMs, Referrer, etc.) and temporarily stores them in a first-party session cookie named `na_temp`. 
@@ -327,8 +325,6 @@ Nameless Analytics utilizes server-side **HttpOnly cookies** for maximum securit
 
 Since these cookies are inaccessible to client-side JavaScript, the tracker employs a real-time 'handshake' mechanism via a specific event called **`get_user_data`**. 
 
-> If IDs are not passing between domains, verify your [Cross-domain Troubleshooting](TROUBLESHOOTING-GUIDE.md) steps.
-
 When a user clicks an outbound link to a tracked domain, the tracker intercepts the click and sends an asynchronous `get_user_data` request to the Server-side GTM endpoint. The server extracts the `client_id` and `session_id` from the secure cookies and returns them to the tracker, which then decorates the destination URL with the **`na_id`** parameter (e.g., `https://destination.com/?na_id=...`). This ensures 100% accurate session stitching even across different domains.
 
 To ensure proper DNS resolution, the IP addresses of the Google App Engine, Cloud Run or Stape instances running the server-side GTM container must be correctly associated with each respective domain.
@@ -337,8 +333,6 @@ Follow these guides for:
 - Google App Engine [standard](https://cloud.google.com/appengine/docs/standard/mapping-custom-domains) and [flexible](https://cloud.google.com/appengine/docs/flexible/mapping-custom-domains) environments
 - [Google Cloud Run](https://cloud.google.com/run/docs/mapping-custom-domains)
 - [Stape](https://help.stape.io/hc/en-us/articles/4405367809681-How-to-setup-custom-domain-for-server-side-Google-Tag-Manager)
-
-
 
 
 ### One client-side GTM container for multiple sites
