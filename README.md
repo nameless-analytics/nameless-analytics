@@ -51,7 +51,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Consents](#consents)
   - [Debugging & Tech](#debugging-tech)
 - [AI support](#ai-support)
-  - [Q&A Agents](#q-a-agents)
+  - [Q&A Agents](#q--a-agents)
   - [Conversational Analysis Agent in BigQuery Studio](#conversational-analysis-agent-in-bigquery-studio)
 - [Google Cloud costs](#google-cloud-costs)
   - [Data processing](#data-processing)
