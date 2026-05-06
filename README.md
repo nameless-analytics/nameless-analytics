@@ -804,8 +804,8 @@ SQL Table Functions can be used as sources for reporting, such in [Google Looker
 ### Q&A Agents
 Get expert help for implementation, technical documentation, and advanced SQL queries. Choose from: 
 
-- **[Nameless Analytics QnA](https://gemini.google.com/gem/1O6zM0hnz8NhHwjRT3weJc28pa8WlFkj1)**: Specialized Google Gemini Gem trained on the platform docs
-- **[Nameless Analytics Query helper](https://gemini.google.com/gem/1zedGCSZrBLwpHalZ294c9QoOi5wyGL95)**: Specialized Google Gemini Gem trained on the platform SQL scripts
+- **[Nameless Analytics QnA]()**: Specialized Google Gemini Gem trained on the platform docs. **Coming soon**.
+- **[Nameless Analytics Query helper]()**: Specialized Google Gemini Gem trained on the platform SQL scripts. **Coming soon**.
 
 
 
