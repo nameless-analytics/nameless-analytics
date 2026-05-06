@@ -87,11 +87,7 @@ Before starting, ensure you have the following resources under the same account 
 - A Google BigQuery project + dataset, raw tables and table functions created using the provided [SQL scripts](tables/TABLES.md)
 - A Google Firestore database enabled in Native Mode
 
-Download and import the following preconfigured GTM containers:
-- [Client-side GTM default container](gtm-containers/gtm-client-side-container-template.json)
-- [Server-side GTM default container](gtm-containers/gtm-server-side-container-template.json)
-
-or download and import the .tpl files from the repos:
+Download and import the .tpl files from the repos:
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/client-side-tracker-tag)
 - [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/client-side-tracker-configuration-variable)
 - [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag)

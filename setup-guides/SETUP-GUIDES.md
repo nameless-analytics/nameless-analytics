@@ -26,54 +26,58 @@ For an overview of how Nameless Analytics works [start from here](../README.md#h
 
 
 ## How to set up Nameless Analytics in GTM
-
-Setting up Nameless Analytics involves a dual-container strategy that combines Client-side GTM with Server-side GTM. 
-
-This architecture allows for capturing granular interactions in the browser while offloading complex processing and sensitive data handling to a private server environment.
-
-The implementation is streamlined through pre-configured templates that include all necessary Tags, Triggers, and Variables to activate a first-party analytics pipeline in minutes.
+Setting up Nameless Analytics involves using a dual GTM containers strategy, combining a client-side container with a server-side one. The implementation is streamlined through three custom templates.
 
 **Encountering issues during setup?** Check the [Troubleshooting guide](TROUBLESHOOTING-GUIDE.md).
 
 
 ### 1. Prerequisites
 Before proceeding, ensure the Google Cloud environment is fully provisioned:
-- **BigQuery**: Dataset, `events_raw` and `calendar_dates` tables must be created according to the [SQL schemas](../tables/TABLES.md).
-- **Firestore**: A database instance (Native Mode) should be initialized (usually the `(default)` instance).
-- **Server-side GTM**: The instance (Cloud Run, App Engine or Stape) must be active and mapped to a custom first-party domain.
-
-Download the containers templates from [GTM containers](../gtm-containers/) folder. These JSON files contain the standardized logic for event capture, sequential execution queuing, and server-side orchestration.
+- **BigQuery**: Dataset, `events_raw` and `calendar_dates` tables must be created according to the [SQL schemas](../tables/TABLES.md)
+- **Firestore**: A database instance (Native Mode) should be initialized (usually the `(default)` instance)
+- **Server-side GTM**: The instance (Cloud Run, App Engine or Stape) must be active and mapped to a custom first-party domain
 
 
-### 2. Container Integration & Merging
-Integrate the relative template into GTM Client-side and Server-side environments with the following steps: 
-1. Navigate to **Admin > Import Container**
-2. Upload the corresponding JSON template and merge it with your existing container.
+### 2. Template Integration
+Download and import the `.tpl` files into GTM Client-side and Server-side environments with the following steps: 
+1. Navigate to **Templates**
+2. Click **New** in the Tag Templates or Variable Templates section
+3. Click the **three dots menu** (top right) and select **Import**
+4. Upload the corresponding `.tpl` file and **Save**
 
 
-### 3a. Global Configuration (Client-side)
-Configure the tracker tag:
-1. Locate the **Nameless Analytics Client-side Tracker Configuration Variable**.
-2. Update the **Request Endpoint URL** with your dedicated Server-side GTM URL (e.g., `https://gtm.yourdomain.com/nameless_analytics/`).
+### 3a. Client-side Container Configuration
+Create a new:
+1. GTM variable using the template **Nameless Analytics Client-side Tracker Configuration Variable** 
+  - Under **Endpoint Domain Name**, set the endpoint domain name of Server-side GTM (e.g., `gtm.yourdomain.com`)
+  - Under **Endpoint Path**, set the **path** of your dedicated Server-side GTM URL (e.g., `na/collect/`)
+2. GTM tag using the template **Nameless Analytics Client-side Tracker Tag**
+  - Under **Event name**, select **standard event name** and then **page view**
+  - Under **Configuration variable settings**, add the created **Nameless Analytics Client-side Tracker Configuration Variable**
+  - Use **All Pages** as trigger for the tag
 
 
-### 3b. Global Configuration (Server-side)
-Configure the tracker to establish a secure handshake with your server:
-1. In your Server-side workspace, locate the **Nameless Analytics Server-side Client Tag**.
-2. Update the **Request Endpoint Domain** with your dedicated Server-side GTM URL (e.g., `https://gtm.yourdomain.com`).
-3. Update the **Request Endpoint Path** with your dedicated Server-side GTM URL (e.g., `/nameless_analytics/`).
+### 3b. Server-side Container Configuration
+Create a new:
+1. GTM client tag using the template **Nameless Analytics Server-side Client Tag**
+  - Under **Request Endpoint Path**, set the **path** of your dedicated Server-side GTM URL (e.g., `na/collect/`)
+  - Under **Google BigQuery Project ID**, set the **ID** of your BigQuery project
+  - Under **Google BigQuery Dataset ID**, set the **ID** of your BigQuery dataset
+  - Under **Google BigQuery Table ID**, set the **ID** of your BigQuery table
 
 
 ### 4. Pipeline Validation & QA
-1. **Synchronized Preview**: Launch **Preview Mode** for both the Web and Server containers simultaneously.
-2. **Client Audit**: Interacting with the website allows for verifying tracker initialization via browser console logs.
-3. **Server Audit**: In the Server-side GTM preview, ensure that incoming requests are correctly intercepted and parsed by the **Nameless Analytics Server-side Client Tag**.
-4. **Data Verification**: Confirm that the event stream is successfully reaching BigQuery and that session snapshots are updating in Firestore.
+1. Launch **Preview Mode** for both the Web and Server containers simultaneously.
+2. Interacting with the website verify tracker initialization via JavaScript console logs.
+3. In the Server-side GTM preview, verify that incoming requests are correctly received and processed by the **Nameless Analytics Server-side Client Tag**
+4. For every claimed event, verify that user and session data are successfully written or updated to Firestore and to BigQuery.
 
 
 
 ## How to track page views
-Ensure that the `page_view` event is the **first** event triggered on every page load. Triggering other events before it will result in [Orphan Events](TROUBLESHOOTING-GUIDE.md#orphan-events--sequence-issues). 
+Page view tracking is not only used to track the number of page views on a website, they are responsable for create and update sessions and users in Firestore, release cookies and more. 
+
+For this reason, the `page_view` event must be the **first** event triggered on every page load. Triggering other events before it will result in [orphan events](TROUBLESHOOTING-GUIDE.md#orphan-events--sequence-issues). 
 
 Page view tags can be triggered in many ways:
 
