@@ -9,17 +9,16 @@ It is a living document and will evolve as the project evolves.
 
 ## What Nameless Analytics really is
 
-If you are like me, completely disillusioned by modern analytics platforms, a compulsive geek, a cloud-obsessed experimenter, a data lover searching for advanced, clever, and actually functional solutions, then you are in the right place.
+If you are like us, completely disillusioned by modern analytics platforms, a compulsive geek, a cloud-obsessed experimenter, a data lover searching for advanced, clever, and actually functional solutions, then you are in the right place.
 
 Welcome to the club.
 
-We are tired of proprietary platforms that promise **“simplicity”** but only deliver **dependency** and **skyrocketing costs**.  
 We are tired of analytics platforms and their closed ecosystems that stand between us and our data.
 
 For analysts, these systems are **black boxes**.  
 For companies, they are **strategic liabilities**.
 
-We want access to real raw data, the ability to define metrics that actually matter to the business, and the freedom to move our data without asking for permission.
+We want access to real raw data, the ability to define metrics that actually matter to the business and the freedom to move our data without asking for permission.
 
 
 
