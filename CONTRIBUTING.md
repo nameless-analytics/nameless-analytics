@@ -5,9 +5,7 @@ Nameless Analytics contributing guidelines.
 
 
 ## How to Contribute
-I appreciate your interest in contributing to Nameless Analytics! 
-
-To discuss the project or potential future collaborations, reach out via [email](mailto:hello@namelessanalytics.com).
+I appreciate your interest in contributing to Nameless Analytics! For now contribution are not open, but stay tuned for future updates.
 
 ---
 
