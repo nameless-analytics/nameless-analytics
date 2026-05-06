@@ -53,7 +53,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
 - [AI support](#ai-support)
   - [Q&A Agents](#q-a-agents)
   - [Conversational Analysis Agent in BigQuery Studio](#conversational-analysis-agent-in-bigquery-studio)
-- [Pricing & Cloud Costs](#pricing-cloud-costs)
+- [Google Cloud costs](#google-cloud-costs)
   - [Data processing](#data-processing)
   - [Data storage](#data-storage)
   - [Data Governance & Deletion](#data-governance-deletion)
@@ -820,7 +820,7 @@ To maximize the accuracy of the agent's responses, it is crucial to enrich these
 
 
 
-## Pricing & Cloud Costs
+## Google Cloud costs
 Nameless Analytics is designed to achieve maximum performance with minimum overhead. By utilizing Google Cloud's serverless offerings, the platform can operate at **zero cost** for many users and scales predictably with traffic.
 
 
