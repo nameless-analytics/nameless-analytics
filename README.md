@@ -60,7 +60,9 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Cost Summary Table](#cost-summary-table)
 
 ## What is Nameless Analytics 
-Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. Read the [manifesto](MANIFESTO.md).
+Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. 
+
+(Don't) read the [manifesto](MANIFESTO.md).
 
 Built upon a transparent pipeline hosted entirely on a private Google Cloud Platform environment, the platform solves critical challenges in modern analytics:
 
