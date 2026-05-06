@@ -33,9 +33,9 @@ Setting up Nameless Analytics involves using a dual GTM containers strategy, com
 
 ### 1. Prerequisites
 Before proceeding, ensure the Google Cloud environment is fully provisioned:
-- **BigQuery**: Dataset, `events_raw` and `calendar_dates` tables must be created according to the [SQL schemas](../tables/TABLES.md)
-- **Firestore**: A database instance (Native Mode) should be initialized (usually the `(default)` instance)
-- **Server-side GTM**: The instance (Cloud Run, App Engine or Stape) must be active and mapped to a custom first-party domain
+- **BigQuery**: Dataset, `events_raw` and `calendar_dates` tables must be created according to the [SQL schemas](../tables/TABLES.md).
+- **Firestore**: A database instance (Native Mode) should be initialized (usually the `(default)` instance).
+- **Server-side GTM**: The instance (Cloud Run, App Engine or Stape) must be active and mapped to a custom first-party domain.
 
 
 ### 2. Template Integration
@@ -264,9 +264,9 @@ When the tag fires, it will automatically use the `event` key as the final `even
 ## How to set up User ID and user properties
 To track authenticated users across devices and enrich their profiles with custom metadata (e.g., subscription tier, company size), use the `user_id` and custom User Properties. 
 
-User ID will be applied at session level and will be stored in Firestore and as well as in the BigQuery `session_data` array for each event.
+User ID will be applied at session level and will be stored in Firestore as well as in the BigQuery `session_data` array for each event.
 
-User Properties will be applied at user level and will be stored in Firestore and as well as in the BigQuery `user_data` array for each event.
+User Properties will be applied at user level and will be stored in Firestore as well as in the BigQuery `user_data` array for each event.
 
 
 ### 1. Expose user data to the dataLayer
@@ -305,7 +305,7 @@ When this option is enabled:
 - If Consent Mode is entirely missing from the page, the tag aborts execution to prevent accidental non-compliant tracking.
 
 
-### 3. Preserving Acquisition Data (the na_temp cookie)
+### 3. Preserving Acquisition Data (The na_temp cookie)
 Nameless Analytics features a "Smart Consent Management" system to prevent attribution loss (like turning organic traffic into "direct" traffic) while users navigate your site before accepting cookies.
 
 When a user lands on the site and `analytics_storage` is `denied`, the Client-side Tracker intercepts the acquisition parameters (UTMs, Referrer, etc.) and temporarily stores them in a first-party session cookie named `na_temp`. 
@@ -401,18 +401,15 @@ The system is designed to automatically capture ecommerce data from your website
 
 If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the extraction paths in the BigQuery SQL Table Functions.
 
-**1. DataLayer Requirement**
-
+### 1. DataLayer Requirement
 Your website must push ecommerce events to the `dataLayer` using the standard structure (e.g., `view_item`, `add_to_cart`, `begin_checkout`, `purchase`). The tracker will automatically look for the `ecommerce` object within the event that triggers the tag.
 
-**2. Tracker Configuration**
-
+### 2. Tracker Configuration
 In your GTM Client-side Tracker Tag configuration:
 - Ensure the **"Add ecommerce data"** checkbox is enabled. 
 - This tells the tracker to capture the `ecommerce` object from the current dataLayer state and include it in the payload sent to the server.
 
-**3. Server-side Processing**
-
+### 3. Server-side Processing
 The Nameless Analytics Server-side Client Tag receives the request, extracts the `ecommerce` data and stores it directly in the `ecommerce` column of your BigQuery `events_raw` table. 
 
 If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the JSON extraction paths in the BigQuery [transactions](../tables/TABLES.md#transactions) and [products](../tables/TABLES.md#products) Table Functions.
