@@ -1,8 +1,8 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_date DATE, end_date DATE) AS (
-  select
+select
     # USER DATA
-    user_date,
-    user_id, 
+    user_date, 
+    user_id,
     client_id, 
     user_type, 
     new_user_client_id, 
@@ -15,9 +15,9 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
     user_campaign_term,
     user_campaign_content,
     user_device_type, 
-    user_country,
-    user_city, 
-    user_language, 
+    user_country, 
+    user_city,
+    user_language,  
 
     # SESSION DATA
     session_date, 
