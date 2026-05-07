@@ -45,11 +45,6 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Firestore as Last updated Snapshot](#firestore-as-last-updated-snapshot)
   - [BigQuery as Historical Timeline](#bigquery-as-historical-timeline)
 - [Reporting](#reporting)
-  - [Acquisition](#acquisition)
-  - [Behaviour](#behaviour)
-  - [Ecommerce](#ecommerce)
-  - [Consents](#consents)
-  - [Debugging & Tech](#debugging-tech)
 - [AI support](#ai-support)
   - [Q&A Agents](#qa-agents)
   - [Conversational Analysis Agent in BigQuery Studio](#conversational-analysis-agent-in-bigquery-studio)
@@ -733,71 +728,16 @@ It maintains **every single state transition** for every user and session (for e
 
 
 ## Reporting
-A suite of SQL Table Functions transforms raw data into business-ready views for [Users](tables/users.sql), [Sessions](tables/sessions.sql), [Pages](tables/pages.sql), [Events](tables/events.sql), [Consents](tables/consents.sql), [Events Debug](tables/events_debug.sql), and specialized Ecommerce views like [Transactions](tables/ec_transactions.sql), [Products](tables/ec_products.sql), and Funnels ([Open](tables/ec_shopping_stages_open_funnel.sql) / [Closed](tables/ec_shopping_stages_closed_funnel.sql)).
+Nameless Analytics offers a set of BigQuery [SQL Table Functions](tables/TABLES.md) to query and explore the raw data at:
+- [User level](tables/users.sql) - [View schema](tables/TABLES.md#users)
+- [Session level](tables/sessions.sql) - [View schema](tables/TABLES.md#sessions)
+- [Page level](tables/pages.sql) - [View schema](tables/TABLES.md#pages)
+- [Event level](tables/events.sql) - [View schema](tables/TABLES.md#events)
+- [Ecommerce Transaction level](tables/ec_transactions.sql) - [View schema](tables/TABLES.md#transactions)
+- [Ecommerce Product level](tables/ec_products.sql) - [View schema](tables/TABLES.md#products)
+- [Session Consent level](tables/consents.sql) - [View schema](tables/TABLES.md#consents)
 
-SQL Table Functions can be used as sources for reporting, such in [Google Looker Studio](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd), which demonstrates the platform's potential with a pre-built template covering all key metrics.
-
-
-### Acquisition
-<details><summary>See acquisition dashboard examples</summary>
-
-</br>
-  
-- [**Traffic Sources**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_rmpwib9hod): Breakdown of traffic by source, medium, and channel grouping. Powered by [sessions.sql](tables/sessions.sql).
-- [**Device Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_cmywmb9hod): Analysis of user volume and revenue split across devices. Logic defined in [sessions.sql](tables/sessions.sql).
-- [**Geographic Distribution**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_enanrb9hod): Map and table views showing user sessions and revenue by Country (using server-side enrichment).
-
-</details>
-
-
-### Behaviour
-<details><summary>See behaviour dashboard examples</summary>
-
-</br>
-
-- [**Page Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_oqvpz41sgd): Detailed metrics for individual pages. Powered by [pages.sql](tables/pages.sql).
-- [**Landing Pages**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_it3ayf1hod): Effectiveness of entry points. Logic in [sessions.sql](tables/sessions.sql).
-- [**Exit Pages**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ep50zf1hod): Identification of high-drop-off pages. Logic in [sessions.sql](tables/sessions.sql).
-- [**Event Tracking**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_y779jg1hod): Granular view of tracked interaction events. Powered by [events.sql](tables/events.sql).
-
-</details>
-
-
-### Ecommerce
-<details><summary>See ecommerce dashboard examples</summary>
-
-</br>
-
-- [**Customer Analysis**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_jc2z2lhwgd): Customer loyalty and frequency. Based on [users.sql](tables/users.sql).
-- [**Sales Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_zlu0hdkugd): Revenue trends over time. Powered by [ec_transactions.sql](tables/ec_transactions.sql).
-- [**Product Performance**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_x89r79gvgd): Item-level reporting. Powered by [ec_products.sql](tables/ec_products.sql).
-- [**Shopping Funnel**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_o8lq2jfvgd): Conversion funnel analysis. Based on [Open](tables/ec_shopping_stages_open_funnel.sql) and [Closed](tables/ec_shopping_stages_closed_funnel.sql) funnel logic.
-
-</details>
-
-
-### Consents
-<details><summary>See consents dashboard examples</summary>
-
-</br>
-
-- [**Consent Overview**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_sba934crpd): Stats on opt-in rates. Powered by [consents.sql](tables/consents.sql).
-- [**Consent Details**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_nn21ghetpd): Granular consent types over time. Logic in [consents.sql](tables/consents.sql).
-
-</details>
-
-
-### Debugging & Tech
-<details><summary>See debugging & tech dashboard examples</summary>
-
-</br>
-
-- [**Web Hits Latency**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_zlobch0knd): Pipeline latency monitoring. Using [events_debug.sql](tables/events_debug.sql).
-- [**Server-to-Server Hits**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_yiouuvwgod): Dedicated view for non-browser events sent via Streaming protocol.
-- [**Raw Data Inspector**](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_unnkswttkd): Full table view of individual raw events for granular troubleshooting and verification.
-
-</details>
-
+This is a reporting example made in Looker Studio based on the SQL functions above: [Link](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd).
 
 
 ## AI support

@@ -20,9 +20,6 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Pages](#pages)
   - [Transactions](#transactions)
   - [Products](#products)
-  - [Shopping stages open funnel](#shopping-stages-open-funnel)
-  - [Shopping stages closed funnel](#shopping-stages-closed-funnel)
-  - [Events debug](#events-debug)
   - [Consents](#consents)
 - [Reporting fields](#reporting-fields)
 - [Data Governance and Maintenance](#data-governance-and-maintenance)
@@ -41,9 +38,9 @@ The following SQL scripts are used to initialize the Nameless Analytics reportin
 # NAMELESS ANALYTICS
 
 # Project settings
-declare project_name string default 'tom-moretti';  -- Change this
-declare dataset_name string default 'nameless_analytics'; -- Change this
-declare dataset_location string default 'eu'; -- Change this
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
+declare dataset_location string default 'DATASET LOCATION'; -- Change this
 
 # Tables
 declare main_table_name string default 'events_raw';
@@ -877,153 +874,6 @@ Aggregates ecommerce data at product level.
 [View SQL code](ec_products.sql)
 
 
-### Shopping stages open funnel
-Aggregates event data at shopping stages level, regardless of where the user started.
-
-<details><summary>Output fields</summary>
-
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `client_id` | Dimension | Unique identifier for the client/browser. |
-| `client_id_next_step` | Dimension | The client identifier for the next step in the funnel. |
-| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
-| `event_date` | Dimension | The date the event occurred. |
-| `new_user_client_id` | Dimension | Client ID if this is the user's first session, else null. |
-| `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
-| `session_browser_name` | Dimension | Browser name recorded at session start. |
-| `session_campaign` | Dimension | Acquisition campaign for the session. |
-| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
-| `session_city` | Dimension | City detected for the session. |
-| `session_country` | Dimension | Country detected for the session. |
-| `session_date` | Dimension | The date the session started. |
-| `session_device_type` | Dimension | Primary device type detected for the session. |
-| `session_duration_sec` | Metric | Total duration of the session in seconds. |
-| `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
-| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
-| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
-| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
-| `session_hostname` | Dimension | Hostname recorded for the session. |
-| `session_id` | Dimension | Unique identifier for the session. |
-| `session_id_next_step` | Dimension | The session identifier for the next step in the funnel. |
-| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
-| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
-| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
-| `session_language` | Dimension | Language recorded for the session. |
-| `session_number` | Dimension | Sequence number of the session for the user. |
-| `session_source` | Dimension | Traffic source for the session. |
-| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
-| `status` | Dimension | The status of the step in the funnel. |
-| `step_index` | Dimension | The index of the current step in the funnel. |
-| `step_index_next_step` | Dimension | The index of the next step in the funnel. |
-| `step_index_next_step_real` | Dimension | The real index of the next step captured in the funnel. |
-| `step_name` | Dimension | The name of the current step in the funnel. |
-| `user_campaign` | Dimension | Original acquisition campaign for the user. |
-| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
-| `user_city` | Dimension | User's city at the time of first acquisition. |
-| `user_country` | Dimension | User's country at the time of first acquisition. |
-| `user_date` | Dimension | Date the user was first seen. |
-| `user_device_type` | Dimension | Device type used at first acquisition. |
-| `user_id` | Dimension | Business-level unique user identifier. |
-| `user_language` | Dimension | User language recorded at acquisition. |
-| `user_source` | Dimension | Original source of acquisition. |
-| `user_tld_source` | Dimension | Source of acquisition with TLD. |
-| `user_type` | Dimension | User type classification (New vs Returning). |
-
-</details>
-
-</br>
-
-[View SQL code](ec_shopping_stages_open_funnel.sql)
-
-
-### Shopping stages closed funnel
-Aggregates event data at shopping stages level, for users who follow a specific, linear sequence of steps.
-
-<details><summary>Output fields</summary>
-
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `client_id` | Dimension | Unique identifier for the client/browser. |
-| `client_id_next_step` | Dimension | The client identifier for the next step in the funnel. |
-| `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
-| `event_date` | Dimension | The date the event occurred. |
-| `new_user_client_id` | Dimension | Client ID if this is the user's first session, else null. |
-| `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
-| `session_browser_name` | Dimension | Browser name recorded at session start. |
-| `session_campaign` | Dimension | Acquisition campaign for the session. |
-| `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
-| `session_city` | Dimension | City detected for the session. |
-| `session_country` | Dimension | Country detected for the session. |
-| `session_date` | Dimension | The date the session started. |
-| `session_device_type` | Dimension | Primary device type detected for the session. |
-| `session_duration_sec` | Metric | Total duration of the session in seconds. |
-| `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
-| `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
-| `session_exit_page_location` | Dimension | URL of the last page visited in the session. |
-| `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
-| `session_hostname` | Dimension | Hostname recorded for the session. |
-| `session_id` | Dimension | Unique identifier for the session. |
-| `session_id_next_step` | Dimension | The session identifier for the next step in the funnel. |
-| `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
-| `session_landing_page_location` | Dimension | URL of the first page visited in the session. |
-| `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
-| `session_language` | Dimension | Language recorded for the session. |
-| `session_number` | Dimension | Sequence number of the session for the user. |
-| `session_source` | Dimension | Traffic source for the session. |
-| `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
-| `session_tld_source` | Dimension | Session source including TLD. |
-| `step_name` | Dimension | The name of the current step in the funnel. |
-| `user_campaign` | Dimension | Original acquisition campaign for the user. |
-| `user_channel_grouping` | Dimension | Original acquisition channel grouping. |
-| `user_city` | Dimension | User's city at the time of first acquisition. |
-| `user_country` | Dimension | User's country at the time of first acquisition. |
-| `user_date` | Dimension | Date the user was first seen. |
-| `user_device_type` | Dimension | Device type used at first acquisition. |
-| `user_id` | Dimension | Business-level unique user identifier. |
-| `user_id_next_step` | Dimension | The user identifier for the next step in the funnel. |
-| `user_language` | Dimension | User language recorded at acquisition. |
-| `user_source` | Dimension | Original source of acquisition. |
-| `user_tld_source` | Dimension | Source of acquisition with TLD. |
-| `user_type` | Dimension | User type classification (New vs Returning). |
-
-</details>
-
-</br>
-
-[View SQL code](ec_shopping_stages_closed_funnel.sql)
-
-
-### Events debug
-Provides a flattened view of events with raw data for debugging and troubleshooting.
-
-[View SQL code](events_debug.sql)
-
-<details><summary>Output fields</summary>
-
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `client_id` | Dimension | Unique identifier for the client/browser. |
-| `session_id` | Dimension | Unique identifier for the session. |
-| `page_date` | Dimension | The date the page was viewed. |
-| `page_id` | Dimension | Unique identifier for the page view. |
-| `page_view_number` | Dimension | Sequential number of the page view in the session. |
-| `page_data` | Dimension | Array of custom page parameters. |
-| `event_date` | Dimension | The date the event occurred. |
-| `event_datetime` | Dimension | Exact date and time of the event. |
-| `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
-| `event_origin` | Dimension | The origin of the event (e.g., Web, Server). |
-| `event_name` | Dimension | The name of the interaction event. |
-| `event_number` | Dimension | Sequential number of the event in the session. |
-| `event_id` | Dimension | Unique identifier for the event. |
-| `event_data` | Dimension | Array of custom event parameters. |
-| `ecommerce` | Dimension | Structured ecommerce data in JSON format. |
-| `datalayer` | Dimension | Current JSON value of the dataLayer. |
-| `consent_data` | Dimension | Array of consent parameters. |
-
-</details>
-
-
-
 ### Consents
 Aggregates consent data at session level.
 
@@ -1084,6 +934,8 @@ Aggregates consent data at session level.
 This table illustrates the fields available across different table functions, allowing you to easily identify common data points and specific metrics for each report.
 
 <details><summary>Output Fields Matrix</summary>
+
+ <!-- TO DO: rebuild Output Fields Matrix only with the sql in tables/sql/ -->
 
 | Field name | Field type | Value type | Events | Users | Sessions | Pages | Transactions | Products | Open_Funnel | Closed_Funnel | Events_Debug | Consents |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -1352,6 +1204,7 @@ This table illustrates the fields available across different table functions, al
 </details>
 
 </br>
+
 
 
 ## Data Governance and Maintenance

@@ -75,7 +75,6 @@ with raw_session_data as (
       ifnull(sum(case when event_name = 'refund' then -safe_cast(json_value(ecommerce, '$.tax') as float64) end), 0) as refund_tax,
 
       # CONSENT DATA
-      min(event_timestamp) as first_timestamp,
       min(case when consent_type = 'Update' then event_timestamp end) as update_timestamp,
       countif(consent_type = 'Update') > 0 as has_update,
 
@@ -186,7 +185,6 @@ with raw_session_data as (
       # CONSENT DATA
       has_update,
       update_timestamp,
-      first_timestamp,
       upd_ad_user_data,
       def_ad_user_data,
       upd_ad_personalization,
@@ -202,7 +200,7 @@ with raw_session_data as (
       upd_security_storage,
       def_security_storage,
 
-      if(has_update, update_timestamp, first_timestamp) as consent_timestamp,
+      if(has_update, update_timestamp, session_start_timestamp) as consent_timestamp,
       if(has_update, 'Yes', 'No') as consent_expressed,
       if(if(has_update, upd_ad_user_data, def_ad_user_data) = 'Granted', 1, 0) as session_ad_user_data,
       if(if(has_update, upd_ad_personalization, def_ad_personalization) = 'Granted', 1, 0) as session_ad_personalization,
