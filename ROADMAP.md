@@ -7,15 +7,9 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 > 🚧 **Beta Notice**: Nameless Analytics is currently in beta and subject to change. [See full status](README.md).
 
 
-## To do
-### 🔴 - High Priority
+## To do:
 - Add BigQuery DDL for create table functions
-
-
-### 🟡 - Medium Priority
-
-
-### 🟢 - Low Priority
+- Add last_click_non_direct attribution model
 - Add custom channel-grouping rules (Server-side client tag)
 - Add core web vitals metrics (Client-side tracker tag) for page_load_time event.
 

@@ -64,6 +64,6 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_da
 
     # EVENT DATA
     countif(event_name = 'page_view') as page_view
-  from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'page')
+  from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
   group by all
 );
