@@ -11,7 +11,8 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 - Complete Dataform datamodel
 - Add last_click_non_direct attribution model
 - Add custom channel-grouping rules (Server-side client tag)
-- Add core web vitals metrics (Client-side tracker tag) for page_load_time event.
+- Add core web vitals metrics (Client-side tracker tag) for page_load_time event
+- Build ML models
 
 ---
 
