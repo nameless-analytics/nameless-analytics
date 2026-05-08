@@ -243,7 +243,7 @@ execute immediate dates_table_sql;
 
 
 ### Create table functions
-To create the table functions use this DDL statements:
+Create the table functions you need by running the following DDL statements:
 - [User table function](tables/sql/users.sql)
 - [Session table function](tables/sql/sessions.sql)
 - [Page table function](tables/sql/pages.sql)
@@ -447,7 +447,7 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 
 </br>
 
-[View SQL code](events.sql)
+[View SQL code](sql/events.sql)
 
 
 ### Users
@@ -507,7 +507,7 @@ Aggregates event data at user level.
 
 </br>
 
-[View SQL code](users.sql)
+[View SQL code](sql/users.sql)
 
 
 ### Sessions
@@ -623,7 +623,7 @@ Aggregates event data at session level.
 
 </br>
 
-[View SQL code](sessions.sql)
+[View SQL code](sql/sessions.sql)
 
 
 ### Pages
@@ -693,7 +693,7 @@ Aggregates event data at page level.
 
 </br>
 
-[View SQL code](pages.sql)
+[View SQL code](sql/pages.sql)
 
 
 ### Transactions
@@ -770,7 +770,7 @@ Aggregates ecommerce data at transaction level.
 
 </br>
 
-[View SQL code](ec_transactions.sql)
+[View SQL code](sql/ec_transactions.sql)
 
 
 ### Products
@@ -876,22 +876,13 @@ Aggregates ecommerce data at product level.
 
 </br>
 
-[View SQL code](ec_products.sql)
+[View SQL code](sql/ec_products.sql)
 
 
 ### Ecommerce Funnel
 The Ecommerce Funnel table functions provide a specialized view of the user journey, from session start to purchase. It allows for detailed analysis of drop-off rates and conversion bottlenecks.
 
-Unlike other reports, the Ecommerce Funnel functions aggregate data at the **session level** and enforce a strict sequential logic (e.g., an `add_to_cart` is only counted if preceded by a `view_item` in the same session).
-
-#### Funnel
-Returns one row per session with boolean-like fields (containing the `client_id` or `null`) for each step of the funnel.
-
-```sql
-select * from `project.nameless_analytics.ec_funnel` (start_date, end_date)
-```
-
-<details><summary>Output fields</summary>
+<details><summary>Output fields ecommerce funnel</summary>
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
@@ -920,17 +911,9 @@ select * from `project.nameless_analytics.ec_funnel` (start_date, end_date)
 
 </br>
 
-[View SQL code](ec_funnel.sql)
+[View SQL code](sql/ec_funnel.sql)
 
-
-#### Funnel Pivot
-Returns the funnel data in a long format, ideal for building funnel visualization charts in tools like Looker Studio.
-
-```sql
-select * from `project.nameless_analytics.ec_funnel_pivot` (start_date, end_date)
-```
-
-<details><summary>Output fields</summary>
+<details><summary>Output fields ecommerce funnel pivot</summary>
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
@@ -952,13 +935,13 @@ select * from `project.nameless_analytics.ec_funnel_pivot` (start_date, end_date
 
 </br>
 
-[View SQL code](ec_funnel_pivot.sql)
+[View SQL code](sql/ec_funnel_pivot.sql)
 
 
 ### Consents
 Aggregates consent data at session level.
 
-[View SQL code](consents.sql)
+[View SQL code](sql/consents.sql)
 
 <details><summary>Output fields</summary>
 
