@@ -307,6 +307,10 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'page')
 select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 ```
 
+Always select data with the same data scope and date scope.
+
+For example: if you filter the events table function at event level, you probably will miss some data related to the user, like a change in his status that happened out of the selected date period.
+
 <details><summary>Output fields</summary>
 
 | Field | Type | Description |
@@ -455,6 +459,8 @@ Aggregates event data at user level.
 
 <details><summary>Output fields</summary>
 
+| Field | Type | Description |
+| :--- | :--- | :--- |
 | `avg_purchase_value` | Metric | Average monetary value of purchases per user. |
 | `avg_refund_value` | Metric | Average monetary value of refunds per user. |
 | `client_id` | Dimension | Unique identifier for the client/browser. |
@@ -500,8 +506,7 @@ Aggregates event data at user level.
 | `user_type` | Dimension | User classification (New vs Returning). |
 | `user_with_purchase` | Metric | Indicates if the user has completed at least one purchase. |
 | `user_with_refund` | Metric | Indicates if the user has completed at least one refund. |
-| :--- | :--- | :--- |
-| Field | Type | Description |
+
 
 </details>
 
@@ -631,6 +636,8 @@ Aggregates event data at page level.
 
 <details><summary>Output fields</summary>
 
+| Field | Type | Description |
+| :--- | :--- | :--- |
 | `client_id` | Dimension | Unique identifier for the client/browser. |
 | `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
 | `new_user_client_id` | Dimension | Client ID if this is the user's first session, else null. |
@@ -686,8 +693,7 @@ Aggregates event data at page level.
 | `user_language` | Dimension | User language recorded at acquisition. |
 | `user_source` | Dimension | Original source of acquisition. |
 | `user_type` | Dimension | User type classification (New vs Returning). |
-| :--- | :--- | :--- |
-| Field | Type | Description |
+
 
 </details>
 
@@ -701,6 +707,8 @@ Aggregates ecommerce data at transaction level.
 
 <details><summary>Output fields</summary>
 
+| Field | Type | Description |
+| :--- | :--- | :--- |
 | `client_id` | Dimension | Unique identifier for the client/browser. |
 | `cross_domain_session` | Dimension | Indicates if the session is cross-domain. |
 | `duplicate_purchase` | Metric | Count of duplicate purchases. |
@@ -763,8 +771,7 @@ Aggregates ecommerce data at transaction level.
 | `user_language` | Dimension | User language recorded at acquisition. |
 | `user_source` | Dimension | Original source of acquisition. |
 | `user_type` | Dimension | User type classification (New vs Returning). |
-| :--- | :--- | :--- |
-| Field | Type | Description |
+
 
 </details>
 
@@ -778,6 +785,8 @@ Aggregates ecommerce data at product level.
 
 <details><summary>Output fields</summary>
 
+| Field | Type | Description |
+| :--- | :--- | :--- |
 | `add_payment_info` | Metric | Total number of sessions where payment information was added. |
 | `add_shipping_info` | Metric | Total number of sessions where shipping information was added. |
 | `add_to_cart` | Metric | Total number of sessions with at least one add_to_cart event. |
@@ -869,8 +878,7 @@ Aggregates ecommerce data at product level.
 | `view_item` | Metric | Total number of sessions where an item was viewed. |
 | `view_item_list` | Metric | Total number of sessions where an item list was viewed. |
 | `view_promotion` | Metric | Total number of sessions where a promotion was viewed. |
-| :--- | :--- | :--- |
-| Field | Type | Description |
+
 
 </details>
 
@@ -1286,10 +1294,10 @@ This table illustrates the fields available across different table functions, al
 | `ss_tag_name` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `total_page_load_time` | Metric | integer |  X  |    |    |    |    |    |    |    |    |
 | **Funnel Specific** | | | | | | | | | | | | |
-| `date` | Dimension | The date of the funnel step. |    |    |    |    |    |    |    |  X  |    |
+| `date` | Dimension | date |    |    |    |    |    |    |    |  X  |    |
 | `next_step_client_id` | Dimension | string |    |    |    |    |    |    |    |  X  |    |
-| `reached_step` | Metric | Boolean indicating if the user reached this step. |    |    |    |    |    |    |    |  X  |    |
-| `step` | Dimension | The name of the funnel step. |    |    |    |    |    |    |    |  X  |    |
+| `reached_step` | Metric | boolean |    |    |    |    |    |    |    |  X  |    |
+| `step` | Dimension | string |    |    |    |    |    |    |    |  X  |    |
 | `step_client_id` | Dimension | The client ID if the step was reached, else null. |    |    |    |    |    |    |    |  X  |    |
 | `step_number` | Dimension | The sequential number of the funnel step (1-8). |    |    |    |    |    |    |    |  X  |    |
 </details>
