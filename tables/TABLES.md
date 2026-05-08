@@ -1298,8 +1298,8 @@ This table illustrates the fields available across different table functions, al
 | `next_step_client_id` | Dimension | string |    |    |    |    |    |    |    |  X  |    |
 | `reached_step` | Metric | boolean |    |    |    |    |    |    |    |  X  |    |
 | `step` | Dimension | string |    |    |    |    |    |    |    |  X  |    |
-| `step_client_id` | Dimension | The client ID if the step was reached, else null. |    |    |    |    |    |    |    |  X  |    |
-| `step_number` | Dimension | The sequential number of the funnel step (1-8). |    |    |    |    |    |    |    |  X  |    |
+| `step_client_id` | Dimension | string |    |    |    |    |    |    |    |  X  |    |
+| `step_number` | Dimension | integer |    |    |    |    |    |    |    |  X  |    |
 </details>
 
 </br>
