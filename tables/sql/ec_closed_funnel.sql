@@ -15,13 +15,13 @@ with session_steps as (
       session_device_type, 
       session_country,
 
-      MIN(IF(event_name = 'view_item', event_timestamp, NULL)) AS view_item_ts,
-      MIN(IF(event_name = 'add_to_cart', event_timestamp, NULL)) AS add_to_cart_ts,
-      MIN(IF(event_name = 'view_cart', event_timestamp, NULL)) AS view_cart_ts,
-      MIN(IF(event_name = 'begin_checkout', event_timestamp, NULL)) AS begin_checkout_ts,
-      MIN(IF(event_name = 'add_shipping_info', event_timestamp, NULL)) AS add_shipping_info_ts,
-      MIN(IF(event_name = 'add_payment_info', event_timestamp, NULL)) AS add_payment_info_ts,
-      MIN(IF(event_name = 'purchase', event_timestamp, NULL)) AS purchase_ts
+      min(if(event_name = 'view_item', event_timestamp, null)) as view_item_ts,
+      min(if(event_name = 'add_to_cart', event_timestamp, null)) as add_to_cart_ts,
+      min(if(event_name = 'view_cart', event_timestamp, null)) as view_cart_ts,
+      min(if(event_name = 'begin_checkout', event_timestamp, null)) as begin_checkout_ts,
+      min(if(event_name = 'add_shipping_info', event_timestamp, null)) as add_shipping_info_ts,
+      min(if(event_name = 'add_payment_info', event_timestamp, null)) as add_payment_info_ts,
+      min(if(event_name = 'purchase', event_timestamp, null)) as purchase_ts
   
     from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
     where event_name in ('view_item', 'add_to_cart', 'view_cart', 'begin_checkout', 'add_shipping_info', 'add_payment_info', 'purchase')
@@ -39,7 +39,7 @@ with session_steps as (
     session_campaign_click_id,
     session_campaign_term,
     session_campaign_content,
-    session_device_type, 
+    session_device_type,
     session_country,
     case when session_start_timestamp is not null then client_id end as session_start,
     case when view_item_ts > session_start_timestamp then client_id end as view_item,
