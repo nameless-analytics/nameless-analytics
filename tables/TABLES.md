@@ -1068,10 +1068,10 @@ This table illustrates the fields available across different table functions, al
 | `page_view_per_session` | Metric | integer |    |    |  X  |    |    |    |    |    |    |
 | `returning_session` | Metric | integer |  X  |    |  X  |    |    |    |    |    |    |
 | `returning_sessions_percentage` | Metric | float |    |    |  X  |    |    |    |    |    |    |
-| `session_ad_personalization` | Metric | integer |  X  |    |  X  |    |    |    |    |    |  X  |
-| `session_ad_storage` | Metric | integer |  X  |    |  X  |    |    |    |    |    |  X  |
-| `session_ad_user_data` | Metric | integer |  X  |    |  X  |    |    |    |    |    |  X  |
-| `session_analytics_storage` | Metric | integer |  X  |    |  X  |    |    |    |    |    |  X  |
+| `session_ad_personalization` | Metric | integer |  X  |    |  X  |    |    |    |    |    |    |
+| `session_ad_storage` | Metric | integer |  X  |    |  X  |    |    |    |    |    |    |
+| `session_ad_user_data` | Metric | integer |  X  |    |  X  |    |    |    |    |    |    |
+| `session_analytics_storage` | Metric | integer |  X  |    |  X  |    |    |    |    |    |    |
 | `session_browser_name` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_campaign` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |  X  |  X  |  X  |
 | `session_campaign_click_id` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |  X  |    |    |
@@ -1085,13 +1085,13 @@ This table illustrates the fields available across different table functions, al
 | `session_exit_page_category` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_exit_page_location` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_exit_page_title` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
-| `session_functionality_storage` | Metric | integer |  X  |    |  X  |    |    |    |    |    |  X  |
+| `session_functionality_storage` | Metric | integer |  X  |    |  X  |    |    |    |    |    |    |
 | `session_hostname` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_landing_page_category` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_landing_page_location` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_landing_page_title` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_language` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
-| `session_personalization_storage` | Metric | integer |  X  |    |  X  |    |    |    |    |    |  X  |
+| `session_personalization_storage` | Metric | integer |  X  |    |  X  |    |    |    |    |    |    |
 | `session_security_storage` | Metric | integer |  X  |    |  X  |    |    |    |    |    |    |
 | `session_source` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |  X  |  X  |  X  |
 | `session_source_cleaned` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
