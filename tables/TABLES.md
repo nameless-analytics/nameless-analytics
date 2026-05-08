@@ -20,6 +20,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Pages](#pages)
   - [Transactions](#transactions)
   - [Products](#products)
+  - [Ecommerce Funnel](#ecommerce-funnel)
   - [Consents](#consents)
 - [Reporting fields](#reporting-fields)
 - [Data Governance and Maintenance](#data-governance-and-maintenance)
@@ -874,6 +875,70 @@ Aggregates ecommerce data at product level.
 [View SQL code](ec_products.sql)
 
 
+### Ecommerce Funnel
+The Ecommerce Funnel table functions provide a specialized view of the user journey, from session start to purchase. It allows for detailed analysis of drop-off rates and conversion bottlenecks.
+
+Unlike other reports, the Ecommerce Funnel functions aggregate data at the **session level** and enforce a strict sequential logic (e.g., an `add_to_cart` is only counted if preceded by a `view_item` in the same session).
+
+#### Funnel
+Returns one row per session with boolean-like fields (containing the `client_id` or `null`) for each step of the funnel.
+
+```sql
+select * from `project.nameless_analytics.ec_funnel` (start_date, end_date)
+```
+
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `session_date` | Dimension | The date the session started. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_channel_grouping` | Dimension | Marketing channel grouping for the session. |
+| `session_source` | Dimension | Traffic source that initiated the session. |
+| `session_campaign` | Dimension | Acquisition campaign associated with the session. |
+| `session_device_type` | Dimension | Primary device type used during the session. |
+| `session_country` | Dimension | Country detected for the session. |
+| `session_start` | Dimension | Populated if the session started. |
+| `view_item` | Dimension | Populated if the user viewed an item. |
+| `add_to_cart` | Dimension | Populated if the user added an item to the cart. |
+| `view_cart` | Dimension | Populated if the user viewed the cart. |
+| `begin_checkout` | Dimension | Populated if the user began the checkout. |
+| `add_shipping_info` | Dimension | Populated if the user added shipping info. |
+| `add_payment_info` | Dimension | Populated if the user added payment info. |
+| `purchase` | Dimension | Populated if the user completed a purchase. |
+
+</details>
+
+</br>
+
+[View SQL code](ec_funnel.sql)
+
+
+#### Funnel Pivot
+Returns the funnel data in a long format, ideal for building funnel visualization charts in tools like Looker Studio.
+
+```sql
+select * from `project.nameless_analytics.ec_funnel_pivot` (start_date, end_date)
+```
+
+<details><summary>Output fields</summary>
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `step_number` | Dimension | The sequential number of the funnel step (1-8). |
+| `step` | Dimension | The name of the funnel step. |
+| `reached_step` | Metric | Boolean indicating if the user reached this step. |
+| `step_client_id` | Dimension | The client ID if the step was reached, else null. |
+| `next_step_client_id` | Dimension | The client ID for the next step in the sequence (for drop-off analysis). |
+
+</details>
+
+</br>
+
+[View SQL code](ec_funnel_pivot.sql)
+
+
 ### Consents
 Aggregates consent data at session level.
 
@@ -937,7 +1002,7 @@ This table illustrates the fields available across different table functions, al
 
  <!-- TO DO: rebuild Output Fields Matrix only with the sql in tables/sql/ -->
 
-| Field name | Field type | Value type | Events | Users | Sessions | Pages | Transactions | Products | Open_Funnel | Closed_Funnel | Events_Debug | Consents |
+| Field name | Field type | Value type | Events | Users | Sessions | Pages | Transactions | Products | Funnel | Pivot | Events_Debug | Consents |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | `ad_personalization` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `ad_personalization_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
@@ -950,7 +1015,7 @@ This table illustrates the fields available across different table functions, al
 | `ad_user_data_denied_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `add_payment_info` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `add_shipping_info` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
-| `add_to_cart` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
+| `add_to_cart` | Metric | integer |  |  | X |  |  | X | X | X |  |  |
 | `add_to_wishlist` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `analytics_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `analytics_storage_accepted_percentage` | Metric | float |  |  | X |  |  |  |  |  |  |  |
@@ -958,7 +1023,7 @@ This table illustrates the fields available across different table functions, al
 | `avg_order_value` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `avg_purchase_value` | Metric | float |  | X |  |  |  |  |  |  |  |  |
 | `avg_refund_value` | Metric | float |  | X | X |  |  |  |  |  |  |  |
-| `begin_checkout` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
+| `begin_checkout` | Metric | integer |  |  | X |  |  | X | X | X |  |  |
 | `browser_language` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `browser_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `browser_version` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -970,7 +1035,7 @@ This table illustrates the fields available across different table functions, al
 | `channel_grouping` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `city` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `client_id` | Dimension | string | X | X | X | X | X | X | X | X | X | X |
-| `client_id_next_step` | Dimension | string |  |  |  |  |  |  | X | X |  |  |
+| `next_step_client_id` | Dimension | string |  |  |  |  |  |  |  | X |  |  |
 | `consent_expressed` | Dimension | string |  |  | X |  |  |  |  |  |  |  |
 | `consent_name` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
 | `consent_state` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
@@ -1078,7 +1143,7 @@ This table illustrates the fields available across different table functions, al
 | `processing_event_timestamp` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
 | `promotion_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
 | `promotion_name` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
-| `purchase` | Metric | integer |  | X | X |  | X |  |  |  |  |  |
+| `purchase` | Metric | integer |  | X | X |  | X |  | X | X |  |  |
 | `purchase_coupon` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
 | `purchase_currency` | Dimension | string |  |  |  |  | X |  |  |  |  |  |
 | `purchase_id` | Dimension | string |  |  |  |  |  | X |  |  |  |  |
@@ -1135,7 +1200,7 @@ This table illustrates the fields available across different table functions, al
 | `session_id_consent_expressed` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
 | `session_id_consent_mode_not_present` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
 | `session_id_consent_not_expressed` | Dimension | string |  |  |  |  |  |  |  |  |  | X |
-| `session_id_next_step` | Dimension | string |  |  |  |  |  |  | X | X |  |  |
+| `session_id_next_step` | Dimension | string |  |  |  |  |  |  |  | X |  |  |
 | `session_landing_page_category` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_landing_page_location` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
 | `session_landing_page_title` | Dimension | string | X |  | X | X | X | X | X | X | X | X |
@@ -1163,7 +1228,7 @@ This table illustrates the fields available across different table functions, al
 | `step_index` | Dimension | string |  |  |  |  |  |  | X |  |  |  |
 | `step_index_next_step` | Dimension | string |  |  |  |  |  |  | X |  |  |  |
 | `step_index_next_step_real` | Dimension | string |  |  |  |  |  |  | X |  |  |  |
-| `step_name` | Dimension | string |  |  |  |  |  |  | X | X |  |  |
+| `step_name` | Dimension | string |  |  |  |  |  |  |  | X |  |  |
 | `tax_net_refund` | Metric | float |  |  | X |  |  |  |  |  |  |  |
 | `time_on_page` | Metric | float | X |  |  | X |  |  |  |  |  |  |
 | `tld_source` | Dimension | string | X |  |  |  |  |  |  |  |  |  |
@@ -1195,8 +1260,8 @@ This table illustrates the fields available across different table functions, al
 | `user_type` | Dimension | string | X | X | X | X | X | X | X | X | X | X |
 | `user_with_purchase` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
 | `user_with_refund` | Metric | integer |  | X |  |  |  |  |  |  |  |  |
-| `view_cart` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
-| `view_item` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
+| `view_cart` | Metric | integer |  |  | X |  |  | X | X | X |  |  |
+| `view_item` | Metric | integer |  |  | X |  |  | X | X | X |  |  |
 | `view_item_list` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `view_promotion` | Metric | integer |  |  | X |  |  | X |  |  |  |  |
 | `viewport_size` | Metric | integer | X |  |  |  |  |  |  |  |  |  |

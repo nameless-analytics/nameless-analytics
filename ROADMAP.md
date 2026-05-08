@@ -8,7 +8,6 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 
 
 ## To do:
-- Add BigQuery DDL for create table functions
 - Complete Dataform datamodel
 - Add last_click_non_direct attribution model
 - Add custom channel-grouping rules (Server-side client tag)
