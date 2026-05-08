@@ -899,6 +899,10 @@ select * from `project.nameless_analytics.ec_funnel` (start_date, end_date)
 | `session_campaign` | Dimension | Acquisition campaign associated with the session. |
 | `session_device_type` | Dimension | Primary device type used during the session. |
 | `session_country` | Dimension | Country detected for the session. |
+| `session_campaign_id` | Dimension | Campaign ID associated with the session. |
+| `session_campaign_click_id` | Dimension | Click ID (e.g., GCLID) associated with the session. |
+| `session_campaign_term` | Dimension | Search term/keyword associated with the session. |
+| `session_campaign_content` | Dimension | Ad content associated with the session. |
 | `session_start` | Dimension | Populated if the session started. |
 | `view_item` | Dimension | Populated if the user viewed an item. |
 | `add_to_cart` | Dimension | Populated if the user added an item to the cart. |
@@ -926,6 +930,14 @@ select * from `project.nameless_analytics.ec_funnel_pivot` (start_date, end_date
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
+| `date` | Dimension | The date of the funnel step. |
+| `client_id` | Dimension | Unique identifier for the client/browser. |
+| `session_id` | Dimension | Unique identifier for the session. |
+| `session_channel_grouping` | Dimension | Marketing channel grouping for the session. |
+| `session_source` | Dimension | Traffic source that initiated the session. |
+| `session_campaign` | Dimension | Acquisition campaign associated with the session. |
+| `session_device_type` | Dimension | Primary device type used during the session. |
+| `session_country` | Dimension | Country detected for the session. |
 | `step_number` | Dimension | The sequential number of the funnel step (1-8). |
 | `step` | Dimension | The name of the funnel step. |
 | `reached_step` | Metric | Boolean indicating if the user reached this step. |
