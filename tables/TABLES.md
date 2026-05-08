@@ -10,7 +10,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
 ## Table of Contents
 
 - [Setup](#setup)
-  - [Create tables](#create-tables)
+  - [Create raw tables](#create-raw-tables)
   - [Create table functions](#create-table-functions)
 - [Raw tables](#raw-tables)
 - [Table functions](#table-functions)
@@ -32,7 +32,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
 The following SQL scripts are used to initialize the Nameless Analytics reporting environment in BigQuery.
 
 
-### Create tables
+### Create raw tables
 <details><summary>To create the tables use this DDL statement.</summary>
   
 ```sql
@@ -243,12 +243,16 @@ execute immediate dates_table_sql;
 
 
 ### Create table functions
-<details><summary>To create the table functions use this DDL statement.</summary>
-
-```sql
-# Run the SQL scripts in this directory to create the table functions.
-```
-</details>
+To create the table functions use this DDL statements:
+- [User table function](tables/sql/users.sql)
+- [Session table function](tables/sql/sessions.sql)
+- [Page table function](tables/sql/pages.sql)
+- [Event table function](tables/sql/events.sql)
+- [Ecommerce Transaction table function](tables/sql/ec_transactions.sql)
+- [Ecommerce Product table function](tables/sql/ec_products.sql)
+- [Ecommerce Funnel table function](tables/sql/ec_funnel.sql)
+- [Ecommerce Funnel Pivot table function](tables/sql/ec_funnel_pivot.sql)
+- [Consents table function](tables/sql/consents.sql)
 
 
 
