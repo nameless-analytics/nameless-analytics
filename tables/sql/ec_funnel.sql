@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_closed_funnel`(start_date DATE, end_date DATE) AS (
+CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_funnel`(start_date DATE, end_date DATE) AS (
 WITH sessions AS (
   SELECT
     session_date,

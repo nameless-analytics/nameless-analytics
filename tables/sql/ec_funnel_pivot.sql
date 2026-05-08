@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_closed_funnel_pivot`(start_date DATE, end_date DATE) AS (
+CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_funnel_pivot`(start_date DATE, end_date DATE) AS (
 WITH steps AS (
     SELECT 1 AS step_number, 'session_start' AS step UNION ALL
     SELECT 2, 'view_item' UNION ALL
@@ -22,7 +22,7 @@ WITH steps AS (
       session_country,
       step,
       step_client_id,
-    FROM `tom-moretti.nameless_analytics.ec_closed_funnel`(start_date, end_date)
+    FROM `tom-moretti.nameless_analytics.ec_funnel`(start_date, end_date)
     UNPIVOT INCLUDE NULLS (
       step_client_id FOR step IN (
         session_start,
