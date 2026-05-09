@@ -39,8 +39,6 @@ Events sent via the Streaming Protocol **do not extend the session duration** (`
 **`page_view` events are not allowed** via the Streaming Protocol and must be sent through the standard website tracker to correctly initialize the session context.
 
 
-
-## Features
 ### Session enrichment
 Automatically enriches server-side events with the active session context by extracting relevant `session_data` directly from BigQuery based on the `na_s` cookie. This ensures that offline or backend events are seamlessly tied to the user's original session, inheriting source, campaign, and user metadata without breaking the journey.
 
@@ -75,8 +73,6 @@ To ensure requests are accepted by the server, following requirements must be me
 The JSON payload must include the following top-level fields:
 `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
 
-> **Please Note**: Even if you have no additional parameters to pass, `user_data`, `session_data`, and `gtm_data` **must also be present** in the JSON payload as objects `{}`. Omitting these root keys entirely will cause the Server-side Tag to crash when it attempts to inject server-side values into them.
-
 
 ### Data formats
 - **Dates**: Must be strings in `YYYY-MM-DD` format (e.g., `2026-04-08`).
@@ -92,7 +88,7 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
 {
   "user_data": {}, // Optional
 
-  "session_data": {
+  "session_data": { // Optional
     "user_id": "abcd" // Optional
   },
         
@@ -116,7 +112,7 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
     "campaign_content": null // Do not modify
   },
 
-  "ecommerce": {
+  "ecommerce": { // Optional
     "transaction_id": "T_12345",
     "value": 25.50,
     "currency": "EUR",
@@ -130,9 +126,9 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
     ]
   },
 
-  "gtm_data": {},
+  "gtm_data": {}, // Optional
 
-  "consent_data": {
+  "consent_data": { // Optional
     "consent_type": "Update",
     "respect_consent_mode": "Yes",
     "ad_user_data": "Granted",
@@ -158,21 +154,27 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
 
 ## Implementation
 
-> **💡 Reference Implementation**: The current script (`streaming-protocol.py`) is provided as a **Proof of Concept (PoC)** to demonstrate the end-to-end data flow. In a production environment, developers should implement this logic dynamically (e.g., via AWS Lambda, Node.js backends, etc.) utilizing Environment Variables or Secret Managers for keys, rather than hardcoding them.
+> **💡 Reference Implementations**: The provided scripts (`streaming-protocol.py` and `streaming-protocol.js`) act as **Proof of Concept (PoC)** to demonstrate the end-to-end data flow. In a production environment, developers should implement this logic dynamically (e.g., via AWS Lambda, Node.js backends, etc.) utilizing Environment Variables or Secret Managers for keys, rather than hardcoding them.
 
 ### Installation
  
 1.  Clone the repository.
 2.  Install the required dependencies:
 
+    **For Python:**
     ```bash
     pip install requests google-cloud-bigquery
+    ```
+
+    **For Node.js:**
+    ```bash
+    npm install @google-cloud/bigquery
     ```
  
 
 ### Configuration
  
-Open `streaming-protocol.py` and configure the following settings:
+Open `streaming-protocol.py` or `streaming-protocol.js` and configure the following settings:
  
 1. User Cookies:
     - Set the `na_s` cookie value (the user unique identifier `na_u` will be automatically derived from it).
@@ -192,10 +194,16 @@ Open `streaming-protocol.py` and configure the following settings:
 
 
 ### Usage 
-Run the script using Python:
+Run the script using your preferred language:
  
+**Python:**
 ```bash
 python streaming-protocol.py
+```
+
+**Node.js:**
+```bash
+node streaming-protocol.js
 ```
  
 The script will:
@@ -208,9 +216,9 @@ The script will:
 ```text
 NAMELESS ANALYTICS
 STREAMING PROTOCOL
-👉 Retrieve page data from BigQuery for page_id: ...
+👉 Retrieve page data from BigQuery for page_id: [PAGE ID]
   🟢 Page data retrieved from BigQuery
-👉 Send request to https://...
+👉 Send request to [FULL ENDPOINT]
    {"status_code": 200, "response": "🟢 Request claimed successfully", "data": {...}}
 Function execution end: 👍
 ```

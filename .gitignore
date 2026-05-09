@@ -1,2 +1,5 @@
 .DS_Store
 events_debug.sql
+node_modules/
+package-lock.json
+package.json
