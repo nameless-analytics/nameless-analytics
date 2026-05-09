@@ -307,7 +307,7 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'page')
 select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 ```
 
-Always select data with the same data scope and date scope.
+Always select data with the same data scope and date scope. 
 
 For example: if you filter the events table function at event level, you probably will miss some data related to the user, like a change in his status that happened out of the selected date period.
 

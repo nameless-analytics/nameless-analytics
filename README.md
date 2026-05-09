@@ -809,11 +809,11 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 
 ## License
 
-This project is distributed under the **CC BY-ND 4.0 (Attribution-NoDerivatives)** license.
+This project is distributed under the **Nameless Analytics Source-Available License 1.0**.
 
-- **Transparency:** The code is public and can be viewed by anyone.
-- **Usage:** You can freely install and use it for your own projects or for your clients.
-- **Modifications:** The distribution of modified versions of Nameless Analytics is not permitted.
+- **Transparency:** The source code is publicly available for inspection and security audits.
+- **Usage:** You can freely download, install, and use it for personal, business, or client projects.
+- **Modifications:** Distribution of modified versions or public forks of Nameless Analytics is strictly prohibited.
 
 ---
 
