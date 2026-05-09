@@ -807,6 +807,14 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 **Pricing sources** (verified April 2026): [Cloud Run](https://cloud.google.com/run/pricing) · [App Engine Standard](https://cloud.google.com/appengine/pricing#standard_instance_pricing) · [App Engine Flexible](https://cloud.google.com/appengine/pricing#flexible-environment) · [Firestore](https://cloud.google.com/firestore/pricing) · [BigQuery](https://cloud.google.com/bigquery/pricing) · [Stape.io](https://stape.io/pricing)  
 **Note on Cloud Run**: cost varies significantly based on vCPU allocation per instance and average request duration. Estimates above assume 0.25 vCPU and ~300ms average processing time. Use the [Google Cloud Pricing Calculator](https://cloud.google.com/products/calculator) for workload-specific projections.
 
+## License
+
+This project is distributed under the **CC BY-ND 4.0 (Attribution-NoDerivatives)** license.
+
+- **Transparency:** The code is public and can be viewed by anyone.
+- **Usage:** You can freely install and use it for your own projects or for your clients.
+- **Modifications:** The distribution of modified versions of Nameless Analytics is not permitted.
+
 ---
 
 Reach me at: [Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_readme) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)
