@@ -132,7 +132,9 @@ async function get_page_data_from_bq() {
                         for (const val_type of types) {
                             const val = value_struct[val_type];
                             if (val !== null && val !== undefined) {
-                                page_data_from_bq[name] = val;
+                                if (name !== 'page_status_code') {
+                                    page_data_from_bq[name] = val;
+                                }
                                 break;
                             }
                         }

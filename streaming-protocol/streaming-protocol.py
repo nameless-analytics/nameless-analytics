@@ -15,13 +15,13 @@ from google.cloud import bigquery
 # --------------------------------------------------------------------------------------------------------------
 
 # User cookies
-na_s = 'n8PdJ87PvUnojvi_wjiTlsBSdaZyY9o-3gYMdoGRepYrb0o' # Modify this according to the current user's na_s cookie value
+na_s = '0mDI92GLyJfpujf_Rf7B5f4aqv57Aj7-NBajUHz0fPYs3gw' # Modify this according to the current user's na_s cookie value
 
 # Request settings
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
 origin = 'https://tommasomoretti.com' # Modify this according to website origin
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA==' # Modify this according to the GTM Server-side preview header
+# gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA==' # Modify this according to the GTM Server-side preview header
 
 # Event data
 client_id = na_s.split('_')[0]
@@ -129,7 +129,8 @@ def get_page_data_from_bq():
                         for val_type in ['string', 'int', 'float', 'json', 'bool']:
                             val = value_struct.get(val_type)
                             if val is not None:
-                                page_data_from_bq[name] = val
+                                if name != 'page_status_code':
+                                    page_data_from_bq[name] = val
                                 break
         
         if not row_found:
@@ -218,7 +219,7 @@ def send_request(payload):
     try:
         headers = {
             'x-Api-Key': api_key,
-            'X-Gtm-Server-Preview': gtm_preview_header,
+            # 'X-Gtm-Server-Preview': gtm_preview_header,
             'Content-Type': 'application/json',
             'Origin': origin,
             'User-Agent': 'Nameless Analytics - Streaming protocol',
