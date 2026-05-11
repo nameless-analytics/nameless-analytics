@@ -21,7 +21,7 @@ WITH sessions AS (
     countif(event_name = 'add_shipping_info') as add_shipping_info,
     countif(event_name = 'add_payment_info') as add_payment_info,
     countif(event_name = 'purchase') as purchase,
-  FROM `tom-moretti.nameless_analytics.events`('2026-05-08', '2026-05-08', 'session')
+  FROM `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
   group by all
 )
 

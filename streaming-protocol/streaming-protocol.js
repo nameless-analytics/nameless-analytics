@@ -11,13 +11,13 @@ const { BigQuery } = require('@google-cloud/bigquery');
 // --------------------------------------------------------------------------------------------------------------
 
 // User cookies
-const na_s = 'n8PdJ87PvUnojvi_wjiTlsBSdaZyY9o-3gYMdoGRepYrb0o'; // Modify this according to the current user's na_s cookie value
+const na_s = 'ORBnViN7yq2tfRw_0OP8T7bXurGddYr-6yWcXi0hTGa8PFf'; // Modify this according to the current user's na_s cookie value
 
 // Request settings
 const full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless'; // Modify this according to your GTM Server-side endpoint 
 const origin = 'https://tommasomoretti.com'; // Modify this according to website origin
 const api_key = '1234'; // Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-const gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA=='; // Modify this according to the GTM Server-side preview header
+// const gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA=='; // Modify this according to the GTM Server-side preview header
 
 // Event data
 const client_id = na_s.split('_')[0];
@@ -237,7 +237,7 @@ async function send_request(payload) {
     try {
         const headers = {
             'x-api-key': api_key,
-            'X-Gtm-Server-Preview': gtm_preview_header,
+            // 'X-Gtm-Server-Preview': gtm_preview_header,
             'Content-Type': 'application/json',
             'Origin': origin,
             'User-Agent': 'Nameless Analytics - Streaming protocol',
