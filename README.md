@@ -744,7 +744,7 @@ This is a reporting example made in Looker Studio based on the SQL functions abo
 
 ## AI support
 ### Q&A Agents
-Get expert help for implementation, technical documentation, and advanced SQL queries: 
+Get expert help for implementation and technical documentation: 
 
 - **[Nameless Analytics QnA](https://notebooklm.google.com/notebook/73cd9ce3-9873-40cf-9d52-110d74dff5f9)**: Specialized Google Notebook LM trained on the platform docs.
 
