@@ -1,7 +1,7 @@
 # Nameless Analytics | Troubleshooting Guide
 The Nameless Analytics Troubleshooting Guide identifies, explains, and resolves common issues encountered during implementation.
 
-### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
 

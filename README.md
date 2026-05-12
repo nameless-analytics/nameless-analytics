@@ -6,7 +6,7 @@ An open-source digital analytics platform for power users, based on [Google Tag 
 
 Collect, analyze, and activate website interaction data with a free real-time digital analytics suite that respects user privacy.
 
-### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
 

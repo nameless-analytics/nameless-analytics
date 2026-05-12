@@ -4,7 +4,8 @@ Nameless Analytics exploratory wishlist and future ideas.
 
 For completed work and release history, see [changelog](CHANGELOG.md).
 
-> 🚧 **Beta Notice**: Nameless Analytics is currently in beta and subject to change. [See full status](README.md).
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
+
 
 
 ## Wishlist / To do

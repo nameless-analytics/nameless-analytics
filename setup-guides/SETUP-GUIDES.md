@@ -2,7 +2,7 @@
 The Nameless Analytics Setup guides provide instructions for configuring the platform across both client-side and server-side environments.
 For an overview of how Nameless Analytics works [start from here](../README.md#high-level-data-flow).
 
-### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
 

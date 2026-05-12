@@ -3,7 +3,7 @@ The Nameless Analytics Reporting Tables provide a structured set of BigQuery res
 
 For an overview of how Nameless Analytics works [start from here](../README.md#overview).
 
-### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
 

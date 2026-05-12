@@ -3,7 +3,7 @@
 The Nameless Analytics Manifesto outlines the vision, mission, and values behind Nameless Analytics.  
 It is a living document and will evolve as the project evolves.
 
-### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
 
