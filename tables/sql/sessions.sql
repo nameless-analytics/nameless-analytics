@@ -244,7 +244,7 @@ with raw_session_data as (
     returning_session,
     safe_divide(sum(returning_session), count(distinct session_id)) as returning_sessions_percentage,
     engaged_session,
-    safe_divide(sum(engaged_session), count(distinct session_id)) / 100 as engaged_sessions_percentage,
+    safe_divide(sum(engaged_session), count(distinct session_id)) as engaged_sessions_percentage,
     session_channel_grouping, 
     session_source,
     session_campaign,
