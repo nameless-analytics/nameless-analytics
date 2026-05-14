@@ -91,7 +91,7 @@ The Streaming Protocol requires a POST request with a JSON body. While the serve
   "session_data": { // Optional
     "user_id": "abcd" // Optional
   },
-        
+         
   "page_date": "2026-04-08", // Automatically retrieved from BigQuery if page_id exists in BigQuery
   "page_id": "WVTWEorF69ZEk3y", // Extracted from na_s cookie
   "page_data": {}, // Automatically retrieved from BigQuery if page_id exists in BigQuery
