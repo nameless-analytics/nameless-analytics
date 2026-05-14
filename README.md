@@ -1,7 +1,7 @@
 # Nameless Analytics
 ## Build your own Data Warehouse Analytics platform
 
-An open-source digital analytics platform for power users, based on [Google Tag Manager](https://marketingplatform.google.com/intl/it/about/tag-manager/), [Google Firestore](https://cloud.google.com/firestore) and [Google BigQuery](https://cloud.google.com/bigquery).
+A privacy-first digital analytics platform for power users, based on [Google Tag Manager](https://marketingplatform.google.com/intl/it/about/tag-manager/), [Google Firestore](https://cloud.google.com/firestore) and [Google BigQuery](https://cloud.google.com/bigquery).
 
 
 Collect, analyze, and activate website interaction data with a free real-time digital analytics suite that respects user privacy.
@@ -55,7 +55,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Cost Summary Table](#cost-summary-table)
 
 ## What is Nameless Analytics 
-Nameless Analytics is an open-source, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. 
+Nameless Analytics is a privacy-first, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. 
 
 (Don't) read the [manifesto](MANIFESTO.md).
 
