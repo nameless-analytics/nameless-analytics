@@ -11,7 +11,7 @@ const { BigQuery } = require('@google-cloud/bigquery');
 // --------------------------------------------------------------------------------------------------------------
 
 // User cookies
-const na_s = 'ORBnViN7yq2tfRw_0OP8T7bXurGddYr-6yWcXi0hTGa8PFf'; // Modify this according to the current user's na_s cookie value
+const na_s = 'THar5XDi2SYUiR2_QqQrCtRqZvObDt7-Tk94Ptz7ByIA65h'; // Modify this according to the current user's na_s cookie value
 
 // Request settings
 const full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless'; // Modify this according to your GTM Server-side endpoint 

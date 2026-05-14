@@ -15,7 +15,7 @@ from google.cloud import bigquery
 # --------------------------------------------------------------------------------------------------------------
 
 # User cookies
-na_s = 'ORBnViN7yq2tfRw_0OP8T7bXurGddYr-6yWcXi0hTGa8PFf' # Modify this according to the current user's na_s cookie value
+na_s = 'THar5XDi2SYUiR2_QqQrCtRqZvObDt7-Tk94Ptz7ByIA65h' # Modify this according to the current user's na_s cookie value
 
 # Request settings
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
@@ -170,7 +170,7 @@ def build_payload(page_date_from_bq, page_data_from_bq):
         "event_data": {
             "event_type": "event", # Do not modify
             "hostname": urlparse(origin).netloc, # Website domain origin
-            "source": None, # Do not modify
+            "source": 'direct', # Do not modify
             "campaign": None, # Do not modify
             "campaign_id": None, # Do not modify
             "campaign_click_id": None, # Do not modify
