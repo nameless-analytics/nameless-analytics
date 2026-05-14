@@ -15,13 +15,13 @@ from google.cloud import bigquery
 # --------------------------------------------------------------------------------------------------------------
 
 # User cookies
-na_s = 'THar5XDi2SYUiR2_QqQrCtRqZvObDt7-Tk94Ptz7ByIA65h' # Modify this according to the current user's na_s cookie value
+na_s = 'LJbTg3PQxcGKyJp_Y1Jo5rGYHZlQGjM-UHQHSc1QpLoOara' # Modify this according to the current user's na_s cookie value
 
 # Request settings
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
 origin = 'https://tommasomoretti.com' # Modify this according to website origin
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-# gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA==' # Modify this according to the GTM Server-side preview header
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZTI3NTBkMzYxOGUyZGY1ZDM4Mg==' # Modify this according to the GTM Server-side preview header
 
 # Event data
 client_id = na_s.split('_')[0]
@@ -219,7 +219,7 @@ def send_request(payload):
     try:
         headers = {
             'x-Api-Key': api_key,
-            # 'X-Gtm-Server-Preview': gtm_preview_header,
+            'X-Gtm-Server-Preview': gtm_preview_header,
             'Content-Type': 'application/json',
             'Origin': origin,
             'User-Agent': 'Nameless Analytics - Streaming protocol',
