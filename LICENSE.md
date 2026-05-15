@@ -2,6 +2,8 @@ Nameless Analytics Source-Available License 1.0
 
 Copyright (c) 2020-2026 Tommaso Moretti
 
+Nameless Analytics is proprietary source-available software. Access to the source code does not grant rights to modify, redistribute, sublicense, or create derivative works.
+
 This license establishes the terms under which you may use the software "Nameless Analytics" (hereafter, the "Software").
 
 1. GRANT OF LICENSE (Free Use)
