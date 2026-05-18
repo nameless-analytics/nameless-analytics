@@ -281,8 +281,6 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | session_exit_page_title       | String   | Server-Side | Exit page title                               |
 |                    | session_start_timestamp       | Integer  | Server-Side | Session start timestamp                       |
 |                    | session_end_timestamp         | Integer  | Server-Side | Session end timestamp                         |
-|                    | total_events                  | Integer  | Server-Side | Total number of events in current session     |
-|                    | total_page_views              | Integer  | Server-Side | Total number of page views in current session |
 |                    | user_id                       | String   | Client-Side | Unique user identifier (if logged in)         |
 | page_date          |                               | String   | Client-Side | Page data date                                |
 | page_id            |                               | String   | Client-Side | Unique page identifier                        |
@@ -699,7 +697,7 @@ Firestore ensures data integrity by managing how parameters are updated across h
 | **User** | **First-Touch** | `user_date`, `user_source`, `user_tld_source`, `user_campaign`, `user_campaign_id`, `user_campaign_click_id`, `user_campaign_term`, `user_campaign_content`, `user_channel_grouping`, `user_device_type`, `user_country`, `user_language`,   `user_first_session_timestamp` | Recorded at first visit, **never overwritten**. |
 | **User** | **Last-Touch** | `user_last_session_timestamp` | Updated at the start of every new session. |
 | **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`,   `session_channel_grouping`, `session_device_type`, `session_country`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_location`, `session_landing_page_title`, `user_id` | Set at session start, persists throughout   the session. |
-| **Session** | **Last-Touch** | `session_exit_page_category`, `session_exit_page_location`, `session_exit_page_title`, `session_end_timestamp`, `total_events`, `total_page_views` | **Updated on every hit** to reflect the latest state. |
+| **Session** | **Last-Touch** | `session_exit_page_category`, `session_exit_page_location`, `session_exit_page_title`, `session_end_timestamp` | **Updated on every hit** to reflect the latest state. |
 | **Session** | **Progressive** | `cross_domain_session` | Flags as 'Yes' if any hit in the session is cross-domain. |
 
 </details>

@@ -79,7 +79,7 @@ with raw_user_data as (
       countif(event_name = 'purchase') as purchase,
       countif(event_name = 'refund') as refund,
       count(*) as total_events,
- 
+
       # ECOMMERCE DATA
       min(first_purchase_timestamp) as first_purchase_timestamp,
       max(last_purchase_timestamp) as last_purchase_timestamp,
