@@ -479,7 +479,9 @@ Aggregates event data at user level.
 | `new_customer_client_id` | Dimension | Client ID of new customers. |
 | `new_user_client_id` | Dimension | Client ID for users identified as new during the period. |
 | `page_view` | Metric | Total number of page view events triggered by the user. |
+| `total_page_views` | Metric | Total number of page views. |
 | `purchase` | Metric | Total count of purchase events for the user. |
+| `purchase_net_refund` | Metric | Net number of purchases after accounting for refunds. |
 | `purchase_revenue` | Metric | Total revenue generated from user purchases. |
 | `refund` | Metric | Total count of refund events for the user. |
 | `refund_revenue` | Metric | Total value of refunds associated with the user. |
@@ -549,6 +551,7 @@ Aggregates event data at session level.
 | `new_sessions_percentage` | Metric | Percentage of sessions that were new. |
 | `new_user_client_id` | Dimension | Identification of users seen for the first time during the session. |
 | `page_view` | Metric | Total number of page view events during the session. |
+| `total_page_views` | Metric | Total number of page views during the session. |
 | `page_view_per_session` | Metric | Average number of page views per session. |
 | `personalization_storage_accepted_percentage` | Metric | Percentage of sessions where personalization storage was accepted. |
 | `personalization_storage_denied_percentage` | Metric | Percentage of sessions where personalization storage was denied. |
@@ -1120,6 +1123,7 @@ This table illustrates the fields available across different table functions, al
 | `page_title` | Dimension | string |  X  |    |    |  X  |    |    |    |    |    |
 | `page_unload_timestamp` | Dimension | integer |  X  |    |    |  X  |    |    |    |    |    |
 | `page_view` | Metric | integer |    |  X  |  X  |  X  |    |    |    |    |    |
+| `total_page_views` | Metric | integer |    |  X  |  X  |    |    |    |    |    |    |
 | `page_view_number` | Dimension | integer |  X  |    |    |  X  |    |    |    |    |    |
 | `time_on_page` | Metric | float |  X  |    |    |  X  |    |    |    |    |    |
 | **Event Data** | | | | | | | | | | | | |
@@ -1184,7 +1188,7 @@ This table illustrates the fields available across different table functions, al
 | `purchase_coupon` | Dimension | string |    |    |    |    |  X  |    |    |    |    |
 | `purchase_currency` | Dimension | string |    |    |    |    |  X  |    |    |    |    |
 | `purchase_id` | Dimension | string |    |    |    |    |    |  X  |    |    |    |
-| `purchase_net_refund` | Metric | integer |    |    |  X  |    |    |    |    |    |    |
+| `purchase_net_refund` | Metric | integer |    |  X  |  X  |    |    |    |    |    |    |
 | `purchase_qty` | Dimension | string |    |  X  |    |    |    |    |    |    |    |
 | `purchase_revenue` | Metric | float |    |  X  |  X  |    |  X  |    |    |    |    |
 | `purchase_shipping` | Metric | float |    |    |  X  |    |  X  |    |    |    |    |
