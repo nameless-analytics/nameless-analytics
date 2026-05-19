@@ -134,7 +134,7 @@ with raw_session_data as (
       new_session,
       returning_session,
       case 
-        when page_view >= 2 or session_duration_sec >= 10 or purchase >= 1 then 1 
+        when total_page_views >= 2 or session_duration_sec >= 10 or purchase >= 1 then 1 
         else 0 
       end as engaged_session,
       session_channel_grouping, 
@@ -266,7 +266,7 @@ with raw_session_data as (
     session_hostname,
     (case when purchase >= 1 then 1 else 0 end) as session_with_purchase,
     (case when sum(refund) >= 1 then 1 else 0 end) as session_with_refund,
-    safe_divide(sum(page_view), count(distinct session_id)) as page_view_per_session,
+    safe_divide(sum(total_page_views), count(distinct session_id)) as page_view_per_session,
 
     # EVENTS
     total_page_views,

@@ -550,7 +550,6 @@ Aggregates event data at session level.
 | `new_session` | Metric | Total number of new sessions. |
 | `new_sessions_percentage` | Metric | Percentage of sessions that were new. |
 | `new_user_client_id` | Dimension | Identification of users seen for the first time during the session. |
-| `page_view` | Metric | Total number of page view events during the session. |
 | `total_page_views` | Metric | Total number of page views during the session. |
 | `page_view_per_session` | Metric | Average number of page views per session. |
 | `personalization_storage_accepted_percentage` | Metric | Percentage of sessions where personalization storage was accepted. |
