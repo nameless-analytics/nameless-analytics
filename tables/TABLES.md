@@ -244,15 +244,15 @@ execute immediate dates_table_sql;
 
 ### Create table functions
 Create the table functions you need by running the following DDL statements:
-- [User table function](tables/sql/users.sql)
-- [Session table function](tables/sql/sessions.sql)
-- [Page table function](tables/sql/pages.sql)
-- [Event table function](tables/sql/events.sql)
-- [Ecommerce Transaction table function](tables/sql/ec_transactions.sql)
-- [Ecommerce Product table function](tables/sql/ec_products.sql)
-- [Ecommerce Funnel table function](tables/sql/ec_funnel.sql)
-- [Ecommerce Funnel Pivot table function](tables/sql/ec_funnel_pivot.sql)
-- [Consents table function](tables/sql/consents.sql)
+- [User table function](sql/users.sql)
+- [Session table function](sql/sessions.sql)
+- [Page table function](sql/pages.sql)
+- [Event table function](sql/events.sql)
+- [Ecommerce Transaction table function](sql/ec_transactions.sql)
+- [Ecommerce Product table function](sql/ec_products.sql)
+- [Ecommerce Funnel table function](sql/ec_funnel.sql)
+- [Ecommerce Funnel Pivot table function](sql/ec_funnel_pivot.sql)
+- [Consents table function](sql/consents.sql)
 
 
 

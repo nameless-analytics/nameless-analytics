@@ -26,7 +26,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [SPA & History Management](#spa-history-management)
   - [Core Libraries Functioning](#core-libraries-functioning)
   - [Cross-domain Architecture](#cross-domain-architecture)
-  - [Event parameter hierarchy & overriding](#event-parameter-hierarchy-overriding)
+  - [Parameter hierarchy](#parameter-hierarchy)
   - [Debugging events](#debugging-events)
 - [Server-Side Processing](#server-side-processing)
   - [Security and Validation](#security-and-validation)
@@ -54,7 +54,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Data Governance & Deletion](#data-governance-deletion)
   - [Cost Summary Table](#cost-summary-table)
 
-## What is Nameless Analytics 
+## What is Nameless Analytics
 Nameless Analytics is a privacy-first, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. 
 
 (Don't) read the [manifesto](MANIFESTO.md).
@@ -489,7 +489,7 @@ Since link decoration happens dynamically upon clicking (to ensure ID freshness 
 </details>
 
 
-### Event parameter hierarchy & overriding
+### Parameter hierarchy
 Since parameters can be set at multiple levels (Client side variable + Client-side tag, Server-side tag), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
 
 System-critical parameters like `client_id`, `session_id`, `page_id` and `event_id` and the standard parameters are protected and cannot be overwritten in any ways.
