@@ -478,7 +478,6 @@ Aggregates event data at user level.
 | `last_purchase_timestamp` | Dimension | Timestamp of the user's most recent purchase. |
 | `new_customer_client_id` | Dimension | Client ID of new customers. |
 | `new_user_client_id` | Dimension | Client ID for users identified as new during the period. |
-| `page_view` | Metric | Total number of page view events triggered by the user. |
 | `total_page_views` | Metric | Total number of page views. |
 | `purchase` | Metric | Total count of purchase events for the user. |
 | `purchase_net_refund` | Metric | Net number of purchases after accounting for refunds. |
@@ -653,7 +652,7 @@ Aggregates event data at page level.
 | `page_status_code` | Dimension | HTTP status code of the page. |
 | `page_title` | Dimension | The title (document title) of the page. |
 | `page_unload_timestamp` | Dimension | Timestamp when the page was closed. |
-| `page_view` | Metric | Count of page views. |
+| `total_page_views` | Metric | Count of page views. |
 | `page_view_number` | Dimension | Sequential number of the page view in the session. |
 | `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
 | `session_browser_name` | Dimension | Browser name recorded at session start. |
