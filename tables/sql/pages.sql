@@ -63,7 +63,7 @@ select
     max(page_status_code) as page_status_code,
 
     # EVENT DATA
-    countif(event_name = 'page_view') as page_view
+    countif(event_name = 'page_view') as total_page_views
   from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
   group by all
 );
