@@ -228,7 +228,7 @@ Server logs show:
 ## BigQuery & Data Analysis Issues
 Common issues related to missing data or unexpected values in reporting.
 
-### BigQuery Advanced Runtime 
+### BigQuery Advanced Runtime
 If you experience slow query performance or errors with SQL Table Functions, ensure that **BigQuery Advanced Runtime** is enabled for your project (see [TABLES.md](../tables/TABLES.md) for the DDL command).
 
 ### Missing Geolocation Data
