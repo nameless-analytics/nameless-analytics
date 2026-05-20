@@ -33,46 +33,46 @@ const ecommerce_data = {
     "coupon": "SUMMER_SALE",
     "customer_type": "new",
     "items": [
-    {
-      "item_id": "SKU_12345",
-      "item_name": "Stan and Friends Tee",
-      "affiliation": "Google Merchandise Store",
-      "coupon": "SUMMER_FUN",
-      "discount": 2.22,
-      "item_brand": "Google",
-      "item_category": "Apparel",
-      "item_category2": "Adult",
-      "item_category3": "Shirts",
-      "item_category4": "Crew",
-      "item_category5": "Short sleeve",
-      "item_list_id": "related_products",
-      "item_list_name": "Related Products",
-      "item_variant": "green",
-      "price": 10.01,
-      "quantity": 3
-    },
-    {
-      "item_id": "SKU_12346",
-      "item_name": "Google Grey Women's Tee",
-      "affiliation": "Google Merchandise Store",
-      "coupon": "SUMMER_FUN",
-      "discount": 3.33,
-      "index": 1,
-      "item_brand": "Google",
-      "item_category": "Apparel",
-      "item_category2": "Adult",
-      "item_category3": "Shirts",
-      "item_category4": "Crew",
-      "item_category5": "Short sleeve",
-      "item_list_id": "related_products",
-      "item_list_name": "Related Products",
-      "item_variant": "gray",
-      "location_id": "ChIJIQBpAG2ahYAR_6128GcTUEo",
-      "price": 21.01,
-      "promotion_id": "P_12345",
-      "promotion_name": "Summer Sale",
-      "quantity": 2
-    }]
+        {
+            "item_id": "SKU_12345",
+            "item_name": "Stan and Friends Tee",
+            "affiliation": "Google Merchandise Store",
+            "coupon": "SUMMER_FUN",
+            "discount": 2.22,
+            "item_brand": "Google",
+            "item_category": "Apparel",
+            "item_category2": "Adult",
+            "item_category3": "Shirts",
+            "item_category4": "Crew",
+            "item_category5": "Short sleeve",
+            "item_list_id": "related_products",
+            "item_list_name": "Related Products",
+            "item_variant": "green",
+            "price": 10.01,
+            "quantity": 3
+        },
+        {
+            "item_id": "SKU_12346",
+            "item_name": "Google Grey Women's Tee",
+            "affiliation": "Google Merchandise Store",
+            "coupon": "SUMMER_FUN",
+            "discount": 3.33,
+            "index": 1,
+            "item_brand": "Google",
+            "item_category": "Apparel",
+            "item_category2": "Adult",
+            "item_category3": "Shirts",
+            "item_category4": "Crew",
+            "item_category5": "Short sleeve",
+            "item_list_id": "related_products",
+            "item_list_name": "Related Products",
+            "item_variant": "gray",
+            "location_id": "ChIJIQBpAG2ahYAR_6128GcTUEo",
+            "price": 21.01,
+            "promotion_id": "P_12345",
+            "promotion_name": "Summer Sale",
+            "quantity": 2
+        }]
 }; // Add ecommerce data here if needed
 
 // BigQuery settings
@@ -118,8 +118,8 @@ async function get_page_data_from_bq() {
             row_found = true;
 
             if (row.page_date) {
-                page_date_from_bq = typeof row.page_date.value !== 'undefined' 
-                    ? row.page_date.value 
+                page_date_from_bq = typeof row.page_date.value !== 'undefined'
+                    ? row.page_date.value
                     : String(row.page_date);
             }
 
@@ -174,7 +174,7 @@ async function build_payload(page_date_from_bq, page_data_from_bq) {
         "session_data": {
             // "user_id": user_id, // Optional
         }, // Optional
-        
+
         "page_date": page_date_from_bq, // Automatically retrieved from BigQuery if page_id exists in BigQuery
         "page_id": na_s.split('-')[1], // Extracted from na_s cookie
         "page_data": page_data_from_bq, // Automatically retrieved from BigQuery if page_id exists in BigQuery
@@ -208,8 +208,8 @@ async function build_payload(page_date_from_bq, page_data_from_bq) {
 
         "ecommerce": ecommerce_data,
 
-        "gtm_data": {},            
-        
+        "gtm_data": {},
+
         "consent_data": {
             "consent_type": null,
             "respect_consent_mode": null,
@@ -233,23 +233,23 @@ async function build_payload(page_date_from_bq, page_data_from_bq) {
 
 async function send_request(payload) {
     console.log('👉 Send request to ' + full_endpoint);
-    
+
     try {
         const headers = {
-            'x-api-key': api_key,
+            'X-Api-Key': api_key,
             // 'X-Gtm-Server-Preview': gtm_preview_header,
             'Content-Type': 'application/json',
             'Origin': origin,
             'User-Agent': 'Nameless Analytics - Streaming protocol',
-            'Cookie': `na_u=${client_id}; na_s=${na_s}` 
+            'Cookie': `na_u=${client_id}; na_s=${na_s}`
         };
-    
+
         const response = await fetch(full_endpoint, {
             method: 'POST',
             body: JSON.stringify(payload),
             headers: headers
         });
-        
+
         try {
             const response_json = await response.json();
             const message = response_json.response || JSON.stringify(response_json);

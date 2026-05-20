@@ -218,7 +218,7 @@ def send_request(payload):
     
     try:
         headers = {
-            'x-Api-Key': api_key,
+            'X-Api-Key': api_key,
             'X-Gtm-Server-Preview': gtm_preview_header,
             'Content-Type': 'application/json',
             'Origin': origin,
