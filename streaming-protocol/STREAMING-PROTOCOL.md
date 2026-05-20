@@ -51,7 +51,7 @@ Automatically retrieves user, session and page data from the BigQuery `events_ra
 Correctly maps BigQuery data types (`string`, `int`, `float`, `json` and `bool`) to the JSON payload.
 
 
-### Error handling
+### Error handling 
 Includes robust error handling for API responses and database queries.
  
 
