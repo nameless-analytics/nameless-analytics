@@ -420,9 +420,7 @@ Once data is in BigQuery, you can leverage built-in Table Functions for deep ana
 
 - **[Transactions](../tables/TABLES.md#transactions)**: Provides a high-level view of orders: revenue, tax, shipping, and transaction IDs.
 - **[Products](../tables/TABLES.md#products)**: Flattens the items array to show performance per product (quantity sold, item revenue, variants, etc.).
-- **[Shopping stages (Open Funnel)](../tables/TABLES.md#shopping-stages-open-funnel)**: Analyzes the Open Funnel from item view to purchase.
-- **[Shopping stages (Closed Funnel)](../tables/TABLES.md#shopping-stages-closed-funnel)**: Analyzes the Closed Funnel from item view to purchase.
-
+- **[Ecommerce Funnel](../tables/TABLES.md#ecommerce-funnel)**: Analyzes the ecommerce funnel from item view to purchase.
 
 
 ## How to send events via Streaming Protocol
