@@ -367,11 +367,11 @@ To configure cross-domain tracking across separate containers, follow these step
 
 
 ### One server-side GTM container for multiple sites
-If **Accept requests from authorized domains only** option is enabled in **Nameless Analytics Server-side Client** configuration, ensure that all domains involved in the cross-domain setup are explicitly added to the **Authorized domains** list. This prevents requests from being blocked when the tracker switches domains.
+If **Accept requests from authorized top-level domains only** option is enabled in **Nameless Analytics Server-side Client** configuration, ensure that all domains involved in the cross-domain setup are explicitly added to the **Authorized top-level domains** list. This prevents requests from being blocked when the tracker switches domains.
 
 The endpoint path must be unique for all domains.
 
-![Authorized domains](https://github.com/user-attachments/assets/d6172c1a-4171-46e5-9c57-c6ad0157b082)
+![Authorized top-level domains](https://github.com/user-attachments/assets/d6172c1a-4171-46e5-9c57-c6ad0157b082)
 
 The container must be configured as well. Add the domains in the Admin > Container settings of the Server-side Google Tag Manager.
 
@@ -482,11 +482,11 @@ The payload forwarded to the custom endpoint is the exact same enriched JSON tha
 ## How to enforce Security & Bot Protection
 The Nameless Analytics Server-side Client Tag acts as a security gateway, allowing you to control which requests are processed and which are discarded.
 
-### 1. Authorized Domains (CORS-like Protection)
-To prevent unauthorized websites from sending data to your endpoint, you can restrict access to specific domains.
+### 1. Authorized top-level domains (CORS-like Protection)
+To prevent unauthorized websites from sending data to your endpoint, you can restrict access to specific top-level domains.
 1. Open the **Nameless Analytics Server-side Client Tag**.
-2. Scroll down to **Advanced settings** and check **Accept requests from authorized domains only**.
-3. Add your domains to the **Authorized domains** list (e.g., `https://www.yourdomain.com`).
+2. Scroll down to **Advanced settings** and check **Accept requests from authorized top-level domains only**.
+3. Add your domains to the **Authorized top-level domains** list (e.g., `https://www.yourdomain.com`).
 4. Ensure you include all production, staging, and development domains.
 
 ### 2. Bot & Automated Traffic Protection
