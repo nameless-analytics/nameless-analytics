@@ -423,6 +423,7 @@ Once data is in BigQuery, you can leverage built-in Table Functions for deep ana
 - **[Ecommerce Funnel](../tables/TABLES.md#ecommerce-funnel)**: Analyzes the ecommerce funnel from item view to purchase.
 
 
+
 ## How to send events via Streaming Protocol
 The Streaming Protocol is specifically designed for server-to-server communication, allowing you to attribute offline or backend interactions (e.g., status changes, recurring payments, or CRM updates) to a user's session without a browser. For implementation examples and technical details, refer to the [Streaming Protocol documentation](../streaming-protocol/STREAMING-PROTOCOL.md).
 
