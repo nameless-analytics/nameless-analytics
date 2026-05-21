@@ -63,7 +63,7 @@ Supports API Key authentication for secure server-side ingestion.
 To ensure requests are accepted by the server, following requirements must be met:
 
 ### Mandatory headers
-- **User-Agent**: To bypass bot protection, you must use the following User-Agent: `Nameless Analytics - Streaming protocol`. Any deviation will result in a 403 error.
+- **User-Agent**: You must use the following User-Agent: `Nameless Analytics - Streaming protocol`. Any deviation will result in a 403 error.
 - **API Key**: The `X-Api-Key` header must match your Server-side Client Tag configuration.
 - **Cookie**: The HTTP request must include the `Cookie` header containing `na_u={client_id}; na_s={na_s_cookie}`. This is the **only** source of truth used by the server to identify the user and session. **Note**: `na_u` must be exactly 15 alphanumeric characters, and `na_s` must follow the `client_id_session_id-page_id` structure (15 characters for each segment). Any deviation will result in a `403 Invalid cookie format` error.
 
