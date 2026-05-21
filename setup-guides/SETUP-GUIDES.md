@@ -50,7 +50,7 @@ Download and import the `.tpl` files into GTM Client-side and Server-side enviro
 Create a new:
 1. GTM variable using the template **Nameless Analytics Client-side Tracker Configuration Variable** 
   - Under **Endpoint Domain Name**, set the endpoint domain name of Server-side GTM (e.g., `gtm.yourdomain.com`)
-  - Under **Endpoint Path**, set the **path** of your dedicated Server-side GTM URL (e.g., `na/collect/`)
+  - Under **Endpoint Path**, set the **path** of your dedicated Server-side GTM URL (e.g., `/na/collect`)
 2. GTM tag using the template **Nameless Analytics Client-side Tracker Tag**
   - Under **Event name**, select **standard event name** and then **page view**
   - Under **Configuration variable settings**, add the created **Nameless Analytics Client-side Tracker Configuration Variable**
@@ -60,7 +60,7 @@ Create a new:
 ### 3b. Server-side Container Configuration
 Create a new:
 1. GTM client tag using the template **Nameless Analytics Server-side Client Tag**
-  - Under **Request Endpoint Path**, set the **path** of your dedicated Server-side GTM URL (e.g., `na/collect/`)
+  - Under **Request Endpoint Path**, set the **path** of your dedicated Server-side GTM URL (e.g., `/na/collect`)
   - Under **Google BigQuery Project ID**, set the **ID** of your BigQuery project
   - Under **Google BigQuery Dataset ID**, set the **ID** of your BigQuery dataset
   - Under **Google BigQuery Table ID**, set the **ID** of your BigQuery table
