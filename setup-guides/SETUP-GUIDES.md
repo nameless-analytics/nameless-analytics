@@ -316,7 +316,7 @@ Once the user accepts the cookie policy and the CMP fires the `gtag('consent', '
 3. It flushes all newly authorized events to the server.
 4. The `na_temp` cookie is securely deleted on the next available page view.
 
-This mechanism ensures 100% compliant and accurate marketing attribution.
+This mechanism is designed to support consent-aware attribution while preserving the original acquisition context when analytics consent is granted.
 
 
 
