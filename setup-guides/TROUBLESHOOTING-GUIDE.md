@@ -108,8 +108,8 @@ Server logs show:
 
 `🔴 Invalid API key`
 
-- **Issue:** The `x-api-key` header for Streaming protocol is missing or incorrect.
-- **Solution:** Ensure your request includes the `x-api-key` header with the correct value as configured in the Client Tag.
+- **Issue:** The `X-Api-Key` header for Streaming protocol is missing or incorrect.
+- **Solution:** Ensure your request includes the `X-Api-Key` header with the correct value as configured in the Client Tag.
 
 Server logs show: 
 

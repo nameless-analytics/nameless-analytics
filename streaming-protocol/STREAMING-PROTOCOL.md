@@ -10,7 +10,6 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [Features](#features)
   - [Session enrichment](#session-enrichment)
   - [BigQuery enrichment](#bigquery-enrichment)
   - [Automatic type handling](#automatic-type-handling)

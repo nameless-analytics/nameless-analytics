@@ -426,7 +426,7 @@ Native support for Single Page Applications. See the [Page View Setup Guide](set
 ### Core Libraries Functioning
 The tracker relies on a main external library and a dependency library loaded by Nameless Analytics Client-side Tracker Tag.
 
-To maximize data collection accuracy and bypass ad-blockers, Nameless Analytics supports **First-Party mode**, allowing you to host this library on your own domain or CDN instead of using external CDNs.
+To maximize data collection accuracy, Nameless Analytics supports **First-Party mode**, allowing you to host this library on your own domain or CDN instead of using external CDNs.
 
 <details><summary>Main library</summary>
 
@@ -460,7 +460,7 @@ Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisib
 
 For retrieving the active `client_id` and `session_id` the Nameless Analytics Client-Side Tracker Tag needs to perform a handshake with the server before redirecting and decorating outbound URLs with the `na_id` parameter in real time.
 
-Since link decoration happens dynamically upon clicking (to ensure ID freshness and bypass `HttpOnly` restrictions), cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
+Since link decoration happens dynamically upon clicking, cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
 
 <details><summary>How the cross-domain handshake works</summary>
 

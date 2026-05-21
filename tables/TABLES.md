@@ -55,7 +55,7 @@ declare dates_table_path string default CONCAT('`', project_name, '.', dataset_n
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Enable BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. For more informations: https://cloud.google.com/bigquery/docs/advanced-runtime
+# Enable BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. For more information: https://cloud.google.com/bigquery/docs/advanced-runtime
 declare enable_bigquery_advanced_runtime string default format(
   """
     ALTER PROJECT `%s`

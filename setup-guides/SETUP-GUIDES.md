@@ -75,7 +75,7 @@ Create a new:
 
 
 ## How to track page views
-Page view tracking is not only used to track the number of page views on a website, they are responsable for create and update sessions and users in Firestore, release cookies and more. 
+Page view tracking is not only used to track the number of page views on a website, they are responsible for creating and updating sessions and users in Firestore, releasing cookies and more. 
 
 For this reason, the `page_view` event must be the **first** event triggered on every page load. Triggering other events before it will result in [orphan events](TROUBLESHOOTING-GUIDE.md#orphan-events--sequence-issues). 
 
@@ -325,7 +325,7 @@ Nameless Analytics utilizes server-side **HttpOnly cookies** for maximum securit
 
 Since these cookies are inaccessible to client-side JavaScript, the tracker employs a real-time 'handshake' mechanism via a specific event called **`get_user_data`**. 
 
-When a user clicks an outbound link to a tracked domain, the tracker intercepts the click and sends an asynchronous `get_user_data` request to the Server-side GTM endpoint. The server extracts the `client_id` and `session_id` from the secure cookies and returns them to the tracker, which then decorates the destination URL with the **`na_id`** parameter (e.g., `https://destination.com/?na_id=...`). This ensures 100% accurate session stitching even across different domains.
+When a user clicks an outbound link to a tracked domain, the tracker intercepts the click and sends an asynchronous `get_user_data` request to the Server-side GTM endpoint. The server extracts the `client_id` and `session_id` from the secure cookies and returns them to the tracker, which then decorates the destination URL with the **`na_id`** parameter (e.g., `https://destination.com/?na_id=...`). This improves session stitching reliability across tracked domains.
 
 To ensure proper DNS resolution, the IP addresses of the Google App Engine, Cloud Run or Stape instances running the server-side GTM container must be correctly associated with each respective domain.
 
