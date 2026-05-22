@@ -80,7 +80,7 @@ The JSON payload must include the following top-level fields:
 
 
 ## JSON Payload Structure
-The Streaming Protocol requires a POST request with a JSON body. While the server validates mandatory root fields, `event_type` is an optional but recommended field within `event_data` to maintain consistency with the BigQuery schema.
+The Streaming Protocol requires a POST request with a JSON body.
 
 ### Example Payload
 ```json
