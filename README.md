@@ -62,7 +62,7 @@ Nameless Analytics is a privacy-first, first-party data collection infrastructur
 Built upon a transparent pipeline hosted entirely on a private Google Cloud Platform environment, the platform solves critical challenges in modern analytics:
 
 1.  **Total Data Ownership**: Unlike commercial tools where data resides on third-party servers, Nameless Analytics pipelines every interaction directly to a private BigQuery warehouse. This ensures ownership of raw data, retention policies, and reporting.
-2.  **Data Quality**: By leveraging a server-side, first-party architecture, the platform bypasses common client-side restrictions (such as ad blockers and ITP), ensuring granular, unsampled data collection that is far more accurate than standard client-side tracking.
+2.  **Data Quality**: By leveraging a server-side, first-party architecture, the platform reduces the impact of common client-side restrictions (such as ad blockers and ITP), ensuring granular, unsampled data collection that is far more accurate than standard client-side tracking.
 3.  **Real-Time Activation**: Identical event payloads can be streamed to external APIs, CRMs, or marketing automation tools the instant an event occurs, enabling real-time personalization.
 4.  **Scaling and Cost-Efficiency**: Engineered to run effectively within the **Google Cloud Free Tier** for small to medium traffic, while scaling to a highly cost-efficient pay-per-use model for enterprise-grade deployments.
 

@@ -174,8 +174,7 @@ function() {
 Fired when a user leaves or closes the page.
 
 Setup:
-- **Enable scroll depth trigger**: Enable **scroll depth trigger** built-in feature in GTM.
-- **Create the Trigger**: Create a Custom Event Trigger matching the event name `scrollDepth`.
+- **Create the Trigger**: Create a Custom Event Trigger that fires when a user leaves or closes the page (e.g. using **visibilitychange** or custom logics).
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `page_closed` event and assign the trigger to it.
 
 
@@ -430,7 +429,7 @@ The Streaming Protocol is specifically designed for server-to-server communicati
 
 
 ## How to set up First-Party Library Hosting
-To maximize data collection accuracy and prevent ad-blockers or Intelligent Tracking Prevention (ITP) algorithms from blocking the tracker execution, Nameless Analytics allows you to serve its core dependencies directly from your own domain rather than relying on public CDNs (like `jsdelivr.net`).
+To maximize data collection accuracy and reduce the impact of common client-side restrictions like ad blockers or Intelligent Tracking Prevention (ITP), Nameless Analytics allows you to serve its core dependencies directly from your own domain rather than relying on public CDNs (like `jsdelivr.net`).
 
 By doing so, the browser will treat the tracker scripts as critical, first-party website assets, significantly reducing the chances of them being blocked by privacy extensions.
 
