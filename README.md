@@ -460,7 +460,7 @@ Since link decoration happens dynamically upon clicking, cross-domain tracking *
   - **URL Decoration**: The tracker receives the response and decorates the destination URL with the session ID value (e.g., `https://destination.com/?na_id={session_id}`) before allowing the redirect to proceed.
   - **Session Stitching**: On the destination domain, the tracker detects the `na_id` parameter and sends it to its own server. If identifying parameters are missing but `na_*` acquisition parameters are present, it instead initializes a local `na_temp` cookie to preserve attribution context.
   
-  By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics ensures that the identifiers passed to the destination domain are 100% correct. 
+  By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics improves the reliability of the identifiers passed to the destination domain. 
 
   While this can introduce very small latency, it eliminates session fragmentation and ensures reliable cross-domain attribution in environments with strict privacy restrictions.
 

@@ -21,7 +21,7 @@ na_s = 'bQKa2UhJFyKXc5c_GlD2WG7tiOd5ARE-TStm1MddvqqAghg' # Modify this according
 full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
 origin = 'https://tommasomoretti.com' # Modify this according to website origin
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZTRmYTRlOTQzYWJmOGM2NTkyZg==' # Modify this according to the GTM Server-side preview header
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZTU1YzRiMmU3NWJlODdlNGVhMg==' # Modify this according to the GTM Server-side preview header
 
 # Event data
 client_id = na_s.split('_')[0]
@@ -222,7 +222,7 @@ def send_request(payload):
             'X-Gtm-Server-Preview': gtm_preview_header,
             'Content-Type': 'application/json',
             'Origin': origin,
-            'User-Agent': 'Nameless Analytics - Streaming protocol',
+            # 'User-Agent': 'Nameless Analytics - Streaming protocol',
             'Cookie': f'na_u={client_id}; na_s={na_s}' 
         }
     
