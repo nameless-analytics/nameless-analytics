@@ -206,7 +206,8 @@ def build_payload(page_date_from_bq, page_data_from_bq):
         }
     }
 
-    send_request(payload)
+    # send_request(payload)
+    send_request({})
 
 
 # --------------------------------------------------------------------------------------------------------------
