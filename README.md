@@ -27,6 +27,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Core Libraries Functioning](#core-libraries-functioning)
   - [Cross-domain Architecture](#cross-domain-architecture)
   - [Parameter hierarchy](#parameter-hierarchy)
+  - [Client-side cookies](#client-side-cookies)
   - [Debugging events](#debugging-events)
 - [Server-Side Processing](#server-side-processing)
   - [Security and Validation](#security-and-validation)
@@ -38,7 +39,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Bot protection](#bot-protection)
   - [Geolocation & Privacy by Design](#geolocation-privacy-by-design)
   - [Channel Grouping logic](#channel-grouping-logic)
-  - [Cookies](#cookies)
+  - [Server-side cookies](#server-side-cookies)
   - [Streaming Protocol](#streaming-protocol)
   - [Debugging requests](#debugging-requests)
 - [Storage](#storage)
@@ -404,20 +405,6 @@ Fully integrated with Google Consent Mode. Choose between respect or not respect
 - When Google Consent Mode not present and `respect_consent_mode` is enabled, none of the events are sent. 
 - When `respect_consent_mode` is disabled, all events are sent regardless of presence of Google Consent Mode.
 
-<details> <summary>See temp cookie value</summary>
-
-</br>
-
-| Cookie Name | Default expiration | Example values | Value composition | Usage |
-| :--- | :--- | :--- | :--- | :--- |
-| **na_temp** | Session | {<br> &nbsp; &nbsp; "source": "google", <br> &nbsp; &nbsp; "campaign": "summer_sale", <br> &nbsp; &nbsp; "campaign_id": "12345", <br> &nbsp; &nbsp; "campaign_click_id": "67890", <br> &nbsp; &nbsp; "campaign_content": "ad_group_1", <br> &nbsp; &nbsp; "campaign_term": "running_shoes", <br> &nbsp; &nbsp; "page_referrer": "https://www.google.com/" <br>}| JSON object of acquisition parameters | Temporarily stores acquisition parameters when `analytics_storage` is denied. |
-
-This is the lifecycle of `na_temp` cookie: 
-- **Session Expiration**: `na_temp` is a standard session cookie. Unlike persistent cookies, it lives exclusively in the browser's temporary memory and is never written to the user's hard drive. It expires and is automatically deleted by the browser as soon as the **entire browser process is closed** (closing only a single tab or window will not delete the cookie). This ensures attribution remains consistent even if the user navigates your site across multiple tabs.
-- **Conditional Deletion**: the cookie is not deleted immediately upon consent grant. Instead, it is forcefully removed during the **first `page_view` event (standard or virtual) that occurs while `analytics_storage` is already set to granted**. This ensures that if consent is granted mid-page, the original acquisition data remains available to attribute all subsequent events on that page before being purged on the next page transition.
-
-</details>
-
 
 ### SPA & History Management
 Native support for Single Page Applications. See the [Page View Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-track-page-views) for implementation examples.
@@ -517,6 +504,26 @@ User, session, and event parameters follow this hierarchy of overriding:
 | **3**        | Event parameters           | Nameless Analytics Client-side Tracker Tag                    |
 | **2**        | Shared event parameters    | Nameless Analytics Client-side Tracker Configuration Variable |
 | **1 (Low)**  | dataLayer event parameters | Nameless Analytics Client-side Tracker Tag                    |
+
+</details>
+
+
+### Client-side cookies
+The client-side identity cookie `na_temp` is set by the Nameless Analytics Client-side Tracker when respect consent mode is enabled and consent for analytics_storage has been denied. 
+
+It expires when consent given or at browser session level, whichever happens first.
+
+<details> <summary>See temp cookie value</summary>
+
+</br>
+
+| Cookie Name | Default expiration | Example values | Value composition | Usage |
+| :--- | :--- | :--- | :--- | :--- |
+| **na_temp** | Session | {<br> &nbsp; &nbsp; "source": "google", <br> &nbsp; &nbsp; "campaign": "summer_sale", <br> &nbsp; &nbsp; "campaign_id": "12345", <br> &nbsp; &nbsp; "campaign_click_id": "67890", <br> &nbsp; &nbsp; "campaign_content": "ad_group_1", <br> &nbsp; &nbsp; "campaign_term": "running_shoes", <br> &nbsp; &nbsp; "page_referrer": "https://www.google.com/" <br>}| JSON object of acquisition parameters | Temporarily stores acquisition parameters when `analytics_storage` is denied. |
+
+This is the lifecycle of `na_temp` cookie: 
+- **Session Expiration**: `na_temp` is a standard session cookie. Unlike persistent cookies, it lives exclusively in the browser's temporary memory and is never written to the user's hard drive. It expires and is automatically deleted by the browser as soon as the **entire browser process is closed** (closing only a single tab or window will not delete the cookie). This ensures attribution remains consistent even if the user navigates your site across multiple tabs.
+- **Conditional Deletion**: the cookie is not deleted immediately upon consent grant. Instead, it is forcefully removed during the **first `page_view` event (standard or virtual) that occurs while `analytics_storage` is already set to granted**. This ensures that if consent is granted mid-page, the original acquisition data remains available to attribute all subsequent events on that page before being purged on the next page transition.
 
 </details>
 
@@ -638,8 +645,8 @@ The channel grouping logic uses the following Source categories based on the sou
 </details>
 
 
-### Cookies
-All cookies are issued with `HttpOnly`, `Secure`, and `SameSite=Strict` flags. This multi-layered approach prevents client-side access (XSS protection) and Cross-Site Request Forgery (CSRF).
+### Server-side cookies
+The server-side identity cookies `na_u` and `na_s` are HttpOnly, Secure and SameSite=Strict.
 
 The platform automatically calculates the appropriate cookie domain by extracting the **Effective TLD+1** from the request origin. This ensures seamless identity persistence across subdomains without manual configuration. 
 
