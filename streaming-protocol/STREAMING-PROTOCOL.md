@@ -103,7 +103,7 @@ The Streaming Protocol requires a POST request with a JSON body.
   "event_data": {
     "event_type": "event", // Do not modify
     "hostname": "namelessanalytics.com", // Website domain origin
-    "source": null, // Do not modify
+    "source": "direct", // Do not modify
     "campaign": null, // Do not modify
     "campaign_id": null, // Do not modify
     "campaign_click_id": null, // Do not modify
