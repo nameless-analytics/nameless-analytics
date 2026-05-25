@@ -744,7 +744,8 @@ Nameless Analytics offers a set of BigQuery [SQL Table Functions](tables/TABLES.
 - [Ecommerce Funnel Pivot](tables/sql/ec_funnel_pivot.sql) - [View schema](tables/TABLES.md#ecommerce-funnel)
 - [Session Consent level](tables/consents.sql) - [View schema](tables/TABLES.md#consents)
 
-This is a reporting example made in Looker Studio based on the SQL functions above: [Link](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd).
+This is a [reporting example made in Looker Studio](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd) based on the SQL functions.
+
 
 
 ## AI support
