@@ -251,7 +251,7 @@ Create the table functions you need by running the following DDL statements:
 - [Ecommerce Transaction table function](sql/ec_transactions.sql)
 - [Ecommerce Product table function](sql/ec_products.sql)
 - [Ecommerce Funnel table function](sql/ec_funnel.sql)
-- [Ecommerce Funnel Pivot table function](sql/ec_funnel_pivot.sql)
+- [Ecommerce Funnel Pivot table function](sql/ec_funnel.sql)
 - [Consents table function](sql/consents.sql)
 
 
