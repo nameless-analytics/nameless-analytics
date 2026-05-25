@@ -1008,7 +1008,7 @@ This table illustrates the fields available across different table functions, al
 
 <details><summary>Output Fields Matrix</summary>
 
-| Field name | Field type | Value type | Events | Users | Sessions | Pages | Transactions | Products | Funnel | Pivot | Consents |
+| Field name | Field type | Value type | Events | Users | Sessions | Pages | Transactions | Products | Funnel | Funnel pivot | Consents |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **User Identity** | | | | | | | | | | | | |
 | `client_id` | Dimension | string |  X  |  X  |  X  |  X  |  X  |  X  |  X  |  X  |  X  |
