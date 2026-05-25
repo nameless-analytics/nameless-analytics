@@ -50,9 +50,6 @@ Users own their personal data. Companies must own the infrastructure that proces
 Metrics are just derived opinions.  
 Always keep a copy of the raw truth.
 
-**Analytics is infrastructure, not an interface.**  
-If you don't control the flow, you're just a tenant.
-
 **Dashboards are an output, not the truth.**  
 Don't let pretty charts hide ugly realities.
 
