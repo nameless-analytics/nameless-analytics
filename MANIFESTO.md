@@ -39,7 +39,7 @@ If you're not ready to own your stack, feel free to keep letting others control 
 
 ## Let's go
 
-Collecting your own proprietary first-party data. [Start from here](README.md).
+Collecting your own proprietary first-party data, [start from here](README.md).
 
 ---
 
