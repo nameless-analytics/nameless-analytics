@@ -13,10 +13,9 @@ If you are like us, completely disillusioned by modern analytics platforms, a co
 
 Welcome to the club.
 
-We are tired of analytics platforms and their closed ecosystems that stand between us and our data.
-
-For analysts, these systems are **black boxes**.  
-For companies, they are **strategic liabilities**.
+We are tired of analytics platforms and their closed ecosystems that stand between us and our data:
+* for analysts, these systems are black boxes.  
+* for companies, they are strategic liabilities.
 
 We want access to real raw data, the ability to define metrics that actually matter to the business and the freedom to move our data without asking for permission.
 
