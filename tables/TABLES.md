@@ -1327,7 +1327,7 @@ Use the following DML statement to delete all records for a specific client_id. 
 
 ```sql
 # Delete all records for a specific client_id
-DELETE FROM `project.dataset.events_raw`
+DELETE FROM `project.nameless_analytics.events_raw`
 WHERE client_id = 'USER_CLIENT_ID';
 ```
 
@@ -1346,7 +1346,7 @@ SELECT
   count(distinct session_id) as sessions,
   count(distinct page_id) as page_views,
   count(distinct event_id) as events,
-FROM `tom-moretti.nameless_analytics.events_raw`
+FROM `project.nameless_analytics.events_raw`
 WHERE event_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
 GROUP BY 1 
 ORDER BY 1 DESC;
