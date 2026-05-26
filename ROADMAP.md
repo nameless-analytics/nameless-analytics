@@ -11,11 +11,12 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 ## Wishlist / To do
 Here is a wishlist of ideas and features for future releases, representing a list of intentions rather than a strict roadmap.
 
-- Complete Dataform datamodel
+- Complete Dataform datamodel with ML models
 - Add last_click_non_direct attribution model
 - Add custom channel-grouping rules (Server-side client tag)
 - Add core web vitals metrics (Client-side tracker tag) for page_load_time event
-- Build ML models
+- Add force cast value as string at event parameter level 
+- fix page_location as document.location.href and add page_path as document.location.pathname
 
 ---
 
