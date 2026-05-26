@@ -30,9 +30,9 @@ It's not for those who prefer the comfort of a black box over the power of the t
 
 It's for:
 
-* **Builders**, who want to create rather than just consume
-* **Companies** that treat data as a strategic asset, not a line item
-* **Decision makers**, who need auditable, transparent, and reliable numbers
+* **Analysts** that want to get their hands dirty
+* **Companies** that treat data as a strategic asset
+* **Decision makers**, who need auditable, transparent and reliable numbers
 
 If you're not ready to own your stack, feel free to keep letting others control your data.
 
@@ -40,7 +40,7 @@ If you're not ready to own your stack, feel free to keep letting others control 
 
 ## Let's go
 
-If you are ready to take back control of your analytics infrastructure and start collecting your own proprietary first-party data, [start from here](README.md).
+Collecting your own proprietary first-party data. [Start from here](README.md).
 
 ---
 
