@@ -372,7 +372,8 @@ For example: if you filter the events table function at event level, you probabl
 | `page_id` | Dimension | Unique identifier for the page view. |
 | `page_language` | Dimension | The language set for the page. |
 | `page_load_timestamp` | Dimension | Timestamp when the page started loading. |
-| `page_path` | Dimension | The full URL of the page. |
+| `page_url` | Dimension | The URL of the page. |
+| `page_path` | Dimension | The path of the page. |
 | `page_query` | Dimension | The URL query string. |
 | `page_referrer` | Dimension | The URL of the referring page. |
 | `page_status_code` | Dimension | HTTP status code of the page. |
@@ -402,12 +403,14 @@ For example: if you filter the events table function at event level, you probabl
 | `session_duration_sec` | Metric | Total duration of the session in seconds. |
 | `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
 | `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
-| `session_exit_page_path` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_url` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_path` | Dimension | Path of the last page visited in the session. |
 | `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
 | `session_hostname` | Dimension | Hostname recorded for the session. |
 | `session_id` | Dimension | Unique identifier for the session. |
 | `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
-| `session_landing_page_path` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_url` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_path` | Dimension | Path of the first page visited in the session. |
 | `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
 | `session_language` | Dimension | Language recorded for the session. |
 | `session_number` | Dimension | Sequence number of the session for the user. |
@@ -588,13 +591,15 @@ Aggregates event data at session level.
 | `session_device_type` | Dimension | Primary device type used during the session. |
 | `session_duration_sec` | Metric | Total active duration of the session (in seconds). |
 | `session_exit_page_category` | Dimension | Category of the page where the session ended. |
-| `session_exit_page_path` | Dimension | URL of the page where the session ended. |
+| `session_exit_page_url` | Dimension | URL of the page where the session ended. |
+| `session_exit_page_path` | Dimension | Path of the page where the session ended. |
 | `session_exit_page_title` | Dimension | Title of the page where the session ended. |
 | `session_functionality_storage` | Metric | Count of sessions with functionality storage consent. |
 | `session_hostname` | Dimension | Hostname recorded for the session. |
 | `session_id` | Dimension | Unique identifier for the session. |
 | `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
-| `session_landing_page_path` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_url` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_path` | Dimension | Path of the first page visited in the session. |
 | `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
 | `session_language` | Dimension | Primary language detected for the session. |
 | `session_number` | Dimension | Sequence number of the session for the user. |
@@ -648,7 +653,8 @@ Aggregates event data at page level.
 | `page_id` | Dimension | Unique identifier for the page view. |
 | `page_load_time_sec` | Dimension | Time taken to load the page in seconds. |
 | `page_load_timestamp` | Dimension | Timestamp when the page started loading. |
-| `page_path` | Dimension | The full URL of the page. |
+| `page_url` | Dimension | The URL of the page. |
+| `page_path` | Dimension | The path of the page. |
 | `page_status_code` | Dimension | HTTP status code of the page. |
 | `page_title` | Dimension | The title (document title) of the page. |
 | `page_unload_timestamp` | Dimension | Timestamp when the page was closed. |
@@ -667,12 +673,14 @@ Aggregates event data at page level.
 | `session_date` | Dimension | The date the session started. |
 | `session_device_type` | Dimension | Primary device type detected for the session. |
 | `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
-| `session_exit_page_path` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_url` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_path` | Dimension | Path of the last page visited in the session. |
 | `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
 | `session_hostname` | Dimension | Hostname recorded for the session. |
 | `session_id` | Dimension | Unique identifier for the session. |
 | `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
-| `session_landing_page_path` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_url` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_path` | Dimension | Path of the first page visited in the session. |
 | `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
 | `session_language` | Dimension | Language recorded for the session. |
 | `session_number` | Dimension | Sequence number of the session for the user. |
@@ -745,12 +753,14 @@ Aggregates ecommerce data at transaction level.
 | `session_device_type` | Dimension | Primary device type detected for the session. |
 | `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
 | `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
-| `session_exit_page_path` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_url` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_path` | Dimension | Path of the last page visited in the session. |
 | `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
 | `session_hostname` | Dimension | Hostname recorded for the session. |
 | `session_id` | Dimension | Unique identifier for the session. |
 | `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
-| `session_landing_page_path` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_url` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_path` | Dimension | Path of the first page visited in the session. |
 | `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
 | `session_language` | Dimension | Language recorded for the session. |
 | `session_number` | Dimension | Sequence number of the session for the user. |
@@ -846,12 +856,14 @@ Aggregates ecommerce data at product level.
 | `session_device_type` | Dimension | Primary device type detected for the session. |
 | `session_end_timestamp` | Dimension | Timestamp of the last activity in the session. |
 | `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
-| `session_exit_page_path` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_url` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_path` | Dimension | Path of the last page visited in the session. |
 | `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
 | `session_hostname` | Dimension | Hostname recorded for the session. |
 | `session_id` | Dimension | Unique identifier for the session. |
 | `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
-| `session_landing_page_path` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_url` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_path` | Dimension | Path of the first page visited in the session. |
 | `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
 | `session_language` | Dimension | Language recorded for the session. |
 | `session_number` | Dimension | Sequence number of the session for the user. |
@@ -975,7 +987,8 @@ Aggregates consent data at session level.
 | `session_device_type` | Dimension | Primary device type detected for the session. |
 | `session_duration_sec` | Metric | Total duration of the session in seconds. |
 | `session_exit_page_category` | Dimension | Category of the last page visited in the session. |
-| `session_exit_page_path` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_url` | Dimension | URL of the last page visited in the session. |
+| `session_exit_page_path` | Dimension | Path of the last page visited in the session. |
 | `session_exit_page_title` | Dimension | Title of the last page visited in the session. |
 | `session_hostname` | Dimension | Hostname recorded for the session. |
 | `session_id` | Dimension | Unique identifier for the session. |
@@ -983,7 +996,8 @@ Aggregates consent data at session level.
 | `session_id_consent_mode_not_present` | Dimension | Session ID where Consent Mode was not detected. |
 | `session_id_consent_not_expressed` | Dimension | Session ID where no consent choice was expressed. |
 | `session_landing_page_category` | Dimension | Category of the first page visited in the session. |
-| `session_landing_page_path` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_url` | Dimension | URL of the first page visited in the session. |
+| `session_landing_page_path` | Dimension | Path of the first page visited in the session. |
 | `session_landing_page_title` | Dimension | Title of the first page visited in the session. |
 | `session_language` | Dimension | Language recorded for the session. |
 | `session_number` | Dimension | Sequence number of the session for the user. |
@@ -1084,11 +1098,13 @@ This table illustrates the fields available across different table functions, al
 | `session_country` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |  X  |  X  |  X  |
 | `session_device_type` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |  X  |  X  |  X  |
 | `session_exit_page_category` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
+| `session_exit_page_url` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_exit_page_path` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_exit_page_title` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_functionality_storage` | Metric | integer |  X  |    |  X  |    |    |    |    |    |    |
 | `session_hostname` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_landing_page_category` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
+| `session_landing_page_url` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_landing_page_path` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_landing_page_title` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_language` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
@@ -1114,6 +1130,7 @@ This table illustrates the fields available across different table functions, al
 | `page_language` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `page_load_time_sec` | Dimension | float |    |    |    |  X  |    |    |    |    |    |
 | `page_load_timestamp` | Dimension | integer |  X  |    |    |  X  |    |    |    |    |    |
+| `page_url` | Dimension | string |  X  |    |    |  X  |    |    |    |    |    |
 | `page_path` | Dimension | string |  X  |    |    |  X  |    |    |    |    |    |
 | `page_query` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `page_referrer` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
