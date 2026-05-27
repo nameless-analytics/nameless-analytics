@@ -272,7 +272,7 @@ The dates table is partitioned by `date` and clustered by `month_name` and `day_
 ## Table functions
 Table functions are predefined SQL queries that simplify data analysis by transforming raw event data into structured, easy-to-use formats for common reporting needs.
 
-Unlike other systems, Nameless Analytics reporting functions are designed to work directly on the `events_raw` table as the single source of truth. By leveraging BigQuery **Window Functions**. This approach ensures that reports always reflect the most up-to-date state of the data without the need for complex ETL processes or intermediate staging tables.
+Unlike other systems, Nameless Analytics reporting functions are designed to work directly on the `events_raw` table as the single source of truth. By leveraging BigQuery window functions, they reflect the most up-to-date state of the data without requiring complex ETL processes or intermediate staging tables.
 
 Streaming protocol events are excluded from the calculation of the `session_duration` and `time_on_page` fields.
 

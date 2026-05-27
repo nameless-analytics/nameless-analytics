@@ -373,8 +373,8 @@ When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and t
   
 | **Parameter name** | **Sub-parameter**    | **Type** | **Added**   | **Field description**   |
 |--------------------|----------------------|----------|-------------|-------------------------|
-| session_data       | cross_domain_session | String   | Server-Side | Is cross domain session |
-| event_data         | cross_domain_id      | String   | Client-Side | Cross domain id (populated from `na_id` URL parameter) |
+| session_data       | cross_domain_session | String   | Server-Side | Is cross-domain session |
+| event_data         | cross_domain_id      | String   | Client-Side | Cross-domain id (populated from `na_id` URL parameter) |
   
 </details>
 
