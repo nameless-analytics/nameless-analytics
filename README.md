@@ -180,7 +180,7 @@ The request data is sent via a POST request in JSON format. It is structured int
     "page_query": "gtm_debug=1765021707758",
     "page_extension": null,
     "page_referrer": "https://tagassistant.google.com/",
-    "page_timestamp": 1768661707758,
+    "page_load_timestamp": 1768661707758,
     "page_category": "Homepage",
     "page_language": "it"
   },
@@ -294,7 +294,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | page_query                    | String   | Client-Side | URL query string                              |
 |                    | page_extension                | String   | Client-Side | Page file extension                           |
 |                    | page_referrer                 | String   | Client-Side | Referrer URL                                  |
-|                    | page_timestamp                | Integer  | Client-Side | Page view timestamp                           |
+|                    | page_load_timestamp           | Integer  | Client-Side | Page load timestamp                           |
 |                    | page_category                 | String   | Client-Side | Page category                                 |
 |                    | page_language                 | String   | Client-Side | Page language                                 |
 | event_date         |                               | String   | Client-Side | Event date                                    |
