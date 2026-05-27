@@ -42,9 +42,11 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions
       session_language,
       session_hostname,
       session_landing_page_category, 
+      session_landing_page_url, 
       session_landing_page_location, 
       session_landing_page_title, 
       session_exit_page_category, 
+      session_exit_page_url, 
       session_exit_page_location, 
       session_exit_page_title,
 
@@ -107,9 +109,11 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions
     session_language,
     session_hostname,
     session_landing_page_category, 
+    session_landing_page_url, 
     session_landing_page_location, 
     session_landing_page_title, 
     session_exit_page_category, 
+    session_exit_page_url, 
     session_exit_page_location, 
     session_exit_page_title,
 

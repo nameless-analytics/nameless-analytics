@@ -101,9 +101,11 @@ select
     
     (select value.string from unnest(session_data) where name = 'session_hostname') as session_hostname,
     (select value.string from unnest(session_data) where name = 'session_landing_page_category') as session_landing_page_category,
+    (select value.string from unnest(session_data) where name = 'session_landing_page_url') as session_landing_page_url,
     (select value.string from unnest(session_data) where name = 'session_landing_page_location') as session_landing_page_location,
     (select value.string from unnest(session_data) where name = 'session_landing_page_title') as session_landing_page_title,
     first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_category'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_category,
+    first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_url'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_url,
     first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_location'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_location,
     first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_title'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_title,
     
@@ -132,6 +134,7 @@ select
     (select value.string from unnest(page_data) where name = 'page_language') as page_language,
     (select value.string from unnest(page_data) where name = 'page_hostname_protocol') as page_hostname_protocol,
     (select value.string from unnest(page_data) where name = 'page_hostname') as page_hostname,
+    (select value.string from unnest(page_data) where name = 'page_url') as page_url,
     (select value.string from unnest(page_data) where name = 'page_location') as page_location,
     (select value.string from unnest(page_data) where name = 'page_fragment') as page_fragment,
     (select value.string from unnest(page_data) where name = 'page_query') as page_query,
