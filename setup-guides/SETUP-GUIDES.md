@@ -110,7 +110,11 @@ dataLayer.push({
   event: 'page_view', // Or any custom events
   page_category: 'Product page', 
   page_title: 'Product name | Nameless Analytics', 
-  page_location: '/product_name'
+  page_url: 'https://www.domain.com/product_name.html?parameter_1=test_1&parameter_2=test_2#fragment_1=example_1&fragment_2=example_2',
+  page_location: '/product_name',
+  page_fragment: "fragment_1=example_1&fragment_2=example_2",
+  page_query: 'parameter_1=test_1&parameter_2=test_2',
+  page_extension: 'html'
 });
 ```
 
