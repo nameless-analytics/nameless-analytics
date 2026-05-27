@@ -161,10 +161,10 @@ The request data is sent via a POST request in JSON format. It is structured int
     "session_hostname": "tommasomoretti.com",
     "session_browser_name": "Chrome",
     "session_landing_page_category": "Homepage",
-    "session_landing_page_location": "/",
+    "session_landing_page_path": "/",
     "session_landing_page_title": "Tommaso Moretti | Freelance digital data analyst",
     "session_exit_page_category": "Homepage",
-    "session_exit_page_location": "/",
+    "session_exit_page_path": "/",
     "session_exit_page_title": "Tommaso Moretti | Freelance digital data analyst",
     "session_start_timestamp": 1768661707758,
     "session_end_timestamp": 1768661707758
@@ -175,7 +175,7 @@ The request data is sent via a POST request in JSON format. It is structured int
     "page_title": "Tommaso Moretti | Freelance digital data analyst",
     "page_hostname_protocol": "https",
     "page_hostname": "tommasomoretti.com",
-    "page_location": "/",
+    "page_path": "/",
     "page_fragment": null,
     "page_query": "gtm_debug=1765021707758",
     "page_extension": null,
@@ -275,11 +275,11 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | session_hostname              | String   | Server-Side | Website hostname for session                  |
 |                    | session_browser_name          | String   | Server-Side | Browser name used in session                  |
 |                    | session_landing_page_category | String   | Server-Side | Landing page category                         |
-|                    | session_landing_page_location | String   | Server-Side | Landing page path                             |
+|                    | session_landing_page_path | String   | Server-Side | Landing page path                             |
 |                    | session_landing_page_title    | String   | Server-Side | Landing page title                            |
 |                    | session_city                  | String   | Server-Side | Session geolocation city                      |
 |                    | session_exit_page_category    | String   | Server-Side | Exit page category                            |
-|                    | session_exit_page_location    | String   | Server-Side | Exit page path                                |
+|                    | session_exit_page_path    | String   | Server-Side | Exit page path                                |
 |                    | session_exit_page_title       | String   | Server-Side | Exit page title                               |
 |                    | session_start_timestamp       | Integer  | Server-Side | Session start timestamp                       |
 |                    | session_end_timestamp         | Integer  | Server-Side | Session end timestamp                         |
@@ -289,7 +289,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 | page_data          | page_title                    | String   | Client-Side | Page title                                    |
 |                    | page_hostname_protocol        | String   | Client-Side | Page hostname protocol (http/https)           |
 |                    | page_hostname                 | String   | Client-Side | Page hostname                                 |
-|                    | page_location                 | String   | Client-Side | Page path                                     |
+|                    | page_path                 | String   | Client-Side | Page path                                     |
 |                    | page_fragment                 | String   | Client-Side | URL fragment                                  |
 |                    | page_query                    | String   | Client-Side | URL query string                              |
 |                    | page_extension                | String   | Client-Side | Page file extension                           |
@@ -510,7 +510,7 @@ User, session, and event parameters follow this hierarchy of overriding:
 
 
 ### Client-side cookies
-The client-side identity cookie `na_temp` is set by the Nameless Analytics Client-side Tracker when respect consent mode is enabled and consent for analytics_storage has been denied. 
+The temporary attribution cookie `na_temp` is set by the Nameless Analytics Client-side Tracker when respect consent mode is enabled and consent for analytics_storage has been denied. 
 
 It expires when consent given or at browser session level, whichever happens first.
 
@@ -523,7 +523,7 @@ It expires when consent given or at browser session level, whichever happens fir
 | **na_temp** | Session | {<br> &nbsp; &nbsp; "source": "google", <br> &nbsp; &nbsp; "campaign": "summer_sale", <br> &nbsp; &nbsp; "campaign_id": "12345", <br> &nbsp; &nbsp; "campaign_click_id": "67890", <br> &nbsp; &nbsp; "campaign_content": "ad_group_1", <br> &nbsp; &nbsp; "campaign_term": "running_shoes", <br> &nbsp; &nbsp; "page_referrer": "https://www.google.com/" <br>}| JSON object of acquisition parameters | Temporarily stores acquisition parameters when `analytics_storage` is denied. |
 
 This is the lifecycle of `na_temp` cookie: 
-- **Session Expiration**: `na_temp` is a standard session cookie. Unlike persistent cookies, it lives exclusively in the browser's temporary memory and is never written to the user's hard drive. It expires and is automatically deleted by the browser as soon as the **entire browser process is closed** (closing only a single tab or window will not delete the cookie). This ensures attribution remains consistent even if the user navigates your site across multiple tabs.
+- **Session Expiration**: `na_temp` is a standard session cookie. Unlike persistent cookies, it lives exclusively in the browser's temporary memory. It expires and is automatically deleted by the browser as soon as the **entire browser process is closed** (closing only a single tab or window will not delete the cookie). This ensures attribution remains consistent even if the user navigates your site across multiple tabs.
 - **Conditional Deletion**: the cookie is not deleted immediately upon consent grant. Instead, it is forcefully removed during the **first `page_view` event (standard or virtual) that occurs while `analytics_storage` is already set to granted**. This ensures that if consent is granted mid-page, the original acquisition data remains available to attribute all subsequent events on that page before being purged on the next page transition.
 
 </details>
@@ -704,8 +704,8 @@ Firestore ensures data integrity by managing how parameters are updated across h
 | :--- | :--- | :--- | :--- |
 | **User** | **First-Touch** | `user_date`, `user_source`, `user_tld_source`, `user_campaign`, `user_campaign_id`, `user_campaign_click_id`, `user_campaign_term`, `user_campaign_content`, `user_channel_grouping`, `user_device_type`, `user_country`, `user_language`,   `user_first_session_timestamp` | Recorded at first visit, **never overwritten**. |
 | **User** | **Last-Touch** | `user_last_session_timestamp` | Updated at the start of every new session. |
-| **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`,   `session_channel_grouping`, `session_device_type`, `session_country`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_location`, `session_landing_page_title`, `user_id` | Set at session start, persists throughout   the session. |
-| **Session** | **Last-Touch** | `session_exit_page_category`, `session_exit_page_location`, `session_exit_page_title`, `session_end_timestamp` | **Updated on every hit** to reflect the latest state. |
+| **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`,   `session_channel_grouping`, `session_device_type`, `session_country`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_path`, `session_landing_page_title`, `user_id` | Set at session start, persists throughout   the session. |
+| **Session** | **Last-Touch** | `session_exit_page_category`, `session_exit_page_path`, `session_exit_page_title`, `session_end_timestamp` | **Updated on every hit** to reflect the latest state. |
 | **Session** | **Progressive** | `cross_domain_session` | Flags as 'Yes' if any hit in the session is cross-domain. |
 
 </details>
