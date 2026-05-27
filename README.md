@@ -106,6 +106,7 @@ Read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
 - [Roadmap](ROADMAP.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Manifesto](MANIFESTO.md)
+- [License](LICENSE.md)
 
 
 
