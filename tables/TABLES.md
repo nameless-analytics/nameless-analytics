@@ -242,6 +242,10 @@ execute immediate dates_table_sql;
 </details>
 
 
+### Create custom functions
+First, create the custom user-defined function (UDF) required for channel grouping by running the following DDL statement:
+- [Custom Channel Grouping function](sql/get_custom_channel_grouping.sql)
+
 ### Create table functions
 Create the table functions you need by running the following DDL statements:
 - [User table function](sql/users.sql)
@@ -251,7 +255,7 @@ Create the table functions you need by running the following DDL statements:
 - [Ecommerce Transaction table function](sql/ec_transactions.sql)
 - [Ecommerce Product table function](sql/ec_products.sql)
 - [Ecommerce Funnel table function](sql/ec_funnel.sql)
-- [Ecommerce Funnel Pivot table function](sql/ec_funnel.sql)
+- [Ecommerce Funnel Pivot table function](sql/ec_funnel_pivot.sql)
 - [Consents table function](sql/consents.sql)
 
 
@@ -339,6 +343,7 @@ For example: if you filter the events table function at event level, you probabl
 | `cs_hostname` | Dimension | Client-side GTM server hostname. |
 | `cs_tag_id` | Dimension | Client-side GTM tag ID. |
 | `cs_tag_name` | Dimension | Client-side GTM tag name. |
+| `custom_channel_grouping` | Dimension | Custom traffic source channel grouping for the event calculated on the fly. |
 | `datalayer` | Dimension | Current JSON value of the dataLayer. |
 | `days_from_first_to_last_visit` | Metric | Days between the user's first and last visit. |
 | `days_from_first_visit` | Metric | Days since the user's first visit. |
@@ -397,6 +402,7 @@ For example: if you filter the events table function at event level, you probabl
 | `session_channel_grouping` | Dimension | Acquisition channel grouping for the session. |
 | `session_city` | Dimension | City detected for the session. |
 | `session_country` | Dimension | Country detected for the session. |
+| `session_custom_channel_grouping` | Dimension | Custom traffic source channel grouping for the session calculated on the fly. |
 | `session_data` | Dimension | Array of session level metadata/parameters. |
 | `session_date` | Dimension | The date the session started. |
 | `session_device_type` | Dimension | Primary device type detected for the session. |
@@ -448,6 +454,7 @@ For example: if you filter the events table function at event level, you probabl
 | `user_source_cleaned` | Dimension | Normalized source of acquisition. |
 | `user_tld_source` | Dimension | Source of acquisition with TLD. |
 | `user_type` | Dimension | User type classification (New vs Returning). |
+| `users_custom_channel_grouping` | Dimension | Custom traffic source channel grouping for the user calculated on the fly. |
 | `viewport_size` | Metric | Dimensions of the visible browser window area. |
 
 </details>
@@ -481,7 +488,6 @@ Aggregates event data at user level.
 | `last_purchase_timestamp` | Dimension | Timestamp of the user's most recent purchase. |
 | `new_customer_client_id` | Dimension | Client ID of new customers. |
 | `new_user_client_id` | Dimension | Client ID for users identified as new during the period. |
-| `total_page_views` | Metric | Total number of page views. |
 | `purchase` | Metric | Total count of purchase events for the user. |
 | `purchase_net_refund` | Metric | Net number of purchases after accounting for refunds. |
 | `purchase_revenue` | Metric | Total revenue generated from user purchases. |
@@ -494,6 +500,7 @@ Aggregates event data at user level.
 | `sessions` | Metric | Total number of sessions recorded for the user. |
 | `sessions_per_user` | Metric | Average number of sessions per unique user. |
 | `total_events` | Metric | Total number of events. |
+| `total_page_views` | Metric | Total number of page views. |
 | `user_campaign` | Dimension | Original acquisition campaign for the user. |
 | `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
 | `user_campaign_content` | Dimension | Original acquisition campaign content. |
@@ -552,7 +559,6 @@ Aggregates event data at session level.
 | `new_session` | Metric | Total number of new sessions. |
 | `new_sessions_percentage` | Metric | Percentage of sessions that were new. |
 | `new_user_client_id` | Dimension | Identification of users seen for the first time during the session. |
-| `total_page_views` | Metric | Total number of page views during the session. |
 | `page_view_per_session` | Metric | Average number of page views per session. |
 | `personalization_storage_accepted_percentage` | Metric | Percentage of sessions where personalization storage was accepted. |
 | `personalization_storage_denied_percentage` | Metric | Percentage of sessions where personalization storage was denied. |
@@ -611,6 +617,8 @@ Aggregates event data at session level.
 | `session_with_refund` | Metric | Indicates if the session includes at least one refund event. |
 | `shipping_net_refund` | Metric | Total shipping revenue minus refunded shipping charges. |
 | `tax_net_refund` | Metric | Total tax revenue minus refunded tax charges. |
+| `total_events` | Metric | Total number of events during the session. |
+| `total_page_views` | Metric | Total number of page views during the session. |
 | `user_campaign` | Dimension | Original acquisition campaign for the user. |
 | `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
 | `user_campaign_content` | Dimension | Original acquisition campaign content. |
@@ -658,7 +666,6 @@ Aggregates event data at page level.
 | `page_status_code` | Dimension | HTTP status code of the page. |
 | `page_title` | Dimension | The title (document title) of the page. |
 | `page_unload_timestamp` | Dimension | Timestamp when the page was closed. |
-| `total_page_views` | Metric | Count of page views. |
 | `page_view_number` | Dimension | Sequential number of the page view in the session. |
 | `returning_user_client_id` | Dimension | Client ID if this is not the user's first session, else null. |
 | `session_browser_name` | Dimension | Browser name recorded at session start. |
@@ -688,6 +695,7 @@ Aggregates event data at page level.
 | `session_start_timestamp` | Dimension | Timestamp of the first event in the session. |
 | `session_type` | Dimension | Classification of the session (New vs Returning). |
 | `time_on_page` | Metric | Seconds spent on the page. |
+| `total_page_views` | Metric | Count of page views. |
 | `user_campaign` | Dimension | Original acquisition campaign for the user. |
 | `user_campaign_click_id` | Dimension | Original acquisition click ID for the user. |
 | `user_campaign_content` | Dimension | Original acquisition campaign content. |
@@ -1061,7 +1069,8 @@ This table illustrates the fields available across different table functions, al
 | `user_source_cleaned` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `user_tld_source` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `user_with_purchase` | Metric | integer |  X  |  X  |    |    |    |    |    |    |    |
-| `user_with_refund` | Metric | integer |  X  |  X  |    |    |    |    |    |    |    |
+| `user_with_refund` | Metric | integer |  X  |  X  |    |    |    |    |    |    |
+| `users_custom_channel_grouping` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | **Session Identity** | | | | | | | | | | | | |
 | `session_date` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |  X  |  X  |  X  |
 | `session_duration_sec` | Metric | integer |  X  |  X  |  X  |    |    |    |    |    |  X  |
@@ -1096,6 +1105,7 @@ This table illustrates the fields available across different table functions, al
 | `session_channel_grouping` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |  X  |  X  |  X  |
 | `session_city` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_country` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |  X  |  X  |  X  |
+| `session_custom_channel_grouping` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `session_device_type` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |  X  |  X  |  X  |
 | `session_exit_page_category` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
 | `session_exit_page_url` | Dimension | string |  X  |    |  X  |  X  |  X  |  X  |    |    |  X  |
@@ -1148,6 +1158,7 @@ This table illustrates the fields available across different table functions, al
 | `campaign_id` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `campaign_term` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `channel_grouping` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
+| `custom_channel_grouping` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `event_date` | Dimension | string |  X  |    |    |    |  X  |  X  |    |    |    |
 | `event_id` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `event_name` | Dimension | string |  X  |  X  |    |    |  X  |  X  |    |    |    |
@@ -1158,7 +1169,7 @@ This table illustrates the fields available across different table functions, al
 | `source` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `source_cleaned` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
 | `tld_source` | Dimension | string |  X  |    |    |    |    |    |    |    |    |
-| `total_events` | Metric | integer |    |  X  |    |    |    |    |    |    |    |
+| `total_events` | Metric | integer |    |  X  |  X  |    |    |    |    |    |    |
 | **Ecommerce Data** | | | | | | | | | | | | |
 | `add_payment_info` | Metric | integer |    |    |  X  |    |    |  X  |  X  |  X  |    |
 | `add_shipping_info` | Metric | integer |    |    |  X  |    |    |  X  |  X  |  X  |    |
