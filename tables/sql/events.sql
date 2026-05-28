@@ -30,6 +30,7 @@ select
     datetime_diff(current_timestamp(), timestamp_millis((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')), day) as days_from_last_visit,
     
     (select value.string from unnest(user_data) where name = 'user_channel_grouping') as user_channel_grouping,
+    `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(user_data) where name = 'user_source'), (select value.string from unnest(user_data) where name = 'user_campaign')) as users_custom_channel_grouping,
     (select value.string from unnest(user_data) where name = 'user_source') as user_source,
     (select value.string from unnest(user_data) where name = 'user_tld_source') as user_tld_source,
     split((select value.string from unnest(user_data) where name = 'user_tld_source'), '.')[safe_offset(0)] as user_source_cleaned,
@@ -83,6 +84,7 @@ select
     case when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 1 else 0 end as returning_session,
 
     (select value.string from unnest(session_data) where name = 'session_channel_grouping') as session_channel_grouping,
+    `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(session_data) where name = 'session_source'), (select value.string from unnest(session_data) where name = 'session_campaign')) as session_custom_channel_grouping,
     (select value.string from unnest(session_data) where name = 'session_source') as session_source,
     (select value.string from unnest(session_data) where name = 'session_tld_source') as session_tld_source,
     split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] as session_source_cleaned,
@@ -161,6 +163,7 @@ select
     (select value.string from unnest(event_data) where name = 'event_type') as event_type, 
     
     (select value.string from unnest(event_data) where name = 'channel_grouping') as channel_grouping, 
+    `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(event_data) where name = 'source'), (select value.string from unnest(event_data) where name = 'campaign')) as custom_channel_grouping,
     (select value.string from unnest(event_data) where name = 'source') as source, 
     (select value.string from unnest(event_data) where name = 'tld_source') as tld_source, 
     split((select value.string from unnest(event_data) where name = 'tld_source'), '.')[safe_offset(0)] as source_cleaned,

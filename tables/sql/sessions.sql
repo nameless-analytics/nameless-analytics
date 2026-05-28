@@ -52,6 +52,7 @@ with raw_session_data as (
       session_hostname,
 
       # EVENTS
+      count(event_name) as total_events,
       countif(event_name = 'page_view') as total_page_views,
       countif(event_name = 'view_promotion') as view_promotion,
       countif(event_name = 'select_promotion') as select_promotion,
@@ -162,6 +163,7 @@ with raw_session_data as (
       session_hostname,
 
       # EVENTS
+      total_events,
       total_page_views,
       view_promotion,
       select_promotion,
@@ -275,6 +277,7 @@ with raw_session_data as (
     safe_divide(sum(total_page_views), count(distinct session_id)) as page_view_per_session,
 
     # EVENTS
+    total_events,
     total_page_views,
     view_promotion,
     select_promotion,
