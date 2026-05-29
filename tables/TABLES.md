@@ -33,7 +33,9 @@ The following SQL scripts are used to initialize the Nameless Analytics reportin
 
 
 ### Create raw tables
-<details><summary>To create the tables use this DDL statement.</summary>
+This script is used to create the raw tables in BigQuery, the main dataset `nameless_analytics` and the `events_raw` and `calendar_dates` tables. This script also enables BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. [Read more about it](https://cloud.google.com/bigquery/docs/advanced-runtime).
+
+<details><summary>To create the tables, run the following DDL statement.</summary>
   
 ```sql
 # NAMELESS ANALYTICS
@@ -55,7 +57,7 @@ declare dates_table_path string default CONCAT('`', project_name, '.', dataset_n
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Enable BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. For more information: https://cloud.google.com/bigquery/docs/advanced-runtime
+# Enable BigQuery advanced runtime
 declare enable_bigquery_advanced_runtime string default format(
   """
     ALTER PROJECT `%s`
@@ -243,20 +245,24 @@ execute immediate dates_table_sql;
 
 
 ### Create custom functions
-First, create the custom user-defined function (UDF) required for channel grouping by running the following DDL statement:
-- [Custom Channel Grouping function](sql/get_custom_channel_grouping.sql)
+Create the custom user-defined function (UDF) required for channel grouping by running the following DDL statement:
+
+The `get_custom_channel_grouping` UDF uses the same identical logic as the [server-side channel grouping](../README.md#channel-grouping-logic) to categorize traffic sources. It is used by the table functions to calculate the `custom_channel_grouping`, `session_custom_channel_grouping`, and `users_custom_channel_grouping` fields on the fly at query time. Since the UDF lives in BigQuery, it can be freely customized to adapt the channel grouping to specific analysis needs (e.g., adding new source categories or redefining grouping rules). Any change to this function will be retroactively applied to all historical data at query time.
+
+- [Custom Channel Grouping function](functions/get_custom_channel_grouping.sql)
+
 
 ### Create table functions
-Create the table functions you need by running the following DDL statements:
-- [User table function](sql/users.sql)
-- [Session table function](sql/sessions.sql)
-- [Page table function](sql/pages.sql)
-- [Event table function](sql/events.sql)
-- [Ecommerce Transaction table function](sql/ec_transactions.sql)
-- [Ecommerce Product table function](sql/ec_products.sql)
-- [Ecommerce Funnel table function](sql/ec_funnel.sql)
-- [Ecommerce Funnel Pivot table function](sql/ec_funnel_pivot.sql)
-- [Consents table function](sql/consents.sql)
+To create the table functions you need, run the following DDL statements:
+- [User table function](table-functions/users.sql)
+- [Session table function](table-functions/sessions.sql)
+- [Page table function](table-functions/pages.sql)
+- [Event table function](table-functions/events.sql)
+- [Ecommerce Transaction table function](table-functions/ec_transactions.sql)
+- [Ecommerce Product table function](table-functions/ec_products.sql)
+- [Ecommerce Funnel table function](table-functions/ec_funnel.sql)
+- [Ecommerce Funnel Pivot table function](table-functions/ec_funnel_pivot.sql)
+- [Consents table function](table-functions/consents.sql)
 
 
 
@@ -461,7 +467,7 @@ For example: if you filter the events table function at event level, you probabl
 
 </br>
 
-[View SQL code](sql/events.sql)
+[View SQL code](table-functions/events.sql)
 
 
 ### Users
@@ -523,7 +529,7 @@ Aggregates event data at user level.
 
 </br>
 
-[View SQL code](sql/users.sql)
+[View SQL code](table-functions/users.sql)
 
 
 ### Sessions
@@ -642,7 +648,7 @@ Aggregates event data at session level.
 
 </br>
 
-[View SQL code](sql/sessions.sql)
+[View SQL code](table-functions/sessions.sql)
 
 
 ### Pages
@@ -716,7 +722,7 @@ Aggregates event data at page level.
 
 </br>
 
-[View SQL code](sql/pages.sql)
+[View SQL code](table-functions/pages.sql)
 
 
 ### Transactions
@@ -796,7 +802,7 @@ Aggregates ecommerce data at transaction level.
 
 </br>
 
-[View SQL code](sql/ec_transactions.sql)
+[View SQL code](table-functions/ec_transactions.sql)
 
 
 ### Products
@@ -905,7 +911,7 @@ Aggregates ecommerce data at product level.
 
 </br>
 
-[View SQL code](sql/ec_products.sql)
+[View SQL code](table-functions/ec_products.sql)
 
 
 ### Ecommerce Funnel
@@ -940,7 +946,7 @@ The Ecommerce Funnel table functions provide a specialized view of the user jour
 
 </br>
 
-[View SQL code](sql/ec_funnel.sql)
+[View SQL code](table-functions/ec_funnel.sql)
 
 <details><summary>Output fields ecommerce funnel pivot</summary>
 
@@ -964,13 +970,13 @@ The Ecommerce Funnel table functions provide a specialized view of the user jour
 
 </br>
 
-[View SQL code](sql/ec_funnel_pivot.sql)
+[View SQL code](table-functions/ec_funnel_pivot.sql)
 
 
 ### Consents
 Aggregates consent data at session level.
 
-[View SQL code](sql/consents.sql)
+[View SQL code](table-functions/consents.sql)
 
 <details><summary>Output fields</summary>
 
