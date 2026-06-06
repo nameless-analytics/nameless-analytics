@@ -3,3 +3,4 @@ events_debug.sql
 node_modules/
 package-lock.json
 package.json
+MANIFESTO.md

@@ -35,11 +35,7 @@ It's for:
 
 If you're not ready to own your stack, feel free to keep letting others control your data.
 
-
-
-## Let's go
-
-Collecting your own proprietary first-party data, [start from here](README.md).
+[Start here](README.md).
 
 ---
 
