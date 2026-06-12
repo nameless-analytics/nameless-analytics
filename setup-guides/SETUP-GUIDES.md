@@ -288,6 +288,9 @@ dataLayer.push({
 3. Under **Session parameters** section, map the `user_id` field to the `user_id` DataLayer Variable.
 4. Under **User parameters** section, map your custom metadata (e.g., `user_tier`) to their respective DataLayer Variables.
 
+> [!WARNING]
+> Be mindful when adding custom **User parameters** and **Session parameters** as they might cause you to hit the Firestore 1 MiB document limit faster. Read the [Firestore limitations in the main README](../README.md#known-limitations-firestore-1-mib-document-limit) for more details.
+
 
 
 ## How to respect user consents

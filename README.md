@@ -712,6 +712,20 @@ Firestore ensures data integrity by managing how parameters are updated across h
 
 </details>
   
+#### Known limitations: Firestore 1 MiB document limit
+Google Firestore imposes a hard limit of [1 MiB per document](https://firebase.google.com/docs/firestore/quotas#limits). 
+Nameless Analytics continuously appends new sessions to the user's document array to maintain cross-session context. 
+Due to how Firestore calculates document size (billing the repeated byte weight of all 29 keys for every single element in the array), the weight of a single session object fluctuates based on the length of inbound URLs, typically ranging from 1.1 KB to over 2 KB for extreme URLs. Consequently, a user document can safely store anywhere between **~300 and ~900 unique sessions** before hitting the limit.
+
+Given the `na_u` cookie's maximum 400-day expiration, a user would need to return to the site and trigger a new session almost every day to exceed this quota. While this is mathematically possible for high-frequency SaaS applications, it is extremely unlikely for standard websites (e-commerce, blogs, corporate). 
+
+**Adding Custom Parameters:** If you customize the Server-Side code to track additional custom parameters, keep in mind that:
+  - **User parameters** (stored at the root of the document) are only written once and have a negligible impact on this limit.
+  - **Session parameters** are appended inside the array and multiplied by every single session. 
+Adding custom Session parameters will increase the base byte weight of the session object, proportionally reducing the maximum number of sessions the document can store before hitting the 1 MiB limit.
+
+**Warning:** To maintain strict data consistency, Nameless Analytics processes BigQuery inserts only after a successful Firestore update. If a user document exceeds the 1 MiB limit, the Firestore write will fail, causing the server to abort the request (403 Forbidden). Consequently, subsequent events for that specific user will not be recorded in either Firestore or BigQuery.
+
 
 ### BigQuery as Historical Timeline
 It maintains **every single state transition** for every user and session (for example, all different `user_level` custom parameter values through time).
