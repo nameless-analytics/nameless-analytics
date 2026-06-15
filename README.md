@@ -828,7 +828,8 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 \*** Stape.io **Personal ($0), Pro ($20), Business ($100), Enterprise ($200)** plans based on traffic
 
 **Pricing sources** (verified April 2026): [Cloud Run](https://cloud.google.com/run/pricing) · [App Engine Standard](https://cloud.google.com/appengine/pricing#standard_instance_pricing) · [App Engine Flexible](https://cloud.google.com/appengine/pricing#flexible-environment) · [Firestore](https://cloud.google.com/firestore/pricing) · [BigQuery](https://cloud.google.com/bigquery/pricing) · [Stape.io](https://stape.io/pricing)  
-**Note on Cloud Run**: cost varies significantly based on vCPU allocation per instance and average request duration. Estimates above assume 0.25 vCPU and ~300ms average processing time. Use the [Google Cloud Pricing Calculator](https://cloud.google.com/products/calculator) for workload-specific projections.
+
+
 
 ## License
 
