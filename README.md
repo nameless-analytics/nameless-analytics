@@ -54,6 +54,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Data storage](#data-storage)
   - [Data Governance & Deletion](#data-governance-deletion)
   - [Cost Summary Table](#cost-summary-table)
+- [License](#license)
 
 ## What is Nameless Analytics
 Nameless Analytics is a privacy-first, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. 
