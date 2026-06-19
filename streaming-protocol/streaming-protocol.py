@@ -90,7 +90,6 @@ table_id = 'events_raw'
 # RETRIVE PAGE DATA FROM BIGQUERY
 # --------------------------------------------------------------------------------------------------------------
 
-
 def get_page_data_from_bq():
     print(f'👉 Retrieve page data from BigQuery for page_id: {na_s}')
 
@@ -148,7 +147,6 @@ def get_page_data_from_bq():
 # --------------------------------------------------------------------------------------------------------------
 # BUILD PAYLOAD
 # --------------------------------------------------------------------------------------------------------------
-
 
 def build_payload(page_date_from_bq, page_data_from_bq):
     payload = {
