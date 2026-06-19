@@ -15,17 +15,16 @@ from google.cloud import bigquery
 # --------------------------------------------------------------------------------------------------------------
 
 # User cookies
-na_s = 'bQKa2UhJFyKXc5c_GlD2WG7tiOd5ARE-TStm1MddvqqAghg' # Modify this according to the current user's na_s cookie value
+na_s = 'THar5XDi2SYUiR2_QqQrCtRqZvObDt7-Tk94Ptz7ByIA65h' # Modify this according to the current user's na_s cookie value
 
 # Request settings
-full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
-origin = 'https://tommasomoretti.com' # Modify this according to website origin
+full_endpoint = 'https://gtm.domain.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
+origin = 'https://domain.com' # Modify this according to website origin
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZTU1YzRiMmU3NWJlODdlNGVhMg==' # Modify this according to the GTM Server-side preview header
+gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA==' # Modify this according to the GTM Server-side preview header
 
 # Event data
 client_id = na_s.split('_')[0]
-session_id = na_s.split('_')[1].split('-')[0]
 user_id = '[OPTIONAL_USER_ID]' # Add it if needed
 event_name = 'purchase' # Modify this according to the event name to be sent
 ecommerce_data = {
@@ -80,10 +79,11 @@ ecommerce_data = {
   } # Add ecommerce data here if needed
 
 # BigQuery settings
-project_id = 'tom-moretti' # Modify this according to your BigQuery project ID
-dataset_id = 'nameless_analytics' # Modify this according to your BigQuery dataset ID
-table_id = 'events_raw' # Modify this according to your BigQuery table ID
-credentials_path = '/Users/tommasomoretti/Library/CloudStorage/GoogleDrive-tommasomoretti88@gmail.com/Il mio Drive/Lavoro/Nameless Analytics/worker_service_account.json' # Modify this according to your service account JSON file path
+credentials_path = './nameless_analytics/service_account.json' # Modify this according to your service account JSON file path
+
+project_id = 'project_id' # Modify this according to your BigQuery project ID
+dataset_id = 'nameless_analytics'
+table_id = 'events_raw'
 
 
 # --------------------------------------------------------------------------------------------------------------
@@ -243,7 +243,7 @@ def send_request(payload):
         if response.status_code == 200:
             print("Function execution end: 👍")
         else:
-            print("Function execution end: 🖕")
+            print("Function execution end: 👎")
     except Exception as e:
         print(f"Error while fetch: {e}")
 

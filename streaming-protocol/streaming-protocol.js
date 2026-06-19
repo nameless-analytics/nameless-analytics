@@ -14,14 +14,13 @@ const { BigQuery } = require('@google-cloud/bigquery');
 const na_s = 'THar5XDi2SYUiR2_QqQrCtRqZvObDt7-Tk94Ptz7ByIA65h'; // Modify this according to the current user's na_s cookie value
 
 // Request settings
-const full_endpoint = 'https://gtm.tommasomoretti.com/tm/nameless'; // Modify this according to your GTM Server-side endpoint 
-const origin = 'https://tommasomoretti.com'; // Modify this according to website origin
+const full_endpoint = 'https://gtm.domain.com/tm/nameless'; // Modify this according to your GTM Server-side endpoint 
+const origin = 'https://domain.com'; // Modify this according to website origin
 const api_key = '1234'; // Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-// const gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA=='; // Modify this according to the GTM Server-side preview header
+const gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA=='; // Modify this according to the GTM Server-side preview header
 
 // Event data
 const client_id = na_s.split('_')[0];
-const session_id = na_s.split('_')[1].split('-')[0];
 const user_id = '[OPTIONAL_USER_ID]'; // Add it if needed
 const event_name = 'purchase'; // Modify this according to the event name to be sent
 const ecommerce_data = {
@@ -76,10 +75,11 @@ const ecommerce_data = {
 }; // Add ecommerce data here if needed
 
 // BigQuery settings
-const project_id = 'tom-moretti'; // Modify this according to your BigQuery project ID
-const dataset_id = 'nameless_analytics'; // Modify this according to your BigQuery dataset ID
-const table_id = 'events_raw'; // Modify this according to your BigQuery table ID
-const credentials_path = '/Users/tommasomoretti/Library/CloudStorage/GoogleDrive-tommasomoretti88@gmail.com/Il mio Drive/Lavoro/Nameless Analytics/worker_service_account.json'; // Modify this according to your service account JSON file path
+const credentials_path = './nameless_analytics/service_account.json'; // Modify this according to your service account JSON file path
+
+const project_id = 'project_id'; // Modify this according to your BigQuery project ID
+const dataset_id = 'nameless_analytics'; 
+const table_id = 'events_raw';
 
 
 // --------------------------------------------------------------------------------------------------------------
@@ -261,7 +261,7 @@ async function send_request(payload) {
         if (response.status === 200) {
             console.log("Function execution end: 👍");
         } else {
-            console.log("Function execution end: 🖕");
+            console.log("Function execution end: 👎");
         }
     } catch (e) {
         console.log(`Error while fetch: ${e}`);
