@@ -107,7 +107,7 @@ Read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
 - [Roadmap](ROADMAP.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Manifesto](MANIFESTO.md)
-- [License](LICENSE.md)
+- [License](LICENSE)
 
 
 
@@ -834,11 +834,9 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 
 ## License
 
-This project is distributed under the **Nameless Analytics Source-Available License 1.0**.
+This project is open-source and distributed under the **Apache License 2.0**.
 
-- **Transparency:** The source code is publicly available for inspection and security audits.
-- **Usage:** You can freely download, install, and use it for personal, business, or client projects.
-- **Modifications:** Distribution of modified versions or public forks of Nameless Analytics is strictly prohibited.
+See the [LICENSE](LICENSE) file for the full license text.
 
 ---
 
