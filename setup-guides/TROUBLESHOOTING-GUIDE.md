@@ -296,7 +296,7 @@ Server logs show:
 
 **Caveat:** The handshake mechanism intercepts the click event. If a user opens the link via **right-click ("Open in new tab")** or "Open in new window", the decoration logic will not trigger. This is a technical limitation of secure cookie handling.
 
----
+# 
 
-Reach me at: [Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_troubleshooting_guide) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)
+[Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_troubleshooting_guide) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)
 
