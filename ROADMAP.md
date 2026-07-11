@@ -13,7 +13,6 @@ Here is a wishlist of ideas and features for future releases, representing a lis
 
 - Complete Dataform datamodel with ML models
 - Add last_click_non_direct attribution model
-- Add custom channel-grouping rules (Server-side client tag)
 - Add core web vitals metrics (Client-side tracker tag) for page_load_time event
 - Add force cast value as string at event parameter level 
 
