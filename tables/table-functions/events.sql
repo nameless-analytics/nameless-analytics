@@ -1,245 +1,358 @@
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_date DATE, end_date DATE, date_scope STRING) AS (
-select
-    # USER DATA
-    user_date,
-    first_value((select value.string from unnest(session_data) where name = 'user_id') IGNORE NULLS) over (partition by session_id order by event_timestamp desc) as user_id,
-    client_id,
+CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events_test`(start_date DATE, end_date DATE, date_scope STRING, lookback_days INT64) AS (
+  with raw_events as (
+    select
+      # USER DATA
+      user_date,
+      first_value((select value.string from unnest(session_data) where name = 'user_id') IGNORE NULLS) over (partition by session_id order by event_timestamp desc) as user_id,
+      client_id,
 
-    case 
-      when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 'new_user'
-      when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 'returning_user'
-    end as user_type,
-    case 
-      when (select value.int from unnest(session_data) where name = 'session_number') = 1 then client_id
-      else null
-    end as new_user_client_id,
-    case 
-      when (select value.int from unnest(session_data) where name = 'session_number') > 1 then client_id
-      else null
-    end as returning_user_client_id,
+      case 
+        when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 'new_user'
+        when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 'returning_user'
+      end as user_type,
+      case 
+        when (select value.int from unnest(session_data) where name = 'session_number') = 1 then client_id
+        else null
+      end as new_user_client_id,
+      case 
+        when (select value.int from unnest(session_data) where name = 'session_number') > 1 then client_id
+        else null
+      end as returning_user_client_id,
 
-    (select value.int from unnest(user_data) where name = 'user_first_session_timestamp') as user_first_session_timestamp,
-    first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc) as user_last_session_timestamp,
+      (select value.int from unnest(user_data) where name = 'user_first_session_timestamp') as user_first_session_timestamp,
+      first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc) as user_last_session_timestamp,
 
-    datetime_diff(
-      timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), 
-      timestamp_millis((select value.int from unnest(user_data) where name = 'user_first_session_timestamp')), 
-    day) as days_from_first_to_last_visit,
+      datetime_diff(
+        timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), 
+        timestamp_millis((select value.int from unnest(user_data) where name = 'user_first_session_timestamp')), 
+      day) as days_from_first_to_last_visit,
 
-    datetime_diff(current_timestamp(), timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), day) as days_from_first_visit,
-    datetime_diff(current_timestamp(), timestamp_millis((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')), day) as days_from_last_visit,
-    
-    (select value.string from unnest(user_data) where name = 'user_channel_grouping') as user_channel_grouping,
-    `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(user_data) where name = 'user_source'), (select value.string from unnest(user_data) where name = 'user_campaign')) as users_custom_channel_grouping,
-    (select value.string from unnest(user_data) where name = 'user_source') as user_source,
-    (select value.string from unnest(user_data) where name = 'user_tld_source') as user_tld_source,
-    split((select value.string from unnest(user_data) where name = 'user_tld_source'), '.')[safe_offset(0)] as user_source_cleaned,
-    (select value.string from unnest(user_data) where name = 'user_campaign') as user_campaign,
-    (select value.string from unnest(user_data) where name = 'user_campaign_id') as user_campaign_id,
-    (select value.string from unnest(user_data) where name = 'user_campaign_click_id') as user_campaign_click_id,
-    (select value.string from unnest(user_data) where name = 'user_campaign_term') as user_campaign_term,
-    (select value.string from unnest(user_data) where name = 'user_campaign_content') as user_campaign_content,
-
-    (select value.string from unnest(user_data) where name = 'user_device_type') as user_device_type,
-    (select value.string from unnest(user_data) where name = 'user_country') as user_country,
-    (select value.string from unnest(user_data) where name = 'user_city') as user_city,
-    (select value.string from unnest(user_data) where name = 'user_language') as user_language,
+      datetime_diff(current_timestamp(), timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), day) as days_from_first_visit,
+      datetime_diff(current_timestamp(), timestamp_millis((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')), day) as days_from_last_visit,
       
-    -- Add user level custom dimension here
-    -- Include values from Streaming protocol 
-    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name')) over (partition by client_id order by event_timestamp asc) as user_parameter_name, -- First touch value
-    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name') ignore nulls) over (partition by client_id order by event_timestamp asc) as user_parameter_name, -- First touch not null value
-    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name')) over (partition by client_id order by event_timestamp desc) as user_parameter_name, -- Last touch value
-    -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name') ignore nulls) over (partition by client_id order by event_timestamp desc) as user_parameter_name, -- Last touch not null value
+      (select value.string from unnest(user_data) where name = 'user_channel_grouping') as user_channel_grouping,
+      `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(user_data) where name = 'user_source'), (select value.string from unnest(user_data) where name = 'user_campaign')) as users_custom_channel_grouping,
+      (select value.string from unnest(user_data) where name = 'user_source') as user_source,
+      (select value.string from unnest(user_data) where name = 'user_tld_source') as user_tld_source,
+      split((select value.string from unnest(user_data) where name = 'user_tld_source'), '.')[safe_offset(0)] as user_source_cleaned,
+      (select value.string from unnest(user_data) where name = 'user_campaign') as user_campaign,
+      (select value.string from unnest(user_data) where name = 'user_campaign_id') as user_campaign_id,
+      (select value.string from unnest(user_data) where name = 'user_campaign_click_id') as user_campaign_click_id,
+      (select value.string from unnest(user_data) where name = 'user_campaign_term') as user_campaign_term,
+      (select value.string from unnest(user_data) where name = 'user_campaign_content') as user_campaign_content,
 
-    -- Exclude values from Streaming protocol 
-    -- first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(user_data) where name = 'user_parameter_name'), NULL)) over (partition by client_id order by event_timestamp asc rows between unbounded preceding and unbounded following) as user_parameter_name, -- First touch value
-    -- first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(user_data) where name = 'user_parameter_name'), NULL) ignore nulls) over (partition by client_id order by event_timestamp asc rows between unbounded preceding and unbounded following) as user_parameter_name, -- First touch not null value
-    -- first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(user_data) where name = 'user_parameter_name'), NULL)) over (partition by client_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as user_parameter_name, -- Last touch value
-    -- first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(user_data) where name = 'user_parameter_name'), NULL) IGNORE NULLS) over (partition by client_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as user_parameter_name, -- Last touch not null value
-    
-    
-    # SESSION DATA
-    session_date,
-    session_id,
-    
-    (select value.int from unnest(session_data) where name = 'session_number') as session_number,
-    first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'cross_domain_session'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as cross_domain_session,
-    
-    (select value.int from unnest(session_data) where name = 'session_start_timestamp') as session_start_timestamp,
-    first_value(IF(event_origin != 'Streaming protocol', (select value.int from unnest(session_data) where name = 'session_end_timestamp'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_end_timestamp,
-    
-    datetime_diff(
-      timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', (SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_end_timestamp'), NULL) IGNORE NULLS) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC rows between unbounded preceding and unbounded following)), 
-      timestamp_millis((SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_start_timestamp'))
-    , second) AS session_duration_sec, -- Exclude Streaming protocol events
-
-    -- datetime_diff(
-    --   timestamp_millis(first_value((select value.int from unnest(session_data) where name = 'session_end_timestamp')) over (partition by session_id order by event_timestamp desc)), 
-    --   timestamp_millis((select value.int from unnest(session_data) where name = 'session_start_timestamp'))
-    -- , second) as session_duration_sec, -- Include Streaming protocol events
-
-    case when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 'New session' else 'Returning session' end as session_type,
-    case when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 1 else 0 end as new_session,
-    case when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 1 else 0 end as returning_session,
-
-    (select value.string from unnest(session_data) where name = 'session_channel_grouping') as session_channel_grouping,
-    `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(session_data) where name = 'session_source'), (select value.string from unnest(session_data) where name = 'session_campaign')) as session_custom_channel_grouping,
-    (select value.string from unnest(session_data) where name = 'session_source') as session_source,
-    (select value.string from unnest(session_data) where name = 'session_tld_source') as session_tld_source,
-    split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] as session_source_cleaned,
-    (select value.string from unnest(session_data) where name = 'session_campaign') as session_campaign,
-    (select value.string from unnest(session_data) where name = 'session_campaign_id') as session_campaign_id,
-    (select value.string from unnest(session_data) where name = 'session_campaign_click_id') as session_campaign_click_id,
-    (select value.string from unnest(session_data) where name = 'session_campaign_term') as session_campaign_term,
-    (select value.string from unnest(session_data) where name = 'session_campaign_content') as session_campaign_content,
-
-    (select value.string from unnest(session_data) where name = 'session_device_type') as session_device_type,
-    (select value.string from unnest(session_data) where name = 'session_country') as session_country,
-    (select value.string from unnest(session_data) where name = 'session_city') as session_city,
-    (select value.string from unnest(session_data) where name = 'session_language') as session_language,
-
-    (select value.string from unnest(session_data) where name = 'session_browser_name') as session_browser_name,
-    
-    (select value.string from unnest(session_data) where name = 'session_hostname') as session_hostname,
-    (select value.string from unnest(session_data) where name = 'session_landing_page_category') as session_landing_page_category,
-    (select value.string from unnest(session_data) where name = 'session_landing_page_url') as session_landing_page_url,
-    (select value.string from unnest(session_data) where name = 'session_landing_page_path') as session_landing_page_path,
-    (select value.string from unnest(session_data) where name = 'session_landing_page_title') as session_landing_page_title,
-    first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_category'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_category,
-    first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_url'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_url,
-    first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_path'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_path,
-    first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_title'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_title,
-    
-    -- Add session level custom dimension here
-    -- Include values from Streaming protocol 
-    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name')) over (partition by session_id order by event_timestamp asc) as session_parameter_name, -- First touch value
-    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name') ignore nulls) over (partition by session_id order by event_timestamp asc) as session_parameter_name, -- First touch not null value
-    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name')) over (partition by session_id order by event_timestamp desc) as session_parameter_name, -- Last touch value
-    -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name') ignore nulls) over (partition by session_id order by event_timestamp desc) as session_parameter_name, -- Last touch not null value
-
-    -- Exclude values from Streaming protocol 
-    -- first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_parameter_name'), NULL)) over (partition by session_id order by event_timestamp asc rows between unbounded preceding and unbounded following) as session_parameter_name, -- First touch value
-    -- first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_parameter_name'), NULL) ignore nulls) over (partition by session_id order by event_timestamp asc rows between unbounded preceding and unbounded following) as session_parameter_name, -- First touch not null value
-    -- first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_parameter_name'), NULL)) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_parameter_name, -- Last touch value
-    -- first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_parameter_name'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_parameter_name, -- Last touch not null value
-      
-    # PAGE DATA
-    page_date,
-    page_id,
-    dense_rank() over (partition by session_id order by (select value.int from unnest(page_data) where name = 'page_load_timestamp') asc) as page_view_number,
-    (select value.int from unnest(page_data) where name = 'page_load_timestamp') as page_load_timestamp,
-    first_value(IF(event_origin != 'Streaming protocol', event_timestamp, NULL) IGNORE NULLS) over (partition by page_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as page_unload_timestamp,
-    
-    (select value.string from unnest(page_data) where name = 'page_category') as page_category,
-    (select value.string from unnest(page_data) where name = 'page_title') as page_title,
-    (select value.string from unnest(page_data) where name = 'page_language') as page_language,
-    (select value.string from unnest(page_data) where name = 'page_hostname_protocol') as page_hostname_protocol,
-    (select value.string from unnest(page_data) where name = 'page_hostname') as page_hostname,
-    (select value.string from unnest(page_data) where name = 'page_url') as page_url,
-    (select value.string from unnest(page_data) where name = 'page_path') as page_path,
-    (select value.string from unnest(page_data) where name = 'page_fragment') as page_fragment,
-    (select value.string from unnest(page_data) where name = 'page_query') as page_query,
-    (select value.string from unnest(page_data) where name = 'page_extension') as page_extension,
-    (select value.string from unnest(page_data) where name = 'page_referrer') as page_referrer,
-    (select value.int from unnest(page_data) where name = 'page_status_code') as page_status_code,
-
-    datetime_diff(
-      timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', event_timestamp, NULL) IGNORE NULLS) over (partition by page_id order by event_timestamp desc rows between unbounded preceding and unbounded following)),
-      timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
-    , second) as time_on_page, -- Exclude Streaming protocol events
-
-    -- datetime_diff(
-    --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp desc)),
-    --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
-    -- , second) as time_on_page, -- Include Streaming protocol events
-    
-    # EVENT DATA
-    event_date,
-    event_timestamp,	
-    event_name,	
-    event_id,	
-    rank() over (partition by session_id order by event_timestamp asc) as event_number,
-    (select value.string from unnest(event_data) where name = 'event_type') as event_type, 
-    
-    (select value.string from unnest(event_data) where name = 'channel_grouping') as channel_grouping, 
-    `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(event_data) where name = 'source'), (select value.string from unnest(event_data) where name = 'campaign')) as custom_channel_grouping,
-    (select value.string from unnest(event_data) where name = 'source') as source, 
-    (select value.string from unnest(event_data) where name = 'tld_source') as tld_source, 
-    split((select value.string from unnest(event_data) where name = 'tld_source'), '.')[safe_offset(0)] as source_cleaned,
-    (select value.string from unnest(event_data) where name = 'campaign') as campaign, 
-    (select value.string from unnest(event_data) where name = 'campaign_id') as campaign_id, 
-    (select value.string from unnest(event_data) where name = 'campaign_click_id') as campaign_click_id,
-    (select value.string from unnest(event_data) where name = 'campaign_term') as campaign_term, 
-    (select value.string from unnest(event_data) where name = 'campaign_content') as campaign_content, 
-    
-    (select value.string from unnest(event_data) where name = 'browser_name') as browser_name, 
-    (select value.string from unnest(event_data) where name = 'browser_version') as browser_version, 
-    (select value.string from unnest(event_data) where name = 'browser_language') as browser_language, 
-    (select value.string from unnest(event_data) where name = 'viewport_size') as viewport_size,
-    (select value.string from unnest(event_data) where name = 'user_agent') as user_agent, 
-    
-    (select value.string from unnest(event_data) where name = 'device_type') as device_type, 
-    (select value.string from unnest(event_data) where name = 'device_model') as device_model, 
-    (select value.string from unnest(event_data) where name = 'device_vendor') as device_vendor, 
-    (select value.string from unnest(event_data) where name = 'os_name') as os_name, 
-    (select value.string from unnest(event_data) where name = 'os_version') as os_version, 
-    (select value.string from unnest(event_data) where name = 'screen_size') as screen_size, 
-  
-    (select value.string from unnest(event_data) where name = 'country') as country, 
-    (select value.string from unnest(event_data) where name = 'city') as city, 
+      (select value.string from unnest(user_data) where name = 'user_device_type') as user_device_type,
+      (select value.string from unnest(user_data) where name = 'user_country') as user_country,
+      (select value.string from unnest(user_data) where name = 'user_city') as user_city,
+      (select value.string from unnest(user_data) where name = 'user_language') as user_language,
         
-    (select value.string from unnest(event_data) where name = 'cross_domain_id') as cross_domain_id, 
-    
-    -- Only for page_load_time event
-    (select value.int from unnest(event_data) where name = 'total_page_load_time') as total_page_load_time, 
-    
-    -- Only for search event
-    (select value.string from unnest(event_data) where name = 'search_term') as search_term, 
-    
-    -- Add event level custom dimension here
-    -- (select value.string from unnest(event_data) where name = 'parameter_name') as parameter_name -- Always include Streaming protocol events
-    
-    # ECOMMERCE DATA
-    ecommerce,
+      # SESSION DATA
+      session_date,
+      session_id,
+      
+      (select value.int from unnest(session_data) where name = 'session_number') as session_number,
+      first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'cross_domain_session'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as cross_domain_session,
+      
+      (select value.int from unnest(session_data) where name = 'session_start_timestamp') as session_start_timestamp,
+      first_value(IF(event_origin != 'Streaming protocol', (select value.int from unnest(session_data) where name = 'session_end_timestamp'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_end_timestamp,
+      
+      datetime_diff(
+        timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', (SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_end_timestamp'), NULL) IGNORE NULLS) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC rows between unbounded preceding and unbounded following)), 
+        timestamp_millis((SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_start_timestamp'))
+      , second) AS session_duration_sec,
 
-    # DATALAYER DATA
-    datalayer,
+      case when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 'New session' else 'Returning session' end as session_type,
+      case when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 1 else 0 end as new_session,
+      case when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 1 else 0 end as returning_session,
 
-    # CONSENT DATA
-    (select value.string from unnest(consent_data) where name = 'consent_type') as consent_type, 
-    (select value.string from unnest(consent_data) where name = 'respect_consent_mode') as respect_consent_mode, 
-    (select value.string from unnest(consent_data) where name = 'ad_user_data') as ad_user_data, 
-    (select value.string from unnest(consent_data) where name = 'ad_personalization') as ad_personalization, 
-    (select value.string from unnest(consent_data) where name = 'ad_storage') as ad_storage, 
-    (select value.string from unnest(consent_data) where name = 'analytics_storage') as analytics_storage, 
-    (select value.string from unnest(consent_data) where name = 'functionality_storage') as functionality_storage, 
-    (select value.string from unnest(consent_data) where name = 'personalization_storage') as personalization_storage, 
-    (select value.string from unnest(consent_data) where name = 'security_storage') as security_storage, 
+      (select value.string from unnest(session_data) where name = 'session_channel_grouping') as session_channel_grouping,
+      `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(session_data) where name = 'session_source'), (select value.string from unnest(session_data) where name = 'session_campaign')) as session_custom_channel_grouping,
+      (select value.string from unnest(session_data) where name = 'session_source') as session_source,
+      (select value.string from unnest(session_data) where name = 'session_tld_source') as session_tld_source,
+      split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] as session_source_cleaned,
+      (select value.string from unnest(session_data) where name = 'session_campaign') as session_campaign,
+      (select value.string from unnest(session_data) where name = 'session_campaign_id') as session_campaign_id,
+      (select value.string from unnest(session_data) where name = 'session_campaign_click_id') as session_campaign_click_id,
+      (select value.string from unnest(session_data) where name = 'session_campaign_term') as session_campaign_term,
+      (select value.string from unnest(session_data) where name = 'session_campaign_content') as session_campaign_content,
+
+      (select value.string from unnest(session_data) where name = 'session_device_type') as session_device_type,
+      (select value.string from unnest(session_data) where name = 'session_country') as session_country,
+      (select value.string from unnest(session_data) where name = 'session_city') as session_city,
+      (select value.string from unnest(session_data) where name = 'session_language') as session_language,
+
+      (select value.string from unnest(session_data) where name = 'session_browser_name') as session_browser_name,
+      
+      (select value.string from unnest(session_data) where name = 'session_hostname') as session_hostname,
+      (select value.string from unnest(session_data) where name = 'session_landing_page_category') as session_landing_page_category,
+      (select value.string from unnest(session_data) where name = 'session_landing_page_url') as session_landing_page_url,
+      (select value.string from unnest(session_data) where name = 'session_landing_page_path') as session_landing_page_path,
+      (select value.string from unnest(session_data) where name = 'session_landing_page_title') as session_landing_page_title,
+      first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_category'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_category,
+      first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_url'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_url,
+      first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_path'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_path,
+      first_value(IF(event_origin != 'Streaming protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_title'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_title,
+        
+      # PAGE DATA
+      page_date,
+      page_id,
+      dense_rank() over (partition by session_id order by (select value.int from unnest(page_data) where name = 'page_load_timestamp') asc) as page_view_number,
+      (select value.int from unnest(page_data) where name = 'page_load_timestamp') as page_load_timestamp,
+      first_value(IF(event_origin != 'Streaming protocol', event_timestamp, NULL) IGNORE NULLS) over (partition by page_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as page_unload_timestamp,
+      
+      (select value.string from unnest(page_data) where name = 'page_category') as page_category,
+      (select value.string from unnest(page_data) where name = 'page_title') as page_title,
+      (select value.string from unnest(page_data) where name = 'page_language') as page_language,
+      (select value.string from unnest(page_data) where name = 'page_hostname_protocol') as page_hostname_protocol,
+      (select value.string from unnest(page_data) where name = 'page_hostname') as page_hostname,
+      (select value.string from unnest(page_data) where name = 'page_url') as page_url,
+      (select value.string from unnest(page_data) where name = 'page_path') as page_path,
+      (select value.string from unnest(page_data) where name = 'page_fragment') as page_fragment,
+      (select value.string from unnest(page_data) where name = 'page_query') as page_query,
+      (select value.string from unnest(page_data) where name = 'page_extension') as page_extension,
+      (select value.string from unnest(page_data) where name = 'page_referrer') as page_referrer,
+      (select value.int from unnest(page_data) where name = 'page_status_code') as page_status_code,
+
+      datetime_diff(
+        timestamp_millis(first_value(IF(event_origin != 'Streaming protocol', event_timestamp, NULL) IGNORE NULLS) over (partition by page_id order by event_timestamp desc rows between unbounded preceding and unbounded following)),
+        timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
+      , second) as time_on_page,
+      
+      # EVENT DATA
+      event_date,
+      event_timestamp,	
+      event_name,	
+      event_id,	
+      rank() over (partition by session_id order by event_timestamp asc) as event_number,
+      (select value.string from unnest(event_data) where name = 'event_type') as event_type, 
+      
+      (select value.string from unnest(event_data) where name = 'channel_grouping') as channel_grouping, 
+      `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(event_data) where name = 'source'), (select value.string from unnest(event_data) where name = 'campaign')) as custom_channel_grouping,
+      (select value.string from unnest(event_data) where name = 'source') as source, 
+      (select value.string from unnest(event_data) where name = 'tld_source') as tld_source, 
+      split((select value.string from unnest(event_data) where name = 'tld_source'), '.')[safe_offset(0)] as source_cleaned,
+      (select value.string from unnest(event_data) where name = 'campaign') as campaign, 
+      (select value.string from unnest(event_data) where name = 'campaign_id') as campaign_id, 
+      (select value.string from unnest(event_data) where name = 'campaign_click_id') as campaign_click_id,
+      (select value.string from unnest(event_data) where name = 'campaign_term') as campaign_term, 
+      (select value.string from unnest(event_data) where name = 'campaign_content') as campaign_content, 
+      
+      (select value.string from unnest(event_data) where name = 'browser_name') as browser_name, 
+      (select value.string from unnest(event_data) where name = 'browser_version') as browser_version, 
+      (select value.string from unnest(event_data) where name = 'browser_language') as browser_language, 
+      (select value.string from unnest(event_data) where name = 'viewport_size') as viewport_size,
+      (select value.string from unnest(event_data) where name = 'user_agent') as user_agent, 
+      
+      (select value.string from unnest(event_data) where name = 'device_type') as device_type, 
+      (select value.string from unnest(event_data) where name = 'device_model') as device_model, 
+      (select value.string from unnest(event_data) where name = 'device_vendor') as device_vendor, 
+      (select value.string from unnest(event_data) where name = 'os_name') as os_name, 
+      (select value.string from unnest(event_data) where name = 'os_version') as os_version, 
+      (select value.string from unnest(event_data) where name = 'screen_size') as screen_size, 
     
-    # REQUEST DATA
-    event_origin,
-    (select value.string from unnest(gtm_data) where name = 'cs_hostname') as cs_hostname,
-    (select value.string from unnest(gtm_data) where name = 'cs_container_id') as cs_container_id,
-    (select value.string from unnest(gtm_data) where name = 'cs_tag_name') as cs_tag_name,
-    (select value.int from unnest(gtm_data) where name = 'cs_tag_id') as cs_tag_id,
+      (select value.string from unnest(event_data) where name = 'country') as country, 
+      (select value.string from unnest(event_data) where name = 'city') as city, 
+          
+      (select value.string from unnest(event_data) where name = 'cross_domain_id') as cross_domain_id, 
+      
+      (select value.int from unnest(event_data) where name = 'total_page_load_time') as total_page_load_time, 
+      (select value.string from unnest(event_data) where name = 'search_term') as search_term, 
+      
+      # ECOMMERCE DATA
+      ecommerce,
 
-    (select value.string from unnest(gtm_data) where name = 'ss_hostname') as ss_hostname,
-    (select value.string from unnest(gtm_data) where name = 'ss_container_id') as ss_container_id,
-    (select value.string from unnest(gtm_data) where name = 'ss_tag_name') as ss_tag_name,
-    (select value.int from unnest(gtm_data) where name = 'ss_tag_id') as ss_tag_id,
+      # DATALAYER DATA
+      datalayer,
 
-    (select value.int from unnest(gtm_data) where name = 'content_length') / 1024 as content_length_in_kb,
-    (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') as processing_event_timestamp,
-    (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp as delay_in_millis,
-    ((select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp) / 1000 as delay_in_sec,
-    
-  from `tom-moretti.nameless_analytics.events_raw`
-  where true
-    and case 
-      when date_scope = 'user' then user_date
-      when date_scope = 'session' then session_date
-      when date_scope = 'page' then page_date
-      when date_scope = 'event' then event_date
-    end between start_date and end_date
+      # CONSENT DATA
+      (select value.string from unnest(consent_data) where name = 'consent_type') as consent_type, 
+      (select value.string from unnest(consent_data) where name = 'respect_consent_mode') as respect_consent_mode, 
+      (select value.string from unnest(consent_data) where name = 'ad_user_data') as ad_user_data, 
+      (select value.string from unnest(consent_data) where name = 'ad_personalization') as ad_personalization, 
+      (select value.string from unnest(consent_data) where name = 'ad_storage') as ad_storage, 
+      (select value.string from unnest(consent_data) where name = 'analytics_storage') as analytics_storage, 
+      (select value.string from unnest(consent_data) where name = 'functionality_storage') as functionality_storage, 
+      (select value.string from unnest(consent_data) where name = 'personalization_storage') as personalization_storage, 
+      (select value.string from unnest(consent_data) where name = 'security_storage') as security_storage, 
+      
+      # REQUEST DATA
+      event_origin,
+      (select value.string from unnest(gtm_data) where name = 'cs_hostname') as cs_hostname,
+      (select value.string from unnest(gtm_data) where name = 'cs_container_id') as cs_container_id,
+      (select value.string from unnest(gtm_data) where name = 'cs_tag_name') as cs_tag_name,
+      (select value.int from unnest(gtm_data) where name = 'cs_tag_id') as cs_tag_id,
+
+      (select value.string from unnest(gtm_data) where name = 'ss_hostname') as ss_hostname,
+      (select value.string from unnest(gtm_data) where name = 'ss_container_id') as ss_container_id,
+      (select value.string from unnest(gtm_data) where name = 'ss_tag_name') as ss_tag_name,
+      (select value.int from unnest(gtm_data) where name = 'ss_tag_id') as ss_tag_id,
+
+      (select value.int from unnest(gtm_data) where name = 'content_length') / 1024 as content_length_in_kb,
+      (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') as processing_event_timestamp,
+      (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp as delay_in_millis,
+      ((select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp) / 1000 as delay_in_sec,
+
+      # ATTRIBUTION HELPER FIELDS FOR LAST NON-DIRECT
+      last_value(
+        if(split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] is not null 
+           and split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] != 'direct' 
+           and (select value.string from unnest(session_data) where name = 'session_channel_grouping') != 'direct', 
+           event_timestamp, null) ignore nulls
+      ) over (partition by client_id order by event_timestamp asc, (select value.string from unnest(event_data) where name = 'event_id') asc rows between unbounded preceding and current row) as last_non_direct_timestamp,
+
+      last_value(
+        if(split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] is not null 
+           and split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] != 'direct' 
+           and (select value.string from unnest(session_data) where name = 'session_channel_grouping') != 'direct', 
+           (select value.string from unnest(session_data) where name = 'session_channel_grouping'), null) ignore nulls
+      ) over (partition by client_id order by event_timestamp asc, (select value.string from unnest(event_data) where name = 'event_id') asc rows between unbounded preceding and current row) as last_non_direct_channel_grouping,
+      
+      last_value(
+        if(split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] is not null 
+           and split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] != 'direct' 
+           and (select value.string from unnest(session_data) where name = 'session_channel_grouping') != 'direct', 
+           split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)], null) ignore nulls
+      ) over (partition by client_id order by event_timestamp asc, (select value.string from unnest(event_data) where name = 'event_id') asc rows between unbounded preceding and current row) as last_non_direct_source,
+
+      last_value(
+        if(split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] is not null 
+           and split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] != 'direct' 
+           and (select value.string from unnest(session_data) where name = 'session_channel_grouping') != 'direct', 
+           (select value.string from unnest(session_data) where name = 'session_campaign'), null) ignore nulls
+      ) over (partition by client_id order by event_timestamp asc, (select value.string from unnest(event_data) where name = 'event_id') asc rows between unbounded preceding and current row) as last_non_direct_campaign,
+
+      last_value(
+        if(split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] is not null 
+           and split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] != 'direct' 
+           and (select value.string from unnest(session_data) where name = 'session_channel_grouping') != 'direct', 
+           (select value.string from unnest(session_data) where name = 'session_campaign_id'), null) ignore nulls
+      ) over (partition by client_id order by event_timestamp asc, (select value.string from unnest(event_data) where name = 'event_id') asc rows between unbounded preceding and current row) as last_non_direct_campaign_id,
+
+      last_value(
+        if(split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] is not null 
+           and split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] != 'direct' 
+           and (select value.string from unnest(session_data) where name = 'session_channel_grouping') != 'direct', 
+           (select value.string from unnest(session_data) where name = 'session_campaign_click_id'), null) ignore nulls
+      ) over (partition by client_id order by event_timestamp asc, (select value.string from unnest(event_data) where name = 'event_id') asc rows between unbounded preceding and current row) as last_non_direct_campaign_click_id,
+
+      last_value(
+        if(split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] is not null 
+           and split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] != 'direct' 
+           and (select value.string from unnest(session_data) where name = 'session_channel_grouping') != 'direct', 
+           (select value.string from unnest(session_data) where name = 'session_campaign_term'), null) ignore nulls
+      ) over (partition by client_id order by event_timestamp asc, (select value.string from unnest(event_data) where name = 'event_id') asc rows between unbounded preceding and current row) as last_non_direct_campaign_term,
+
+      last_value(
+        if(split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] is not null 
+           and split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] != 'direct' 
+           and (select value.string from unnest(session_data) where name = 'session_channel_grouping') != 'direct', 
+           (select value.string from unnest(session_data) where name = 'session_campaign_content'), null) ignore nulls
+      ) over (partition by client_id order by event_timestamp asc, (select value.string from unnest(event_data) where name = 'event_id') asc rows between unbounded preceding and current row) as last_non_direct_campaign_content
+
+    from `tom-moretti.nameless_analytics.events_raw`
+    where true
+      and case 
+        when date_scope = 'user' then user_date
+        when date_scope = 'session' then session_date
+        when date_scope = 'page' then page_date
+        when date_scope = 'event' then event_date
+      end between start_date and end_date
+  )
+
+  select
+    * except(
+      last_non_direct_timestamp,
+      last_non_direct_channel_grouping,
+      last_non_direct_source,
+      last_non_direct_campaign,
+      last_non_direct_campaign_id,
+      last_non_direct_campaign_click_id,
+      last_non_direct_campaign_term,
+      last_non_direct_campaign_content
+    ),
+
+    # ATTRIBUTION: FIRST CLICK
+    user_source_cleaned as source_first_click,
+    user_campaign as campaign_first_click,
+    user_campaign_id as campaign_id_first_click,
+    user_campaign_click_id as campaign_click_id_first_click,
+    user_campaign_term as campaign_term_first_click,
+    user_campaign_content as campaign_content_first_click,
+    user_channel_grouping as channel_grouping_first_click,
+    users_custom_channel_grouping as custom_channel_grouping_first_click,
+
+    # ATTRIBUTION: LAST CLICK NON-DIRECT (Con Lookback Dinamico)
+    if(
+      lookback_days is null or last_non_direct_timestamp is null or datetime_diff(datetime(timestamp_millis(event_timestamp)), datetime(timestamp_millis(last_non_direct_timestamp)), day) <= lookback_days,
+      ifnull(last_non_direct_source, session_source_cleaned),
+      session_source_cleaned
+    ) as source_last_non_direct,
+
+    if(
+      lookback_days is null or last_non_direct_timestamp is null or datetime_diff(datetime(timestamp_millis(event_timestamp)), datetime(timestamp_millis(last_non_direct_timestamp)), day) <= lookback_days,
+      ifnull(last_non_direct_campaign, session_campaign),
+      session_campaign
+    ) as campaign_last_non_direct,
+
+    if(
+      lookback_days is null or last_non_direct_timestamp is null or datetime_diff(datetime(timestamp_millis(event_timestamp)), datetime(timestamp_millis(last_non_direct_timestamp)), day) <= lookback_days,
+      ifnull(last_non_direct_campaign_id, session_campaign_id),
+      session_campaign_id
+    ) as campaign_id_last_non_direct,
+
+    if(
+      lookback_days is null or last_non_direct_timestamp is null or datetime_diff(datetime(timestamp_millis(event_timestamp)), datetime(timestamp_millis(last_non_direct_timestamp)), day) <= lookback_days,
+      ifnull(last_non_direct_campaign_click_id, session_campaign_click_id),
+      session_campaign_click_id
+    ) as campaign_click_id_last_non_direct,
+
+    if(
+      lookback_days is null or last_non_direct_timestamp is null or datetime_diff(datetime(timestamp_millis(event_timestamp)), datetime(timestamp_millis(last_non_direct_timestamp)), day) <= lookback_days,
+      ifnull(last_non_direct_campaign_term, session_campaign_term),
+      session_campaign_term
+    ) as campaign_term_last_non_direct,
+
+    if(
+      lookback_days is null or last_non_direct_timestamp is null or datetime_diff(datetime(timestamp_millis(event_timestamp)), datetime(timestamp_millis(last_non_direct_timestamp)), day) <= lookback_days,
+      ifnull(last_non_direct_campaign_content, session_campaign_content),
+      session_campaign_content
+    ) as campaign_content_last_non_direct,
+
+    if(
+      lookback_days is null or last_non_direct_timestamp is null or datetime_diff(datetime(timestamp_millis(event_timestamp)), datetime(timestamp_millis(last_non_direct_timestamp)), day) <= lookback_days,
+      ifnull(last_non_direct_channel_grouping, session_channel_grouping),
+      session_channel_grouping
+    ) as channel_grouping_last_non_direct,
+
+    `tom-moretti.nameless_analytics.get_custom_channel_grouping`(
+      if(
+        lookback_days is null or last_non_direct_timestamp is null or datetime_diff(datetime(timestamp_millis(event_timestamp)), datetime(timestamp_millis(last_non_direct_timestamp)), day) <= lookback_days,
+        ifnull(last_non_direct_source, session_source_cleaned),
+        session_source_cleaned
+      ),
+      if(
+        lookback_days is null or last_non_direct_timestamp is null or datetime_diff(datetime(timestamp_millis(event_timestamp)), datetime(timestamp_millis(last_non_direct_timestamp)), day) <= lookback_days,
+        ifnull(last_non_direct_campaign, session_campaign),
+        session_campaign
+      )
+    ) as custom_channel_grouping_last_non_direct,
+
+    # ATTRIBUTION: TIME DECAY
+    session_source_cleaned as source_time_decay,
+    session_campaign as campaign_time_decay,
+    session_campaign_id as campaign_id_time_decay,
+    session_campaign_click_id as campaign_click_id_time_decay,
+    session_campaign_term as campaign_term_time_decay,
+    session_campaign_content as campaign_content_time_decay,
+    session_channel_grouping as channel_grouping_time_decay,
+    session_custom_channel_grouping as custom_channel_grouping_time_decay,
+
+    -- Peso normalizzato (1.0 se entro la finestra di lookback, 0.0 se oltre lookback_days)
+    if(
+      lookback_days is not null and user_first_session_timestamp is not null and datetime_diff(datetime(timestamp_millis(event_timestamp)), datetime(timestamp_millis(user_first_session_timestamp)), day) > lookback_days,
+      0.0,
+      1.0
+    ) as weight_time_decay
+
+  from raw_events
 );
