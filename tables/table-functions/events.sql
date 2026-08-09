@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_date DATE, end_date DATE, date_scope STRING) AS (
-select
+  select
     # USER DATA
     user_date,
     first_value((select value.string from unnest(session_data) where name = 'user_id') IGNORE NULLS) over (partition by session_id order by event_timestamp desc) as user_id,
@@ -192,7 +192,10 @@ select
     (select value.int from unnest(event_data) where name = 'total_page_load_time') as total_page_load_time, 
 
     -- Only for search event
-    (select value.string from unnest(event_data) where name = 'search_term') as search_term, 
+    (select value.string from unnest(event_data) where name = 'search_term') as search_term,
+
+    -- Only for form submit event
+     (select value.string from unnest(event_data) where name = 'lead_type') as lead_type,
 
     -- Add event level custom dimension here
     -- (select value.string from unnest(event_data) where name = 'parameter_name') as parameter_name -- Always include Streaming protocol events
@@ -208,7 +211,7 @@ select
     (select value.string from unnest(consent_data) where name = 'respect_consent_mode') as respect_consent_mode, 
     (select value.string from unnest(consent_data) where name = 'ad_user_data') as ad_user_data, 
     (select value.string from unnest(consent_data) where name = 'ad_personalization') as ad_personalization, 
-    (select value.string from unnest(consent_data) where name = 'ad_storage') as ad_storage,
+    (select value.string from unnest(consent_data) where name = 'ad_storage') as ad_storage, 
     (select value.string from unnest(consent_data) where name = 'analytics_storage') as analytics_storage, 
     (select value.string from unnest(consent_data) where name = 'functionality_storage') as functionality_storage, 
     (select value.string from unnest(consent_data) where name = 'personalization_storage') as personalization_storage, 

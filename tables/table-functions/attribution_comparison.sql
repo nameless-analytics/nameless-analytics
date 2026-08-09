@@ -4,10 +4,10 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_com
     from `tom-moretti.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_event, lookback_days)
   ),
 
-  attribution_data_multi_touch as (
-    select *
-    from `tom-moretti.nameless_analytics.attribution_multi_touch`(start_date, end_date, conversion_event, lookback_days)
-  ),
+  -- attribution_data_multi_touch as (
+  --   select *
+  --   from `tom-moretti.nameless_analytics.attribution_multi_touch`(start_date, end_date, conversion_event, lookback_days)
+  -- ),
 
   attribution_models as (
     # LAST CLICK
@@ -39,7 +39,9 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_com
     from attribution_data_single_touch
 
     # LINEAR
+
     # TIME DECAY
+    
     # POSITION-BASED
 
   )
@@ -47,12 +49,9 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_com
   select
     channel_grouping,
     source,
-
-    countif(attribution_model = 'last_click') as conversions_last_click,
-    countif(attribution_model = 'first_click') as conversions_first_click,
-    countif(attribution_model = 'last_click_non_direct') as conversions_last_click_non_direct
-
+    count(conversion_id) as conversions,
+    attribution_model,
   from attribution_models
-  group by 1, 2
-  order by conversions_last_click desc
-)
+  group by all
+  order by conversions desc
+);

@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions`(start_date DATE, end_date DATE) AS (
-with raw_session_data as (
+  with raw_session_data as (
     select
       # USER DATA
       user_date, 
@@ -54,6 +54,9 @@ with raw_session_data as (
       # EVENTS
       count(event_name) as total_events,
       countif(event_name = 'page_view') as total_page_views,
+      countif(event_name = 'sign_up') as sign_up,
+      countif(event_name = 'newsletter_subscription') as newsletter_subscription,
+      countif(event_name = 'form_submit') as form_submit,
       countif(event_name = 'view_promotion') as view_promotion,
       countif(event_name = 'select_promotion') as select_promotion,
       countif(event_name = 'view_item_list') as view_item_list,
@@ -165,6 +168,9 @@ with raw_session_data as (
       # EVENTS
       total_events,
       total_page_views,
+      sign_up,
+      newsletter_subscription,
+      form_submit,
       view_promotion,
       select_promotion,
       view_item_list,
@@ -272,6 +278,9 @@ with raw_session_data as (
     session_exit_page_path, 
     session_exit_page_title, 
     session_hostname,
+    (case when sign_up >= 1 then 1 else 0 end) as session_with_sign_up,
+    (case when newsletter_subscription >= 1 then 1 else 0 end) as session_with_newsletter_subscription,
+    (case when form_submit >= 1 then 1 else 0 end) as session_with_form_submit,
     (case when purchase >= 1 then 1 else 0 end) as session_with_purchase,
     (case when sum(refund) >= 1 then 1 else 0 end) as session_with_refund,
     safe_divide(sum(total_page_views), count(distinct session_id)) as page_view_per_session,
@@ -279,6 +288,9 @@ with raw_session_data as (
     # EVENTS
     total_events,
     total_page_views,
+    sign_up,
+    newsletter_subscription,
+    form_submit,
     view_promotion,
     select_promotion,
     view_item_list,
