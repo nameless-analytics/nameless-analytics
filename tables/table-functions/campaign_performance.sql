@@ -62,6 +62,7 @@ with session_data as (
       safe_divide(sum(click), sum(impression)) as avg_click_through_rate,
     from `tom-moretti.nameless_analytics.online_campaign_performance_sheets`
     where date between start_date and end_date
+    and campaign_name is not null
     group by all
   )
 

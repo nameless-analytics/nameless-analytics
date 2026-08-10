@@ -19,6 +19,7 @@ with media_plan_data as (
     from `tom-moretti.nameless_analytics.online_campaign_performance_sheets`
     where true
       and date between start_date and end_date
+      and campaign_name is not null
     group by all
   )
 
