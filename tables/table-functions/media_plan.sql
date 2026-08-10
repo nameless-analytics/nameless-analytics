@@ -35,8 +35,9 @@ with media_plan_data as (
     split(media_plan_data.full_campaign_name, '|')[safe_offset(6)] as campaign_name,
     media_plan_data.budget,
     online_campaigns_performances.spend,
-    IFNULL(SAFE_DIVIDE(media_plan_data.budget - online_campaigns_performances.spend, media_plan_data.budget), 0.00) AS remaining_budget_percentage,
-    IFNULL(SAFE_DIVIDE(online_campaigns_performances.spend, media_plan_data.budget), 0.00) AS spent_budget_percentage
+    media_plan_data.budget - online_campaigns_performances.spend as remaining_budget,
+    SAFE_DIVIDE(media_plan_data.budget - online_campaigns_performances.spend, media_plan_data.budget) AS remaining_budget_percentage,
+    SAFE_DIVIDE(online_campaigns_performances.spend, media_plan_data.budget) AS spent_budget_percentage
   from media_plan_data
   left join online_campaigns_performances
     on media_plan_data.date = online_campaigns_performances.date
