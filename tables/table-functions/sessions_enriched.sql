@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaign_performance`(start_date DATE, end_date DATE) AS (
+CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions_enriched`(start_date DATE, end_date DATE) AS (
 with session_data as (
     SELECT
       session_date,
@@ -10,9 +10,7 @@ with session_data as (
       session_campaign_content,
       
       # POST CLICK
-      count(distinct client_id) as users,
       count(distinct new_user_client_id) as new_users,
-      count(distinct returning_user_client_id) as returning_users,
       count(distinct session_id) as sessions,
       session_duration_sec,
       new_session,
@@ -61,8 +59,9 @@ with session_data as (
       safe_divide(cost, sum(click)) as avg_cost_per_click,
       safe_divide(sum(click), sum(impression)) as avg_click_through_rate,
     from `tom-moretti.nameless_analytics.online_campaign_performance_sheets`
-    where date between start_date and end_date
-    and campaign_name is not null
+    where true 
+      -- and date between start_date and end_date
+      and campaign_name is not null
     group by all
   )
 
@@ -80,7 +79,7 @@ with session_data as (
     session_campaign_id,
     session_campaign_term,
     session_campaign_content,
-
+ 
     # PRE CLICK
     ifnull(cost, 0.00) as cost,
     ifnull(safe_divide(cost, sign_up), 0.00) as cost_per_sign_up,
