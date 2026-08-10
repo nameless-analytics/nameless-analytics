@@ -12,30 +12,45 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_com
   attribution_models as (
     # LAST CLICK
     select
-        last_click_channel_grouping as channel_grouping,
-        last_click_source as source,
-        conversion_id,
-        'last_click' as attribution_model
+      last_click_channel_grouping as channel_grouping,
+      last_click_source as source,
+      last_click_campaign as campaign,
+      last_click_campaign_id as campaign_id,
+      last_click_campaign_click_id as campaign_click_id,
+      last_click_campaign_term as campaign_term,
+      last_click_campaign_content as campaign_content,
+      conversion_id,
+      'last_click' as attribution_model
     from attribution_data_single_touch
   
     union all
   
     # FIRST CLICK
     select
-        first_click_channel_grouping as channel_grouping,
-        first_click_source as source,
-        conversion_id,
-        'first_click' as attribution_model
+      first_click_channel_grouping as channel_grouping,
+      first_click_source as source,
+      first_click_campaign as campaign,
+      first_click_campaign_id as campaign_id,
+      first_click_campaign_click_id as campaign_click_id,
+      first_click_campaign_term as campaign_term,
+      first_click_campaign_content as campaign_content,
+      conversion_id,
+      'first_click' as attribution_model
     from attribution_data_single_touch
   
     union all
   
     # LAST CLICK NON-DIRECT
     select
-        last_click_non_direct_channel_grouping as channel_grouping,
-        last_click_non_direct_source as source,
-        conversion_id,
-        'last_click_non_direct' as attribution_model
+      last_click_non_direct_channel_grouping as channel_grouping,
+      last_click_non_direct_source as source,
+      last_click_non_direct_campaign as campaign,
+      last_click_non_direct_campaign_id as campaign_id,
+      last_click_non_direct_campaign_click_id as campaign_click_id,
+      last_click_non_direct_campaign_term as campaign_term,
+      last_click_non_direct_campaign_content as campaign_content,
+      conversion_id,
+      'last_click_non_direct' as attribution_model
     from attribution_data_single_touch
 
     # LINEAR
@@ -49,8 +64,13 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_com
   select
     channel_grouping,
     source,
+    campaign,
+    campaign_id,
+    campaign_click_id,
+    campaign_term,
+    campaign_content,
     count(conversion_id) as conversions,
-    attribution_model,
+    attribution_model
   from attribution_models
   group by all
   order by conversions desc
