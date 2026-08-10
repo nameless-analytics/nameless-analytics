@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions_enriched`(start_date DATE, end_date DATE) AS (
+CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaigns`(start_date DATE, end_date DATE) AS (
 with session_data as (
     SELECT
       session_date,
@@ -73,7 +73,7 @@ with session_data as (
     split(session_data.session_campaign, '|')[safe_offset(1)] as session_campaign_country,
     split(session_data.session_campaign, '|')[safe_offset(2)] as session_campaign_funnel_stage,
     split(session_data.session_campaign, '|')[safe_offset(3)] as session_campaign_platform,
-    split(session_data.session_campaign, '|')[safe_offset(4)] as session_campaign_campaign_type,
+    split(session_data.session_campaign, '|')[safe_offset(4)] as session_campaign_type,
     split(session_data.session_campaign, '|')[safe_offset(5)] as session_campaign_marketing_objective,
     session_campaign,
     session_campaign_id,
