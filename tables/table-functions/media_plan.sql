@@ -33,14 +33,12 @@ with media_plan_data as (
     split(media_plan_data.full_campaign_name, '|')[safe_offset(4)] as campaign_type,
     split(media_plan_data.full_campaign_name, '|')[safe_offset(5)] as marketing_objective,
     split(media_plan_data.full_campaign_name, '|')[safe_offset(6)] as campaign_name,
-    media_plan_data.budget,
-    online_campaigns_performances.spend,
-    media_plan_data.budget - online_campaigns_performances.spend as remaining_budget,
-    SAFE_DIVIDE(online_campaigns_performances.spend, media_plan_data.budget) AS spent_budget_percentage,
-    SAFE_DIVIDE(media_plan_data.budget - online_campaigns_performances.spend, media_plan_data.budget) AS remaining_budget_percentage,
-    SAFE_DIVIDE(online_campaigns_performances.spend - media_plan_data.budget, media_plan_data.budget) AS budget_variance_percentage
+    sum(media_plan_data.budget) as budget,
+    sum(online_campaigns_performances.spend) as spend,
+    sum(media_plan_data.budget) - sum(online_campaigns_performances.spend) as remaining_budget
   from media_plan_data
   left join online_campaigns_performances
     on media_plan_data.date = online_campaigns_performances.date
     and media_plan_data.full_campaign_name = online_campaigns_performances.campaign_name
+  group by all
 );
