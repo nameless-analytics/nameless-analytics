@@ -10,14 +10,14 @@ with attribution_data_single_touch as (
   attribution_models as (
     # LAST CLICK
     select
-    last_click_channel_grouping as channel_grouping,
-    last_click_custom_channel_grouping as custom_channel_grouping,
-    last_click_source as source,
-    last_click_campaign as campaign,
-    last_click_campaign_id as campaign_id,
-    last_click_campaign_click_id as campaign_click_id,
-    last_click_campaign_term as campaign_term,
-    last_click_campaign_content as campaign_content,
+    last_click_channel_grouping as session_channel_grouping,
+    last_click_custom_channel_grouping as session_custom_channel_grouping,
+    last_click_source as session_source,
+    last_click_campaign as session_campaign,
+    last_click_campaign_id as session_campaign_id,
+    last_click_campaign_click_id as session_campaign_click_id,
+    last_click_campaign_term as session_campaign_term,
+    last_click_campaign_content as session_campaign_content,
     conversion_id,
     conversion_name,
     conversion_revenue,
@@ -28,14 +28,14 @@ with attribution_data_single_touch as (
 
     # FIRST CLICK
     select
-    first_click_channel_grouping as channel_grouping,
-    first_click_custom_channel_grouping as custom_channel_grouping,
-    first_click_source as source,
-    first_click_campaign as campaign,
-    first_click_campaign_id as campaign_id,
-    first_click_campaign_click_id as campaign_click_id,
-    first_click_campaign_term as campaign_term,
-    first_click_campaign_content as campaign_content,
+    first_click_channel_grouping as session_channel_grouping,
+    first_click_custom_channel_grouping as session_custom_channel_grouping,
+    first_click_source as session_source,
+    first_click_campaign as session_campaign,
+    first_click_campaign_id as session_campaign_id,
+    first_click_campaign_click_id as session_campaign_click_id,
+    first_click_campaign_term as session_campaign_term,
+    first_click_campaign_content as session_campaign_content,
     conversion_id,
     conversion_name,
     conversion_revenue,
@@ -46,14 +46,14 @@ with attribution_data_single_touch as (
 
     # LAST CLICK NON-DIRECT
     select
-    last_click_non_direct_channel_grouping as channel_grouping,
-    last_click_non_direct_custom_channel_grouping as custom_channel_grouping,
-    last_click_non_direct_source as source,
-    last_click_non_direct_campaign as campaign,
-    last_click_non_direct_campaign_id as campaign_id,
-    last_click_non_direct_campaign_click_id as campaign_click_id,
-    last_click_non_direct_campaign_term as campaign_term,
-    last_click_non_direct_campaign_content as campaign_content,
+    last_click_non_direct_channel_grouping as session_channel_grouping,
+    last_click_non_direct_custom_channel_grouping as session_custom_channel_grouping,
+    last_click_non_direct_source as session_source,
+    last_click_non_direct_campaign as session_campaign,
+    last_click_non_direct_campaign_id as session_campaign_id,
+    last_click_non_direct_campaign_click_id as session_campaign_click_id,
+    last_click_non_direct_campaign_term as session_campaign_term,
+    last_click_non_direct_campaign_content as session_campaign_content,
     conversion_id,
     conversion_name,
     conversion_revenue,
@@ -69,14 +69,14 @@ with attribution_data_single_touch as (
 
   select
     # LAST CLICK
-    channel_grouping,
-    custom_channel_grouping,
-    source,
-    campaign,
-    campaign_id,
-    campaign_click_id,
-    campaign_term,
-    campaign_content,
+    session_channel_grouping,
+    session_custom_channel_grouping,
+    session_source,
+    session_campaign,
+    session_campaign_id,
+    session_campaign_click_id,
+    session_campaign_term,
+    session_campaign_content,
     
     attribution_model,
 
