@@ -36,8 +36,9 @@ with media_plan_data as (
     media_plan_data.budget,
     online_campaigns_performances.spend,
     media_plan_data.budget - online_campaigns_performances.spend as remaining_budget,
+    SAFE_DIVIDE(online_campaigns_performances.spend, media_plan_data.budget) AS spent_budget_percentage,
     SAFE_DIVIDE(media_plan_data.budget - online_campaigns_performances.spend, media_plan_data.budget) AS remaining_budget_percentage,
-    SAFE_DIVIDE(online_campaigns_performances.spend, media_plan_data.budget) AS spent_budget_percentage
+    SAFE_DIVIDE(online_campaigns_performances.spend - media_plan_data.budget, media_plan_data.budget) AS budget_variance_percentage
   from media_plan_data
   left join online_campaigns_performances
     on media_plan_data.date = online_campaigns_performances.date
