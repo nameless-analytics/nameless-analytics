@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaign_performance`(start_date DATE, end_date DATE) AS (
-  with session_data as (
+with session_data as (
     SELECT
       session_date,
       session_channel_grouping,
@@ -69,6 +69,12 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaign_perfor
     session_date,
     session_channel_grouping,
     session_source,
+    split(session_data.session_campaign, '|')[safe_offset(0)] as session_campaign_year,
+    split(session_data.session_campaign, '|')[safe_offset(1)] as session_campaign_country,
+    split(session_data.session_campaign, '|')[safe_offset(2)] as session_campaign_funnel_stage,
+    split(session_data.session_campaign, '|')[safe_offset(3)] as session_campaign_platform,
+    split(session_data.session_campaign, '|')[safe_offset(4)] as session_campaign_campaign_type,
+    split(session_data.session_campaign, '|')[safe_offset(5)] as session_campaign_marketing_objective,
     session_campaign,
     session_campaign_id,
     session_campaign_term,
@@ -89,9 +95,9 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaign_perfor
     new_users,
     sessions,
     session_duration_sec,
-    new_sessions,
+    new_session,
     new_sessions_percentage,
-    returning_sessions,
+    returning_session,
     returning_sessions_percentage,
     engaged_session,
     engaged_sessions_percentage,
