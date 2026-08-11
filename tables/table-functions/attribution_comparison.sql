@@ -78,6 +78,7 @@ with attribution_data_single_touch as (
     split(session_campaign, '|')[safe_offset(3)] as session_campaign_platform,
     split(session_campaign, '|')[safe_offset(4)] as session_campaign_type,
     split(session_campaign, '|')[safe_offset(5)] as session_campaign_marketing_objective,
+    split(session_campaign, '|')[safe_offset(6)] as campaign_name,
     session_campaign,
     session_campaign_id,
     session_campaign_click_id,

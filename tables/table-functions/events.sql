@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_date DATE, end_date DATE, date_scope STRING) AS (
-  select
+select
     # USER DATA
     user_date,
     first_value((select value.string from unnest(session_data) where name = 'user_id') IGNORE NULLS) over (partition by session_id order by event_timestamp desc) as user_id,
@@ -33,6 +33,16 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_d
     (select value.string from unnest(user_data) where name = 'user_source') as user_source,
     (select value.string from unnest(user_data) where name = 'user_tld_source') as user_tld_source,
     split((select value.string from unnest(user_data) where name = 'user_tld_source'), '.')[safe_offset(0)] as user_source_cleaned,
+
+    split((select value.string from unnest(user_data) where name = 'user_campaign'), '|')[safe_offset(0)] as user_campaign_year,
+    split((select value.string from unnest(user_data) where name = 'user_campaign'), '|')[safe_offset(1)] as user_campaign_country,
+    split((select value.string from unnest(user_data) where name = 'user_campaign'), '|')[safe_offset(2)] as user_campaign_funnel_stage,
+    split((select value.string from unnest(user_data) where name = 'user_campaign'), '|')[safe_offset(3)] as user_campaign_platform,
+    split((select value.string from unnest(user_data) where name = 'user_campaign'), '|')[safe_offset(4)] as user_campaign_type,
+    split((select value.string from unnest(user_data) where name = 'user_campaign'), '|')[safe_offset(5)] as user_campaign_marketing_objective,
+    split((select value.string from unnest(user_data) where name = 'user_campaign'), '|')[safe_offset(5)] as user_campaign_name,
+
+
     (select value.string from unnest(user_data) where name = 'user_campaign') as user_campaign,
     (select value.string from unnest(user_data) where name = 'user_campaign_id') as user_campaign_id,
     (select value.string from unnest(user_data) where name = 'user_campaign_click_id') as user_campaign_click_id,
@@ -86,6 +96,13 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_d
     (select value.string from unnest(session_data) where name = 'session_source') as session_source,
     (select value.string from unnest(session_data) where name = 'session_tld_source') as session_tld_source,
     split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] as session_source_cleaned,
+    split((select value.string from unnest(session_data) where name = 'session_campaign'), '|')[safe_offset(0)] as session_campaign_year,
+    split((select value.string from unnest(session_data) where name = 'session_campaign'), '|')[safe_offset(1)] as session_campaign_country,
+    split((select value.string from unnest(session_data) where name = 'session_campaign'), '|')[safe_offset(2)] as session_campaign_funnel_stage,
+    split((select value.string from unnest(session_data) where name = 'session_campaign'), '|')[safe_offset(3)] as session_campaign_platform,
+    split((select value.string from unnest(session_data) where name = 'session_campaign'), '|')[safe_offset(4)] as session_campaign_type,
+    split((select value.string from unnest(session_data) where name = 'session_campaign'), '|')[safe_offset(5)] as session_campaign_marketing_objective,
+    split((select value.string from unnest(session_data) where name = 'session_campaign'), '|')[safe_offset(5)] as session_campaign_name,
     (select value.string from unnest(session_data) where name = 'session_campaign') as session_campaign,
     (select value.string from unnest(session_data) where name = 'session_campaign_id') as session_campaign_id,
     (select value.string from unnest(session_data) where name = 'session_campaign_click_id') as session_campaign_click_id,
@@ -164,6 +181,13 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_d
     (select value.string from unnest(event_data) where name = 'source') as source, 
     (select value.string from unnest(event_data) where name = 'tld_source') as tld_source, 
     split((select value.string from unnest(event_data) where name = 'tld_source'), '.')[safe_offset(0)] as source_cleaned,
+    split((select value.string from unnest(event_data) where name = 'campaign'), '|')[safe_offset(0)] as campaign_year,
+    split((select value.string from unnest(event_data) where name = 'campaign'), '|')[safe_offset(1)] as campaign_country,
+    split((select value.string from unnest(event_data) where name = 'campaign'), '|')[safe_offset(2)] as campaign_funnel_stage,
+    split((select value.string from unnest(event_data) where name = 'campaign'), '|')[safe_offset(3)] as campaign_platform,
+    split((select value.string from unnest(event_data) where name = 'campaign'), '|')[safe_offset(4)] as campaign_type,
+    split((select value.string from unnest(event_data) where name = 'campaign'), '|')[safe_offset(5)] as campaign_marketing_objective,
+    split((select value.string from unnest(event_data) where name = 'campaign'), '|')[safe_offset(5)] as campaign_name,
     (select value.string from unnest(event_data) where name = 'campaign') as campaign, 
     (select value.string from unnest(event_data) where name = 'campaign_id') as campaign_id,
     (select value.string from unnest(event_data) where name = 'campaign_click_id') as campaign_click_id,
