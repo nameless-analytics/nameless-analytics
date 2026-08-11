@@ -17,7 +17,7 @@ customers_ranked AS (
     DENSE_RANK() OVER (ORDER BY purchase DESC) AS f_rank,
     DENSE_RANK() OVER (ORDER BY revenue_net_refund DESC) AS m_rank
   FROM customers
-)
+),
 
 customers_normalized_ranked AS (
   SELECT
