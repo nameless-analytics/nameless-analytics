@@ -13,11 +13,11 @@ WITH customers AS (
 customers_ranked AS (
   SELECT
     customers.*,
-    RANK() OVER (ORDER BY days_from_last_purchase ASC) AS r_rank,
-    RANK() OVER (ORDER BY purchase DESC) AS f_rank,
-    RANK() OVER (ORDER BY revenue_net_refund DESC) AS m_rank
+    DENSE_RANK() OVER (ORDER BY days_from_last_purchase ASC) AS r_rank,
+    DENSE_RANK() OVER (ORDER BY purchase DESC) AS f_rank,
+    DENSE_RANK() OVER (ORDER BY revenue_net_refund DESC) AS m_rank
   FROM customers
-),
+)
 
 customers_normalized_ranked AS (
   SELECT
