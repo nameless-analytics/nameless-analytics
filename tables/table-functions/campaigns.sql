@@ -45,6 +45,8 @@ with session_data as (
       shipping_net_refund,
       tax_net_refund,
     FROM `tom-moretti.nameless_analytics.sessions`(start_date, end_date)
+    where true 
+      and session_campaign is not null
     GROUP BY ALL
   ),
 
@@ -60,8 +62,9 @@ with session_data as (
       safe_divide(sum(click), sum(impression)) as avg_click_through_rate,
     from `tom-moretti.nameless_analytics.online_campaign_performance_sheets`
     where true 
-      -- and date between start_date and end_date
+      and date between start_date and end_date
       and campaign_name is not null
+      and date is not null
     group by all
   )
 
@@ -75,6 +78,7 @@ with session_data as (
     split(session_data.session_campaign, '|')[safe_offset(3)] as session_campaign_platform,
     split(session_data.session_campaign, '|')[safe_offset(4)] as session_campaign_type,
     split(session_data.session_campaign, '|')[safe_offset(5)] as session_campaign_marketing_objective,
+    split(session_data.session_campaign, '|')[safe_offset(5)] as session_campaign_name,
     session_campaign,
     session_campaign_id,
     session_campaign_term,
