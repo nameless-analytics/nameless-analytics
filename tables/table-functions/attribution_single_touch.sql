@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_single_touch`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
-with conversions as (
+  with conversions as (
     select
       # CONVERSION DATA
       event_date as conversion_date,
@@ -9,28 +9,27 @@ with conversions as (
       if(event_name = 'purchase', ifnull(safe_cast(json_value(ecommerce, '$.value') as float64), 0.0), 0.0) as conversion_revenue,
       client_id,
       session_id,
+
+      # FIRST CLICK
+      user_channel_grouping as first_click_channel_grouping,
+      user_source_cleaned as first_click_source,
+      user_campaign as first_click_campaign,
+      user_campaign_id as first_click_campaign_id,
+      user_campaign_click_id as first_click_campaign_click_id,
+      user_campaign_term as first_click_campaign_term,
+      user_campaign_content as first_click_campaign_content,
       
       # LAST CLICK
-      (select value.string from unnest(session_data) where name = 'session_channel_grouping') as last_click_channel_grouping,
-      split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] as last_click_source,
-      (select value.string from unnest(session_data) where name = 'session_campaign') as last_click_campaign,
-      (select value.string from unnest(session_data) where name = 'session_campaign_id') as last_click_campaign_id,
-      (select value.string from unnest(session_data) where name = 'session_campaign_click_id') as last_click_campaign_click_id,
-      (select value.string from unnest(session_data) where name = 'session_campaign_term') as last_click_campaign_term,
-      (select value.string from unnest(session_data) where name = 'session_campaign_content') as last_click_campaign_content,
-      
-      # FIRST CLICK
-      (select value.string from unnest(user_data) where name = 'user_channel_grouping') as first_click_channel_grouping,
-      split((select value.string from unnest(user_data) where name = 'user_tld_source'), '.')[safe_offset(0)] as first_click_source,
-      (select value.string from unnest(user_data) where name = 'user_campaign') as first_click_campaign,
-      (select value.string from unnest(user_data) where name = 'user_campaign_id') as first_click_campaign_id,
-      (select value.string from unnest(user_data) where name = 'user_campaign_click_id') as first_click_campaign_click_id,
-      (select value.string from unnest(user_data) where name = 'user_campaign_term') as first_click_campaign_term,
-      (select value.string from unnest(user_data) where name = 'user_campaign_content') as first_click_campaign_content
+      session_channel_grouping as last_click_channel_grouping,
+      session_source_cleaned as last_click_source,
+      session_campaign as last_click_campaign,
+      session_campaign_id as last_click_campaign_id,
+      session_campaign_click_id as last_click_campaign_click_id,
+      session_campaign_term as last_click_campaign_term,
+      session_campaign_content as last_click_campaign_content
     
-    from `tom-moretti.nameless_analytics.events_raw`
+    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
     where true 
-      and event_date between start_date and end_date 
       and event_name = conversion_name
   ),
   
