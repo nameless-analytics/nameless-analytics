@@ -38,8 +38,8 @@ customers_normalized_ranked_scored AS (
 
     -- Normalized score 0–100:
     ((r_max - r_rank + 1) / r_max) * 100.0 AS R_normalized,
-    (f_rank / f_max) * 100.0 AS F_normalized,
-    (m_rank / m_max) * 100.0 AS M_normalized,
+    ((f_max - f_rank + 1) / f_max) * 100.0 AS F_normalized,
+    ((m_max - m_rank + 1) / m_max) * 100.0 AS M_normalized,
 
     -- Weighted score 0–5 (100 * 0.05 = 5)
     (0.15 * ((r_max - r_rank + 1) / r_max) * 100.0 
