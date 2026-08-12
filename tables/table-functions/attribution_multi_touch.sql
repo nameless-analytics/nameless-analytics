@@ -23,7 +23,7 @@ with conversions as (
 
       session_channel_grouping,
       session_custom_channel_grouping,
-      session_source,
+      session_source_cleaned as session_source,
 
       session_campaign_year,
       session_campaign_country,
@@ -39,7 +39,8 @@ with conversions as (
       session_campaign_term,
       session_campaign_content
 
-    from `tom-moretti.nameless_analytics.sessions`(date_sub(start_date, interval lookback_days day), end_date)
+    from `tom-moretti.nameless_analytics.events`(date_sub(start_date, interval lookback_days day), end_date, 'session')
+    group by all
   ),
 
   attribution_path as (
@@ -59,11 +60,7 @@ with conversions as (
 
       row_number() over (partition by conversions.conversion_id order by sessions.session_start_timestamp asc, sessions.session_id asc) as touchpoint_number,
       count(*) over (partition by conversions.conversion_id) as touchpoint_count,
-      safe_divide(timestamp_diff(
-        timestamp_millis(conversions.conversion_timestamp),
-        timestamp_millis(sessions.session_start_timestamp),
-        second
-      ), 86400.0) as days_before_conversion,
+      safe_divide(timestamp_diff(timestamp_millis(conversions.conversion_timestamp), timestamp_millis(sessions.session_start_timestamp), second), 86400.0) as days_before_conversion,
 
       # TRAFFIC DATA
       sessions.session_channel_grouping,
@@ -119,7 +116,6 @@ with conversions as (
     select
       attribution_raw_weights.*,
       safe_divide(time_decay_raw_weight, sum(time_decay_raw_weight) over (partition by conversion_id)) as time_decay_weight # Normalize Time Decay weights to 1 per conversion
-
     from attribution_raw_weights
   )
 

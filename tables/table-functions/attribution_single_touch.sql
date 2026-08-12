@@ -50,13 +50,13 @@ with conversions as (
   ),
   
   sessions as (
-    select
+    select distinct
       client_id,
       session_id,
       session_start_timestamp,
       session_channel_grouping,
       session_custom_channel_grouping,
-      session_source,
+      session_source_cleaned as session_source,
       session_campaign_year,
       session_campaign_country,
       session_campaign_funnel_stage,
@@ -70,7 +70,7 @@ with conversions as (
       session_campaign_term,
       session_campaign_content
 
-    from `tom-moretti.nameless_analytics.sessions`(date_sub(start_date, interval lookback_days day), end_date)
+    from `tom-moretti.nameless_analytics.events`(date_sub(start_date, interval lookback_days day), end_date, 'session')
   ),
   
   last_click_non_direct as (
@@ -101,7 +101,7 @@ with conversions as (
       )[safe_offset(0)] as traffic_source
     
     from conversions
-      inner join sessions using(client_id)
+    inner join sessions using(client_id)
 
     where true
       and session_start_timestamp <= conversion_timestamp
