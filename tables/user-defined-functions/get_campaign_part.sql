@@ -7,5 +7,6 @@ CREATE OR REPLACE FUNCTION `tom-moretti.nameless_analytics.get_campaign_part`(ca
     when part_name = 'campaign_type' then split(campaign, '|')[safe_offset(4)]
     when part_name = 'campaign_marketing_objective' then split(campaign, '|')[safe_offset(5)]
     when part_name = 'campaign_name' then split(campaign, '|')[safe_offset(6)]
+    else null
   END
 );

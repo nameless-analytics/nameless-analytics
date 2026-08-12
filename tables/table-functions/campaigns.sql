@@ -56,13 +56,13 @@ with session_data as (
   online_campaigns_performances as (
     select
       date,
-    `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_year') as campaign_year,
-    `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_country') as campaign_country,
-    `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_funnel_stage') as campaign_funnel_stage,
-    `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_platform') as campaign_platform,
-    `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_type') as campaign_type,
-    `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_marketing_objective') as campaign_marketing_objective,
-    `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_name') as campaign_name,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_year') as campaign_year,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_country') as campaign_country,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_funnel_stage') as campaign_funnel_stage,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_platform') as campaign_platform,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_type') as campaign_type,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_marketing_objective') as campaign_marketing_objective,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_name') as campaign_name,
       campaign,
       campaign_id, 
       cost as spend,
@@ -87,7 +87,7 @@ with session_data as (
     coalesce(session_data.campaign_type, online_campaigns_performances.campaign_type) as campaign_type,
     coalesce(session_data.campaign_marketing_objective, online_campaigns_performances.campaign_marketing_objective) as campaign_marketing_objective,
     coalesce(session_data.campaign_name, online_campaigns_performances.campaign_name) as campaign_name,
-    coalesce(session_data.campaign, online_campaigns_performances.campaign_name) as campaign,
+    coalesce(session_data.campaign, online_campaigns_performances.campaign) as campaign,
     coalesce(session_data.campaign_id, online_campaigns_performances.campaign_id) as campaign_id,
  
     # PRE CLICK
@@ -142,7 +142,7 @@ with session_data as (
   FROM session_data
   FULL JOIN online_campaigns_performances
     ON session_data.session_date = online_campaigns_performances.date
-    AND session_data.campaign = online_campaigns_performances.campaign_name
+    AND session_data.campaign = online_campaigns_performances.campaign
     AND ifnull(session_data.campaign_id, "") = ifnull(online_campaigns_performances.campaign_id, "")
   group by all
 );
