@@ -39,7 +39,6 @@ with media_plan_data as (
     `tom-moretti.nameless_analytics.get_campaign_part`(media_plan_data.full_campaign_name, 'campaign_name') as campaign_name,
     sum(media_plan_data.budget) as budget,
     sum(online_campaigns_performances.spend) as spend,
-    sum(media_plan_data.budget) - sum(online_campaigns_performances.spend) as remaining_budget
   from media_plan_data
   left join online_campaigns_performances
     on media_plan_data.year_month = online_campaigns_performances.date
