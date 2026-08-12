@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_single_touch`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
-  with conversions as (
+with conversions as (
     select
       # CONVERSION DATA
       event_date as conversion_date,
@@ -12,7 +12,15 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_sin
 
       # FIRST CLICK
       user_channel_grouping as first_click_channel_grouping,
+      user_custom_channel_grouping as first_click_custom_channel_grouping,
       user_source_cleaned as first_click_source,
+      user_campaign_year as first_click_campaign_year,
+      user_campaign_country as first_click_campaign_country,
+      user_campaign_funnel_stage as first_click_campaign_funnel_stage,
+      user_campaign_platform as first_click_campaign_platform,
+      user_campaign_type as first_click_campaign_type,
+      user_campaign_marketing_objective as first_click_campaign_marketing_objective,
+      user_campaign_name as first_click_campaign_name,
       user_campaign as first_click_campaign,
       user_campaign_id as first_click_campaign_id,
       user_campaign_click_id as first_click_campaign_click_id,
@@ -21,7 +29,15 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_sin
       
       # LAST CLICK
       session_channel_grouping as last_click_channel_grouping,
+      session_custom_channel_grouping as last_click_custom_channel_grouping,
       session_source_cleaned as last_click_source,
+      session_campaign_year as last_click_campaign_year,
+      session_campaign_country as last_click_campaign_country,
+      session_campaign_funnel_stage as last_click_campaign_funnel_stage,
+      session_campaign_platform as last_click_campaign_platform,
+      session_campaign_type as last_click_campaign_type,
+      session_campaign_marketing_objective as last_click_campaign_marketing_objective,
+      session_campaign_name as last_click_campaign_name,
       session_campaign as last_click_campaign,
       session_campaign_id as last_click_campaign_id,
       session_campaign_click_id as last_click_campaign_click_id,
@@ -39,7 +55,15 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_sin
       session_id,
       session_start_timestamp,
       session_channel_grouping,
+      session_custom_channel_grouping,
       session_source,
+      session_campaign_year,
+      session_campaign_country,
+      session_campaign_funnel_stage,
+      session_campaign_platform,
+      session_campaign_type,
+      session_campaign_marketing_objective,
+      session_campaign_name,
       session_campaign,
       session_campaign_id,
       session_campaign_click_id,
@@ -56,7 +80,15 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_sin
         struct(
           session_start_timestamp,
           session_channel_grouping as channel_grouping,
+          session_custom_channel_grouping as custom_channel_grouping,
           session_source as source,
+          session_campaign_year as campaign_year,
+          session_campaign_country as campaign_country,
+          session_campaign_funnel_stage as campaign_funnel_stage,
+          session_campaign_platform as campaign_platform,
+          session_campaign_type as campaign_type,
+          session_campaign_marketing_objective as campaign_marketing_objective,
+          session_campaign_name as campaign_name,
           session_campaign as campaign,
           session_campaign_id as campaign_id,
           session_campaign_click_id as campaign_click_id,
@@ -87,36 +119,57 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_sin
     conversion_revenue,
     client_id,
     session_id,
-    
-    # LAST CLICK
-    last_click_channel_grouping,
-    last_click_source,
-    last_click_campaign,
-    last_click_campaign_id,
-    last_click_campaign_click_id,
-    last_click_campaign_term,
-    last_click_campaign_content,
-    `tom-moretti.nameless_analytics.get_custom_channel_grouping`(last_click_source, last_click_campaign) as last_click_custom_channel_grouping,
-    
+        
     # FIRST CLICK
     first_click_channel_grouping,
+    first_click_custom_channel_grouping,
     first_click_source,
+    first_click_campaign_year,
+    first_click_campaign_country,
+    first_click_campaign_funnel_stage,
+    first_click_campaign_platform,
+    first_click_campaign_type,
+    first_click_campaign_marketing_objective,
+    first_click_campaign_name,
     first_click_campaign,
     first_click_campaign_id,
     first_click_campaign_click_id,
     first_click_campaign_term,
     first_click_campaign_content,
-    `tom-moretti.nameless_analytics.get_custom_channel_grouping`(first_click_source, first_click_campaign) as first_click_custom_channel_grouping,
+
+    # LAST CLICK
+    last_click_channel_grouping,
+    last_click_custom_channel_grouping,
+    last_click_source,
+    last_click_campaign_year,
+    last_click_campaign_country,
+    last_click_campaign_funnel_stage,
+    last_click_campaign_platform,
+    last_click_campaign_type,
+    last_click_campaign_marketing_objective,
+    last_click_campaign_name,
+    last_click_campaign,
+    last_click_campaign_id,
+    last_click_campaign_click_id,
+    last_click_campaign_term,
+    last_click_campaign_content,
     
     # LAST CLICK NON-DIRECT
     ifnull(traffic_source.channel_grouping, last_click_channel_grouping) as last_click_non_direct_channel_grouping,
+    ifnull(traffic_source.custom_channel_grouping, last_click_custom_channel_grouping) as last_click_non_direct_custom_channel_grouping,
     ifnull(traffic_source.source, last_click_source) as last_click_non_direct_source,
+    ifnull(traffic_source.campaign_year, last_click_campaign_year) as last_click_non_direct_campaign_year,
+    ifnull(traffic_source.campaign_country, last_click_campaign_country) as last_click_non_direct_campaign_country,
+    ifnull(traffic_source.campaign_funnel_stage, last_click_campaign_funnel_stage) as last_click_non_direct_campaign_funnel_stage,
+    ifnull(traffic_source.campaign_platform, last_click_campaign_platform) as last_click_non_direct_campaign_platform,
+    ifnull(traffic_source.campaign_type, last_click_campaign_type) as last_click_non_direct_campaign_type,
+    ifnull(traffic_source.campaign_marketing_objective, last_click_campaign_marketing_objective) as last_click_non_direct_campaign_marketing_objective,
+    ifnull(traffic_source.campaign_name, last_click_campaign_name) as last_click_non_direct_campaign_name,
     ifnull(traffic_source.campaign, last_click_campaign) as last_click_non_direct_campaign,
     ifnull(traffic_source.campaign_id, last_click_campaign_id) as last_click_non_direct_campaign_id,
     ifnull(traffic_source.campaign_click_id, last_click_campaign_click_id) as last_click_non_direct_campaign_click_id,
     ifnull(traffic_source.campaign_term, last_click_campaign_term) as last_click_non_direct_campaign_term,
     ifnull(traffic_source.campaign_content, last_click_campaign_content) as last_click_non_direct_campaign_content,
-    `tom-moretti.nameless_analytics.get_custom_channel_grouping`(ifnull(traffic_source.source, last_click_source), ifnull(traffic_source.campaign, last_click_campaign)) as   last_click_non_direct_custom_channel_grouping
   
   from conversions
   left join last_click_non_direct using(conversion_id)
