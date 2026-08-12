@@ -7,8 +7,16 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
+## To do
+- Document the new GTM server-side response logic: request claiming, Firestore user and session data insertion, BigQuery event data insertion, and event data forwarding
+- Document UDFs
+- Document the new fields in events(), sessions(), media_plan(), campaigns(), and attribution_comparison()
+- Document the media plan
+- Document campaign costs
+- Complete and document attribution
 
-## Wishlist / To do
+
+## Wishlist
 Here is a wishlist of ideas and features for future releases, representing a list of intentions rather than a strict roadmap.
 
 - Complete Dataform datamodel with ML models
