@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_multi_touch`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
-  with conversions as (
+with conversions as (
     select
       # CONVERSION DATA
       event_date as conversion_date,
@@ -54,7 +54,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_mul
       conversions.conversion_session_id,
 
       # TOUCHPOINT DATA
-      sessions.session_id,
+      sessions.session_id as touchpoint_session_id,
       sessions.session_start_timestamp,
 
       row_number() over (partition by conversions.conversion_id order by sessions.session_start_timestamp asc, sessions.session_id asc) as touchpoint_number,
@@ -136,7 +136,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_mul
     # TOUCHPOINT DATA
     touchpoint_number,
     touchpoint_count,
-    session_id,
+    touchpoint_session_id,
     session_start_timestamp,
     days_before_conversion,
 

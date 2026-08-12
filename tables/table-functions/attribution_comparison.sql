@@ -3,9 +3,9 @@ with attribution_data_single_touch as (
     select * from `tom-moretti.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)
   ),
 
-  -- attribution_data_multi_touch as (
-  --   select * from `tom-moretti.nameless_analytics.attribution_single_touch`(start_date, end_date, ['purchase', 'newsletter_subscription', 'form_submit', 'sign_up'], lookback_days)
-  -- ),
+  attribution_data_multi_touch as (
+    select * from `tom-moretti.nameless_analytics.attribution_multi_touch`(start_date, end_date, conversion_name, lookback_days)
+  ),
 
   attribution_models as (
     # FIRST CLICK
@@ -26,9 +26,10 @@ with attribution_data_single_touch as (
       first_click_campaign_term as session_campaign_term,
       first_click_campaign_content as session_campaign_content,
       conversion_id,
-      conversion_name,
-      conversion_revenue,
-      'first_click' as attribution_model
+      1.0 as attributed_conversions,
+      conversion_revenue as attributed_revenue,
+      'first_click' as attribution_model_name,
+      'single_touch' as attribution_model_type
     from attribution_data_single_touch
 
     union all
@@ -51,9 +52,10 @@ with attribution_data_single_touch as (
       last_click_campaign_term as session_campaign_term,
       last_click_campaign_content as session_campaign_content,
       conversion_id,
-      conversion_name,
-      conversion_revenue,
-      'last_click' as attribution_model
+      1.0 as attributed_conversions,
+      conversion_revenue as attributed_revenue,
+      'last_click' as attribution_model_name,
+      'single_touch' as attribution_model_type
     from attribution_data_single_touch
 
     union all
@@ -76,16 +78,89 @@ with attribution_data_single_touch as (
       last_click_non_direct_campaign_term as session_campaign_term,
       last_click_non_direct_campaign_content as session_campaign_content,
       conversion_id,
-      conversion_name,
-      conversion_revenue,
-      'last_click_non_direct' as attribution_model
+      1.0 as attributed_conversions,
+      conversion_revenue as attributed_revenue,
+      'last_click_non_direct' as attribution_model_name,
+      'single_touch' as attribution_model_type
     from attribution_data_single_touch
 
+    union all
+
     # LINEAR
+    select
+      session_channel_grouping,
+      session_custom_channel_grouping,
+      session_source,
+      session_campaign_year,
+      session_campaign_country,
+      session_campaign_funnel_stage,
+      session_campaign_platform,
+      session_campaign_type,
+      session_campaign_marketing_objective,
+      session_campaign_name,
+      session_campaign,
+      session_campaign_id,
+      session_campaign_click_id,
+      session_campaign_term,
+      session_campaign_content,
+      conversion_id,
+      linear_attribution_credit as attributed_conversions,
+      linear_attributed_revenue as attributed_revenue,
+      'linear' as attribution_model_name,
+      'multi_touch' as attribution_model_type
+    from attribution_data_multi_touch
+
+    union all
 
     # TIME DECAY
+    select
+      session_channel_grouping,
+      session_custom_channel_grouping,
+      session_source,
+      session_campaign_year,
+      session_campaign_country,
+      session_campaign_funnel_stage,
+      session_campaign_platform,
+      session_campaign_type,
+      session_campaign_marketing_objective,
+      session_campaign_name,
+      session_campaign,
+      session_campaign_id,
+      session_campaign_click_id,
+      session_campaign_term,
+      session_campaign_content,
+      conversion_id,
+      time_decay_attribution_credit as attributed_conversions,
+      time_decay_attributed_revenue as attributed_revenue,
+      'time_decay' as attribution_model_name,
+      'multi_touch' as attribution_model_type
+    from attribution_data_multi_touch
+
+    union all
 
     # POSITION-BASED
+    select
+      session_channel_grouping,
+      session_custom_channel_grouping,
+      session_source,
+      session_campaign_year,
+      session_campaign_country,
+      session_campaign_funnel_stage,
+      session_campaign_platform,
+      session_campaign_type,
+      session_campaign_marketing_objective,
+      session_campaign_name,
+      session_campaign,
+      session_campaign_id,
+      session_campaign_click_id,
+      session_campaign_term,
+      session_campaign_content,
+      conversion_id,
+      position_based_attribution_credit as attributed_conversions,
+      position_based_attributed_revenue as attributed_revenue,
+      'position_based' as attribution_model_name,
+      'multi_touch' as attribution_model_type
+    from attribution_data_multi_touch
   )
 
   select
@@ -104,10 +179,11 @@ with attribution_data_single_touch as (
     session_campaign_click_id,
     session_campaign_term,
     session_campaign_content,
-    attribution_model,
+    attribution_model_name,
+    attribution_model_type,
 
-    count(distinct conversion_id) as conversions,
-    sum(conversion_revenue) as conversions_revenue
+    sum(attributed_conversions) as conversions,
+    sum(attributed_revenue) as conversions_revenue
   from attribution_models
   group by all
 );

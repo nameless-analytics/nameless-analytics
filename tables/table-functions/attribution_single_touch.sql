@@ -8,7 +8,7 @@ with conversions as (
       event_name as conversion_name,
       if(event_name = 'purchase', ifnull(safe_cast(json_value(ecommerce, '$.value') as float64), 0.0), 0.0) as conversion_revenue,
       client_id,
-      session_id,
+      session_id as conversion_session_id,
 
       # FIRST CLICK
       user_channel_grouping as first_click_channel_grouping,
@@ -69,6 +69,7 @@ with conversions as (
       session_campaign_click_id,
       session_campaign_term,
       session_campaign_content
+
     from `tom-moretti.nameless_analytics.sessions`(date_sub(start_date, interval lookback_days day), end_date)
   ),
   
@@ -101,12 +102,14 @@ with conversions as (
     
     from conversions
       inner join sessions using(client_id)
+
     where true
       and session_start_timestamp <= conversion_timestamp
       and session_source is not null
       and session_source != 'direct'
       and session_channel_grouping != 'direct'
       and datetime_diff(datetime(timestamp_millis(conversion_timestamp)), datetime(timestamp_millis(session_start_timestamp)), day) <= lookback_days
+
     group by conversion_id
   )
   
@@ -118,7 +121,7 @@ with conversions as (
     conversion_name,
     conversion_revenue,
     client_id,
-    session_id,
+    conversion_session_id,
         
     # FIRST CLICK
     first_click_channel_grouping,
@@ -169,7 +172,7 @@ with conversions as (
     ifnull(traffic_source.campaign_id, last_click_campaign_id) as last_click_non_direct_campaign_id,
     ifnull(traffic_source.campaign_click_id, last_click_campaign_click_id) as last_click_non_direct_campaign_click_id,
     ifnull(traffic_source.campaign_term, last_click_campaign_term) as last_click_non_direct_campaign_term,
-    ifnull(traffic_source.campaign_content, last_click_campaign_content) as last_click_non_direct_campaign_content,
+    ifnull(traffic_source.campaign_content, last_click_campaign_content) as last_click_non_direct_campaign_content
   
   from conversions
   left join last_click_non_direct using(conversion_id)
