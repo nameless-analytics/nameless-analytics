@@ -218,7 +218,7 @@ select
     -- Only for search event
     (select value.string from unnest(event_data) where name = 'search_term') as search_term,
 
-    -- Only for form submit event
+    -- Only for form form submission event
      (select value.string from unnest(event_data) where name = 'lead_type') as lead_type,
 
     -- Add event level custom dimension here
