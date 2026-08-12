@@ -29,7 +29,6 @@ with media_plan_data as (
     media_plan_data.year_month,
     media_plan_data.year,
     media_plan_data.month,
-    media_plan_data.full_campaign_name,
     `tom-moretti.nameless_analytics.get_campaign_part`(media_plan_data.full_campaign_name, 'campaign_year') as campaign_year,
     `tom-moretti.nameless_analytics.get_campaign_part`(media_plan_data.full_campaign_name, 'campaign_country') as campaign_country,
     `tom-moretti.nameless_analytics.get_campaign_part`(media_plan_data.full_campaign_name, 'campaign_funnel_stage') as campaign_funnel_stage,
@@ -37,8 +36,9 @@ with media_plan_data as (
     `tom-moretti.nameless_analytics.get_campaign_part`(media_plan_data.full_campaign_name, 'campaign_type') as campaign_type,
     `tom-moretti.nameless_analytics.get_campaign_part`(media_plan_data.full_campaign_name, 'campaign_marketing_objective') as campaign_marketing_objective,
     `tom-moretti.nameless_analytics.get_campaign_part`(media_plan_data.full_campaign_name, 'campaign_name') as campaign_name,
+    media_plan_data.full_campaign_name as campaign,
     sum(media_plan_data.budget) as budget,
-    sum(online_campaigns_performances.spend) as spend,
+    sum(online_campaigns_performances.spend) as spend
   from media_plan_data
   left join online_campaigns_performances
     on media_plan_data.year_month = online_campaigns_performances.date
