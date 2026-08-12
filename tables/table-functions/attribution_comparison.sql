@@ -1,5 +1,5 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_comparison`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
-with attribution_data_single_touch as (
+  with attribution_data_single_touch as (
     select * from `tom-moretti.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)
   ),
 
@@ -85,7 +85,7 @@ with attribution_data_single_touch as (
     from attribution_data_single_touch
 
     union all
-
+    
     # LINEAR
     select
       session_channel_grouping,
@@ -109,9 +109,9 @@ with attribution_data_single_touch as (
       'linear' as attribution_model_name,
       'multi_touch' as attribution_model_type
     from attribution_data_multi_touch
-
+    
     union all
-
+    
     # TIME DECAY
     select
       session_channel_grouping,
@@ -135,9 +135,9 @@ with attribution_data_single_touch as (
       'time_decay' as attribution_model_name,
       'multi_touch' as attribution_model_type
     from attribution_data_multi_touch
-
+    
     union all
-
+    
     # POSITION-BASED
     select
       session_channel_grouping,
