@@ -1,5 +1,5 @@
 -- =========================================================================
--- MATRICE CAMPI COMPLETA CON DIZIONARIO DESCIZIONI (439 CAMPI MAPPATI)
+-- MATRICE CAMPI COMPLETA CON DIZIONARIO DESCRIZIONI
 -- DATASET: tom-moretti.nameless_analytics
 -- COSTO ELABORAZIONE: 0 BYTE
 -- =========================================================================
@@ -559,13 +559,60 @@ SELECT
   REPLACE(c.table_name, 'matrix_', '') AS table_function_name,
   c.column_name AS field_name,
   COALESCE(d.field_type, 'Dimension') AS field_type,
-  COALESCE(d.field_description, CONCAT('Field representing ', REPLACE(c.column_name, '_', ' '))) AS field_description,
+
+  -- Value type derived automatically from the real Table Function output schema
+  CASE
+    WHEN c.data_type = 'STRING' THEN 'string'
+    WHEN c.data_type IN ('INT64', 'INTEGER') THEN 'integer'
+    WHEN c.data_type IN ('FLOAT64', 'FLOAT', 'NUMERIC', 'BIGNUMERIC', 'DECIMAL', 'BIGDECIMAL') THEN 'float'
+    WHEN c.data_type IN ('BOOL', 'BOOLEAN') THEN 'boolean'
+    WHEN c.data_type = 'DATE' THEN 'date'
+    WHEN c.data_type = 'DATETIME' THEN 'datetime'
+    WHEN c.data_type = 'TIMESTAMP' THEN 'timestamp'
+    WHEN c.data_type = 'TIME' THEN 'time'
+    WHEN c.data_type = 'JSON' THEN 'json'
+    WHEN STARTS_WITH(c.data_type, 'ARRAY<') THEN 'array'
+    WHEN STARTS_WITH(c.data_type, 'STRUCT<') THEN 'struct'
+    ELSE LOWER(c.data_type)
+  END AS value_type,
+
+  COALESCE(
+    d.field_description,
+    CONCAT('Field representing ', REPLACE(c.column_name, '_', ' '))
+  ) AS field_description,
+
   'X' AS is_present
+
 FROM `tom-moretti.nameless_analytics.INFORMATION_SCHEMA.COLUMNS` c
+
 LEFT JOIN dictionary d 
   ON c.column_name = d.field_name
-WHERE c.table_name LIKE 'matrix_%'
-ORDER BY table_function_name, field_name;
+
+WHERE true
+  AND c.table_name LIKE 'matrix_%'
+
+ORDER BY
+  table_function_name,
+  c.ordinal_position;
+
+-- =========================================================================
+-- OUTPUT
+-- =========================================================================
+-- La tabella `fields` è la source of truth in formato long:
+--
+-- table_function_name
+-- field_name
+-- field_type
+-- value_type
+-- field_description
+-- is_present
+--
+-- Una seconda query/view può usare questa tabella per:
+-- 1. creare una riga per field_name;
+-- 2. pivotare le Table Functions in colonne;
+-- 3. concatenare le righe in Markdown con STRING_AGG().
+-- =========================================================================
+
 
 -- 3. Pulizia automatica: elimina le viste temporanee create al punto 1
 FOR routine IN (

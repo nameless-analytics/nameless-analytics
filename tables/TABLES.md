@@ -1132,189 +1132,404 @@ This table illustrates the fields available across different table functions, al
 
 <details><summary>Output Fields Matrix</summary>
 
-| Field name | Field type | Value type | Events | Users | Sessions | Pages | Transactions | Products | Funnel | Pivot | Consents | Attribution | Media Plan | Campaigns |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **User Identity** | | | | | | | | | | | | | | |
-| `client_id` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |   X   |   X   |   X   |      |      |      |
-| `new_user_client_id` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `returning_user_client_id` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_date` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_id` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_type` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| **User Attributes** | | | | | | | | | | | | | | |
-| `customer_client_id` | Dimension | string |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `customer_status` | Dimension | string |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `customer_type` | Dimension | string |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `days_from_first_purchase` | Metric | integer |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `days_from_first_to_last_visit` | Metric | integer |   X   |   X   |      |      |      |      |      |      |      |      |      |      |
-| `days_from_first_visit` | Metric | integer |   X   |   X   |      |      |      |      |      |      |      |      |      |      |
-| `days_from_last_purchase` | Metric | integer |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `days_from_last_visit` | Metric | integer |   X   |   X   |      |      |      |      |      |      |      |      |      |      |
-| `first_purchase_timestamp` | Dimension | string |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `last_purchase_timestamp` | Dimension | string |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `new_customer_client_id` | Dimension | string |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `returning_customer_client_id` | Dimension | string |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `user_agent` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `user_campaign` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_campaign_click_id` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |      |      |      |      |
-| `user_campaign_content` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |      |      |      |      |
-| `user_campaign_id` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |      |      |      |      |
-| `user_campaign_marketing_objective` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_campaign_term` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |      |      |      |      |
-| `user_channel_grouping` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_custom_channel_grouping` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_city` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |      |      |      |      |
-| `user_country` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_device_type` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_first_session_timestamp` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `user_language` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_last_session_timestamp` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `user_source` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `user_source_cleaned` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `user_tld_source` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `user_with_purchase` | Metric | integer |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `user_with_refund` | Metric | integer |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| **Session Identity** | | | | | | | | | | | | | | |
-| `session_date` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |      |   X   |      |      |   X   |
-| `session_duration_sec` | Metric | integer |   X   |   X   |   X   |      |      |      |      |      |   X   |      |      |   X   |
-| `session_end_timestamp` | Dimension | string |   X   |      |      |      |   X   |   X   |      |      |      |      |      |      |
-| `session_id` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |   X   |   X   |   X   |      |      |      |
-| `session_id_consent_expressed` | Dimension | string |      |      |      |      |      |      |      |      |   X   |      |      |      |
-| `session_id_consent_mode_not_present` | Dimension | string |      |      |      |      |      |      |      |      |   X   |      |      |      |
-| `session_id_consent_not_expressed` | Dimension | string |      |      |      |      |      |      |      |      |   X   |      |      |      |
-| `session_number` | Dimension | string |   X   |   X   |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_start_timestamp` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_type` | Dimension | string |   X   |      |      |   X   |   X   |   X   |      |      |      |      |      |      |
-| **Session Attributes** | | | | | | | | | | | | | | |
-| `avg_order_value` | Metric | float |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `cross_domain_session` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `engaged_session` | Metric | integer |      |      |   X   |      |      |      |      |      |   X   |      |      |   X   |
-| `engaged_sessions_percentage` | Metric | float |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `new_session` | Metric | integer |   X   |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `new_sessions_percentage` | Metric | float |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `page_view_per_session` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `returning_session` | Metric | integer |   X   |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `returning_sessions_percentage` | Metric | float |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `session_ad_personalization` | Metric | integer |      |      |   X   |      |      |      |      |      |   X   |      |      |      |
-| `session_ad_storage` | Metric | integer |      |      |   X   |      |      |      |      |      |   X   |      |      |      |
-| `session_ad_user_data` | Metric | integer |      |      |   X   |      |      |      |      |      |   X   |      |      |      |
-| `session_analytics_storage` | Metric | integer |      |      |   X   |      |      |      |      |      |   X   |      |      |      |
-| `session_browser_name` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_campaign` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |   X   |   X   |   X   |      |      |
-| `session_campaign_click_id` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |      |   X   |   X   |      |      |
-| `session_campaign_content` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |      |   X   |   X   |      |      |
-| `session_campaign_id` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |      |   X   |   X   |      |      |
-| `session_campaign_marketing_objective` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |   X   |   X   |   X   |      |      |
-| `session_campaign_term` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |      |   X   |   X   |      |      |
-| `session_channel_grouping` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |   X   |   X   |   X   |      |      |
-| `session_custom_channel_grouping` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |   X   |   X   |   X   |      |      |
-| `session_city` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_country` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |   X   |   X   |      |      |      |
-| `session_device_type` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |   X   |   X   |      |      |      |
-| `session_exit_page_category` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_exit_page_url` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_exit_page_path` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_exit_page_title` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_functionality_storage` | Metric | integer |      |      |   X   |      |      |      |      |      |   X   |      |      |      |
-| `session_hostname` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_landing_page_category` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_landing_page_url` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_landing_page_path` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_landing_page_title` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_language` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |      |      |   X   |      |      |      |
-| `session_personalization_storage` | Metric | integer |      |      |   X   |      |      |      |      |      |   X   |      |      |      |
-| `session_security_storage` | Metric | integer |      |      |   X   |      |      |      |      |      |   X   |      |      |      |
-| `session_source` | Dimension | string |   X   |      |   X   |   X   |   X   |   X   |   X   |   X   |   X   |   X   |      |      |
-| `session_source_cleaned` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `session_tld_source` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `session_with_account_creation` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `session_with_form_submission` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `session_with_newsletter_subscription` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `session_with_purchase` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `session_with_refund` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `sessions` | Metric | integer |      |   X   |      |      |      |      |   X   |   X   |      |      |      |   X   |
-| `sessions_per_user` | Metric | float |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| **Page Data** | | | | | | | | | | | | | | |
-| `page_category` | Dimension | string |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_date` | Dimension | string |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_extension` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `page_fragment` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `page_hostname` | Dimension | string |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_hostname_protocol` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `page_id` | Dimension | string |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_language` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `page_load_time_sec` | Dimension | float |      |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_load_timestamp` | Dimension | integer |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_url` | Dimension | string |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_path` | Dimension | string |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_query` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `page_referrer` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `page_status_code` | Dimension | integer |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_title` | Dimension | string |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_unload_timestamp` | Dimension | integer |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `page_view_number` | Dimension | integer |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `time_on_page` | Metric | float |   X   |      |      |   X   |      |      |      |      |      |      |      |      |
-| `total_page_views` | Metric | integer |      |   X   |   X   |   X   |      |      |      |      |      |      |      |   X   |
-| **Event & Conversion Data** | | | | | | | | | | | | | | |
-| `account_creation` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `campaign` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |   X   |   X   |
-| `campaign_click_id` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `campaign_content` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `campaign_id` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |   X   |   X   |
-| `campaign_marketing_objective` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |   X   |   X   |
-| `campaign_term` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `channel_grouping` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `custom_channel_grouping` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `event_date` | Dimension | string |   X   |      |      |      |   X   |   X   |      |      |      |      |      |      |
-| `event_id` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `event_name` | Dimension | string |   X   |   X   |      |      |   X   |   X   |      |      |      |      |      |      |
-| `event_number` | Dimension | integer |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `event_origin` | Dimension | string |   X   |      |      |      |   X   |   X   |      |      |      |      |      |      |
-| `event_timestamp` | Dimension | integer |   X   |   X   |      |      |      |      |      |      |      |      |      |      |
-| `event_type` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `form_submission` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `newsletter_subscription` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
-| `source` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `source_cleaned` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `tld_source` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
-| `total_events` | Metric | integer |      |   X   |   X   |      |      |      |      |      |      |      |      |   X   |
-| **Ecommerce Data** | | | | | | | | | | | | | | |
-| `add_payment_info` | Metric | integer |      |      |   X   |      |      |   X   |   X   |   X   |      |      |      |      |
-| `add_shipping_info` | Metric | integer |      |      |   X   |      |      |   X   |   X   |   X   |      |      |      |      |
-| `add_to_cart` | Metric | integer |      |      |   X   |      |      |   X   |   X   |   X   |      |      |      |      |
-| `add_to_wishlist` | Metric | integer |      |      |   X   |      |      |   X   |      |      |      |      |      |      |
-| `avg_purchase_value` | Metric | float |      |   X   |      |      |      |      |      |      |      |      |      |      |
-| `avg_refund_value` | Metric | float |      |   X   |   X   |      |      |      |      |      |      |      |      |   X   |
-| `begin_checkout` | Metric | integer |      |      |   X   |      |      |   X   |   X   |   X   |      |      |      |      |
-| `item_brand` | Dimension | string |      |      |      |      |      |   X   |      |      |      |      |      |      |
-| `item_category` | Dimension | string |      |      |      |      |      |   X   |      |      |      |      |      |      |
-| `item_id` | Dimension | string |      |      |      |      |      |   X   |      |      |      |      |      |      |
-| `item_name` | Dimension | string |      |      |      |      |      |   X   |      |      |      |      |      |      |
-| `item_quantity_purchased` | Metric | integer |      |   X   |      |      |      |   X   |      |      |      |      |      |      |
-| `item_quantity_refunded` | Metric | integer |      |   X   |      |      |      |   X   |      |      |      |      |      |      |
-| `item_revenue_purchased` | Metric | float |      |      |      |      |      |   X   |      |      |      |      |      |      |
-| `item_revenue_refunded` | Metric | float |      |      |      |      |      |   X   |      |      |      |      |      |      |
-| `purchase` | Metric | integer |      |   X   |   X   |      |   X   |      |   X   |   X   |      |      |      |   X   |
-| `purchase_net_refund` | Metric | integer |      |   X   |   X   |      |      |      |      |      |      |      |      |   X   |
-| `purchase_revenue` | Metric | float |      |   X   |   X   |      |   X   |      |      |      |      |      |      |   X   |
-| `purchase_shipping` | Metric | float |      |      |   X   |      |   X   |      |      |      |      |      |      |   X   |
-| `purchase_tax` | Metric | float |      |      |   X   |      |   X   |      |      |      |      |      |      |   X   |
-| `refund` | Metric | integer |      |   X   |   X   |      |   X   |      |      |      |      |      |      |   X   |
-| `refund_revenue` | Metric | float |      |   X   |   X   |      |   X   |      |      |      |      |      |      |   X   |
-| `refund_shipping` | Metric | float |      |      |   X   |      |   X   |      |      |      |      |      |      |   X   |
-| `refund_tax` | Metric | float |      |      |   X   |      |   X   |      |      |      |      |      |      |   X   |
-| `remove_from_cart` | Metric | integer |      |      |   X   |      |      |   X   |      |      |      |      |      |      |
-| `revenue_net_refund` | Metric | float |      |   X   |   X   |      |      |      |      |      |      |      |      |   X   |
-| `transaction_id` | Dimension | string |      |   X   |      |      |   X   |   X   |      |      |      |      |      |      |
-| **Attribution & Media Plan** | | | | | | | | | | | | | | |
-| `attributed_conversions` | Metric | float |      |      |      |      |      |      |      |      |      |   X   |      |      |
-| `attributed_revenue` | Metric | float |      |      |      |      |      |      |      |      |      |   X   |      |      |
-| `attribution_model_name` | Dimension | string |      |      |      |      |      |      |      |      |      |   X   |      |      |
-| `attribution_model_type` | Dimension | string |      |      |      |      |      |      |      |      |      |   X   |      |      |
-| `budget` | Metric | float |      |      |      |      |      |      |      |      |      |      |   X   |      |
-| `spend` | Metric | float |      |      |      |      |      |      |      |      |      |      |   X   |   X   |
-| `full_campaign_name` | Dimension | string |      |      |      |      |      |      |      |      |      |      |   X   |      |
-| `year_month` | Dimension | string |      |      |      |      |      |      |      |      |      |      |   X   |      |
+| Field name | Field type | Value type | Events | Events Debug | Users | Users RFM | Sessions | Pages | Transactions | Products | Funnel | Funnel Pivot | Consents | Attribution Single Touch | Attribution Multi Touch | Attribution Comparison | Media Plan | Campaigns |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `F_normalized` | Metric | float |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |
+| `M_normalized` | Metric | float |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |
+| `RFM_segment` | Dimension | string |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |
+| `RFM_weighted_score` | Metric | float |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |
+| `R_normalized` | Metric | float |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |
+| `account_creation` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `ad_personalization` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `ad_personalization_accepted_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `ad_personalization_denied_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `ad_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `ad_storage_accepted_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `ad_storage_denied_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `ad_user_data` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `ad_user_data_accepted_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `ad_user_data_denied_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `add_payment_info` | Metric | string |  |  |  |  | X |  |  | X | X |  |  |  |  |  |  |  |
+| `add_shipping_info` | Metric | string |  |  |  |  | X |  |  | X | X |  |  |  |  |  |  |  |
+| `add_to_cart` | Metric | string |  |  |  |  | X |  |  | X | X |  |  |  |  |  |  |  |
+| `add_to_wishlist` | Metric | integer |  |  |  |  | X |  |  | X |  |  |  |  |  |  |  |  |
+| `analytics_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `analytics_storage_accepted_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `analytics_storage_denied_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `attribution_model_name` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |
+| `attribution_model_type` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |
+| `avg_click_through_rate` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `avg_cost_per_click` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `avg_order_value` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `avg_purchase_value` | Metric | float |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `avg_refund_value` | Metric | float |  |  | X |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `begin_checkout` | Metric | string |  |  |  |  | X |  |  | X | X |  |  |  |  |  |  |  |
+| `billing_account_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `browser_language` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `browser_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `browser_version` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `budget` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |  |
+| `campaign` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  | X | X |
+| `campaign_click_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `campaign_content` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `campaign_country` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  | X | X |
+| `campaign_funnel_stage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  | X | X |
+| `campaign_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `campaign_marketing_objective` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  | X | X |
+| `campaign_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  | X | X |
+| `campaign_platform` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  | X | X |
+| `campaign_term` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `campaign_type` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  | X | X |
+| `campaign_year` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  | X | X |
+| `channel_grouping` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `city` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `click` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `client_id` | Dimension | string | X | X | X | X | X | X | X | X | X | X | X | X | X |  |  |  |
+| `consent_data` | Dimension | array |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `consent_expressed` | Dimension | string |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `consent_name` | Dimension | string |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |
+| `consent_state` | Dimension | string |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |
+| `consent_timestamp` | Dimension | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `consent_type` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `consent_value_int_accepted` | Metric | integer |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |
+| `consent_value_int_denied` | Metric | integer |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |
+| `consent_value_string` | Dimension | string |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |
+| `content_length_in_kb` | Metric | float | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `conversion_date` | Dimension | date |  |  |  |  |  |  |  |  |  |  |  | X | X |  |  |  |
+| `conversion_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X | X |  |  |  |
+| `conversion_name` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X | X |  |  |  |
+| `conversion_revenue` | Metric | float |  |  |  |  |  |  |  |  |  |  |  | X | X |  |  |  |
+| `conversion_session_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X | X |  |  |  |
+| `conversion_timestamp` | Dimension | integer |  |  |  |  |  |  |  |  |  |  |  | X | X |  |  |  |
+| `conversions` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |
+| `conversions_revenue` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |
+| `cost_per_account_creation` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `cost_per_form_submission` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `cost_per_newsletter_subscription` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `cost_per_purchase` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `cost_type` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `country` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `creative_name` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `creative_slot` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `credits_name` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `credits_type` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `cross_domain_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `cross_domain_session` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `cs_container_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `cs_hostname` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `cs_tag_id` | Dimension | integer | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `cs_tag_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `currency` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `custom_channel_grouping` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `customer_client_id` | Dimension | string |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `customer_status` | Dimension | string |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `customer_type` | Dimension | string |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `datalayer` | Dimension | json | X | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `date` | Dimension | date |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |  |
+| `days_before_conversion` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| `days_from_first_purchase` | Metric | integer |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `days_from_first_to_last_visit` | Metric | integer | X |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `days_from_first_visit` | Metric | integer | X |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `days_from_last_purchase` | Metric | integer |  |  | X | X |  |  |  |  |  |  |  |  |  |  |  |  |
+| `days_from_last_visit` | Metric | integer | X |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `delay_in_millis` | Metric | integer | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `delay_in_sec` | Metric | float | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `device_model` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `device_type` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `device_vendor` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `duplicate_purchase` | Metric | integer |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |  |
+| `duplicate_refund` | Metric | integer |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |  |
+| `ecommerce` | Dimension | json | X | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `engaged_session` | Metric | integer |  |  |  |  | X |  |  |  |  |  | X |  |  |  |  | X |
+| `engaged_sessions_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `event_data` | Dimension | array |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `event_date` | Dimension | date | X | X |  |  |  |  | X | X |  |  |  |  |  |  |  |  |
+| `event_datetime` | Dimension | timestamp |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `event_id` | Dimension | string | X | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `event_name` | Dimension | string | X | X |  |  |  |  | X | X |  |  |  |  |  |  |  |  |
+| `event_number` | Metric | integer | X | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `event_origin` | Dimension | string | X | X |  |  |  |  | X | X |  |  |  |  |  |  |  |  |
+| `event_timestamp` | Metric | integer | X | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `event_type` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `first_click_campaign` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_click_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_content` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_country` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_funnel_stage` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_marketing_objective` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_name` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_platform` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_term` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_type` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_campaign_year` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_channel_grouping` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_custom_channel_grouping` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_click_source` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `first_purchase_timestamp` | Dimension | timestamp |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `form_submission` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `functionality_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `functionality_storage_accepted_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `functionality_storage_denied_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `hour_and_minute` | Dimension | string |  |  |  |  |  |  | X | X |  |  |  |  |  |  |  |  |
+| `impression` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `invoice_date` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `invoice_month` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `item_affiliation` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_brand` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_category` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_category_2` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_category_3` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_category_4` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_category_5` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_coupon` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_discount` | Metric | float |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_id` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_list_id` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_list_name` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_name` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_quantity_added_to_cart` | Metric | integer |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_quantity_purchased` | Metric | integer |  |  | X |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_quantity_refunded` | Metric | integer |  |  | X |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_quantity_removed_from_cart` | Metric | integer |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_revenue_purchased` | Metric | float |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_revenue_refunded` | Metric | float |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `item_variant` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `items` | Dimension | array |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `last_click_campaign` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_click_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_content` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_country` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_funnel_stage` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_marketing_objective` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_name` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_platform` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_term` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_type` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_campaign_year` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_channel_grouping` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_custom_channel_grouping` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_click_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_content` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_country` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_funnel_stage` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_marketing_objective` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_name` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_platform` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_term` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_type` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_campaign_year` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_channel_grouping` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_custom_channel_grouping` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_non_direct_source` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_click_source` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |
+| `last_purchase_timestamp` | Dimension | timestamp |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `lead_type` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `linear_attributed_revenue` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| `linear_attribution_credit` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| `list_id` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `list_name` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `month` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |  |
+| `new_customer_client_id` | Dimension | string |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `new_session` | Metric | integer | X |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `new_sessions_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `new_user_client_id` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `new_users` | Metric | integer |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `newsletter_subscription` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `next_step_client_id` | Dimension | string |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |  |
+| `os_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `os_version` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `page_category` | Dimension | string | X |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_data` | Dimension | array |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `page_date` | Dimension | date | X | X |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_extension` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `page_fragment` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `page_hostname` | Dimension | string | X |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_hostname_protocol` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `page_id` | Dimension | string | X | X |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_language` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `page_load_time_sec` | Metric | float |  |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_load_timestamp` | Dimension | integer | X |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_path` | Dimension | string | X |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_query` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `page_referrer` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `page_status_code` | Dimension | integer | X |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_title` | Dimension | string | X |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_unload_timestamp` | Dimension | integer | X |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_url` | Dimension | string | X |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_view_number` | Metric | integer | X | X |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `page_view_per_session` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `personalization_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `personalization_storage_accepted_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `personalization_storage_denied_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `position_based_attributed_revenue` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| `position_based_attribution_credit` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| `processing_event_timestamp` | Dimension | integer | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `project_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `project_name` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `promotion_id` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `promotion_name` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `purchase` | Metric | integer |  |  | X | X | X |  | X |  | X |  |  |  |  |  |  | X |
+| `purchase_coupon` | Dimension | string |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |  |
+| `purchase_currency` | Dimension | string |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |  |
+| `purchase_id` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `purchase_net_refund` | Metric | integer |  |  | X |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `purchase_revenue` | Metric | float |  |  | X | X | X |  | X |  |  |  |  |  |  |  |  | X |
+| `purchase_shipping` | Metric | float |  |  |  |  | X |  | X |  |  |  |  |  |  |  |  | X |
+| `purchase_tax` | Metric | float |  |  |  |  | X |  | X |  |  |  |  |  |  |  |  | X |
+| `reached_step` | Metric | boolean |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |  |
+| `refund` | Metric | integer |  |  | X |  | X |  | X |  |  |  |  |  |  |  |  | X |
+| `refund_coupon` | Dimension | string |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |  |
+| `refund_currency` | Dimension | string |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |  |
+| `refund_id` | Dimension | string |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `refund_revenue` | Metric | float |  |  | X |  | X |  | X |  |  |  |  |  |  |  |  | X |
+| `refund_shipping` | Metric | float |  |  |  |  | X |  | X |  |  |  |  |  |  |  |  | X |
+| `refund_tax` | Metric | float |  |  |  |  | X |  | X |  |  |  |  |  |  |  |  | X |
+| `remove_from_cart` | Metric | integer |  |  |  |  | X |  |  | X |  |  |  |  |  |  |  |  |
+| `remove_from_wishlist` | Metric | integer |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `respect_consent_mode` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `returning_customer_client_id` | Dimension | string |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `returning_session` | Metric | integer | X |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `returning_sessions_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `returning_user_client_id` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `revenue_net_refund` | Metric | float |  |  | X | X | X |  |  |  |  |  |  |  |  |  |  | X |
+| `roas` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `roas_net_refund` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `screen_size` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `search_term` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `security_storage` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `security_storage_accepted_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `security_storage_denied_percentage` | Metric | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `select_item` | Metric | integer |  |  |  |  | X |  |  | X |  |  |  |  |  |  |  |  |
+| `select_promotion` | Metric | integer |  |  |  |  | X |  |  | X |  |  |  |  |  |  |  |  |
+| `service_description` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `session_ad_personalization` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `session_ad_storage` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `session_ad_user_data` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `session_analytics_storage` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `session_browser_name` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_campaign` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_campaign_click_id` | Dimension | string | X |  |  |  | X | X | X | X | X |  | X |  | X | X |  |  |
+| `session_campaign_content` | Dimension | string | X |  |  |  | X | X | X | X | X |  | X |  | X | X |  |  |
+| `session_campaign_country` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_campaign_funnel_stage` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_campaign_id` | Dimension | string | X |  |  |  | X | X | X | X | X |  | X |  | X | X |  |  |
+| `session_campaign_marketing_objective` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_campaign_name` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_campaign_platform` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_campaign_term` | Dimension | string | X |  |  |  | X | X | X | X | X |  | X |  | X | X |  |  |
+| `session_campaign_type` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_campaign_year` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_channel_grouping` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_city` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_country` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  |  |  |  |  |
+| `session_custom_channel_grouping` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_data` | Dimension | array |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `session_date` | Dimension | date | X | X |  |  | X | X | X | X | X |  | X |  |  |  |  | X |
+| `session_device_type` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  |  |  |  |  |
+| `session_duration_sec` | Metric | float | X |  | X |  | X |  |  |  |  |  | X |  |  |  |  | X |
+| `session_end_timestamp` | Dimension | integer | X |  |  |  |  |  | X | X |  |  |  |  |  |  |  |  |
+| `session_exit_page_category` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_exit_page_path` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_exit_page_title` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_exit_page_url` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_functionality_storage` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `session_hostname` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_id` | Dimension | string | X | X |  |  | X | X | X | X | X | X | X |  |  |  |  |  |
+| `session_id_consent_expressed` | Dimension | string |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |
+| `session_id_consent_mode_not_present` | Dimension | string |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |
+| `session_id_consent_not_expressed` | Dimension | string |  |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |
+| `session_landing_page_category` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_landing_page_path` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_landing_page_title` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_landing_page_url` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_language` | Dimension | string | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_number` | Metric | integer | X |  |  |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `session_personalization_storage` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `session_security_storage` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |  |
+| `session_source` | Dimension | string | X |  |  |  | X | X | X | X | X | X | X |  | X | X |  |  |
+| `session_source_cleaned` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `session_start` | Dimension | string |  |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |
+| `session_start_timestamp` | Dimension | integer | X |  |  |  | X | X | X | X |  |  | X |  | X |  |  |  |
+| `session_tld_source` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `session_type` | Dimension | string | X |  |  |  |  | X | X | X |  |  |  |  |  |  |  |  |
+| `session_with_account_creation` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `session_with_form_submission` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `session_with_newsletter_subscription` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `session_with_purchase` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `session_with_refund` | Metric | integer |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `sessions` | Dimension | integer |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  | X |
+| `sessions_per_user` | Dimension | float |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `shipping_net_refund` | Dimension | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `sku_description` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `sku_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `source` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `source_cleaned` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `spend` | Dimension | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X | X |
+| `ss_container_id` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `ss_hostname` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `ss_tag_id` | Dimension | integer | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `ss_tag_name` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `step` | Dimension | string |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |  |
+| `step_client_id` | Dimension | string |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |  |
+| `step_number` | Dimension | integer |  |  |  |  |  |  |  |  |  | X |  |  |  |  |  |  |
+| `tax_net_refund` | Dimension | float |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `time_decay_attributed_revenue` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| `time_decay_attribution_credit` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| `time_on_page` | Metric | integer | X |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
+| `tld_source` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `total_cost` | Metric | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `total_credits_amount` | Dimension | float |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `total_events` | Dimension | integer |  |  | X |  | X |  |  |  |  |  |  |  |  |  |  | X |
+| `total_page_load_time` | Dimension | integer | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `total_page_views` | Metric | integer |  |  | X |  | X | X |  |  |  |  |  |  |  |  |  | X |
+| `touchpoint_count` | Dimension | integer |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| `touchpoint_number` | Dimension | integer |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| `touchpoint_session_id` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| `transaction_id` | Dimension | string |  | X |  |  |  |  | X | X |  |  |  |  |  |  |  |  |
+| `unique_item_purchases` | Dimension | integer |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `unique_item_refunds` | Dimension | integer |  |  |  |  |  |  |  | X |  |  |  |  |  |  |  |  |
+| `usage_date` | Dimension | date |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `user_agent` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `user_campaign` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_campaign_click_id` | Dimension | string | X |  | X |  | X | X | X | X |  |  |  |  |  |  |  |  |
+| `user_campaign_content` | Dimension | string | X |  | X |  | X | X | X | X |  |  |  |  |  |  |  |  |
+| `user_campaign_country` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_campaign_funnel_stage` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_campaign_id` | Dimension | string | X |  | X |  | X | X | X | X |  |  |  |  |  |  |  |  |
+| `user_campaign_marketing_objective` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_campaign_name` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_campaign_platform` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_campaign_term` | Dimension | string | X |  | X |  | X | X | X | X |  |  |  |  |  |  |  |  |
+| `user_campaign_type` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_campaign_year` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_channel_grouping` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_city` | Dimension | string | X |  | X |  | X | X | X | X |  |  |  |  |  |  |  |  |
+| `user_country` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_custom_channel_grouping` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_data` | Dimension | array |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `user_date` | Dimension | date | X | X | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_device_type` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_first_session_timestamp` | Dimension | integer | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `user_id` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_language` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_last_session_timestamp` | Dimension | integer | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `user_source` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_source_cleaned` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `user_tld_source` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `user_type` | Dimension | string | X |  | X |  | X | X | X | X |  |  | X |  |  |  |  |  |
+| `user_with_purchase` | Metric | integer |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `user_with_refund` | Metric | integer |  |  | X |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `view_cart` | Metric | string |  |  |  |  | X |  |  | X | X |  |  |  |  |  |  |  |
+| `view_item` | Metric | string |  |  |  |  | X |  |  | X | X |  |  |  |  |  |  |  |
+| `view_item_list` | Metric | integer |  |  |  |  | X |  |  | X |  |  |  |  |  |  |  |  |
+| `view_promotion` | Metric | integer |  |  |  |  | X |  |  | X |  |  |  |  |  |  |  |  |
+| `viewport_size` | Dimension | string | X |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| `year` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |  |
+| `year_month` | Dimension | string |  |  |  |  |  |  |  |  |  |  |  |  |  |  | X |  |
 </details>
 
 </br>
