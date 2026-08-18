@@ -16,7 +16,6 @@ with media_plan_data as (
     select
       FORMAT_DATE('%Y-%m', date) AS year_month,
       campaign,
-      campaign_id,
       sum(cost) as spend
     from `tom-moretti.nameless_analytics.online_campaign_performance_sheets`
     where true
