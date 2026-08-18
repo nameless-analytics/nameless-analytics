@@ -1,6 +1,6 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaigns`(start_date DATE, end_date DATE) AS (
-with session_data as (
-    SELECT
+  with session_data as (
+    select
       session_date,
       session_campaign_year as campaign_year,
       session_campaign_country as campaign_country,
@@ -11,46 +11,46 @@ with session_data as (
       session_campaign_name as campaign_name,
       session_campaign as campaign,
       session_campaign_id as campaign_id,
-      
+
       # POST CLICK
       count(distinct new_user_client_id) as new_users,
       count(distinct session_id) as sessions,
-      session_duration_sec,
-      new_session,
-      new_sessions_percentage,
-      returning_session,
-      returning_sessions_percentage,
-      engaged_session,
-      engaged_sessions_percentage,
-      session_with_account_creation,
-      session_with_newsletter_subscription,
-      session_with_form_submission,
-      session_with_purchase,
-      session_with_refund,
-      page_view_per_session,
-      total_events,
-      total_page_views,
-      account_creation,
-      newsletter_subscription,
-      form_submission,
-      purchase,
-      refund,
-      purchase_revenue,
-      purchase_shipping,
-      purchase_tax,
-      avg_order_value,
-      refund_revenue,
-      refund_shipping,
-      refund_tax,
-      avg_refund_value,
-      purchase_net_refund,
-      revenue_net_refund,
-      shipping_net_refund,
-      tax_net_refund,
-    FROM `tom-moretti.nameless_analytics.sessions`(start_date, end_date)
+      sum(session_duration_sec) as session_duration_sec,
+      sum(new_session) as new_session,
+      safe_divide(sum(new_session), count(distinct session_id)) as new_sessions_percentage,
+      sum(returning_session) as returning_session,
+      safe_divide(sum(returning_session), count(distinct session_id)) as returning_sessions_percentage,
+      sum(engaged_session) as engaged_session,
+      safe_divide(sum(engaged_session), count(distinct session_id)) as engaged_sessions_percentage,
+      sum(session_with_account_creation) as session_with_account_creation,
+      sum(session_with_newsletter_subscription) as session_with_newsletter_subscription,
+      sum(session_with_form_submission) as session_with_form_submission,
+      sum(session_with_purchase) as session_with_purchase,
+      sum(session_with_refund) as session_with_refund,
+      safe_divide(sum(total_page_views), count(distinct session_id)) as page_view_per_session,
+      sum(total_events) as total_events,
+      sum(total_page_views) as total_page_views,
+      sum(account_creation) as account_creation,
+      sum(newsletter_subscription) as newsletter_subscription,
+      sum(form_submission) as form_submission,
+      sum(purchase) as purchase,
+      sum(refund) as refund,
+      sum(purchase_revenue) as purchase_revenue,
+      sum(purchase_shipping) as purchase_shipping,
+      sum(purchase_tax) as purchase_tax,
+      ifnull(safe_divide(sum(purchase_revenue), sum(purchase)), 0) as avg_order_value,
+      sum(refund_revenue) as refund_revenue,
+      sum(refund_shipping) as refund_shipping,
+      sum(refund_tax) as refund_tax,
+      ifnull(safe_divide(sum(refund_revenue), sum(refund)), 0) as avg_refund_value,
+      sum(purchase_net_refund) as purchase_net_refund,
+      sum(revenue_net_refund) as revenue_net_refund,
+      sum(shipping_net_refund) as shipping_net_refund,
+      sum(tax_net_refund) as tax_net_refund
+    from `tom-moretti.nameless_analytics.sessions`(start_date, end_date)
     where true 
       and session_campaign is not null
-    GROUP BY ALL
+    group by all
   ),
 
   online_campaigns_performances as (
