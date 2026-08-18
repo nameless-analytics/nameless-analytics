@@ -643,7 +643,7 @@ The channel grouping logic uses the following Source categories based on the sou
 
 </details>
 
-The same logic is also available as a BigQuery [User-Defined Function (UDF)](tables/table-functions/get_custom_channel_grouping.sql) called `get_custom_channel_grouping`, used by the [reporting table functions](tables/TABLES.md#create-custom-functions) to calculate the `custom_channel_grouping`, `session_custom_channel_grouping`, and `users_custom_channel_grouping` fields on the fly at query time. By default, the UDF uses the same identical rules as the server-side logic. However, since the UDF lives in BigQuery, it can be freely customized to adapt the channel grouping to specific analysis needs (e.g., adding new source categories or redefining grouping rules) and any changes will be retroactively applied to all historical data.
+The same logic is also available as a BigQuery [User-Defined Function (UDF)](tables/user-defined-functions/get_custom_channel_grouping.sql) called `get_custom_channel_grouping`, used by the [reporting table functions](tables/TABLES.md#create-custom-functions) to calculate the `custom_channel_grouping`, `session_custom_channel_grouping`, and `users_custom_channel_grouping` fields on the fly at query time. By default, the UDF uses the same identical rules as the server-side logic. However, since the UDF lives in BigQuery, it can be freely customized to adapt the channel grouping to specific analysis needs (e.g., adding new source categories or redefining grouping rules) and any changes will be retroactively applied to all historical data.
 
 
 ### Server-side cookies
@@ -749,15 +749,23 @@ It maintains **every single state transition** for every user and session (for e
 
 ## Reporting
 Nameless Analytics offers a set of BigQuery [SQL Table Functions](tables/TABLES.md) to query and explore the raw data at:
-- [User level](tables/users.sql) - [View schema](tables/TABLES.md#users)
-- [Session level](tables/sessions.sql) - [View schema](tables/TABLES.md#sessions)
-- [Page level](tables/pages.sql) - [View schema](tables/TABLES.md#pages)
-- [Event level](tables/events.sql) - [View schema](tables/TABLES.md#events)
-- [Ecommerce Transaction level](tables/ec_transactions.sql) - [View schema](tables/TABLES.md#transactions)
-- [Ecommerce Product level](tables/ec_products.sql) - [View schema](tables/TABLES.md#products)
+
+- [User level](tables/table-functions/users.sql) - [View schema](tables/TABLES.md#users)
+- [User RFM](tables/table-functions/users_rfm.sql) - [View schema](tables/TABLES.md#users-rfm)
+- [Session level](tables/table-functions/sessions.sql) - [View schema](tables/TABLES.md#sessions)
+- [Page level](tables/table-functions/pages.sql) - [View schema](tables/TABLES.md#pages)
+- [Event level](tables/table-functions/events.sql) - [View schema](tables/TABLES.md#events)
+- [Event Debug](tables/table-functions/events_debug.sql) - [View schema](tables/TABLES.md#events-debug)
+- [Ecommerce Transaction level](tables/table-functions/ec_transactions.sql) - [View schema](tables/TABLES.md#transactions)
+- [Ecommerce Product level](tables/table-functions/ec_products.sql) - [View schema](tables/TABLES.md#products)
 - [Ecommerce Funnel](tables/table-functions/ec_funnel.sql) - [View schema](tables/TABLES.md#ecommerce-funnel)
 - [Ecommerce Funnel Pivot](tables/table-functions/ec_funnel_pivot.sql) - [View schema](tables/TABLES.md#ecommerce-funnel)
-- [Session Consent level](tables/consents.sql) - [View schema](tables/TABLES.md#consents)
+- [Session Consent level](tables/table-functions/consents.sql) - [View schema](tables/TABLES.md#consents)
+- [Attribution Single Touch](tables/table-functions/attribution_single_touch.sql) - [View schema](tables/TABLES.md#attribution-single-touch)
+- [Attribution Multi Touch](tables/table-functions/attribution_multi_touch.sql) - [View schema](tables/TABLES.md#attribution-multi-touch)
+- [Attribution Comparison](tables/table-functions/attribution_comparison.sql) - [View schema](tables/TABLES.md#attribution-comparison)
+- [Campaigns](tables/table-functions/campaigns.sql) - [View schema](tables/TABLES.md#campaigns)
+- [Media Plan](tables/table-functions/media_plan.sql) - [View schema](tables/TABLES.md#media-plan)
 
 This is a [reporting example made in Looker Studio](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd) based on the SQL functions.
 
