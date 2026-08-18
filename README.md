@@ -13,9 +13,8 @@ Collect, analyze, and activate website interaction data with a free real-time di
 ## Start from here
 
 - [What is Nameless Analytics](#what-is-nameless-analytics)
-- [Quick Start](#quick-start)
 - [Overview](#overview)
-  - [Requirements](#requirements)
+- [Quick start](#quick-start)
   - [Documentation](#documentation)
   - [Resources](#resources)
 - [Client-Side Collection](#client-side-collection)
@@ -73,7 +72,9 @@ The following diagram illustrates the real-time data flow from the user's browse
 
 ![Nameless Analytics schema](https://github.com/user-attachments/assets/e9ff1593-f7c9-442e-a600-798a51a02a1e)
 
-## Requirements
+
+
+## Quick start
 Before starting, ensure you have the following resources under the same account or service account:
 - A Client-side Google Tag Manager container
 - A Server-side Google Tag Manager container running on:
