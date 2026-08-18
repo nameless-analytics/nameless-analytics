@@ -1087,7 +1087,7 @@ select * from `project.nameless_analytics.attribution_comparison`(start_date, en
 
 
 ### Attribution Multi Touch
-Calculates multi-touch attribution metrics (linear, time-decay, and position-based weighting) across touchpoints in the user journey.
+Calculates multi-touch attribution for conversions using linear, time-decay, and position-based models across all session touchpoints within the specified lookback window.
 
 ```sql
 select * from `project.nameless_analytics.attribution_multi_touch`(start_date, end_date, conversion_name, lookback_days)
@@ -1097,7 +1097,7 @@ select * from `project.nameless_analytics.attribution_multi_touch`(start_date, e
 
 
 ### Attribution Single Touch
-Calculates single-touch attribution metrics (first click and last click) for conversions within the specified lookback window.
+Calculates single-touch attribution for conversions using the user's historical first click, the conversion session's last click, and the most recent non-direct session within the specified lookback window.
 
 ```sql
 select * from `project.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)

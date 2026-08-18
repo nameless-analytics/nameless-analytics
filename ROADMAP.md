@@ -9,7 +9,6 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 
 ## To do
 - Complete Dataform datamodel with ML models
-- Add last_click_non_direct attribution model
 - Add core web vitals metrics (Client-side tracker tag) for page_load_time event
 
 

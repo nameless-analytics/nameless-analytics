@@ -220,7 +220,7 @@ def send_request(payload):
             'X-Gtm-Server-Preview': gtm_preview_header,
             'Content-Type': 'application/json',
             'Origin': origin,
-            # 'User-Agent': 'Nameless Analytics - Streaming protocol',
+            'User-Agent': 'Nameless Analytics - Streaming protocol',
             'Cookie': f'na_u={client_id}; na_s={na_s}' 
         }
     
