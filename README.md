@@ -15,7 +15,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
 - [What is Nameless Analytics](#what-is-nameless-analytics)
 - [Quick Start](#quick-start)
 - [Overview](#overview)
-  - [Quick Start](#quick-start)
+  - [Requirements](#requirements)
   - [Documentation](#documentation)
   - [Resources](#resources)
 - [Client-Side Collection](#client-side-collection)
@@ -73,7 +73,7 @@ The following diagram illustrates the real-time data flow from the user's browse
 
 ![Nameless Analytics schema](https://github.com/user-attachments/assets/e9ff1593-f7c9-442e-a600-798a51a02a1e)
 
-## Quick Start
+## Requirements
 Before starting, ensure you have the following resources under the same account or service account:
 - A Client-side Google Tag Manager container
 - A Server-side Google Tag Manager container running on:
@@ -81,8 +81,10 @@ Before starting, ensure you have the following resources under the same account 
   - or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) with `X-Gclb-Country` and `X-Gclb-Region` headers configured (thanks to [Simo Ahava](https://www.simoahava.com/))
   - or [Stape](https://stape.io) with geo headers power up enabled
 - A Google Cloud Project with an active billing account
-- A Google BigQuery project + dataset, raw tables and table functions created using the provided [SQL scripts](tables/TABLES.md)
+- A Google BigQuery project + dataset
 - A Google Firestore database enabled in Native Mode
+
+Create the BigQuery tables and table functions using the provided [SQL scripts](tables/TABLES.md)
 
 Download and import the `template.tpl` files from the repos:
 - [Client-side Tracker Tag](https://github.com/nameless-analytics/client-side-tracker-tag)
