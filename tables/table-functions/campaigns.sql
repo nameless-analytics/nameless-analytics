@@ -144,5 +144,4 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaigns`(star
     ON session_data.session_date = online_campaigns_performances.date
     AND session_data.campaign = online_campaigns_performances.campaign
     AND ifnull(session_data.campaign_id, "") = ifnull(online_campaigns_performances.campaign_id, "")
-  group by all
 );
