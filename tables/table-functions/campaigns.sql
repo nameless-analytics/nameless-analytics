@@ -15,7 +15,7 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaigns`(star
       # POST CLICK
       count(distinct new_user_client_id) as new_users,
       count(distinct session_id) as sessions,
-      sum(session_duration_sec) as session_duration_sec,
+      avg(session_duration_sec) as session_duration_sec,
       sum(new_session) as new_session,
       safe_divide(sum(new_session), count(distinct session_id)) as new_sessions_percentage,
       sum(returning_session) as returning_session,
