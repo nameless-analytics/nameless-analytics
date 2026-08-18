@@ -490,7 +490,9 @@ select * from `project.nameless_analytics.campaigns`(start_date, end_date)
 
 
 ## Reporting fields
-This table illustrates the fields available across different table functions, allowing you to easily identify common data points and specific metrics for each report.
+The Reporting Fields Matrix provides an interactive overview of all dimensions and metrics available across Nameless Analytics table functions.
+
+The matrix is generated directly from the current BigQuery table function schemas, so it reflects the latest available reporting fields.
 
 [Available metrics and dimensions](https://datastudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d)
 
