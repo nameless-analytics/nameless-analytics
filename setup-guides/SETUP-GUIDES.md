@@ -222,20 +222,20 @@ dataLayer.push({
 
 
 ### Authentication
-Fired when a user logs in, logs out, or signs up. 
+Fired when a user logs in, logs out, or creates an account. 
 For these events, the `user_id` must be mapped within the Nameless Analytics Client-side Tracker Configuration Variable, under the **Session Data** section using the **User ID** field.
 
 ```javascript
 dataLayer.push({
-  event: 'login', // Or 'logout', 'sign_up'
+  event: 'login', // Or 'logout', 'account_creation'
   user_id: 'ABC-12345'
 });
 ```
 
 Setup:
-- **Create the Trigger**: Create a Custom Event Trigger matching the event name (e.g., `login`, `logout`, or `sign_up`).
+- **Create the Trigger**: Create a Custom Event Trigger matching the event name (e.g., `login`, `logout`, or `account_creation`).
 - **Create a Variable**: Create a Data Layer Variable for the `user_id`.
-- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `login` event (or `logout` or `sign_up`) and assign the trigger to it.
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `login` event (or `logout` or `account_creation`) and assign the trigger to it.
 - **Map the Parameter**: Open the **Nameless Analytics Client-side Tracker Configuration Variable**. Under the **Session Data** section, map the `user_id` field to the DataLayer Variable you created.
 
 
