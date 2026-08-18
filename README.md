@@ -81,7 +81,7 @@ Before starting, ensure you have the following resources under the same account 
   - or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) with `X-Gclb-Country` and `X-Gclb-Region` headers configured (thanks to [Simo Ahava](https://www.simoahava.com/))
   - or [Stape](https://stape.io) with geo headers power up enabled
 - A Google Cloud Project with an active billing account
-- A Google BigQuery project + dataset
+- A Google BigQuery project + dedicated dataset
 - A Google Firestore database enabled in Native Mode
 
 Create the BigQuery tables and table functions using the provided [SQL scripts](tables/TABLES.md)
