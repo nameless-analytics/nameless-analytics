@@ -65,10 +65,10 @@ with session_data as (
       `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_name') as campaign_name,
       campaign,
       campaign_id, 
-      cost as spend,
+      sum(cost) as spend,
       sum(impression) as impression,
       sum(click) as click,
-      safe_divide(cost, sum(click)) as avg_cost_per_click,
+      safe_divide(sum(cost), sum(click)) as avg_cost_per_click,
       safe_divide(sum(click), sum(impression)) as avg_click_through_rate,
     from `tom-moretti.nameless_analytics.online_campaign_performance_sheets`
     where true 
