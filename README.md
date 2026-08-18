@@ -164,9 +164,11 @@ The request data is sent via a POST request in JSON format. It is structured int
     "session_landing_page_category": "Homepage",
     "session_landing_page_path": "/",
     "session_landing_page_title": "Tommaso Moretti | Freelance digital data analyst",
+    "session_landing_page_url": "https://tommasomoretti.com/",
     "session_exit_page_category": "Homepage",
     "session_exit_page_path": "/",
     "session_exit_page_title": "Tommaso Moretti | Freelance digital data analyst",
+    "session_exit_page_url": "https://tommasomoretti.com/",
     "session_start_timestamp": 1768661707758,
     "session_end_timestamp": 1768661707758
   },
