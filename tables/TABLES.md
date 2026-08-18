@@ -386,7 +386,7 @@ For example: if you filter the events table function at event level, you probabl
 | `event_name` | Dimension | The name of the interaction event. |
 | `event_number` | Dimension | Sequential number of the event in the session. |
 | `event_origin` | Dimension | The origin of the event (e.g., Web, Server). |
-| `event_timestamp` | Metric | Unix timestamp (ms) of the event. |
+| `event_timestamp` | Dimension | Unix timestamp (ms) of the event. |
 | `event_type` | Dimension | Category or type of the event. |
 | `form_submission` | Metric | Total count of form submission events. |
 | `functionality_storage` | Dimension | Consent state for necessary functional storage. |
@@ -1270,7 +1270,7 @@ This table illustrates the fields available across different table functions, al
 | `event_name` | Dimension | string |   X   |   X   |      |      |   X   |   X   |      |      |      |      |      |      |
 | `event_number` | Dimension | integer |   X   |      |      |      |      |      |      |      |      |      |      |      |
 | `event_origin` | Dimension | string |   X   |      |      |      |   X   |   X   |      |      |      |      |      |      |
-| `event_timestamp` | Metric | integer |   X   |   X   |      |      |      |      |      |      |      |      |      |      |
+| `event_timestamp` | Dimension | integer |   X   |   X   |      |      |      |      |      |      |      |      |      |      |
 | `event_type` | Dimension | string |   X   |      |      |      |      |      |      |      |      |      |      |      |
 | `form_submission` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
 | `newsletter_subscription` | Metric | integer |      |      |   X   |      |      |      |      |      |      |      |      |   X   |
