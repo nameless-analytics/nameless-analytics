@@ -1,3 +1,15 @@
+/* @datacloud.settings
+{
+  "version": 1,
+  "service": "BIG_QUERY",
+  "connectionInfo": {
+    "billingProjectId": "INHERIT",
+    "location": "INHERIT"
+  },
+  "dialect": "GOOGLE_SQL"
+}
+*/
+
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users_rfm`(start_date DATE, end_date DATE, churn_window_days INT64, r_weight FLOAT64, f_weight FLOAT64, m_weight FLOAT64) AS (
 WITH customers AS (
   SELECT
