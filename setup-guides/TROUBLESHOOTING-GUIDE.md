@@ -102,13 +102,13 @@ Server logs show:
   - **SEO & Marketing Bots:** `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
   - **Automation & Security:** `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
 
-  If you are using the **Streaming Protocol**, you must send the following mandatory User-Agent to bypass this check: `Nameless Analytics - Streaming protocol`.
+  If you are using the **Streaming Protocol**, you must send the following mandatory User-Agent to bypass this check: `Nameless Analytics - Streaming Protocol`.
 
 Server logs show: 
 
 `🔴 Invalid API key`
 
-- **Issue:** The `X-Api-Key` header for Streaming protocol is missing or incorrect.
+- **Issue:** The `X-Api-Key` header for Streaming Protocol is missing or incorrect.
 - **Solution:** Ensure your request includes the `X-Api-Key` header with the correct value as configured in the Client Tag.
 
 Server logs show: 
@@ -129,16 +129,16 @@ Server logs show:
 
 `🔴 Invalid event_origin parameter value. Accepted values: Website`
 
-`🔴 Invalid event_origin parameter value. Accepted values: Website or Streaming protocol`
+`🔴 Invalid event_origin parameter value. Accepted values: Website or Streaming Protocol`
 
 - **Issue:** The `event_origin` parameter is missing or incorrect.
-- **Solution:** Ensure the client-side tracker or your streaming implementation is correctly setting the origin to "Website" or "Streaming protocol".
+- **Solution:** Ensure the client-side tracker or your streaming implementation is correctly setting the origin to "Website" or "Streaming Protocol".
 
 Server logs show: 
 
-`🔴 Invalid event_name. Can't send page_view from Streaming protocol`
+`🔴 Invalid event_name. Can't send page_view from Streaming Protocol`
 
-- **Issue:** Sequence error: `page_view` cannot be sent via Streaming protocol.
+- **Issue:** Sequence error: `page_view` cannot be sent via Streaming Protocol.
 - **Solution:** Use the website tracker for `page_view` events.
 
 Server logs show: 

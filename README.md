@@ -99,7 +99,7 @@ Read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
 - [Setup guides](setup-guides/SETUP-GUIDES.md)
 - [Troubleshooting](setup-guides/TROUBLESHOOTING-GUIDE.md)
 - [Tables](tables/TABLES.md)
-- [Streaming protocol](streaming-protocol/STREAMING-PROTOCOL.md)
+- [Streaming Protocol](streaming-protocol/STREAMING-PROTOCOL.md)
 
 
 ### Resources
@@ -304,7 +304,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 | event_timestamp    |                               | Integer  | Client-Side | Event timestamp                               |
 | event_id           |                               | String   | Client-Side | Unique event identifier                       |
 | event_name         |                               | String   | Client-Side | Event name                                    |
-| event_origin       |                               | String   | Client-Side | Event origin (Website or Streaming protocol)  |
+| event_origin       |                               | String   | Client-Side | Event origin (Website or Streaming Protocol)  |
 | event_data         | event_type                    | String   | Client-Side | Event classification (automatically set to `page_view` or `event`) |
 |                    | channel_grouping              | String   | Server-Side | Channel grouping for the event (see [detailed logic](#channel-grouping-logic)) |
 |                    | source                        | String   | Client-Side | Event traffic source                          |
@@ -640,7 +640,7 @@ The channel grouping logic uses the following Source categories based on the sou
 | **Direct** | `null`, `direct` |
 | **GTM Debugger** | `tagassistant.google.com` |
 | **Search Engine** | `360.cn`, `alice`, `aol`, `yahoo`, `ask`, `bing`, `google`, `yandex`, `baidu`, `ecosia`, `duckduckgo`, `sogou`, `naver`, `seznam` |
-| **Social** | `facebook`, `twitter`, `instagram`, `pinterest`, `linkedin`, `reddit`, `vk.com`, `tiktok`, `snapchat`, `tumblr`, `wechat`, `whatsapp` |
+| **Social** | `facebook`, `twitter`, `t.co`, `bsky.app`, `instagram`, `pinterest`, `linkedin`, `reddit`, `vk.com`, `tiktok`, `snapchat`, `tumblr`, `wechat`, `whatsapp` |
 | **Shopping** | `amazon`, `ebay`, `etsy`, `shopify`, `stripe`, `walmart`, `mercadolibre`, `alibaba`, `naver.shopping` |
 | **Video** | `youtube`, `vimeo`, `netflix`, `twitch`, `dailymotion`, `hulu`, `disneyplus`, `wistia`, `youku` |
 | **AI** | `chatgpt`, `gemini`, `bard`, `claude`, `alexa`, `siri`, `assistant`, `ai` |
@@ -648,7 +648,7 @@ The channel grouping logic uses the following Source categories based on the sou
 
 </details>
 
-The same logic is also available as a BigQuery [User-Defined Function (UDF)](tables/user-defined-functions/get_custom_channel_grouping.sql) called `get_custom_channel_grouping`, used by the [reporting table functions](tables/TABLES.md#create-custom-functions) to calculate the `custom_channel_grouping`, `session_custom_channel_grouping`, and `users_custom_channel_grouping` fields on the fly at query time. By default, the UDF uses the same identical rules as the server-side logic. However, since the UDF lives in BigQuery, it can be freely customized to adapt the channel grouping to specific analysis needs (e.g., adding new source categories or redefining grouping rules) and any changes will be retroactively applied to all historical data.
+The same logic is also available as a BigQuery [User-Defined Function (UDF)](tables/user-defined-functions/get_custom_channel_grouping.sql) called `get_custom_channel_grouping`, used by the [reporting table functions](tables/TABLES.md#create-custom-functions) to calculate the `custom_channel_grouping`, `session_custom_channel_grouping`, and `user_custom_channel_grouping` fields on the fly at query time. By default, the UDF uses the same identical rules as the server-side logic. However, since the UDF lives in BigQuery, it can be freely customized to adapt the channel grouping to specific analysis needs (e.g., adding new source categories or redefining grouping rules) and any changes will be retroactively applied to all historical data.
 
 
 ### Server-side cookies
@@ -677,9 +677,9 @@ Use the Streaming Protocol to:
 - Attribute realtime events to a session by sending data from your backend when a purchase or subscription is completed.
 - Attribute offline events to a session by sending data from your backend days after a session ended.
 
-To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming protocol.
+To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming Protocol.
 
-The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming protocol" and does not include a valid `x-api-key` header matching your configuration.
+The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming Protocol" and does not include a valid `x-api-key` header matching your configuration.
 
 
 ### Debugging requests

@@ -63,7 +63,7 @@ Supports API Key authentication for secure server-side ingestion.
 To ensure requests are accepted by the server, following requirements must be met:
 
 ### Mandatory headers
-- **User-Agent**: You must use the following User-Agent: `Nameless Analytics - Streaming protocol`. Any deviation will result in a 403 error.
+- **User-Agent**: You must use the following User-Agent: `Nameless Analytics - Streaming Protocol`. Any deviation will result in a 403 error.
 - **API Key**: The `X-Api-Key` header must match your Server-side Client Tag configuration.
 - **Cookie**: The HTTP request must include the `Cookie` header containing `na_u={client_id}; na_s={na_s_cookie}`. This is the **only** source of truth used by the server to identify the user and session. **Note**: `na_u` must be exactly 15 alphanumeric characters, and `na_s` must follow the `client_id_session_id-page_id` structure (15 characters for each segment). Any deviation will result in a `403 Invalid cookie format` error.
 
@@ -99,7 +99,7 @@ The Streaming Protocol requires a POST request with a JSON body.
   "event_timestamp": 1712604000000,
   "event_id": "WVTWEorF69ZEk3y_XIkjlUOkXKn99IV", // Automatically generated based on na_s cookie
   "event_name": "purchase",
-  "event_origin": "Streaming protocol", // Do not modify
+  "event_origin": "Streaming Protocol", // Do not modify
   "event_data": {
     "event_type": "event", // Do not modify
     "hostname": "namelessanalytics.com", // Website domain origin
@@ -143,7 +143,7 @@ The Streaming Protocol requires a POST request with a JSON body.
 
 > **Note on `event_type`**: For the Streaming Protocol, set always `event_type` to `event`, as `page_view` is restricted to the website tracker, since **`page_view` events are not allowed** via the Streaming Protocol.
 
-> **Note on `event_origin`**: This must be set to `Streaming protocol` to allow API Key authentication and distinguish server-side events.
+> **Note on `event_origin`**: This must be set to `Streaming Protocol` to allow API Key authentication and distinguish server-side events.
 
 > **Note on `channel_grouping`**: You don't need to provide this parameter. The [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag) will automatically calculate it based on the `source` and `campaign` parameters provided in the `event_data` object.
 
@@ -214,7 +214,7 @@ The script will:
 **Expected Output:**
 ```text
 NAMELESS ANALYTICS
-STREAMING PROTOCOL
+Streaming Protocol
 👉 Retrieve page data from BigQuery for page_id: [PAGE ID]
   🟢 Page data retrieved from BigQuery
 👉 Send request to [FULL ENDPOINT]
