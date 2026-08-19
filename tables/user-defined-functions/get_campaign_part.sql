@@ -1,4 +1,20 @@
-CREATE OR REPLACE FUNCTION `tom-moretti.nameless_analytics.get_campaign_part`(campaign STRING, part_name STRING) RETURNS STRING AS (
+/* @datacloud.settings
+{
+  "version": 1,
+  "service": "BIG_QUERY",
+  "connectionInfo": {
+    "billingProjectId": "INHERIT",
+    "location": "INHERIT"
+  },
+  "dialect": "GOOGLE_SQL"
+}
+*/
+
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
+
+declare get_campaign_part string default format ("""
+CREATE OR REPLACE FUNCTION `%s.%s.get_campaign_part`(campaign STRING, part_name STRING) RETURNS STRING AS (
   CASE
     when part_name = 'campaign_year' then split(campaign, '|')[safe_offset(0)]
     when part_name = 'campaign_country' then split(campaign, '|')[safe_offset(1)]
@@ -10,3 +26,6 @@ CREATE OR REPLACE FUNCTION `tom-moretti.nameless_analytics.get_campaign_part`(ca
     else null
   END
 );
+""", project_name, dataset_name);
+
+execute immediate get_campaign_part;

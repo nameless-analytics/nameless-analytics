@@ -1,15 +1,3 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
-
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_funnel`(start_date DATE, end_date DATE) AS (
 WITH sessions AS (
   SELECT
