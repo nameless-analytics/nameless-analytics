@@ -174,9 +174,9 @@ with raw_transaction_data as (
       else 0
     end as refund,
     countif(event_name = 'refund') over (partition by transaction_id) as duplicate_refund, 
-    if(event_name = 'refund', ifnull(transaction_revenue, 0.0), 0) as refund_revenue,
-    if(event_name = 'refund', ifnull(transaction_shipping, 0.0), 0) as refund_shipping,
-    if(event_name = 'refund', ifnull(transaction_tax, 0.0), 0) as refund_tax,
+    if(event_name = 'refund', -ifnull(transaction_revenue, 0.0), 0) as refund_revenue,
+    if(event_name = 'refund', -ifnull(transaction_shipping, 0.0), 0) as refund_shipping,
+    if(event_name = 'refund', -ifnull(transaction_tax, 0.0), 0) as refund_tax,
     if(event_name = 'refund', ifnull(transaction_currency, null), null) as refund_currency,
     if(event_name = 'refund', ifnull(transaction_coupon, null), null) as refund_coupon
   from raw_transaction_data

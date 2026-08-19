@@ -169,8 +169,8 @@ with attribution_data_single_touch as (
     attribution_model_name,
     attribution_model_type,
 
-    sum(attributed_conversions) as conversions,
-    sum(attributed_revenue) as conversions_revenue
+    sum(attributed_conversions) as attributed_conversions,
+    sum(attributed_revenue) as attributed_revenue
 
   from attribution_models
   group by all

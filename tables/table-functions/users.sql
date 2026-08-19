@@ -103,7 +103,7 @@ with raw_user_data as (
       sum(refund_revenue) as refund_revenue,
       sum(purchase_qty) as purchase_qty,
       sum(refund_qty) as refund_qty,
-      safe_divide(sum(purchase_revenue), countif(event_name = 'purchase')) as avg_purchase_value,
+      safe_divide(sum(purchase_revenue), countif(event_name = 'purchase')) as avg_order_value,
       safe_divide(sum(refund_revenue), countif(event_name = 'refund')) as avg_refund_value,      
     from raw_user_data
     group by all
@@ -190,7 +190,7 @@ with raw_user_data as (
     sum(purchase_revenue) as purchase_revenue,
     sum(refund_revenue) as refund_revenue,
     sum(purchase_revenue) + sum(refund_revenue) as revenue_net_refund,
-    avg(avg_purchase_value) as avg_purchase_value,
+    avg(avg_order_value) as avg_order_value,
     avg(avg_refund_value) as avg_refund_value,
   from user_data
   group by all

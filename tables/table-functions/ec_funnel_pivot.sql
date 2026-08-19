@@ -12,7 +12,7 @@ WITH steps AS (
 
   funnel AS (
     SELECT
-      session_date AS date,
+      session_date,
       client_id,
       session_id,
       session_channel_grouping,
@@ -47,7 +47,7 @@ WITH steps AS (
  
   sessions AS (
     SELECT DISTINCT
-      date,
+      session_date,
       client_id,
       session_id,
       session_channel_grouping,
@@ -76,7 +76,7 @@ WITH steps AS (
   )
 
   SELECT
-    all_steps.date,
+    all_steps.session_date,
     all_steps.client_id,
     all_steps.session_id,
     all_steps.session_channel_grouping,
@@ -102,7 +102,7 @@ WITH steps AS (
     ) AS next_step_client_id
   FROM all_steps
   LEFT JOIN funnel
-    ON all_steps.date = funnel.date
+    ON all_steps.session_date = funnel.session_date
     AND all_steps.client_id = funnel.client_id
     AND all_steps.session_id = funnel.session_id
     AND all_steps.step = funnel.step
