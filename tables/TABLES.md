@@ -373,10 +373,10 @@ select * from `project.nameless_analytics.users`(start_date, end_date)
 
 
 ### Users RFM
-Scores customers with at least one purchase using Recency, Frequency, and Monetary ranks, normalized scores, a weighted RFM score, and a configurable churn window.
+Scores customers with at least one purchase using Recency, Frequency, and Monetary percentiles, normalized scores, discrete 1–5 scores, a configurable weighted RFM score, behavioral and value segments, and lifecycle status based on the configured churn window.
 
 ```sql
-select * from `project.nameless_analytics.users_rfm`(start_date, end_date, churn_window_days)
+select * from `project.nameless_analytics.users_rfm`(start_date, end_date, churn_window_days, r_weight, f_weight, m_weight)
 ```
 
 [View SQL code](table-functions/users_rfm.sql)
