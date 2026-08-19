@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_funnel`(start_date DATE, end_date DATE) AS (
+declare ec_funnel string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.ec_funnel`(start_date DATE, end_date DATE) AS (
 WITH sessions AS (
   SELECT
     session_date,
@@ -42,7 +34,7 @@ WITH sessions AS (
     countif(event_name = 'add_shipping_info') as add_shipping_info,
     countif(event_name = 'add_payment_info') as add_payment_info,
     countif(event_name = 'purchase') as purchase,
-  FROM `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
+  FROM `%s.%s.events`(start_date, end_date, 'session')
   group by all
 )
 
@@ -78,3 +70,6 @@ select
   if(session_start > 0 and view_item > 0 and add_to_cart > 0 and view_cart > 0 and begin_checkout > 0 and add_shipping_info > 0 and add_payment_info > 0 and purchase > 0, client_id, null) as purchase_client_id, 
 from sessions
 );
+""", project_name, dataset_name, project_name, dataset_name);
+
+execute immediate ec_funnel;

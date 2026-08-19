@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_multi_touch`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
+declare attribution_multi_touch string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.attribution_multi_touch`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
 with conversions as (
     select
       # CONVERSION DATA
@@ -22,7 +14,7 @@ with conversions as (
       client_id,
       session_id as conversion_session_id
 
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
+    from `%s.%s.events`(start_date, end_date, 'session')
     where true
       and event_name = conversion_name
   ),
@@ -51,7 +43,7 @@ with conversions as (
       session_campaign_term,
       session_campaign_content
 
-    from `tom-moretti.nameless_analytics.events`(date_sub(start_date, interval lookback_days day), end_date, 'session')
+    from `%s.%s.events`(date_sub(start_date, interval lookback_days day), end_date, 'session')
     group by all
   ),
 
@@ -119,7 +111,7 @@ with conversions as (
         when touchpoint_number = 1 then 0.4
         when touchpoint_number = touchpoint_count then 0.4
         else safe_divide(0.2, touchpoint_count - 2)
-      end as position_based_weight # 40% first touch / 20% middle touches / 40% last touch
+      end as position_based_weight # 40%% first touch / 20%% middle touches / 40%% last touch
 
     from attribution_path
   ),
@@ -181,3 +173,6 @@ with conversions as (
 
   from attribution_weights
 );
+""", project_name, dataset_name, project_name, dataset_name, project_name, dataset_name);
+
+execute immediate attribution_multi_touch;

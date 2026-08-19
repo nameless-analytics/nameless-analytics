@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_transactions`(start_date DATE, end_date DATE) AS (
+declare ec_transactions string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.ec_transactions`(start_date DATE, end_date DATE) AS (
 with raw_transaction_data as (
     select 
       # USER DATA
@@ -80,7 +72,7 @@ with raw_transaction_data as (
 
       # EVENT DATA
       event_date,
-      FORMAT_TIMESTAMP('%H:%M:%S', TIMESTAMP_MILLIS(event_timestamp)) AS hour_and_minute,
+      FORMAT_TIMESTAMP('%%H:%%M:%%S', TIMESTAMP_MILLIS(event_timestamp)) AS hour_and_minute,
       event_name,
       event_origin,
 
@@ -91,7 +83,7 @@ with raw_transaction_data as (
       safe_cast(json_value(ecommerce, '$.shipping') as float64) as transaction_shipping,
       json_value(ecommerce, '$.currency') as transaction_currency,
       json_value(ecommerce, '$.coupon') as transaction_coupon
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
+    from `%s.%s.events`(start_date, end_date, 'session')
     where regexp_contains(event_name, 'purchase|refund')
   )
 
@@ -193,3 +185,6 @@ with raw_transaction_data as (
     if(event_name = 'refund', ifnull(transaction_coupon, null), null) as refund_coupon
   from raw_transaction_data
 );
+""", project_name, dataset_name, project_name, dataset_name);
+
+execute immediate ec_transactions;

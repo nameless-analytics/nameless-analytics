@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.consents`(start_date DATE, end_date DATE) AS (
+declare consents string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.consents`(start_date DATE, end_date DATE) AS (
 with consent_data as (
     select
       # USER DATA
@@ -82,7 +74,7 @@ with consent_data as (
       end as consent_state,
       consent_name,
       consent_value_int_accepted_raw
-    from `tom-moretti.nameless_analytics.sessions`(start_date, end_date)
+    from `%s.%s.sessions`(start_date, end_date)
     unpivot (
       consent_value_int_accepted_raw for consent_name in (
         session_ad_user_data, 
@@ -119,7 +111,7 @@ with consent_data as (
     user_type,
     new_user_client_id,
     returning_user_client_id,
-  
+
     # SESSION DATA
     session_date,
     session_number,
@@ -173,3 +165,6 @@ with consent_data as (
   from consent_data
   group by all
 );
+""", project_name, dataset_name, project_name, dataset_name);
+
+execute immediate consents;

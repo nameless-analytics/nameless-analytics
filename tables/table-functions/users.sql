@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users`(start_date DATE, end_date DATE) AS (
+declare users string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.users`(start_date DATE, end_date DATE) AS (
 with raw_user_data as (
     select
       # USER DATA
@@ -41,7 +33,7 @@ with raw_user_data as (
       days_from_first_to_last_visit,
       days_from_first_visit,
       days_from_last_visit,
-      
+
       # SESSION DATA
       session_id,
       session_duration_sec,
@@ -60,11 +52,11 @@ with raw_user_data as (
       sum(case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as purchase_qty,
       sum(case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as refund_qty,
 
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'user')
+    from `%s.%s.events`(start_date, end_date, 'user')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items
     group by all
   ),
- 
+
   user_data as (
     select
       # USER DATA
@@ -95,13 +87,13 @@ with raw_user_data as (
       days_from_first_to_last_visit,
       days_from_first_visit,
       days_from_last_visit,
- 
+
       # SESSION DATA
       session_id,
       session_duration_sec,
       session_number,
       max(session_number) over (partition by client_id) as total_sessions,
- 
+
       # EVENT DATA
       countif(event_name = 'page_view') as page_view,
       countif(event_name = 'purchase') as purchase,
@@ -120,7 +112,7 @@ with raw_user_data as (
     from raw_user_data
     group by all
   )
-    
+
   select
     # USER DATA
     user_date,
@@ -154,21 +146,21 @@ with raw_user_data as (
     max(days_from_first_to_last_visit) as days_from_first_to_last_visit,
     max(days_from_first_visit) as days_from_first_visit,
     max(days_from_last_visit) as days_from_last_visit,
-  
+
     case when sum(purchase) >= 1 then 1 else 0 end as user_with_purchase,
     case when sum(refund) >= 1 then 1 else 0 end as user_with_refund,
-  
+
     case 
       when sum(purchase) = 0 then 'Not customer'
       when sum(purchase) > 0 then 'Customer'
     end as customer_status,
-  
+
     case 
       when sum(purchase) = 1 then 'New customer'
       when sum(purchase) > 1 then 'Returning customer'
       else 'Not customer'
     end as customer_type,
-  
+
     case 
       when sum(purchase) >= 1 then client_id
       else null
@@ -183,10 +175,10 @@ with raw_user_data as (
       when sum(purchase) > 1 then client_id
       else null
     end as returning_customer_client_id,
-  
+
     max(first_purchase_timestamp) as first_purchase_timestamp,
     max(last_purchase_timestamp) as last_purchase_timestamp,
-  
+
     count(distinct session_id) as sessions,
     avg(session_duration_sec) as avg_session_duration_sec,
     count(distinct session_id) / count(distinct client_id) as sessions_per_user,
@@ -207,3 +199,6 @@ with raw_user_data as (
   from user_data
   group by all
 );
+""", project_name, dataset_name, project_name, dataset_name);
+
+execute immediate users;

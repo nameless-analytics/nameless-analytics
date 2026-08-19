@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_products`(start_date DATE, end_date DATE) AS (
+declare ec_products string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.ec_products`(start_date DATE, end_date DATE) AS (
 with raw_product_data as (
     select 
       # USER DATA
@@ -80,7 +72,7 @@ with raw_product_data as (
 
       # EVENT DATA
       event_date,
-      FORMAT_TIMESTAMP('%H:%M:%S', TIMESTAMP_MILLIS(event_timestamp)) AS hour_and_minute,
+      FORMAT_TIMESTAMP('%%H:%%M:%%S', TIMESTAMP_MILLIS(event_timestamp)) AS hour_and_minute,
       event_name,
       event_origin,
 
@@ -108,13 +100,13 @@ with raw_product_data as (
       json_value(items, '$.item_category4') as item_category_4,
       json_value(items, '$.item_category5') as item_category_5,
       safe_cast(json_value(items, '$.price') as float64) as item_price,
-      
+
       case when event_name = 'add_to_cart' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_added_to_cart,
       case when event_name = 'remove_from_cart' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_removed_from_cart,
 
       case when event_name = 'add_to_wishlist' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_added_to_wishlist,
       case when event_name = 'remove_from_wishlist' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_removed_from_wishlist,
-      
+
       case when event_name = 'purchase' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_purchased,
       case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1) end as item_revenue_purchased,
       case when event_name = 'purchase' then 1 end as unique_item_purchases,
@@ -122,7 +114,7 @@ with raw_product_data as (
       case when event_name = 'refund' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_refunded,
       case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1) end as item_revenue_refunded,
       case when event_name = 'refund' then 1 end as unique_item_refunds
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
+    from `%s.%s.events`(start_date, end_date, 'session')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items
     where regexp_contains(event_name, 'view_promotion|select_promotion|view_item_list|select_item|view_item|add_to_wishlist|remove_from_wishlist|add_to_cart|remove_from_cart|view_cart|begin_checkout|add_shipping_info|add_payment_info|purchase|refund')
   )
@@ -198,7 +190,7 @@ with raw_product_data as (
     hour_and_minute,
     event_name,
     event_origin,
-    
+
     # ECOMMERCE DATA
     transaction_id,
 
@@ -211,7 +203,7 @@ with raw_product_data as (
       when event_name = 'refund' then transaction_id 
       else null 
     end as refund_id,
-    
+
     list_id, 
     list_name, 
     item_list_id, 
@@ -232,7 +224,7 @@ with raw_product_data as (
     item_category_3, 
     item_category_4, 
     item_category_5,
-    
+
     countif(event_name = "view_promotion") as view_promotion,
     countif(event_name = "select_promotion") as select_promotion,
     countif(event_name = "view_item_list") as view_item_list,
@@ -259,3 +251,6 @@ with raw_product_data as (
   from raw_product_data
   group by all
 );
+""", project_name, dataset_name, project_name, dataset_name);
+
+execute immediate ec_products;

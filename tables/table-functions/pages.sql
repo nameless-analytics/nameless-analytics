@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.pages`(start_date DATE, end_date DATE) AS (
+declare pages string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.pages`(start_date DATE, end_date DATE) AS (
 select
     # USER DATA
     user_date, 
@@ -88,13 +80,16 @@ select
     max(page_load_timestamp) as page_load_timestamp,
     max(page_unload_timestamp) as page_unload_timestamp,
     time_on_page,
-    
+
     -- Performance metrics
     max(total_page_load_time) / 1000 as page_load_time_sec,
     max(page_status_code) as page_status_code,
 
     # EVENT DATA
     countif(event_name = 'page_view') as total_page_views
-  from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
+  from `%s.%s.events`(start_date, end_date, 'session')
   group by all
 );
+""", project_name, dataset_name, project_name, dataset_name);
+
+execute immediate pages;

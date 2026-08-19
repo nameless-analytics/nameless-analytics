@@ -1,24 +1,16 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_comparison`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
+declare attribution_comparison string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.attribution_comparison`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
 with attribution_data_single_touch as (
     select *
-    from `tom-moretti.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)
+    from `%s.%s.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)
   ),
 
   attribution_data_multi_touch as (
     select *
-    from `tom-moretti.nameless_analytics.attribution_multi_touch`(start_date, end_date, conversion_name, lookback_days)
+    from `%s.%s.attribution_multi_touch`(start_date, end_date, conversion_name, lookback_days)
   ),
 
   attribution_models_single_touch as (
@@ -187,3 +179,6 @@ with attribution_data_single_touch as (
   from attribution_models
   group by all
 );
+""", project_name, dataset_name, project_name, dataset_name, project_name, dataset_name);
+
+execute immediate attribution_comparison;

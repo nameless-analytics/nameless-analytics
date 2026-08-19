@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events`(start_date DATE, end_date DATE, date_scope STRING) AS (
+declare events string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.events`(start_date DATE, end_date DATE, date_scope STRING) AS (
 select
     # USER DATA
     user_date,
@@ -42,17 +34,17 @@ select
     datetime_diff(current_timestamp(), timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), day) as days_from_last_visit,
 
     (select value.string from unnest(user_data) where name = 'user_channel_grouping') as user_channel_grouping,
-    `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(user_data) where name = 'user_source'), (select value.string from unnest(user_data) where name = 'user_campaign')) as user_custom_channel_grouping,
+    `%s.%s.get_custom_channel_grouping`((select value.string from unnest(user_data) where name = 'user_source'), (select value.string from unnest(user_data) where name = 'user_campaign')) as user_custom_channel_grouping,
     (select value.string from unnest(user_data) where name = 'user_source') as user_source,
     (select value.string from unnest(user_data) where name = 'user_tld_source') as user_tld_source,
     split((select value.string from unnest(user_data) where name = 'user_tld_source'), '.')[safe_offset(0)] as user_source_cleaned,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_year') as user_campaign_year,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_country') as user_campaign_country,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_funnel_stage') as user_campaign_funnel_stage,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_platform') as user_campaign_platform,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_type') as user_campaign_type,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_marketing_objective') as user_campaign_marketing_objective,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_name') as user_campaign_name,
+    `%s.%s.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_year') as user_campaign_year,
+    `%s.%s.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_country') as user_campaign_country,
+    `%s.%s.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_funnel_stage') as user_campaign_funnel_stage,
+    `%s.%s.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_platform') as user_campaign_platform,
+    `%s.%s.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_type') as user_campaign_type,
+    `%s.%s.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_marketing_objective') as user_campaign_marketing_objective,
+    `%s.%s.get_campaign_part`((select value.string from unnest(user_data) where name = 'user_campaign'), 'campaign_name') as user_campaign_name,
     (select value.string from unnest(user_data) where name = 'user_campaign') as user_campaign,
     (select value.string from unnest(user_data) where name = 'user_campaign_id') as user_campaign_id,
     (select value.string from unnest(user_data) where name = 'user_campaign_click_id') as user_campaign_click_id,
@@ -103,17 +95,17 @@ select
     case when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 1 else 0 end as returning_session,
 
     (select value.string from unnest(session_data) where name = 'session_channel_grouping') as session_channel_grouping,
-    `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(session_data) where name = 'session_source'), (select value.string from unnest(session_data) where name = 'session_campaign')) as session_custom_channel_grouping,
+    `%s.%s.get_custom_channel_grouping`((select value.string from unnest(session_data) where name = 'session_source'), (select value.string from unnest(session_data) where name = 'session_campaign')) as session_custom_channel_grouping,
     (select value.string from unnest(session_data) where name = 'session_source') as session_source,
     (select value.string from unnest(session_data) where name = 'session_tld_source') as session_tld_source,
     split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] as session_source_cleaned,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_year') as session_campaign_year,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_country') as session_campaign_country,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_funnel_stage') as session_campaign_funnel_stage,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_platform') as session_campaign_platform,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_type') as session_campaign_type,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_marketing_objective') as session_campaign_marketing_objective,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_name') as session_campaign_name,
+    `%s.%s.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_year') as session_campaign_year,
+    `%s.%s.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_country') as session_campaign_country,
+    `%s.%s.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_funnel_stage') as session_campaign_funnel_stage,
+    `%s.%s.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_platform') as session_campaign_platform,
+    `%s.%s.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_type') as session_campaign_type,
+    `%s.%s.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_marketing_objective') as session_campaign_marketing_objective,
+    `%s.%s.get_campaign_part`((select value.string from unnest(session_data) where name = 'session_campaign'), 'campaign_name') as session_campaign_name,
     (select value.string from unnest(session_data) where name = 'session_campaign') as session_campaign,
     (select value.string from unnest(session_data) where name = 'session_campaign_id') as session_campaign_id,
     (select value.string from unnest(session_data) where name = 'session_campaign_click_id') as session_campaign_click_id,
@@ -189,17 +181,17 @@ select
     (select value.string from unnest(event_data) where name = 'event_type') as event_type, 
 
     (select value.string from unnest(event_data) where name = 'channel_grouping') as channel_grouping, 
-    `tom-moretti.nameless_analytics.get_custom_channel_grouping`((select value.string from unnest(event_data) where name = 'source'), (select value.string from unnest(event_data) where name = 'campaign')) as custom_channel_grouping, 
+    `%s.%s.get_custom_channel_grouping`((select value.string from unnest(event_data) where name = 'source'), (select value.string from unnest(event_data) where name = 'campaign')) as custom_channel_grouping, 
     (select value.string from unnest(event_data) where name = 'source') as source, 
     (select value.string from unnest(event_data) where name = 'tld_source') as tld_source, 
     split((select value.string from unnest(event_data) where name = 'tld_source'), '.')[safe_offset(0)] as source_cleaned,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_year') as campaign_year,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_country') as campaign_country,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_funnel_stage') as campaign_funnel_stage,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_platform') as campaign_platform,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_type') as campaign_type,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_marketing_objective') as campaign_marketing_objective,
-    `tom-moretti.nameless_analytics.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_name') as campaign_name,
+    `%s.%s.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_year') as campaign_year,
+    `%s.%s.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_country') as campaign_country,
+    `%s.%s.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_funnel_stage') as campaign_funnel_stage,
+    `%s.%s.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_platform') as campaign_platform,
+    `%s.%s.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_type') as campaign_type,
+    `%s.%s.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_marketing_objective') as campaign_marketing_objective,
+    `%s.%s.get_campaign_part`((select value.string from unnest(event_data) where name = 'campaign'), 'campaign_name') as campaign_name,
     (select value.string from unnest(event_data) where name = 'campaign') as campaign, 
     (select value.string from unnest(event_data) where name = 'campaign_id') as campaign_id,
     (select value.string from unnest(event_data) where name = 'campaign_click_id') as campaign_click_id,
@@ -270,7 +262,7 @@ select
     (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp as delay_in_millis,
     ((select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp) / 1000 as delay_in_sec,
 
-  from `tom-moretti.nameless_analytics.events_raw`
+  from `%s.%s.events_raw`
   where true
     and case 
       when date_scope = 'user' then user_date
@@ -279,3 +271,32 @@ select
       when date_scope = 'event' then event_date
     end between start_date and end_date
 );
+""",
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name);
+
+execute immediate events;

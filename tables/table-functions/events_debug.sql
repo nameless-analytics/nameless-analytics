@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.events_debug`(start_date DATE, end_date DATE) AS (
+declare events_debug string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.events_debug`(start_date DATE, end_date DATE) AS (
 with raw_event_data as (
     select 
       # USER DATA
@@ -42,7 +34,7 @@ with raw_event_data as (
       ecommerce,
       datalayer,
       consent_data
-    from `tom-moretti.nameless_analytics.events_raw`
+    from `%s.%s.events_raw`
     where event_date between start_date and end_date
   )
 
@@ -62,7 +54,7 @@ with raw_event_data as (
         ) as value
       from unnest(user_data)
     ) as user_data,
-  
+
     # SESSION DATA
     session_date,
     session_id,
@@ -78,7 +70,7 @@ with raw_event_data as (
         ) as value
       from unnest(session_data)
     ) as session_data,
-    
+
     # PAGE DATA
     page_date,
     page_id,
@@ -283,3 +275,6 @@ with raw_event_data as (
 
   from raw_event_data
 );
+""", project_name, dataset_name, project_name, dataset_name);
+
+execute immediate events_debug;

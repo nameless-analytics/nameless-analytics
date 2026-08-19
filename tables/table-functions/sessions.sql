@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.sessions`(start_date DATE, end_date DATE) AS (
+declare sessions string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.sessions`(start_date DATE, end_date DATE) AS (
 with raw_session_data as (
     select
       # USER DATA
@@ -133,7 +125,7 @@ with raw_session_data as (
       array_agg(case when consent_type = 'Update' then security_storage end ignore nulls order by event_timestamp asc limit 1)[safe_offset(0)] as upd_security_storage,
       array_agg(security_storage order by event_timestamp asc limit 1)[safe_offset(0)] as def_security_storage
 
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
+    from `%s.%s.events`(start_date, end_date, 'session')
     group by all
   ),
 
@@ -371,7 +363,7 @@ with raw_session_data as (
     purchase_shipping,
     purchase_tax,
     ifnull(safe_divide(sum(purchase_revenue), sum(purchase)), 0) as avg_order_value,
-    
+
     refund_revenue,
     refund_shipping,
     refund_tax,
@@ -393,7 +385,7 @@ with raw_session_data as (
     session_ad_personalization,
     safe_divide(sum(session_ad_personalization), count(distinct session_id)) as ad_personalization_accepted_percentage,
     1 - safe_divide(sum(session_ad_personalization), count(distinct session_id)) as ad_personalization_denied_percentage,
-    
+
     session_ad_storage,
     safe_divide(sum(session_ad_storage), count(distinct session_id)) as ad_storage_accepted_percentage,
     1 - safe_divide(sum(session_ad_storage), count(distinct session_id)) as ad_storage_denied_percentage,
@@ -417,3 +409,6 @@ with raw_session_data as (
   from session_data
   group by all
 );
+""", project_name, dataset_name, project_name, dataset_name);
+
+execute immediate sessions;

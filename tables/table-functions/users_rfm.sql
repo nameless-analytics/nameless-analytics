@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.users_rfm`(start_date DATE, end_date DATE, churn_window_days INT64, r_weight FLOAT64, f_weight FLOAT64, m_weight FLOAT64) AS (
+declare users_rfm string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.users_rfm`(start_date DATE, end_date DATE, churn_window_days INT64, r_weight FLOAT64, f_weight FLOAT64, m_weight FLOAT64) AS (
 WITH customers AS (
   SELECT
     # USER DATA
@@ -39,7 +31,7 @@ WITH customers AS (
     revenue_net_refund,
     avg_order_value
 
-  FROM `tom-moretti.nameless_analytics.users`(start_date, end_date)
+  FROM `%s.%s.users`(start_date, end_date)
   WHERE purchase > 0
 ),
 
@@ -68,7 +60,7 @@ customers_percentiles AS (
       WHEN COUNT(*) OVER () = 1 THEN 1.0
       ELSE PERCENT_RANK() OVER (ORDER BY revenue_net_refund ASC)
     END AS m_percentile
-  
+
   FROM customers
 ),
 
@@ -86,7 +78,7 @@ customers_scored AS (
     CAST(LEAST(5, FLOOR(r_percentile * 5) + 1) AS INT64) AS r_score,
     CAST(LEAST(5, FLOOR(f_percentile * 5) + 1) AS INT64) AS f_score,
     CAST(LEAST(5, FLOOR(m_percentile * 5) + 1) AS INT64) AS m_score
-  
+
   FROM customers_percentiles
 ),
 
@@ -100,7 +92,7 @@ customers_rfm AS (
 
     # RFM WEIGHTED SCORE 0-5
     SAFE_DIVIDE((r_normalized * r_weight) + (f_normalized * f_weight) + (m_normalized * m_weight), r_weight + f_weight + m_weight) * 0.05 AS rfm_weighted_score
-  
+
   FROM customers_scored
 ),
 
@@ -212,3 +204,6 @@ SELECT
 
 FROM customers_segmented
 );
+""", project_name, dataset_name, project_name, dataset_name);
+
+execute immediate users_rfm;

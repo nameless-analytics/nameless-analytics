@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaigns`(start_date DATE, end_date DATE) AS (
+declare campaigns string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.campaigns`(start_date DATE, end_date DATE) AS (
 with session_data as (
     select
       session_date,
@@ -59,7 +51,7 @@ with session_data as (
       sum(revenue_net_refund) as revenue_net_refund,
       sum(shipping_net_refund) as shipping_net_refund,
       sum(tax_net_refund) as tax_net_refund
-    from `tom-moretti.nameless_analytics.sessions`(start_date, end_date)
+    from `%s.%s.sessions`(start_date, end_date)
     where true 
       and session_campaign is not null
     group by all
@@ -68,13 +60,13 @@ with session_data as (
   online_campaigns_performances as (
     select
       date,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_year') as session_campaign_year,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_country') as session_campaign_country,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_funnel_stage') as session_campaign_funnel_stage,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_platform') as session_campaign_platform,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_type') as session_campaign_type,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_marketing_objective') as session_campaign_marketing_objective,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_name') as session_campaign_name,
+      `%s.%s.get_campaign_part`(campaign, 'campaign_year') as session_campaign_year,
+      `%s.%s.get_campaign_part`(campaign, 'campaign_country') as session_campaign_country,
+      `%s.%s.get_campaign_part`(campaign, 'campaign_funnel_stage') as session_campaign_funnel_stage,
+      `%s.%s.get_campaign_part`(campaign, 'campaign_platform') as session_campaign_platform,
+      `%s.%s.get_campaign_part`(campaign, 'campaign_type') as session_campaign_type,
+      `%s.%s.get_campaign_part`(campaign, 'campaign_marketing_objective') as session_campaign_marketing_objective,
+      `%s.%s.get_campaign_part`(campaign, 'campaign_name') as session_campaign_name,
       campaign as session_campaign,
       campaign_id as session_campaign_id, 
       sum(cost) as spend,
@@ -82,7 +74,7 @@ with session_data as (
       sum(click) as click,
       safe_divide(sum(cost), sum(click)) as avg_cost_per_click,
       safe_divide(sum(click), sum(impression)) as avg_click_through_rate,
-    from `tom-moretti.nameless_analytics.online_campaign_performance_sheets`
+    from `%s.%s.online_campaign_performance_sheets`
     where true 
       and date between start_date and end_date
       and campaign is not null
@@ -101,7 +93,7 @@ with session_data as (
     coalesce(session_data.session_campaign_name, online_campaigns_performances.session_campaign_name) as session_campaign_name,
     coalesce(session_data.session_campaign, online_campaigns_performances.session_campaign) as session_campaign,
     coalesce(session_data.session_campaign_id, online_campaigns_performances.session_campaign_id) as session_campaign_id,
- 
+
     # PRE CLICK
     ifnull(spend, 0.00) as spend,
     ifnull(safe_divide(spend, account_creation), 0.00) as cost_per_account_creation,
@@ -112,7 +104,7 @@ with session_data as (
     ifnull(click, 0.00) as click,
     ifnull(avg_cost_per_click, 0.00) as avg_cost_per_click,
     ifnull(avg_click_through_rate, 0.00) as avg_click_through_rate,
-    
+
     # POST CLICK
     session_data.new_users,
     session_data.sessions,
@@ -157,3 +149,16 @@ with session_data as (
     AND session_data.session_campaign = online_campaigns_performances.session_campaign
     AND ifnull(session_data.session_campaign_id, "") = ifnull(online_campaigns_performances.session_campaign_id, "")
 );
+""",
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name,
+project_name, dataset_name);
+
+execute immediate campaigns;

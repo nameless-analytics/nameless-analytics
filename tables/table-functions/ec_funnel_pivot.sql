@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_funnel_pivot`(start_date DATE, end_date DATE) AS (
+declare ec_funnel_pivot string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.ec_funnel_pivot`(start_date DATE, end_date DATE) AS (
 WITH steps AS (
     SELECT 1 AS step_number, 'session_start' AS step UNION ALL
     SELECT 2, 'view_item' UNION ALL
@@ -43,7 +35,7 @@ WITH steps AS (
       session_country,
       replace(step, '_client_id', '') as step,
       step_client_id,
-    FROM `tom-moretti.nameless_analytics.ec_funnel`(start_date, end_date)
+    FROM `%s.%s.ec_funnel`(start_date, end_date)
     UNPIVOT INCLUDE NULLS (
       step_client_id FOR step IN (
         session_start_client_id,
@@ -57,7 +49,7 @@ WITH steps AS (
       )
     )
   ),
- 
+
   sessions AS (
     SELECT DISTINCT
       session_date,
@@ -122,3 +114,6 @@ WITH steps AS (
     AND all_steps.session_id = funnel.session_id
     AND all_steps.step = funnel.step
 );
+""", project_name, dataset_name, project_name, dataset_name);
+
+execute immediate ec_funnel_pivot;

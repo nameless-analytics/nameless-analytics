@@ -1,16 +1,8 @@
-/* @datacloud.settings
-{
-  "version": 1,
-  "service": "BIG_QUERY",
-  "connectionInfo": {
-    "billingProjectId": "INHERIT",
-    "location": "INHERIT"
-  },
-  "dialect": "GOOGLE_SQL"
-}
-*/
+declare project_name string default 'PROJECT NAME';  -- Change this
+declare dataset_name string default 'nameless_analytics';
 
-CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.attribution_single_touch`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
+declare attribution_single_touch string default format ("""
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.attribution_single_touch`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
 with conversions as (
     select
       # CONVERSION DATA
@@ -38,7 +30,7 @@ with conversions as (
       user_campaign_click_id as first_click_campaign_click_id,
       user_campaign_term as first_click_campaign_term,
       user_campaign_content as first_click_campaign_content,
-      
+
       # LAST CLICK
       session_channel_grouping as last_click_channel_grouping,
       session_custom_channel_grouping as last_click_custom_channel_grouping,
@@ -55,12 +47,12 @@ with conversions as (
       session_campaign_click_id as last_click_campaign_click_id,
       session_campaign_term as last_click_campaign_term,
       session_campaign_content as last_click_campaign_content
-    
-    from `tom-moretti.nameless_analytics.events`(start_date, end_date, 'session')
+
+    from `%s.%s.events`(start_date, end_date, 'session')
     where true 
       and event_name = conversion_name
   ),
-  
+
   sessions as (
     select distinct
       client_id,
@@ -82,13 +74,13 @@ with conversions as (
       session_campaign_term,
       session_campaign_content
 
-    from `tom-moretti.nameless_analytics.events`(date_sub(start_date, interval lookback_days day), end_date, 'session')
+    from `%s.%s.events`(date_sub(start_date, interval lookback_days day), end_date, 'session')
   ),
-  
+
   last_click_non_direct as (
     select
       conversion_id,
-      
+
       array_agg(
         struct(
           session_start_timestamp,
@@ -111,7 +103,7 @@ with conversions as (
         order by session_start_timestamp desc
         limit 1
       )[safe_offset(0)] as traffic_source
-    
+
     from conversions
     inner join sessions using(client_id)
 
@@ -124,7 +116,7 @@ with conversions as (
 
     group by conversion_id
   )
-  
+
   select
     # CONVERSION DATA
     conversion_date,
@@ -134,7 +126,7 @@ with conversions as (
     conversion_revenue,
     client_id,
     conversion_session_id,
-        
+
     # FIRST CLICK
     first_click_channel_grouping,
     first_click_custom_channel_grouping,
@@ -168,7 +160,7 @@ with conversions as (
     last_click_campaign_click_id,
     last_click_campaign_term,
     last_click_campaign_content,
-    
+
     # LAST CLICK NON-DIRECT
     ifnull(traffic_source.channel_grouping, last_click_channel_grouping) as last_click_non_direct_channel_grouping,
     ifnull(traffic_source.custom_channel_grouping, last_click_custom_channel_grouping) as last_click_non_direct_custom_channel_grouping,
@@ -185,7 +177,10 @@ with conversions as (
     ifnull(traffic_source.campaign_click_id, last_click_campaign_click_id) as last_click_non_direct_campaign_click_id,
     ifnull(traffic_source.campaign_term, last_click_campaign_term) as last_click_non_direct_campaign_term,
     ifnull(traffic_source.campaign_content, last_click_campaign_content) as last_click_non_direct_campaign_content
-  
+
   from conversions
   left join last_click_non_direct using(conversion_id)
 );
+""", project_name, dataset_name, project_name, dataset_name, project_name, dataset_name);
+
+execute immediate attribution_single_touch;
