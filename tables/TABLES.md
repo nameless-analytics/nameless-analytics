@@ -25,6 +25,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Transactions](#transactions)
   - [Products](#products)
   - [Ecommerce Funnel](#ecommerce-funnel)
+  - [Ecommerce Funnel Pivot](#ecommerce-funnel-pivot)
   - [Consents](#consents)
   - [Attribution Comparison](#attribution-comparison)
   - [Attribution Multi Touch](#attribution-multi-touch)
@@ -285,7 +286,7 @@ To create the table functions you need, run the following DDL statements:
 
 
 ## Reporting fields
-The Reporting Fields Matrix provides an interactive overview of all dimensions and metrics available across Nameless Analytics table functions. The report is generated directly from the current BigQuery table function schemas, so it reflects the latest available reporting fields.
+The Reporting Fields Matrix provides an interactive overview of all reporting fields available across Nameless Analytics table functions, including functional scope, field type, value type, and field descriptions. The report is generated directly from the current BigQuery table function schemas, so it reflects the latest available reporting fields.
 
 [Available metrics and dimensions](https://datastudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d)
 
@@ -311,11 +312,11 @@ Table functions are predefined SQL queries that simplify data analysis by transf
 
 Unlike other systems, Nameless Analytics reporting functions are designed to work directly on the `events_raw` table as the single source of truth. By leveraging BigQuery window functions, they reflect the most up-to-date state of the data without requiring complex ETL processes or intermediate staging tables.
 
-Streaming protocol events are excluded from the calculation of the `session_duration` and `time_on_page` fields.
+Streaming Protocol events are excluded from the calculation of the `session_duration_sec` and `time_on_page` fields.
 
 
 ### Events
-Flattens raw event data and extracts custom parameters, making it easier to analyze specific interaction metrics.
+Returns enriched event-level data for the selected date range and date scope, including user, session, page, event, ecommerce, consent, acquisition, device, and geographic attributes.
 
 Event data can be extracted at various levels:
 
@@ -352,7 +353,7 @@ For example: if you filter the events table function at event level, you probabl
 
 
 ### Events Debug
-Flattens and formats raw event data for debugging and data validation purposes.
+Returns event-level raw and typed parameter structures for debugging and data validation, including user, session, page, event, ecommerce, dataLayer, and consent data.
 
 ```sql
 select * from `project.nameless_analytics.events_debug`(start_date, end_date)
@@ -362,7 +363,7 @@ select * from `project.nameless_analytics.events_debug`(start_date, end_date)
 
 
 ### Users
-Aggregates event data at user level.
+Aggregates event data at user level, including acquisition attributes, visit recency, customer classification, session metrics, and purchase/refund performance.
 
 ```sql
 select * from `project.nameless_analytics.users`(start_date, end_date)
@@ -372,7 +373,7 @@ select * from `project.nameless_analytics.users`(start_date, end_date)
 
 
 ### Users RFM
-Calculates Recency, Frequency, and Monetary (RFM) segment scores and user classifications based on purchase history and a configurable churn window.
+Scores customers with at least one purchase using Recency, Frequency, and Monetary ranks, normalized scores, a weighted RFM score, and a configurable churn window.
 
 ```sql
 select * from `project.nameless_analytics.users_rfm`(start_date, end_date, churn_window_days)
@@ -382,7 +383,7 @@ select * from `project.nameless_analytics.users_rfm`(start_date, end_date, churn
 
 
 ### Sessions
-Aggregates event data at session level.
+Aggregates event data at session level, including acquisition, engagement, behavioral events, ecommerce metrics, and consent states.
 
 ```sql
 select * from `project.nameless_analytics.sessions`(start_date, end_date)
@@ -392,7 +393,7 @@ select * from `project.nameless_analytics.sessions`(start_date, end_date)
 
 
 ### Pages
-Aggregates event data at page level.
+Aggregates event data at page-view level, including page context, session and user dimensions, page timing, HTTP status, and page-view metrics.
 
 ```sql
 select * from `project.nameless_analytics.pages`(start_date, end_date)
@@ -402,7 +403,7 @@ select * from `project.nameless_analytics.pages`(start_date, end_date)
 
 
 ### Transactions
-Aggregates ecommerce data at transaction level.
+Returns purchase and refund event rows enriched with transaction identifiers, revenue, tax, shipping, currency, coupon, and duplicate-event counts.
 
 ```sql
 select * from `project.nameless_analytics.ec_transactions`(start_date, end_date)
@@ -412,7 +413,7 @@ select * from `project.nameless_analytics.ec_transactions`(start_date, end_date)
 
 
 ### Products
-Aggregates ecommerce data at product level. 
+Aggregates ecommerce interaction data at item level, including product, list and promotion attributes, cart and wishlist actions, and purchase/refund quantities and revenue.
 
 ```sql
 select * from `project.nameless_analytics.ec_products`(start_date, end_date)
@@ -428,17 +429,21 @@ The Ecommerce Funnel table functions provide a specialized view of the user jour
 select * from `project.nameless_analytics.ec_funnel`(start_date, end_date)
 ```
 
+[View SQL code](table-functions/ec_funnel.sql)
+
+
+### Ecommerce Funnel Pivot
+Returns the closed ecommerce funnel in long format with one row per session and funnel step, including step reach status and next-step client ID for drop-off analysis.
+
 ```sql
 select * from `project.nameless_analytics.ec_funnel_pivot`(start_date, end_date)
 ```
-
-[View SQL code](table-functions/ec_funnel.sql)
 
 [View SQL code](table-functions/ec_funnel_pivot.sql)
 
 
 ### Consents
-Aggregates consent data at session level.
+Returns consent data in long format with one row per session and consent category, including consent expression state and Granted/Denied indicators.
 
 ```sql
 select * from `project.nameless_analytics.consents`(start_date, end_date)
@@ -448,7 +453,7 @@ select * from `project.nameless_analytics.consents`(start_date, end_date)
 
 
 ### Attribution Comparison
-Compares conversions and revenue attributed across both single-touch (first click, last click) and multi-touch (linear, time decay, position-based) attribution models.
+Aggregates attributed conversion credit and revenue by traffic dimensions across single-touch and multi-touch attribution models.
 
 ```sql
 select * from `project.nameless_analytics.attribution_comparison`(start_date, end_date, conversion_name, lookback_days)
@@ -458,7 +463,7 @@ select * from `project.nameless_analytics.attribution_comparison`(start_date, en
 
 
 ### Attribution Multi Touch
-Calculates multi-touch attribution for conversions using linear, time-decay, and position-based models across all session touchpoints within the specified lookback window.
+Calculates multi-touch attribution at touchpoint level using linear, time-decay, and position-based models across sessions within the specified lookback window.
 
 ```sql
 select * from `project.nameless_analytics.attribution_multi_touch`(start_date, end_date, conversion_name, lookback_days)
@@ -468,7 +473,7 @@ select * from `project.nameless_analytics.attribution_multi_touch`(start_date, e
 
 
 ### Attribution Single Touch
-Calculates single-touch attribution for conversions using the user's historical first click, the conversion session's last click, and the most recent non-direct session within the specified lookback window.
+Calculates single-touch attribution per conversion using the user first click, the conversion-session last click, and the most recent non-direct session within the specified lookback window.
 
 ```sql
 select * from `project.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)
@@ -478,7 +483,7 @@ select * from `project.nameless_analytics.attribution_single_touch`(start_date, 
 
 
 ### Media Plan
-Combines monthly planned marketing budget data from media plan sheets with actual campaign performance costs.
+Combines monthly planned campaign budgets with actual campaign spend for the selected date range, preserving campaign taxonomy dimensions.
 
 ```sql
 select * from `project.nameless_analytics.media_plan`(start_date, end_date)
@@ -488,7 +493,7 @@ select * from `project.nameless_analytics.media_plan`(start_date, end_date)
 
 
 ### Campaigns
-Aggregates post-click user activity, session metrics, conversions (`account_creation`, `form_submission`, `newsletter_subscription`, `purchase`, `refund`), and media costs at campaign level.
+Combines daily campaign media performance with post-click user, session, conversion, ecommerce, and ROAS metrics.
 
 ```sql
 select * from `project.nameless_analytics.campaigns`(start_date, end_date)
