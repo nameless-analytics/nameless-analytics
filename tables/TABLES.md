@@ -254,7 +254,7 @@ execute immediate dates_table_sql;
 
 
 ### Create custom functions
-Create the custom user-defined functions (UDF) required for channel grouping and campaign parsing by running the following DDL statements:
+Create the custom user-defined functions (UDF) required for channel grouping and campaign parsing first by running the following SQL scripts:
 
 The `get_custom_channel_grouping` UDF uses the same identical logic as the [server-side channel grouping](../README.md#channel-grouping-logic) to categorize traffic sources. It is used by the table functions to calculate the `custom_channel_grouping`, `session_custom_channel_grouping`, and `user_custom_channel_grouping` fields on the fly at query time. Since the UDF lives in BigQuery, it can be freely customized to adapt the channel grouping to specific analysis needs (e.g., adding new source categories or redefining grouping rules). Any change to this function will be retroactively applied to all historical data at query time.
 
@@ -265,21 +265,21 @@ The `get_campaign_part` UDF extracts structured campaign dimensions (year, count
 
 
 ### Create table functions
-To create the table functions you need, run the following DDL statements:
-- [User table function](table-functions/users.sql)
-- [User RFM table function](table-functions/users_rfm.sql)
-- [Session table function](table-functions/sessions.sql)
-- [Page table function](table-functions/pages.sql)
+To create the table functions you need, run the following SQL scripts in the order shown below:
 - [Event table function](table-functions/events.sql)
 - [Event Debug table function](table-functions/events_debug.sql)
+- [Session table function](table-functions/sessions.sql)
+- [User table function](table-functions/users.sql)
+- [Page table function](table-functions/pages.sql)
 - [Ecommerce Transaction table function](table-functions/ec_transactions.sql)
 - [Ecommerce Product table function](table-functions/ec_products.sql)
 - [Ecommerce Funnel table function](table-functions/ec_funnel.sql)
 - [Ecommerce Funnel Pivot table function](table-functions/ec_funnel_pivot.sql)
 - [Consents table function](table-functions/consents.sql)
-- [Attribution Comparison table function](table-functions/attribution_comparison.sql)
-- [Attribution Multi Touch table function](table-functions/attribution_multi_touch.sql)
 - [Attribution Single Touch table function](table-functions/attribution_single_touch.sql)
+- [Attribution Multi Touch table function](table-functions/attribution_multi_touch.sql)
+- [Attribution Comparison table function](table-functions/attribution_comparison.sql)
+- [User RFM table function](table-functions/users_rfm.sql)
 - [Media Plan table function](table-functions/media_plan.sql)
 - [Campaigns table function](table-functions/campaigns.sql)
 
