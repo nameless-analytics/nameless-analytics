@@ -176,7 +176,7 @@ with raw_user_data as (
     max(last_purchase_timestamp) as last_purchase_timestamp,
   
     count(distinct session_id) as sessions,
-    avg(session_duration_sec) as session_duration_sec,
+    avg(session_duration_sec) as avg_session_duration_sec,
     count(distinct session_id) / count(distinct client_id) as sessions_per_user,
     sum(page_view) as total_page_views,
     sum(total_events) as total_events,

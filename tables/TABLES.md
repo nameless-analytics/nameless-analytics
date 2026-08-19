@@ -13,6 +13,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Create raw tables](#create-raw-tables)
   - [Create custom functions](#create-custom-functions)
   - [Create table functions](#create-table-functions)
+- [Reporting fields](#reporting-fields)
 - [Raw tables](#raw-tables)
 - [Table functions](#table-functions)
   - [Events](#events)
@@ -30,7 +31,6 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Attribution Single Touch](#attribution-single-touch)
   - [Media Plan](#media-plan)
   - [Campaigns](#campaigns)
-- [Reporting fields](#reporting-fields)
 - [Data Governance and Maintenance](#data-governance-and-maintenance)
   - [Delete user data script](#delete-user-data-script)
   - [Manual user data deletion](#manual-user-data-deletion)
@@ -284,6 +284,15 @@ To create the table functions you need, run the following DDL statements:
 
 
 
+## Reporting fields
+The Reporting Fields Matrix provides an interactive overview of all dimensions and metrics available across Nameless Analytics table functions. The report is generated directly from the current BigQuery table function schemas, so it reflects the latest available reporting fields.
+
+[Available metrics and dimensions](https://datastudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d)
+
+</br>
+
+
+
 ## Raw tables
 Raw tables are the foundational storage layer of Nameless Analytics, designed to capture and preserve every user interaction in its raw, unprocessed form. These tables serve as the single source of truth for all analytics data, storing event-level information with complete historical fidelity.
 
@@ -486,17 +495,6 @@ select * from `project.nameless_analytics.campaigns`(start_date, end_date)
 ```
 
 [View SQL code](table-functions/campaigns.sql)
-
-
-
-## Reporting fields
-The Reporting Fields Matrix provides an interactive overview of all dimensions and metrics available across Nameless Analytics table functions.
-
-The matrix is generated directly from the current BigQuery table function schemas, so it reflects the latest available reporting fields.
-
-[Available metrics and dimensions](https://datastudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d)
-
-</br>
 
 
 

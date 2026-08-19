@@ -15,7 +15,7 @@ with session_data as (
       # POST CLICK
       count(distinct new_user_client_id) as new_users,
       count(distinct session_id) as sessions,
-      avg(session_duration_sec) as session_duration_sec,
+      avg(session_duration_sec) as avg_session_duration_sec,
       sum(new_session) as new_session,
       safe_divide(sum(new_session), count(distinct session_id)) as new_sessions_percentage,
       sum(returning_session) as returning_session,
@@ -104,7 +104,7 @@ with session_data as (
     # POST CLICK
     session_data.new_users,
     session_data.sessions,
-    session_data.session_duration_sec,
+    session_data.avg_session_duration_sec,
     session_data.new_session,
     session_data.new_sessions_percentage,
     session_data.returning_session,

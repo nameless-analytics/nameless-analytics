@@ -28,19 +28,19 @@ WITH steps AS (
       session_campaign,
       session_device_type,
       session_country,
-      step,
+      replace(step, '_client_id', '') as step,
       step_client_id,
     FROM `tom-moretti.nameless_analytics.ec_funnel`(start_date, end_date)
     UNPIVOT INCLUDE NULLS (
       step_client_id FOR step IN (
-        session_start,
-        view_item,
-        add_to_cart,
-        view_cart,
-        begin_checkout,
-        add_shipping_info,
-        add_payment_info,
-        purchase
+        session_start_client_id,
+        view_item_client_id,
+        add_to_cart_client_id,
+        view_cart_client_id,
+        begin_checkout_client_id,
+        add_shipping_info_client_id,
+        add_payment_info_client_id,
+        purchase_client_id
       )
     )
   ),

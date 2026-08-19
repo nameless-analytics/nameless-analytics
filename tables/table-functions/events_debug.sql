@@ -219,7 +219,7 @@ with raw_event_data as (
 
       where ecommerce_key != 'items'
       order by ecommerce_key
-    ) as ecommerce,
+    ) as ecommerce_data,
 
     # OTHER DATA
     array(
@@ -265,7 +265,7 @@ with raw_event_data as (
           cast([] as array<string>)
         )
       ) as datalayer_key
-    ) as datalayer,
+    ) as datalayer_data,
 
     consent_data
 
