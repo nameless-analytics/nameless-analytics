@@ -423,7 +423,8 @@ select * from `project.nameless_analytics.ec_products`(start_date, end_date)
 
 
 ### Ecommerce Funnel
-The Ecommerce Funnel table functions provide a specialized view of the user journey, from session start to purchase. It allows for detailed analysis of drop-off rates and conversion bottlenecks.
+### Ecommerce Funnel
+Builds a closed session-based ecommerce funnel from session start to purchase, marking each step as reached only when all preceding funnel event types are present in the same session.
 
 ```sql
 select * from `project.nameless_analytics.ec_funnel`(start_date, end_date)
