@@ -44,7 +44,7 @@ The following SQL scripts are used to initialize the Nameless Analytics reportin
 ### Create raw tables
 This script is used to create the raw tables in BigQuery, the main dataset `nameless_analytics` and the `events_raw` and `calendar_dates` tables. This script also enables BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. [Read more about it](https://cloud.google.com/bigquery/docs/advanced-runtime).
 
-<details><summary>To create the tables, run the following DDL statement.</summary>
+<details><summary>To create the tables, run the following SQL script.</summary>
   
 ```sql
 # NAMELESS ANALYTICS
