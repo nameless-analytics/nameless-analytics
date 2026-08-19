@@ -423,7 +423,6 @@ select * from `project.nameless_analytics.ec_products`(start_date, end_date)
 
 
 ### Ecommerce Funnel
-### Ecommerce Funnel
 Builds a closed session-based ecommerce funnel from session start to purchase, marking each step as reached only when all preceding funnel event types are present in the same session.
 
 ```sql
