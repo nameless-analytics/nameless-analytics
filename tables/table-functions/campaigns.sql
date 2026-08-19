@@ -1,16 +1,16 @@
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaigns`(start_date DATE, end_date DATE) AS (
-  with session_data as (
+with session_data as (
     select
       session_date,
-      session_campaign_year as campaign_year,
-      session_campaign_country as campaign_country,
-      session_campaign_funnel_stage as campaign_funnel_stage,
-      session_campaign_platform as campaign_platform,
-      session_campaign_type as campaign_type,
-      session_campaign_marketing_objective as campaign_marketing_objective,
-      session_campaign_name as campaign_name,
-      session_campaign as campaign,
-      session_campaign_id as campaign_id,
+      session_campaign_year,
+      session_campaign_country,
+      session_campaign_funnel_stage,
+      session_campaign_platform,
+      session_campaign_type,
+      session_campaign_marketing_objective,
+      session_campaign_name,
+      session_campaign,
+      session_campaign_id,
 
       # POST CLICK
       count(distinct new_user_client_id) as new_users,
@@ -56,15 +56,15 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaigns`(star
   online_campaigns_performances as (
     select
       date,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_year') as campaign_year,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_country') as campaign_country,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_funnel_stage') as campaign_funnel_stage,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_platform') as campaign_platform,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_type') as campaign_type,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_marketing_objective') as campaign_marketing_objective,
-      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_name') as campaign_name,
-      campaign,
-      campaign_id, 
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_year') as session_campaign_year,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_country') as session_campaign_country,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_funnel_stage') as session_campaign_funnel_stage,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_platform') as session_campaign_platform,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_type') as session_campaign_type,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_marketing_objective') as session_campaign_marketing_objective,
+      `tom-moretti.nameless_analytics.get_campaign_part`(campaign, 'campaign_name') as session_campaign_name,
+      campaign as session_campaign,
+      campaign_id as session_campaign_id, 
       sum(cost) as spend,
       sum(impression) as impression,
       sum(click) as click,
@@ -80,15 +80,15 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaigns`(star
 
   select 
     coalesce(session_data.session_date, online_campaigns_performances.date) as session_date,
-    coalesce(session_data.campaign_year, online_campaigns_performances.campaign_year) as campaign_year,
-    coalesce(session_data.campaign_country, online_campaigns_performances.campaign_country) as campaign_country,
-    coalesce(session_data.campaign_funnel_stage, online_campaigns_performances.campaign_funnel_stage) as campaign_funnel_stage,
-    coalesce(session_data.campaign_platform, online_campaigns_performances.campaign_platform) as campaign_platform,
-    coalesce(session_data.campaign_type, online_campaigns_performances.campaign_type) as campaign_type,
-    coalesce(session_data.campaign_marketing_objective, online_campaigns_performances.campaign_marketing_objective) as campaign_marketing_objective,
-    coalesce(session_data.campaign_name, online_campaigns_performances.campaign_name) as campaign_name,
-    coalesce(session_data.campaign, online_campaigns_performances.campaign) as campaign,
-    coalesce(session_data.campaign_id, online_campaigns_performances.campaign_id) as campaign_id,
+    coalesce(session_data.session_campaign_year, online_campaigns_performances.session_campaign_year) as session_campaign_year,
+    coalesce(session_data.session_campaign_country, online_campaigns_performances.session_campaign_country) as session_campaign_country,
+    coalesce(session_data.session_campaign_funnel_stage, online_campaigns_performances.session_campaign_funnel_stage) as session_campaign_funnel_stage,
+    coalesce(session_data.session_campaign_platform, online_campaigns_performances.session_campaign_platform) as session_campaign_platform,
+    coalesce(session_data.session_campaign_type, online_campaigns_performances.session_campaign_type) as session_campaign_type,
+    coalesce(session_data.session_campaign_marketing_objective, online_campaigns_performances.session_campaign_marketing_objective) as session_campaign_marketing_objective,
+    coalesce(session_data.session_campaign_name, online_campaigns_performances.session_campaign_name) as session_campaign_name,
+    coalesce(session_data.session_campaign, online_campaigns_performances.session_campaign) as session_campaign,
+    coalesce(session_data.session_campaign_id, online_campaigns_performances.session_campaign_id) as session_campaign_id,
  
     # PRE CLICK
     ifnull(spend, 0.00) as spend,
@@ -142,6 +142,6 @@ CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.campaigns`(star
   FROM session_data
   FULL JOIN online_campaigns_performances
     ON session_data.session_date = online_campaigns_performances.date
-    AND session_data.campaign = online_campaigns_performances.campaign
-    AND ifnull(session_data.campaign_id, "") = ifnull(online_campaigns_performances.campaign_id, "")
+    AND session_data.session_campaign = online_campaigns_performances.session_campaign
+    AND ifnull(session_data.session_campaign_id, "") = ifnull(online_campaigns_performances.session_campaign_id, "")
 );
