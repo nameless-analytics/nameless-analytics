@@ -1,3 +1,15 @@
+/* @datacloud.settings
+{
+  "version": 1,
+  "service": "BIG_QUERY",
+  "connectionInfo": {
+    "billingProjectId": "INHERIT",
+    "location": "INHERIT"
+  },
+  "dialect": "GOOGLE_SQL"
+}
+*/
+
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_funnel_pivot`(start_date DATE, end_date DATE) AS (
 WITH steps AS (
     SELECT 1 AS step_number, 'session_start' AS step UNION ALL
@@ -27,6 +39,7 @@ WITH steps AS (
       session_campaign_name,
       session_campaign,
       session_device_type,
+      session_city,
       session_country,
       replace(step, '_client_id', '') as step,
       step_client_id,
@@ -62,6 +75,7 @@ WITH steps AS (
       session_campaign_name,
       session_campaign,
       session_device_type,
+      session_city,
       session_country
     FROM funnel
   ),
@@ -91,6 +105,7 @@ WITH steps AS (
     all_steps.session_campaign_name,
     all_steps.session_campaign,
     all_steps.session_device_type,
+    all_steps.session_city,
     all_steps.session_country,
     all_steps.step_number,
     all_steps.step,

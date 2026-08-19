@@ -1,3 +1,15 @@
+/* @datacloud.settings
+{
+  "version": 1,
+  "service": "BIG_QUERY",
+  "connectionInfo": {
+    "billingProjectId": "INHERIT",
+    "location": "INHERIT"
+  },
+  "dialect": "GOOGLE_SQL"
+}
+*/
+
 CREATE OR REPLACE TABLE FUNCTION `tom-moretti.nameless_analytics.ec_funnel`(start_date DATE, end_date DATE) AS (
 WITH sessions AS (
   SELECT
@@ -20,6 +32,7 @@ WITH sessions AS (
     session_campaign_term,
     session_campaign_content,
     session_device_type,
+    session_city,
     session_country,
     1 as session_start,
     countif(event_name = 'view_item') as view_item,
@@ -53,6 +66,7 @@ select
   session_campaign_term,
   session_campaign_content,
   session_device_type,
+  session_city,
   session_country,
   if(session_start > 0, client_id, null) as session_start_client_id,
   if(session_start > 0 and view_item > 0, client_id, null) as view_item_client_id,
