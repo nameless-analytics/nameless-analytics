@@ -32,6 +32,10 @@ with consent_data as (
       user_campaign_marketing_objective,
       user_campaign_name,
       user_campaign, 
+      user_campaign_id,
+      user_campaign_click_id,
+      user_campaign_term,
+      user_campaign_content,
       user_device_type, 
       user_city,
       user_country, 
@@ -79,6 +83,7 @@ with consent_data as (
       session_hostname,
 
       # CONSENT DATA
+      consent_timestamp,
       case 
         when consent_expressed = 'Yes' then 'Consent expressed'
         when consent_expressed = 'No' then 'Consent not expressed'
@@ -116,6 +121,10 @@ with consent_data as (
     user_campaign_marketing_objective,
     user_campaign_name,
     user_campaign,
+    user_campaign_id,
+    user_campaign_click_id,
+    user_campaign_term,
+    user_campaign_content,
     user_device_type,
     user_city,
     user_country,
@@ -163,10 +172,10 @@ with consent_data as (
     session_hostname,
 
     # CONSENT DATA
+    consent_timestamp,
     consent_state,    
     case when consent_state = 'Consent expressed' then session_id end as session_id_consent_expressed,
     case when consent_state = 'Consent not expressed' then session_id end as session_id_consent_not_expressed,
-    case when consent_state = 'Consent mode not present' then session_id end as session_id_consent_mode_not_present,
     consent_name,
     case 
       when consent_state = 'Consent expressed' and consent_value_int_accepted_raw = 1 then 'Granted'
@@ -175,7 +184,6 @@ with consent_data as (
     case when consent_state = 'Consent expressed' and consent_value_int_accepted_raw = 1 then 1 end as consent_value_int_accepted,
     case when consent_state = 'Consent expressed' and consent_value_int_accepted_raw = 0 then 1 end as consent_value_int_denied
   from consent_data
-  group by all
 );
 """, project_name, dataset_name, project_name, dataset_name);
 
