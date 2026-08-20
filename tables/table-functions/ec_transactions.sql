@@ -1,4 +1,16 @@
-declare project_name string default 'PROJECT NAME';  -- Change this
+/* @datacloud.settings
+{
+  "version": 1,
+  "service": "BIG_QUERY",
+  "connectionInfo": {
+    "billingProjectId": "INHERIT",
+    "location": "INHERIT"
+  },
+  "dialect": "GOOGLE_SQL"
+}
+*/
+
+declare project_name string default 'tom-moretti';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
 declare ec_transactions string default format ("""
@@ -72,6 +84,8 @@ with raw_transaction_data as (
 
       # EVENT DATA
       event_date,
+      event_timestamp,
+      event_id,
       FORMAT_TIMESTAMP('%%H:%%M:%%S', TIMESTAMP_MILLIS(event_timestamp)) AS hour_and_minute,
       event_name,
       event_origin,
@@ -155,18 +169,27 @@ with raw_transaction_data as (
 
     # EVENT DATA
     event_date,
+    event_timestamp,
+    event_id,
     hour_and_minute,
     event_name,
     event_origin,
 
     # ECOMMERCE DATA      
     transaction_id,
+    case
+      when transaction_id is null then 1
+      else 0
+    end as missing_transaction_id,
 
     case
       when event_name = 'purchase' then 1
       else 0
     end as purchase,
-    countif(event_name = 'purchase') over (partition by transaction_id) as duplicate_purchase, 
+    case
+      when transaction_id is null then 0
+      else countif(event_name = 'purchase') over (partition by transaction_id)
+    end as duplicate_purchase,
     if(event_name = 'purchase', ifnull(transaction_revenue, 0.0), 0) as purchase_revenue,
     if(event_name = 'purchase', ifnull(transaction_tax, 0.0), 0) as purchase_tax,
     if(event_name = 'purchase', ifnull(transaction_shipping, 0.0), 0) as purchase_shipping,
@@ -177,7 +200,10 @@ with raw_transaction_data as (
       when event_name = 'refund' then 1
       else 0
     end as refund,
-    countif(event_name = 'refund') over (partition by transaction_id) as duplicate_refund, 
+    case
+      when transaction_id is null then 0
+      else countif(event_name = 'refund') over (partition by transaction_id)
+    end as duplicate_refund,     
     if(event_name = 'refund', ifnull(transaction_revenue, 0.0), 0) as refund_revenue,
     if(event_name = 'refund', ifnull(transaction_shipping, 0.0), 0) as refund_shipping,
     if(event_name = 'refund', ifnull(transaction_tax, 0.0), 0) as refund_tax,
