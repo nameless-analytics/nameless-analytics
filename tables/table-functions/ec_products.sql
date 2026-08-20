@@ -1,3 +1,15 @@
+/* @datacloud.settings
+{
+  "version": 1,
+  "service": "BIG_QUERY",
+  "connectionInfo": {
+    "billingProjectId": "INHERIT",
+    "location": "INHERIT"
+  },
+  "dialect": "GOOGLE_SQL"
+}
+*/
+
 declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
@@ -224,6 +236,7 @@ with raw_product_data as (
     item_category_3, 
     item_category_4, 
     item_category_5,
+    sum(item_price) as item_price,
 
     countif(event_name = "view_promotion") as view_promotion,
     countif(event_name = "select_promotion") as select_promotion,
