@@ -221,9 +221,7 @@ select * from `project.nameless_analytics.ec_products`(start_date, end_date)
 
 
 ### Ecommerce Funnel
-Builds a closed session-based ecommerce funnel from session start to purchase, marking each step as reached only when all preceding funnel event types are present in the same session.
-
-This is a presence-based funnel: event timestamps and chronological order are not evaluated. A step is reached when its event type and all preceding step types are present in the same session.
+Builds a cumulative presence-based ecommerce funnel within each session, from session start to purchase. A step is marked as reached when its event type and all preceding funnel event types are present in the session.
 
 ```sql
 select * from `project.nameless_analytics.ec_funnel`(start_date, end_date)
@@ -233,7 +231,7 @@ select * from `project.nameless_analytics.ec_funnel`(start_date, end_date)
 
 
 ### Ecommerce Funnel Pivot
-Returns the closed ecommerce funnel in long format with one row per session and funnel step, including step reach status and next-step client ID for drop-off analysis.
+Returns the presence-based ecommerce funnel in long format with one row per session and funnel step, including step reach status and next-step client ID for drop-off analysis.
 
 ```sql
 select * from `project.nameless_analytics.ec_funnel_pivot`(start_date, end_date)
