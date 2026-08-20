@@ -1,3 +1,15 @@
+/* @datacloud.settings
+{
+  "version": 1,
+  "service": "BIG_QUERY",
+  "connectionInfo": {
+    "billingProjectId": "INHERIT",
+    "location": "INHERIT"
+  },
+  "dialect": "GOOGLE_SQL"
+}
+*/
+
 declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
@@ -48,7 +60,7 @@ with raw_user_data as (
       if(event_name = 'purchase', timestamp_millis(event_timestamp), null) as first_purchase_timestamp,
       if(event_name = 'purchase', timestamp_millis(event_timestamp), null) as last_purchase_timestamp,
       sum(case when event_name = 'purchase' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as purchase_revenue,
-      sum(case when event_name = 'refund' then -(ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as refund_revenue,
+      sum(case when event_name = 'refund' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as refund_revenue,
       sum(case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as purchase_qty,
       sum(case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as refund_qty,
 
@@ -193,7 +205,7 @@ with raw_user_data as (
     sum(refund_qty) as item_quantity_refunded,
     sum(purchase_revenue) as purchase_revenue,
     sum(refund_revenue) as refund_revenue,
-    sum(purchase_revenue) + sum(refund_revenue) as revenue_net_refund,
+    sum(purchase_revenue) - sum(refund_revenue) as revenue_net_refund,
     avg(avg_order_value) as avg_order_value,
     avg(avg_refund_value) as avg_refund_value,
   from user_data

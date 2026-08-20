@@ -10,7 +10,7 @@
 }
 */
 
-declare project_name string default 'PROJECT NAME';  -- Change this
+declare project_name string default 'tom-moretti';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
 declare ec_transactions string default format ("""
@@ -96,7 +96,7 @@ with raw_transaction_data as (
       json_value(ecommerce, '$.currency') as transaction_currency,
       json_value(ecommerce, '$.coupon') as transaction_coupon
     from `%s.%s.events`(start_date, end_date, 'session')
-    where regexp_contains(event_name, r'^(purchase|refund)$'
+    where regexp_contains(event_name, r'^(purchase|refund)$')
   )
 
   select
@@ -190,9 +190,9 @@ with raw_transaction_data as (
       else 0
     end as refund,
     countif(event_name = 'refund') over (partition by transaction_id) as duplicate_refund, 
-    if(event_name = 'refund', -ifnull(transaction_revenue, 0.0), 0) as refund_revenue,
-    if(event_name = 'refund', -ifnull(transaction_shipping, 0.0), 0) as refund_shipping,
-    if(event_name = 'refund', -ifnull(transaction_tax, 0.0), 0) as refund_tax,
+    if(event_name = 'refund', ifnull(transaction_revenue, 0.0), 0) as refund_revenue,
+    if(event_name = 'refund', ifnull(transaction_shipping, 0.0), 0) as refund_shipping,
+    if(event_name = 'refund', ifnull(transaction_tax, 0.0), 0) as refund_tax,
     if(event_name = 'refund', ifnull(transaction_currency, null), null) as refund_currency,
     if(event_name = 'refund', ifnull(transaction_coupon, null), null) as refund_coupon
   from raw_transaction_data
