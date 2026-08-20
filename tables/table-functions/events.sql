@@ -1,3 +1,15 @@
+/* @datacloud.settings
+{
+  "version": 1,
+  "service": "BIG_QUERY",
+  "connectionInfo": {
+    "billingProjectId": "INHERIT",
+    "location": "INHERIT"
+  },
+  "dialect": "GOOGLE_SQL"
+}
+*/
+
 declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
@@ -6,9 +18,8 @@ CREATE OR REPLACE TABLE FUNCTION `%s.%s.events`(start_date DATE, end_date DATE, 
 select
     # USER DATA
     user_date,
-    first_value((select value.string from unnest(session_data) where name = 'user_id') IGNORE NULLS) over (partition by session_id order by event_timestamp desc) as user_id,
+    FIRST_VALUE((SELECT value.string  FROM UNNEST(session_data)  WHERE name = 'user_id') IGNORE NULLS) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC, event_id DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS user_id,  
     client_id,
-
     case 
       when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 'new_user'
       when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 'returning_user'
