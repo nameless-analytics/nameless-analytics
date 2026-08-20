@@ -113,18 +113,18 @@ with raw_product_data as (
       json_value(items, '$.item_category5') as item_category_5,
       safe_cast(json_value(items, '$.price') as float64) as item_price,
 
-      case when event_name = 'add_to_cart' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_added_to_cart,
-      case when event_name = 'remove_from_cart' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_removed_from_cart,
+      case when event_name = 'add_to_cart' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_added_to_cart,
+      case when event_name = 'remove_from_cart' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_removed_from_cart,
 
-      case when event_name = 'add_to_wishlist' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_added_to_wishlist,
-      case when event_name = 'remove_from_wishlist' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_removed_from_wishlist,
+      case when event_name = 'add_to_wishlist' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_added_to_wishlist,
+      case when event_name = 'remove_from_wishlist' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_removed_from_wishlist,
 
-      case when event_name = 'purchase' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_purchased,
-      case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1) end as item_revenue_purchased,
+      case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_purchased,
+      case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_revenue_purchased,
       case when event_name = 'purchase' then 1 end as unique_item_purchases,
 
-      case when event_name = 'refund' then safe_cast(json_value(items, '$.quantity') as int64) end as item_quantity_refunded,
-      case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1) end as item_revenue_refunded,
+      case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_refunded,
+      case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_revenue_refunded,
       case when event_name = 'refund' then 1 end as unique_item_refunds
     from `%s.%s.events`(start_date, end_date, 'session')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items

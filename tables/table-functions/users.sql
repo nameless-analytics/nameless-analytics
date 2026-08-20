@@ -59,10 +59,10 @@ with raw_user_data as (
       json_value(ecommerce, '$.transaction_id') as transaction_id,
       if(event_name = 'purchase', timestamp_millis(event_timestamp), null) as first_purchase_timestamp,
       if(event_name = 'purchase', timestamp_millis(event_timestamp), null) as last_purchase_timestamp,
-      sum(case when event_name = 'purchase' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as purchase_revenue,
-      sum(case when event_name = 'refund' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1)) else 0 end) as refund_revenue,
-      sum(case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1) else 0 end) as purchase_qty,
-      sum(case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 1) else 0 end) as refund_qty,
+      sum(case when event_name = 'purchase' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)) else 0 end) as purchase_revenue,
+      sum(case when event_name = 'refund' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)) else 0 end) as refund_revenue,
+      sum(case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as purchase_qty,
+      sum(case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as refund_qty,
 
     from `%s.%s.events`(start_date, end_date, 'user')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items
@@ -204,9 +204,9 @@ with raw_user_data as (
     sum(purchase_revenue) as purchase_revenue,
     sum(refund_revenue) as refund_revenue,
     sum(purchase_revenue) - sum(refund_revenue) as revenue_net_refund,
-    safe_divide(sum(purchase_revenue), sum(purchase)) as avg_order_value,
-    safe_divide(sum(refund_revenue), sum(refund)) as avg_refund_value    
-  from user_data
+    ifnull(safe_divide(sum(purchase_revenue), sum(purchase)), 0.0) as avg_order_value,    
+    ifnull(safe_divide(sum(refund_revenue), sum(refund)), 0.0) as avg_refund_value  
+from user_data
   group by all
 );
 """, project_name, dataset_name, project_name, dataset_name);
