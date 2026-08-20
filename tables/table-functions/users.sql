@@ -206,7 +206,7 @@ with raw_user_data as (
     sum(purchase_revenue) - sum(refund_revenue) as revenue_net_refund,
     ifnull(safe_divide(sum(purchase_revenue), sum(purchase)), 0.0) as avg_order_value,    
     ifnull(safe_divide(sum(refund_revenue), sum(refund)), 0.0) as avg_refund_value  
-from user_data
+  from user_data
   group by all
 );
 """, project_name, dataset_name, project_name, dataset_name);
