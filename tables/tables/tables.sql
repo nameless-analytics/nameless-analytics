@@ -13,7 +13,7 @@
 # NAMELESS ANALYTICS
 
 # Project settings
-declare project_name string default 'tom-moretti';  -- Change this
+declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics'; -- Change this
 declare dataset_location string default 'eu'; -- Change this
 

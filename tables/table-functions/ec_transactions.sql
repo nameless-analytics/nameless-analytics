@@ -10,7 +10,7 @@
 }
 */
 
-declare project_name string default 'tom-moretti';  -- Change this
+declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
 declare ec_transactions string default format ("""
