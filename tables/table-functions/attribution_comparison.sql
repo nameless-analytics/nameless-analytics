@@ -43,6 +43,8 @@ with attribution_data_single_touch as (
       attribution_model.session_campaign_term,
       attribution_model.session_campaign_content,
 
+      conversion_date,
+      conversion_name,
       conversion_id,
       1.0 as attributed_conversions,
       conversion_revenue as attributed_revenue,
@@ -128,6 +130,8 @@ with attribution_data_single_touch as (
       session_campaign_term,
       session_campaign_content,
 
+      conversion_date,
+      conversion_name,
       conversion_id,
       attribution_model.attributed_conversions,
       attribution_model.attributed_revenue,
@@ -167,6 +171,8 @@ with attribution_data_single_touch as (
   )
 
   select
+    conversion_date,
+    conversion_name,
     session_channel_grouping,
     session_custom_channel_grouping,
     session_source,
