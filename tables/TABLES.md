@@ -28,8 +28,8 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Ecommerce Funnel Pivot](#ecommerce-funnel-pivot)
   - [Consents](#consents)
   - [Attribution Comparison](#attribution-comparison)
-  - [Attribution Multi Touch](#attribution-multi-touch)
   - [Attribution Single Touch](#attribution-single-touch)
+  - [Attribution Multi Touch](#attribution-multi-touch)
   - [Media Plan](#media-plan)
   - [Campaigns](#campaigns)
 - [Data Governance and Maintenance](#data-governance-and-maintenance)
@@ -105,6 +105,8 @@ The dates table is partitioned by `date` and clustered by `month_name` and `day_
 Table functions are predefined SQL queries that simplify data analysis by transforming raw event data into structured, easy-to-use formats for common reporting needs.
 
 Unlike other systems, Nameless Analytics reporting functions are designed to work directly on the `events_raw` table as the single source of truth. By leveraging BigQuery window functions, they reflect the most up-to-date state of the data without requiring complex ETL processes or intermediate staging tables.
+
+Missing ecommerce numeric values are returned as zero. Refund amounts are represented as positive values, while net metrics are calculated as purchase minus refund.
 
 Streaming Protocol events are excluded from the calculation of the `session_duration_sec` and `time_on_page` fields.
 
@@ -199,6 +201,8 @@ select * from `project.nameless_analytics.pages`(start_date, end_date)
 ### Transactions
 Returns purchase and refund event rows enriched with transaction identifiers, revenue, tax, shipping, currency, coupon, and duplicate-event counts.
 
+Duplicate and missing transaction ID fields are diagnostic only. The function preserves every ingested event and does not automatically deduplicate transactions.
+
 ```sql
 select * from `project.nameless_analytics.ec_transactions`(start_date, end_date)
 ```
@@ -218,6 +222,8 @@ select * from `project.nameless_analytics.ec_products`(start_date, end_date)
 
 ### Ecommerce Funnel
 Builds a closed session-based ecommerce funnel from session start to purchase, marking each step as reached only when all preceding funnel event types are present in the same session.
+
+This is a presence-based funnel: event timestamps and chronological order are not evaluated. A step is reached when its event type and all preceding step types are present in the same session.
 
 ```sql
 select * from `project.nameless_analytics.ec_funnel`(start_date, end_date)
@@ -239,6 +245,8 @@ select * from `project.nameless_analytics.ec_funnel_pivot`(start_date, end_date)
 ### Consents
 Returns consent data in long format with one row per session and consent category, including consent expression state and Granted/Denied indicators.
 
+Session consent metrics use the first consent Update recorded in the session, representing the user's initial expressed consent.
+
 ```sql
 select * from `project.nameless_analytics.consents`(start_date, end_date)
 ```
@@ -256,6 +264,18 @@ select * from `project.nameless_analytics.attribution_comparison`(start_date, en
 [View SQL code](table-functions/attribution_comparison.sql)
 
 
+### Attribution Single Touch
+Calculates single-touch attribution per conversion using the user first click, the conversion-session last click, and the most recent non-direct session within the specified lookback window.
+
+The last-click non-direct model ignores direct sessions when a non-direct touchpoint exists within the lookback window. If only direct sessions exist, credit is assigned to the conversion-session direct touchpoint.
+
+```sql
+select * from `project.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)
+```
+
+[View SQL code](table-functions/attribution_single_touch.sql)
+
+
 ### Attribution Multi Touch
 Calculates multi-touch attribution at touchpoint level using linear, time-decay, and position-based models across sessions within the specified lookback window.
 
@@ -264,16 +284,6 @@ select * from `project.nameless_analytics.attribution_multi_touch`(start_date, e
 ```
 
 [View SQL code](table-functions/attribution_multi_touch.sql)
-
-
-### Attribution Single Touch
-Calculates single-touch attribution per conversion using the user first click, the conversion-session last click, and the most recent non-direct session within the specified lookback window.
-
-```sql
-select * from `project.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)
-```
-
-[View SQL code](table-functions/attribution_single_touch.sql)
 
 
 ### Media Plan
@@ -288,6 +298,8 @@ select * from `project.nameless_analytics.media_plan`(start_date, end_date)
 
 ### Campaigns
 Combines daily campaign media performance with post-click user, session, conversion, ecommerce, and ROAS metrics.
+
+Unmatched advertising and analytics campaigns are preserved in the results. Missing numeric metrics are returned as zero, making campaign naming and ID discrepancies visible.
 
 ```sql
 select * from `project.nameless_analytics.campaigns`(start_date, end_date)
