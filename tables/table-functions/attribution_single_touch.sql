@@ -174,21 +174,21 @@ with conversions as (
     last_click_campaign_content,
 
     # LAST CLICK NON-DIRECT
-    ifnull(traffic_source.channel_grouping, last_click_channel_grouping) as last_click_non_direct_channel_grouping,
-    ifnull(traffic_source.custom_channel_grouping, last_click_custom_channel_grouping) as last_click_non_direct_custom_channel_grouping,
-    ifnull(traffic_source.source, last_click_source) as last_click_non_direct_source,
-    ifnull(traffic_source.campaign_year, last_click_campaign_year) as last_click_non_direct_campaign_year,
-    ifnull(traffic_source.campaign_country, last_click_campaign_country) as last_click_non_direct_campaign_country,
-    ifnull(traffic_source.campaign_funnel_stage, last_click_campaign_funnel_stage) as last_click_non_direct_campaign_funnel_stage,
-    ifnull(traffic_source.campaign_platform, last_click_campaign_platform) as last_click_non_direct_campaign_platform,
-    ifnull(traffic_source.campaign_type, last_click_campaign_type) as last_click_non_direct_campaign_type,
-    ifnull(traffic_source.campaign_marketing_objective, last_click_campaign_marketing_objective) as last_click_non_direct_campaign_marketing_objective,
-    ifnull(traffic_source.campaign_name, last_click_campaign_name) as last_click_non_direct_campaign_name,
-    ifnull(traffic_source.campaign, last_click_campaign) as last_click_non_direct_campaign,
-    ifnull(traffic_source.campaign_id, last_click_campaign_id) as last_click_non_direct_campaign_id,
-    ifnull(traffic_source.campaign_click_id, last_click_campaign_click_id) as last_click_non_direct_campaign_click_id,
-    ifnull(traffic_source.campaign_term, last_click_campaign_term) as last_click_non_direct_campaign_term,
-    ifnull(traffic_source.campaign_content, last_click_campaign_content) as last_click_non_direct_campaign_content
+    if(traffic_source.session_start_timestamp is not null, traffic_source.channel_grouping, last_click_channel_grouping) as last_click_non_direct_channel_grouping,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.custom_channel_grouping, last_click_custom_channel_grouping) as last_click_non_direct_custom_channel_grouping,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.source, last_click_source) as last_click_non_direct_source,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_year, last_click_campaign_year) as last_click_non_direct_campaign_year,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_country, last_click_campaign_country) as last_click_non_direct_campaign_country,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_funnel_stage, last_click_campaign_funnel_stage) as last_click_non_direct_campaign_funnel_stage,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_platform, last_click_campaign_platform) as last_click_non_direct_campaign_platform,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_type, last_click_campaign_type) as last_click_non_direct_campaign_type,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_marketing_objective, last_click_campaign_marketing_objective) as last_click_non_direct_campaign_marketing_objective,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_name, last_click_campaign_name) as last_click_non_direct_campaign_name,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign, last_click_campaign) as last_click_non_direct_campaign,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_id, last_click_campaign_id) as last_click_non_direct_campaign_id,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_click_id, last_click_campaign_click_id) as last_click_non_direct_campaign_click_id,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_term, last_click_campaign_term) as last_click_non_direct_campaign_term,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_content, last_click_campaign_content) as last_click_non_direct_campaign_content
 
   from conversions
   left join last_click_non_direct using(conversion_id)
