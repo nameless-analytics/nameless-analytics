@@ -1,3 +1,15 @@
+/* @datacloud.settings
+{
+  "version": 1,
+  "service": "BIG_QUERY",
+  "connectionInfo": {
+    "billingProjectId": "INHERIT",
+    "location": "INHERIT"
+  },
+  "dialect": "GOOGLE_SQL"
+}
+*/
+
 declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
@@ -84,7 +96,7 @@ with raw_transaction_data as (
       json_value(ecommerce, '$.currency') as transaction_currency,
       json_value(ecommerce, '$.coupon') as transaction_coupon
     from `%s.%s.events`(start_date, end_date, 'session')
-    where regexp_contains(event_name, 'purchase|refund')
+    where regexp_contains(event_name, r'^(purchase|refund)$'
   )
 
   select

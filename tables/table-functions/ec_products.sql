@@ -128,7 +128,7 @@ with raw_product_data as (
       case when event_name = 'refund' then 1 end as unique_item_refunds
     from `%s.%s.events`(start_date, end_date, 'session')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items
-    where regexp_contains(event_name, 'view_promotion|select_promotion|view_item_list|select_item|view_item|add_to_wishlist|remove_from_wishlist|add_to_cart|remove_from_cart|view_cart|begin_checkout|add_shipping_info|add_payment_info|purchase|refund')
+    where regexp_contains(event_name, r'^(view_promotion|select_promotion|view_item_list|select_item|view_item|add_to_wishlist|remove_from_wishlist|add_to_cart|remove_from_cart|view_cart|begin_checkout|add_shipping_info|add_payment_info|purchase|refund)$')
   )
 
   select 
