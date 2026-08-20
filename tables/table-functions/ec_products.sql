@@ -236,7 +236,6 @@ with raw_product_data as (
     item_category_3, 
     item_category_4, 
     item_category_5,
-    sum(item_price) as item_price,
 
     countif(event_name = "view_promotion") as view_promotion,
     countif(event_name = "select_promotion") as select_promotion,
@@ -252,6 +251,7 @@ with raw_product_data as (
     countif(event_name = "add_shipping_info") as add_shipping_info,
     countif(event_name = "add_payment_info") as add_payment_info,
 
+    sum(item_price) as item_price,
     sum(item_quantity_purchased) as item_quantity_purchased,
     sum(unique_item_purchases) as unique_item_purchases,
     sum(item_quantity_added_to_cart) as item_quantity_added_to_cart,
