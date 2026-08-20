@@ -25,7 +25,7 @@ The Nameless Analytics Troubleshooting Guide identifies, explains, and resolves 
 ## Troubleshooting Tip
 Use the **Browser console** to check tags execution status and event data sent to the server.
 
-Use the **GTM Server Preview Mode** to check incoming events and how the Server-Side Client Tag responds to them.
+Use the **GTM Server Preview Mode** to check incoming events and how the Server-side Client Tag responds to them.
 
 Inspect a network request to see the data sent by client from Preview and data response by server from Preview.
 
@@ -63,14 +63,14 @@ Server logs show:
 
 
 ## Validation Errors (403 Forbidden)
-The Server-Side Client Tag acts as a security gateway. If a request doesn't meet strict criteria, it is rejected with a `403 Forbidden` status.
+The Server-side Client Tag acts as a security gateway. If a request doesn't meet strict criteria, it is rejected with a `403 Forbidden` status.
 
 
 Browser console shows: 
 
 `[event_name] > 🔴 Request refused`
 
-- **Issue:** The server-side Client Tag refused the request due to a validation failure.
+- **Issue:** The Server-side Client Tag refused the request due to a validation failure.
 - **Solution:** Check the server-side GTM preview mode "Inbound Request" logs for the specific cause (Origin, IP, Bot protection, etc.).
 
 Server logs show: 
@@ -78,7 +78,7 @@ Server logs show:
 `🔴 Request origin not authorized`
 
 - **Issue:** The request came from an unauthorized domain.
-- **Solution:** Add the domain (e.g., `https://example.com`) to the **Authorized domains** list in the Server-Side Client Tag configuration.
+- **Solution:** Add the domain (e.g., `https://example.com`) to the **Authorized domains** list in the Server-side Client Tag configuration.
 
 Server logs show: 
 
@@ -176,7 +176,7 @@ The tracker requires its core libraries and a valid configuration to initiate.
 
 Browser console shows: 
 
-`[event_name] > 🔴 Tracker configuration error: event has invalid Nameless Analytics Client-Side tracker configuration variable`
+`[event_name] > 🔴 Tracker configuration error: event has invalid Nameless Analytics Client-side Tracker Configuration Variable`
 
 - **Issue:** The tag is missing the required config variable or it's incorrectly set.
 - **Solution:** Check the "Configuration Variable" field in the tag and ensure it points to a valid NA Config Variable.

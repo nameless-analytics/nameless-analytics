@@ -9,7 +9,7 @@ For upcoming features and planned improvements, see the [roadmap](ROADMAP.md).
 
 ## Versions
 ### 2026-08-18 | Documentation & Feature Update
-- Documented GTM server-side client tag request processing lifecycle (claiming, Firestore persistence, BigQuery streaming, custom endpoint forwarding).
+- Documented GTM Server-side Client Tag request processing lifecycle (claiming, Firestore persistence, BigQuery streaming, custom endpoint forwarding).
 - Documented BigQuery User-Defined Functions (`get_campaign_part`, `get_custom_channel_grouping`).
 - Documented reporting table functions for Attribution (`attribution_comparison`, `attribution_multi_touch`, `attribution_single_touch`), Media Planning (`media_plan`), Campaigns (`campaigns`), Segmentation (`users_rfm`), and Debugging (`events_debug`).
 - Standardized event naming conventions (`account_creation`, `form_submission`, `newsletter_subscription`).

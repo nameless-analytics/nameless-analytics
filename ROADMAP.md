@@ -12,7 +12,7 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 Here is a wishlist of ideas and features for future releases, representing a list of intentions rather than a strict roadmap.
 
 - Complete Dataform datamodel with ML models
-- Add core web vitals metrics (Client-side tracker tag) for page_load_time event
+- Add core web vitals metrics (Client-side Tracker Tag) for page_load_time event
 - Add force cast value as string at event parameter level 
 
 # 

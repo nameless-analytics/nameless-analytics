@@ -112,7 +112,7 @@ Read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
 
 
 ## Client-Side Collection
-The **Client-Side Tracker Tag** abstracts complex logic to ensure reliable data capture under any condition.
+The **Client-side Tracker Tag** abstracts complex logic to ensure reliable data capture under any condition.
 
 
 ### Request payload data
@@ -430,7 +430,7 @@ It handles the following background operations:
 - **Payload Enrichment:** Formats timestamps into BigQuery-compatible date strings and captures browser environment metrics like screen resolution and viewport size.
 - **Sequential Requests Queue:** Implements a Promise-based queue to ensure that HTTP requests are sent in the exact order they occurred (FIFO), preserving the timeline of user interactions.
 - **Cross-domain Handshake:** Manages a global click listener that detects cross-domain links. It triggers a server-side "handshake" via the `get_user_data` function to retrieve the visitor's server-side identities before redirecting and decorating outbound URLs with the `na_id` parameter.
-- **Server Identity Retrieval (`get_user_data`):** A dedicated function that performs an asynchronous POST request to the Server-Side Client Tag to fetch the active `client_id` and `session_id`. This ensures that cross-domain tracking uses the authoritative IDs issued by the server.
+- **Server Identity Retrieval (`get_user_data`):** A dedicated function that performs an asynchronous POST request to the Server-side Client Tag to fetch the active `client_id` and `session_id`. This ensures that cross-domain tracking uses the authoritative IDs issued by the server.
 - **Consent State Mapping:** Provides a function to read the current state of all Google Consent Mode types directly from the global GTM data object.
 
 </details>
@@ -449,7 +449,7 @@ This data is mapped into the `event_data` object under `device_vendor`, `os_vers
 ### Cross-domain Architecture
 Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links. 
 
-For retrieving the active `client_id` and `session_id` the Nameless Analytics Client-Side Tracker Tag needs to perform a handshake with the server before redirecting and decorating outbound URLs with the `na_id` parameter in real time.
+For retrieving the active `client_id` and `session_id` the Nameless Analytics Client-side Tracker Tag needs to perform a handshake with the server before redirecting and decorating outbound URLs with the `na_id` parameter in real time.
 
 Since link decoration happens dynamically upon clicking, cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
 
@@ -540,7 +540,7 @@ For a detailed guide on resolving common sequence and integration issues, see th
 
 
 ## Server-Side Processing
-The **Server-Side Client Tag** sits between the public internet and your cloud infrastructure, verifying, claiming or rejecting every request.
+The **Server-side Client Tag** sits between the public internet and your cloud infrastructure, verifying, claiming or rejecting every request.
 
 
 ### Security and Validation
@@ -679,7 +679,7 @@ Use the Streaming Protocol to:
 
 To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming Protocol.
 
-The Server-Side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming Protocol" and does not include a valid `x-api-key` header matching your configuration.
+The Server-side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming Protocol" and does not include a valid `x-api-key` header matching your configuration.
 
 
 ### Debugging requests

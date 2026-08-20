@@ -458,7 +458,7 @@ Ensure they are served over HTTPS and from the exact same primary domain as your
 ### 4. Authorize the new domain in the template permissions
 Google Tag Manager blocks script injections from unauthorized domains by default to protect the site from XSS.
 1. In your GTM workspace, go to the **Templates** section.
-2. Open the **Nameless Analytics Client-Side Tracker Tag** template.
+2. Open the **Nameless Analytics Client-side Tracker Tag** template.
 3. Switch to the **Permissions** tab.
 4. Expand the **Injects scripts** permission.
 5. Add your new custom domain URL pattern (e.g., `https://www.yourdomain.com/*`) so that GTM allows the template to fetch the scripts from it.
