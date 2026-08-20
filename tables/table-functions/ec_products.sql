@@ -84,6 +84,8 @@ with raw_product_data as (
 
       # EVENT DATA
       event_date,
+      event_timestamp,
+      event_id,
       FORMAT_TIMESTAMP('%%H:%%M:%%S', TIMESTAMP_MILLIS(event_timestamp)) AS hour_and_minute,
       event_name,
       event_origin,
@@ -101,7 +103,7 @@ with raw_product_data as (
       json_value(items, '$.item_list_name') as item_list_name,
       json_value(items, '$.affiliation') as item_affiliation,
       json_value(items, '$.coupon') as item_coupon,
-      safe_cast(json_value(items, '$.discount') as float64) as item_discount,
+      ifnull(safe_cast(json_value(items, '$.discount') as float64), 0.0) as item_discount,
       json_value(items, '$.item_brand') as item_brand,
       json_value(items, '$.item_id') as item_id,
       json_value(items, '$.item_name') as item_name,
@@ -111,21 +113,58 @@ with raw_product_data as (
       json_value(items, '$.item_category3') as item_category_3,
       json_value(items, '$.item_category4') as item_category_4,
       json_value(items, '$.item_category5') as item_category_5,
-      safe_cast(json_value(items, '$.price') as float64) as item_price,
+      ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) as item_price,
 
-      case when event_name = 'add_to_cart' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_added_to_cart,
-      case when event_name = 'remove_from_cart' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_removed_from_cart,
+      case
+        when event_name = 'add_to_cart' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)
+        else 0
+      end as item_quantity_added_to_cart,
 
-      case when event_name = 'add_to_wishlist' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_added_to_wishlist,
-      case when event_name = 'remove_from_wishlist' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_removed_from_wishlist,
+      case
+        when event_name = 'remove_from_cart' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)
+        else 0
+      end as item_quantity_removed_from_cart,
 
-      case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_purchased,
-      case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_revenue_purchased,
-      case when event_name = 'purchase' then 1 end as unique_item_purchases,
+      case
+        when event_name = 'add_to_wishlist' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)
+        else 0
+      end as item_quantity_added_to_wishlist,
 
-      case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_quantity_refunded,
-      case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) end as item_revenue_refunded,
-      case when event_name = 'refund' then 1 end as unique_item_refunds
+      case
+        when event_name = 'remove_from_wishlist' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)
+        else 0
+      end as item_quantity_removed_from_wishlist,
+
+      case
+        when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)
+        else 0
+      end as item_quantity_purchased,
+
+      case
+        when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)
+        else 0.0
+      end as item_revenue_purchased,
+
+      case
+        when event_name = 'purchase' then 1
+        else 0
+      end as unique_item_purchases,
+
+      case
+        when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)
+        else 0
+      end as item_quantity_refunded,
+
+      case
+        when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)
+        else 0.0
+      end as item_revenue_refunded,
+
+      case
+        when event_name = 'refund' then 1
+        else 0
+      end as unique_item_refunds
+
     from `%s.%s.events`(start_date, end_date, 'session')
       left join unnest(json_extract_array(ecommerce, '$.items')) as items
     where regexp_contains(event_name, r'^(view_promotion|select_promotion|view_item_list|select_item|view_item|add_to_wishlist|remove_from_wishlist|add_to_cart|remove_from_cart|view_cart|begin_checkout|add_shipping_info|add_payment_info|purchase|refund)$')
@@ -199,6 +238,8 @@ with raw_product_data as (
 
     # EVENT DATA
     event_date,
+    event_timestamp,
+    event_id,
     hour_and_minute,
     event_name,
     event_origin,
@@ -256,8 +297,10 @@ with raw_product_data as (
     sum(unique_item_purchases) as unique_item_purchases,
     sum(item_quantity_added_to_cart) as item_quantity_added_to_cart,
     sum(item_quantity_removed_from_cart) as item_quantity_removed_from_cart,
-    sum(item_revenue_purchased) as item_revenue_purchased,
+    sum(item_quantity_added_to_wishlist) as item_quantity_added_to_wishlist,
+    sum(item_quantity_removed_from_wishlist) as item_quantity_removed_from_wishlist,
 
+    sum(item_revenue_purchased) as item_revenue_purchased,
     sum(item_quantity_refunded) as item_quantity_refunded,
     sum(unique_item_refunds) as unique_item_refunds,
     sum(item_revenue_refunded) as item_revenue_refunded
