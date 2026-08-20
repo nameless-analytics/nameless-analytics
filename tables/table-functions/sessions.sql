@@ -1,3 +1,15 @@
+/* @datacloud.settings
+{
+  "version": 1,
+  "service": "BIG_QUERY",
+  "connectionInfo": {
+    "billingProjectId": "INHERIT",
+    "location": "INHERIT"
+  },
+  "dialect": "GOOGLE_SQL"
+}
+*/
+
 declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
@@ -96,9 +108,9 @@ with raw_session_data as (
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.value') as float64) end), 0) as purchase_revenue,
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.shipping') as float64) end), 0) as purchase_shipping,
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.tax') as float64) end), 0) as purchase_tax,
-      ifnull(sum(case when event_name = 'refund' then -safe_cast(json_value(ecommerce, '$.value') as float64) end), 0) as refund_revenue,
-      ifnull(sum(case when event_name = 'refund' then -safe_cast(json_value(ecommerce, '$.shipping') as float64) end), 0) as refund_shipping,
-      ifnull(sum(case when event_name = 'refund' then -safe_cast(json_value(ecommerce, '$.tax') as float64) end), 0) as refund_tax,
+      ifnull(sum(case when event_name = 'refund' then safe_cast(json_value(ecommerce, '$.value') as float64) end), 0) as refund_revenue,
+      ifnull(sum(case when event_name = 'refund' then safe_cast(json_value(ecommerce, '$.shipping') as float64) end), 0) as refund_shipping,
+      ifnull(sum(case when event_name = 'refund' then safe_cast(json_value(ecommerce, '$.tax') as float64) end), 0) as refund_tax,
 
       # CONSENT DATA
       min(case when consent_type = 'Update' then event_timestamp end) as update_timestamp,
@@ -370,9 +382,9 @@ with raw_session_data as (
     ifnull(safe_divide(sum(refund_revenue), sum(refund)), 0) as avg_refund_value,
 
     purchase - refund as purchase_net_refund,
-    purchase_revenue + refund_revenue as revenue_net_refund,
-    purchase_shipping + refund_shipping as shipping_net_refund,
-    purchase_tax + refund_tax as tax_net_refund,
+    purchase_revenue - refund_revenue as revenue_net_refund,
+    purchase_shipping - refund_shipping as shipping_net_refund,
+    purchase_tax - refund_tax as tax_net_refund,
 
     # CONSENT DATA
     consent_timestamp,
@@ -404,7 +416,7 @@ with raw_session_data as (
 
     session_security_storage,
     safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_accepted_percentage,
-    1 - safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_denied_percentage,
+    1 - safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_denied_percentage
 
   from session_data
   group by all
