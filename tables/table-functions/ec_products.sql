@@ -1,5 +1,3 @@
-Server-side Client Tag
-
 declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
@@ -241,7 +239,7 @@ with raw_product_data as (
     countif(event_name = "add_shipping_info") as add_shipping_info,
     countif(event_name = "add_payment_info") as add_payment_info,
 
-    sum(item_price) as item_price,
+    avg(item_price) as item_price,
     sum(item_quantity_purchased) as item_quantity_purchased,
     sum(unique_item_purchases) as unique_item_purchases,
     sum(item_quantity_added_to_cart) as item_quantity_added_to_cart,
