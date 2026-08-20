@@ -68,13 +68,13 @@ select
     (select value.string from unnest(user_data) where name = 'user_language') as user_language,
 
     -- Add user level custom dimension here
-    -- Include values from Streaming protocol 
+    -- Include values from Streaming Protocol 
     -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name')) over (partition by client_id order by event_timestamp asc) as user_parameter_name, -- First touch value
     -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name') ignore nulls) over (partition by client_id order by event_timestamp asc) as user_parameter_name, -- First touch not null value
     -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name')) over (partition by client_id order by event_timestamp desc) as user_parameter_name, -- Last touch value
     -- first_value((select value.string from unnest(user_data) where name = 'user_parameter_name') ignore nulls) over (partition by client_id order by event_timestamp desc) as user_parameter_name, -- Last touch not null value
 
-    -- Exclude values from Streaming protocol 
+    -- Exclude values from Streaming Protocol 
     -- first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(user_data) where name = 'user_parameter_name'), NULL)) over (partition by client_id order by event_timestamp asc rows between unbounded preceding and unbounded following) as user_parameter_name, -- First touch value
     -- first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(user_data) where name = 'user_parameter_name'), NULL) ignore nulls) over (partition by client_id order by event_timestamp asc rows between unbounded preceding and unbounded following) as user_parameter_name, -- First touch not null value
     -- first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(user_data) where name = 'user_parameter_name'), NULL)) over (partition by client_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as user_parameter_name, -- Last touch value
@@ -94,12 +94,12 @@ select
     datetime_diff(
       timestamp_millis(first_value(IF(event_origin != 'Streaming Protocol', (SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_end_timestamp'), NULL) IGNORE NULLS) OVER (PARTITION BY session_id ORDER BY event_timestamp DESC rows between unbounded preceding and unbounded following)), 
       timestamp_millis((SELECT value.int FROM UNNEST(session_data) WHERE name = 'session_start_timestamp'))
-    , second) AS session_duration_sec, -- Exclude Streaming protocol events
+    , second) AS session_duration_sec, -- Exclude Streaming Protocol events
 
     -- datetime_diff(
     --   timestamp_millis(first_value((select value.int from unnest(session_data) where name = 'session_end_timestamp')) over (partition by session_id order by event_timestamp desc)), 
     --   timestamp_millis((select value.int from unnest(session_data) where name = 'session_start_timestamp'))
-    -- , second) as session_duration_sec, -- Include Streaming protocol events
+    -- , second) as session_duration_sec, -- Include Streaming Protocol events
 
     case when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 'New session' else 'Returning session' end as session_type,
     case when (select value.int from unnest(session_data) where name = 'session_number') = 1 then 1 else 0 end as new_session,
@@ -141,13 +141,13 @@ select
     first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_title'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_title,
 
     -- Add session level custom dimension here
-    -- Include values from Streaming protocol 
+    -- Include values from Streaming Protocol 
     -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name')) over (partition by session_id order by event_timestamp asc) as session_parameter_name, -- First touch value
     -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name') ignore nulls) over (partition by session_id order by event_timestamp asc) as session_parameter_name, -- First touch not null value
     -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name')) over (partition by session_id order by event_timestamp desc) as session_parameter_name, -- Last touch value
     -- first_value((select value.string from unnest(session_data) where name = 'session_parameter_name') ignore nulls) over (partition by session_id order by event_timestamp desc) as session_parameter_name, -- Last touch not null value
 
-    -- Exclude values from Streaming protocol 
+    -- Exclude values from Streaming Protocol 
     -- first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(session_data) where name = 'session_parameter_name'), NULL)) over (partition by session_id order by event_timestamp asc rows between unbounded preceding and unbounded following) as session_parameter_name, -- First touch value
     -- first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(session_data) where name = 'session_parameter_name'), NULL) ignore nulls) over (partition by session_id order by event_timestamp asc rows between unbounded preceding and unbounded following) as session_parameter_name, -- First touch not null value
     -- first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(session_data) where name = 'session_parameter_name'), NULL)) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_parameter_name, -- Last touch value
@@ -176,12 +176,12 @@ select
     datetime_diff(
       timestamp_millis(first_value(IF(event_origin != 'Streaming Protocol', event_timestamp, NULL) IGNORE NULLS) over (partition by page_id order by event_timestamp desc rows between unbounded preceding and unbounded following)),
       timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
-    , second) as time_on_page, -- Exclude Streaming protocol events
+    , second) as time_on_page, -- Exclude Streaming Protocol events
 
     -- datetime_diff(
     --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp desc)),
     --   timestamp_millis(first_value(event_timestamp) over (partition by page_id order by event_timestamp asc))
-    -- , second) as time_on_page, -- Include Streaming protocol events
+    -- , second) as time_on_page, -- Include Streaming Protocol events
 
     # EVENT DATA
     event_date,
@@ -237,7 +237,7 @@ select
      (select value.string from unnest(event_data) where name = 'lead_type') as lead_type,
 
     -- Add event level custom dimension here
-    -- (select value.string from unnest(event_data) where name = 'parameter_name') as parameter_name -- Always include Streaming protocol events
+    -- (select value.string from unnest(event_data) where name = 'parameter_name') as parameter_name -- Always include Streaming Protocol events
 
     # ECOMMERCE DATA
     ecommerce,

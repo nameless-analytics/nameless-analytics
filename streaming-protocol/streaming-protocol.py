@@ -164,7 +164,7 @@ def build_payload(page_date_from_bq, page_data_from_bq):
         "event_timestamp": int(datetime.now(timezone.utc).timestamp() * 1000),
         "event_id": f"{na_s.split('-')[1]}_{secrets.token_hex(8)}", # Automatically generated based on na_s cookie
         "event_name": event_name,
-        "event_origin": "Streaming protocol", # Do not modify
+        "event_origin": "Streaming Protocol", # Do not modify
         "event_data": {
             "event_type": "event", # Do not modify
             "hostname": urlparse(origin).netloc, # Website domain origin
@@ -220,7 +220,7 @@ def send_request(payload):
             'X-Gtm-Server-Preview': gtm_preview_header,
             'Content-Type': 'application/json',
             'Origin': origin,
-            'User-Agent': 'Nameless Analytics - Streaming protocol',
+            'User-Agent': 'Nameless Analytics - Streaming Protocol',
             'Cookie': f'na_u={client_id}; na_s={na_s}' 
         }
     

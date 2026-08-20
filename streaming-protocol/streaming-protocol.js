@@ -184,7 +184,7 @@ async function build_payload(page_date_from_bq, page_data_from_bq) {
         "event_timestamp": event_timestamp,
         "event_id": `${na_s.split('-')[1]}_${event_id_suffix}`, // Automatically generated based on na_s cookie
         "event_name": event_name,
-        "event_origin": "Streaming protocol", // Do not modify
+        "event_origin": "Streaming Protocol", // Do not modify
         "event_data": {
             "event_type": "event", // Do not modify
             "hostname": new URL(origin).hostname, // Website domain origin
@@ -241,7 +241,7 @@ async function send_request(payload) {
             'X-Gtm-Server-Preview': gtm_preview_header,
             'Content-Type': 'application/json',
             'Origin': origin,
-            'User-Agent': 'Nameless Analytics - Streaming protocol',
+            'User-Agent': 'Nameless Analytics - Streaming Protocol',
             'Cookie': `na_u=${client_id}; na_s=${na_s}`
         };
 
