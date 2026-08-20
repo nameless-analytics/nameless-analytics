@@ -13,7 +13,7 @@
 # NAMELESS ANALYTICS
 
 # Project settings
-declare project_name string default 'PROJECT NAME';  -- Change this
+declare project_name string default 'tom-moretti';  -- Change this
 declare dataset_name string default 'nameless_analytics'; -- Change this
 declare dataset_location string default 'eu'; -- Change this
 
@@ -29,7 +29,7 @@ declare dates_table_path string default CONCAT('`', project_name, '.', dataset_n
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Enable BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. For more informations: https://cloud.google.com/bigquery/docs/advanced-runtime
+# Enable BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. For more information: https://cloud.google.com/bigquery/docs/advanced-runtime
 declare enable_bigquery_advanced_runtime string default format(
   """
     ALTER PROJECT `%s`
@@ -49,7 +49,7 @@ declare main_dataset_sql string default format(
       # default_partition_expiration_days = PARTITION_EXPIRATION,
       # default_table_expiration_days = TABLE_EXPIRATION,
       # max_time_travel_hours = HOURS, # default 168 hours => 7 days 
-      # storage_billing_model = BILLING_MODEL # Phytical or logical (default)  
+      # storage_billing_model = BILLING_MODEL # Physical or logical (default)  
       description = 'Nameless Analytics',
       location = '%s'
     );
@@ -191,7 +191,7 @@ declare dates_table_sql string default FORMAT(
         EXTRACT(WEEK(MONDAY) FROM date) AS week_number_monday,
         EXTRACT(DAY FROM date) AS day_number,
         FORMAT_DATE('%%A', date) AS day_name,
-        EXTRACT(DAYOFWEEK FROM date) AS day_of_week_number, 
+        MOD(EXTRACT(DAYOFWEEK FROM date) + 5, 7) + 1 AS day_of_week_number, 
         IF(EXTRACT(DAYOFWEEK FROM date) IN (1, 7), TRUE, FALSE) AS is_weekend
       FROM UNNEST(GENERATE_DATE_ARRAY('1970-01-01', '2050-12-31', INTERVAL 1 DAY)) AS date
     );
@@ -202,13 +202,13 @@ declare dates_table_sql string default FORMAT(
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Enable BigQuery advanced runtime
-# execute immediate enable_bigquery_advanced_runtime; 
+execute immediate enable_bigquery_advanced_runtime; 
 
 # Create main dataset
-# execute immediate main_dataset_sql; 
+execute immediate main_dataset_sql; 
 
 # Create main table
 execute immediate main_table_sql; 
 
 # Create dates table
-# execute immediate dates_table_sql; 
+execute immediate dates_table_sql; 
