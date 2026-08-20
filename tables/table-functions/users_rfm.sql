@@ -1,3 +1,5 @@
+Server-side Client Tag
+
 declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
