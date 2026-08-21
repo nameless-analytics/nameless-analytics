@@ -377,8 +377,8 @@ When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and t
 | **Parameter name** | **Sub-parameter**    | **Type** | **Added**   | **Field description**   |
 |--------------------|----------------------|----------|-------------|-------------------------|
 | session_data       | cross_domain_session | String   | Server-Side | Is cross-domain session |
-| event_data         | cross_domain_id      | String   | Client-Side | Cross-domain id (populated from `na_id` URL parameter) |
-  
+| event_data         | cross_domain_id      | String   | Client-Side | Validated cross-domain session ID decoded from the `na_id` URL parameter |
+
 </details>
 
 
@@ -429,7 +429,7 @@ It handles the following background operations:
 
 - **Payload Enrichment:** Formats timestamps into BigQuery-compatible date strings and captures browser environment metrics like screen resolution and viewport size.
 - **Sequential Requests Queue:** Implements a Promise-based queue to ensure that HTTP requests are sent in the exact order they occurred (FIFO), preserving the timeline of user interactions.
-- **Cross-domain Handshake:** Manages a global click listener that detects cross-domain links. It triggers a server-side "handshake" via the `get_user_data` function to retrieve the visitor's server-side identities before redirecting and decorating outbound URLs with the `na_id` parameter.
+- **Cross-domain Handshake:** Manages a global click listener that detects cross-domain links. It triggers a server-side handshake via the `get_user_data` function to retrieve the visitor's server-side identities. Before redirecting, the tracker combines the server-issued `session_id` with the current URL-decoration timestamp, Base64-encodes the resulting value and assigns it to the `na_id` URL parameter.
 - **Server Identity Retrieval (`get_user_data`):** A dedicated function that performs an asynchronous POST request to the Server-side Client Tag to fetch the active `client_id` and `session_id`. This ensures that cross-domain tracking uses the authoritative IDs issued by the server.
 - **Consent State Mapping:** Provides a function to read the current state of all Google Consent Mode types directly from the global GTM data object.
 
@@ -451,6 +451,15 @@ Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisib
 
 For retrieving the active `client_id` and `session_id` the Nameless Analytics Client-side Tracker Tag needs to perform a handshake with the server before redirecting and decorating outbound URLs with the `na_id` parameter in real time.
 
+The `na_id` parameter is an ephemeral, Base64-encoded cross-domain value. Before encoding, its internal structure is:
+
+```text
+{session_id}.{decoration_timestamp_ms}
+```
+
+The encoded value is added to the destination URL using URLSearchParams. On the destination domain, the Client-side Tracker Tag decodes and validates the value before adding the original session_id to the event payload as cross_domain_id.
+The value is accepted only on the first page_view of the destination page and expires five minutes after URL decoration. Malformed values, timestamps in the future and expired values are rejected.
+
 Since link decoration happens dynamically upon clicking, cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
 
 <details><summary>How the cross-domain handshake works</summary>
@@ -461,8 +470,9 @@ Since link decoration happens dynamically upon clicking, cross-domain tracking *
   - **Handshake Initialization**: When a user clicks a link toward a configured cross-domain, the tracker intercepts the event, **pauses navigation**, and performs a real-time asynchronous POST call to the Server-side GTM endpoint with `event_name: 'get_user_data'`.
   - **Identity Extraction (`HttpOnly` bypass)**: The Server-side Client Tag receives the request. Since the call is directed to its own domain, it has access to the `HttpOnly` cookies (`na_u` and `na_s`). It securely extracts the `client_id` and `session_id`.
   - **Real-time Response**: Instead of streaming the data to BigQuery, the server immediately responds to the browser by providing both identifiers in a JSON payload. 
-  - **URL Decoration**: The tracker receives the response and decorates the destination URL with the session ID value (e.g., `https://destination.com/?na_id={session_id}`) before allowing the redirect to proceed.
-  - **Session Stitching**: On the destination domain, the tracker detects the `na_id` parameter and sends it to its own server. If identifying parameters are missing but `na_*` acquisition parameters are present, it instead initializes a local `na_temp` cookie to preserve attribution context.
+- **URL Decoration**: The tracker combines the server-issued `session_id` with the current timestamp using the `{session_id}.{decoration_timestamp_ms}` structure. The complete value is Base64-encoded and assigned to the `na_id` URL parameter before navigation continues.
+  - **Cross-domain ID Validation**: On the destination domain, the Client-side Tracker Tag decodes `na_id` and validates its structure and timestamp. The value is accepted only on the first `page_view` and only within five minutes of URL decoration.
+  - **Session Stitching**: If the value is valid, the decoded `session_id` is added to the event payload as `cross_domain_id` and sent to the destination domain's Server-side Client Tag. Invalid or expired values are ignored. If identifying parameters are missing but `na_*` acquisition parameters are present, the tracker instead initializes a local `na_temp` cookie to preserve attribution context.
   
   By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics improves the reliability of the identifiers passed to the destination domain. 
 
