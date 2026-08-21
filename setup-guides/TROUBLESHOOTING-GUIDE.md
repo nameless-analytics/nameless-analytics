@@ -354,11 +354,10 @@ The destination domain may display one of the following browser console messages
 - **Result:** The value was decoded and validated successfully. The original `session_id` is added to the event payload as `cross_domain_id`.
 
 If no cross-domain ID validation message is displayed, verify that:
-
-- cross-domain tracking is enabled;
-- the destination URL contains the `na_id` parameter;
-- the Client-side Tracker Tag fires on the first `page_view`;
-- the current event is not a virtual page view;
+- cross-domain tracking is enabled
+- the destination URL contains the `na_id` parameter
+- the Client-side Tracker Tag fires on the first `page_view`
+- the current event is the first `page_view` of the current physical page
 - all involved domains use compatible versions of the main library and the Client-side Tracker Tag.
 
 # 
