@@ -466,7 +466,7 @@ Since link decoration happens dynamically upon clicking, cross-domain tracking *
 
 </br>
 
-- When `respect_consent_mode` is disabled or `respect_consent_mode` is enable and `analytics_storage` = granted:
+- When `respect_consent_mode` is disabled or `respect_consent_mode` is enabled and `analytics_storage` = granted:
   - **Handshake Initialization**: When a user clicks a link toward a configured cross-domain, the tracker intercepts the event, **pauses navigation**, and performs a real-time asynchronous POST call to the Server-side GTM endpoint with `event_name: 'get_user_data'`.
   - **Identity Extraction (`HttpOnly` bypass)**: The Server-side Client Tag receives the request. Since the call is directed to its own domain, it has access to the `HttpOnly` cookies (`na_u` and `na_s`). It securely extracts the `client_id` and `session_id`.
   - **Real-time Response**: Instead of streaming the data to BigQuery, the server immediately responds to the browser by providing both identifiers in a JSON payload. 
