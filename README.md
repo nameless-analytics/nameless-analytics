@@ -458,7 +458,7 @@ The `na_id` parameter is an ephemeral, Base64-encoded cross-domain value. Before
 ```
 
 The encoded value is added to the destination URL using URLSearchParams. On the destination domain, the Client-side Tracker Tag decodes and validates the value before adding the original session_id to the event payload as cross_domain_id.
-The value is accepted only on the first page_view of the destination page and expires five minutes after URL decoration. Malformed values, timestamps in the future and expired values are rejected.
+The value is accepted only on the first page view of the destination page and expires five minutes after URL decoration. Malformed values, timestamps in the future and expired values are rejected.
 
 Since link decoration happens dynamically upon clicking, cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
 
