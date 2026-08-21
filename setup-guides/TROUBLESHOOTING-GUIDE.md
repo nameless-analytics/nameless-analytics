@@ -18,7 +18,7 @@ The Nameless Analytics Troubleshooting Guide identifies, explains, and resolves 
   - [Missing Geolocation Data](#missing-geolocation-data)
   - [Unexpected Channel Grouping](#unexpected-channel-grouping)
 - [Network & Custom Endpoint Issues](#network--custom-endpoint-issues)
-- [Link Not Decorated (na_id missing)](#link-not-decorated-na_id-missing)
+- [Cross-domain Issues](#cross-domain-issues)
 
 
 
@@ -277,26 +277,37 @@ Server logs show:
 - **Solution:** Verify the custom endpoint URL and ensure your server-side environment has the necessary network access.
 
 
-## Link Not Decorated (na_id missing)
-Browser console shows: 
+## Cross-domain Issues
 
-`cross-domain > 🔴 Error while fetch user data: [error]`
+### Link Not Decorated (`na_id` Missing)
 
-- **Issue:** The cross-domain listener failed to retrieve IDs from the server.
-- **Solution:** Verify the server-side client is reachable.
+Browser console shows:
 
-Server logs show: 
+```text
+cross-domain > 🔴 Error while fetch user data: [error]
+```
 
-`🔴 User cookie not found. No cross-domain link decoration will be applied`
+- **Issue:** The cross-domain listener failed to retrieve user data from the server.
+- **Solution:** Verify that the Server-side Client Tag endpoint is reachable and correctly configured.
 
-`🔴 Session cookie not found. No cross-domain link decoration will be applied`
+Server logs show:
 
-- **Issue:** Required user or session cookie is missing on the server for ID retrieval.
-- **Solution:** Ensure the visitor has valid `na_u` and `na_s` cookies.
+```text
+🔴 User cookie not found. No cross-domain URL decoration will be applied
+```
+
+```text
+🔴 Session cookie not found. No cross-domain URL decoration will be applied
+```
+
+- **Issue:** The server could not find the required user or session cookie while handling the `get_user_data` request.
+- **Solution:** Ensure the visitor has valid `na_u` and `na_s` cookies before clicking a configured cross-domain link.
+
+**Caveat:** The handshake mechanism intercepts the click event. If a user opens the link through **right-click (“Open in new tab”)** or **“Open in new window”**, the decoration logic does not run. This is a technical limitation of the real-time secure-cookie handshake.
 
 ### Invalid or Expired `na_id`
 
-The destination domain may display one of the following messages in the browser console.
+The destination domain may display one of the following browser console messages.
 
 #### Unable to Decode `na_id`
 
@@ -323,7 +334,7 @@ The destination domain may display one of the following messages in the browser 
 ```
 
 - **Issue:** More than five minutes elapsed between URL decoration and execution of the first `page_view` on the destination page.
-- **Result:** The expired `session_id` is not used, and `cross_domain_id` remains `null`.
+- **Result:** The expired `session_id` is ignored and `cross_domain_id` remains `null`.
 
 #### Invalid Cross-domain ID
 
@@ -349,8 +360,6 @@ If no cross-domain ID validation message is displayed, verify that:
 - the Client-side Tracker Tag fires on the first `page_view`;
 - the current event is not a virtual page view;
 - all involved domains use compatible versions of the main library and the Client-side Tracker Tag.
-
-**Caveat:** The handshake mechanism intercepts the click event. If a user opens the link via **right-click ("Open in new tab")** or "Open in new window", the decoration logic will not trigger. This is a technical limitation of secure cookie handling.
 
 # 
 
