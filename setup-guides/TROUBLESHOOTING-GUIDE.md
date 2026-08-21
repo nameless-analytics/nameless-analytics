@@ -284,7 +284,7 @@ Server logs show:
 Browser console shows:
 
 ```text
-cross-domain > 🔴 Error while fetch user data: [error]
+cross-domain > 🔴 Error while fetching user data: [error]
 ```
 
 - **Issue:** The cross-domain listener failed to retrieve user data from the server.
