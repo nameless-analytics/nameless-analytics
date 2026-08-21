@@ -493,7 +493,7 @@ Since link decoration happens dynamically upon clicking, cross-domain tracking *
 ### Parameter hierarchy
 Since parameters can be set at multiple levels (Client side variable + Client-side tag, Server-side tag), Nameless Analytics follows a strict hierarchy of importance. A parameter set at a higher level will always override one with the same name at a lower level.
 
-System-critical parameters like `client_id`, `session_id`, `page_id` and `event_id` and the standard parameters are protected and cannot be overwritten in any ways.
+System-critical parameters like `client_id`, `session_id`, `page_id` and `event_id` and the standard parameters are protected and cannot be overwritten in any way.
 
 User, session, and event parameters follow this hierarchy of overriding:
 
