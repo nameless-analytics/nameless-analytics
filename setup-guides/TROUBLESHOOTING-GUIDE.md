@@ -294,6 +294,62 @@ Server logs show:
 - **Issue:** Required user or session cookie is missing on the server for ID retrieval.
 - **Solution:** Ensure the visitor has valid `na_u` and `na_s` cookies.
 
+### Invalid or Expired `na_id`
+
+The destination domain may display one of the following messages in the browser console.
+
+#### Unable to Decode `na_id`
+
+```text
+[page_view] > 🔴 Invalid cross-domain ID: unable to decode na_id
+```
+
+- **Issue:** The `na_id` URL parameter is not a valid Base64-encoded value.
+- **Result:** The value is ignored and `cross_domain_id` remains `null`.
+
+#### Invalid Format
+
+```text
+[page_view] > 🔴 Invalid cross-domain ID: invalid format
+```
+
+- **Issue:** The decoded value does not follow the expected `{session_id}.{decoration_timestamp_ms}` structure.
+- **Result:** The value is ignored and `cross_domain_id` remains `null`.
+
+#### Expired Cross-domain ID
+
+```text
+[page_view] > 🟠 Expired cross-domain ID
+```
+
+- **Issue:** More than five minutes elapsed between URL decoration and execution of the first `page_view` on the destination page.
+- **Result:** The expired `session_id` is not used, and `cross_domain_id` remains `null`.
+
+#### Invalid Cross-domain ID
+
+```text
+[page_view] > 🔴 Invalid cross-domain ID
+```
+
+- **Issue:** The decoded value contains an invalid timestamp or a timestamp in the future.
+- **Result:** The value is ignored and `cross_domain_id` remains `null`.
+
+#### Valid Cross-domain ID
+
+```text
+[page_view] > 🟢 Valid cross-domain ID
+```
+
+- **Result:** The value was decoded and validated successfully. The original `session_id` is added to the event payload as `cross_domain_id`.
+
+If no cross-domain ID validation message is displayed, verify that:
+
+- cross-domain tracking is enabled;
+- the destination URL contains the `na_id` parameter;
+- the Client-side Tracker Tag fires on the first `page_view`;
+- the current event is not a virtual page view;
+- all involved domains use compatible versions of the main library and the Client-side Tracker Tag.
+
 **Caveat:** The handshake mechanism intercepts the click event. If a user opens the link via **right-click ("Open in new tab")** or "Open in new window", the decoration logic will not trigger. This is a technical limitation of secure cookie handling.
 
 # 

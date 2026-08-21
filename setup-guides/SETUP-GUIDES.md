@@ -331,7 +331,32 @@ Nameless Analytics utilizes server-side **HttpOnly cookies** for maximum securit
 
 Since these cookies are inaccessible to client-side JavaScript, the tracker employs a real-time 'handshake' mechanism via a specific event called **`get_user_data`**. 
 
-When a user clicks an outbound link to a tracked domain, the tracker intercepts the click and sends an asynchronous `get_user_data` request to the Server-side GTM endpoint. The server extracts the `client_id` and `session_id` from the secure cookies and returns them to the tracker, which then decorates the destination URL with the **`na_id`** parameter (e.g., `https://destination.com/?na_id=...`). This improves session stitching reliability across tracked domains.
+When a user clicks an outbound link to a configured domain, the tracker intercepts the click and sends an asynchronous `get_user_data` request to the Server-side GTM endpoint.
+
+The server reads the `client_id` and `session_id` from the secure `HttpOnly` cookies and returns them to the tracker. The tracker then combines the server-issued `session_id` with the current URL-decoration timestamp using the following internal structure:
+
+```text
+{session_id}.{decoration_timestamp_ms}
+```
+
+The complete value is Base64-encoded and added to the destination URL through the `na_id` parameter:
+
+```text
+https://destination.com/?na_id={base64_encoded_value}
+```
+
+On the destination domain, the Client-side Tracker Tag decodes and validates `na_id`. The original `session_id` is added to the event payload as `cross_domain_id` only when:
+
+- cross-domain tracking is enabled;
+- the current event is the first `page_view` of the physical page;
+- the value can be decoded from Base64;
+- the decoded value follows the expected structure;
+- the decoration timestamp is not in the future;
+- no more than five minutes have elapsed since URL decoration.
+
+Malformed, expired or otherwise invalid values are ignored, and the request continues with `cross_domain_id` set to `null`.
+
+This mechanism improves session-stitching reliability across configured domains while preventing old or malformed cross-domain identifiers from being used.
 
 To ensure proper DNS resolution, the IP addresses of the Google App Engine, Cloud Run or Stape instances running the server-side GTM container must be correctly associated with each respective domain.
 
