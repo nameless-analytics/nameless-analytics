@@ -248,14 +248,14 @@ Push a custom event and its associated context parameters to the `dataLayer`:
 
 ```javascript
 dataLayer.push({
-  event: 'generate_lead',
+  event: 'new_lead',
   lead_type: 'b2b_consulting',
   lead_value: 500
 });
 ```
 
 ### 2. Configure the GTM Tag
-- **Create the Trigger**: Create a Custom Event Trigger matching your event name (e.g., `generate_lead`).
+- **Create the Trigger**: Create a Custom Event Trigger matching your event name (e.g., `new_lead`).
 - **Create DataLayer Variables**: Create Data Layer Variables for the custom parameters (e.g., `lead_type` and `lead_value`).
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag** and assign the trigger to it.
 - **Map the Parameters**: Expand the **Event Parameters** section within the tag configuration and add your custom parameters in the table, assigning the DataLayer Variables you created as their values.
