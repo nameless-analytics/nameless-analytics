@@ -233,7 +233,7 @@ select
     -- Only for search event
     (select value.string from unnest(event_data) where name = 'search_term') as search_term,
 
-    -- Only for lead event
+    -- Only for new_lead event
     (select value.string from unnest(event_data) where name = 'lead_type') as lead_type,
 
     -- Add event level custom dimension here

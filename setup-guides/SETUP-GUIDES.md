@@ -351,10 +351,13 @@ On the destination domain, the Client-side Tracker Tag decodes and validates `na
 - the current event is the first `page_view` of the physical page;
 - the value can be decoded from Base64;
 - the decoded value follows the expected structure;
+- the `session_id` matches the required format: 15 alphanumeric characters, an underscore, 15 alphanumeric characters;
 - the decoration timestamp is not in the future;
 - no more than five minutes have elapsed since URL decoration.
 
 Malformed, expired or otherwise invalid values are ignored, and the request continues with `cross_domain_id` set to `null`.
+
+The Server-side Client Tag validates the `session_id` format again before using it. Values that do not match are discarded and a new session is created, while the event itself is still processed and stored.
 
 This mechanism improves session-stitching reliability across configured domains while preventing old or malformed cross-domain identifiers from being used.
 
@@ -471,14 +474,20 @@ Download the raw code of the two required JavaScript files:
 2. **[ua-parser.pack.min.js](https://github.com/faisalman/ua-parser-js/blob/master/dist/ua-parser.pack.min.js)**: The dependency used for precise User-Agent parsing.
 
 ### 2. Host the libraries on your infrastructure
-Upload both `.js` files to your own server or Content Delivery Network (CDN). 
-Ensure they are served over HTTPS and from the exact same primary domain as your website (for example: `https://www.yourdomain.com/assets/js/nameless-analytics.js`).
+Upload both `.js` files to your own server or Content Delivery Network (CDN), **keeping their original file names**. 
+Ensure they are served over HTTPS and from the exact same primary domain as your website (for example: `https://www.yourdomain.com/assets/js/nameless-analytics_vX.X.X.min.js`).
+
+> **Important**: do not rename the files. The Client-side Tracker Tag builds the final URL itself, appending `/nameless-analytics_v{version}.min.js` and `/ua-parser.pack.min.js` to the domain and path you configure. If the file names on your server do not match, the libraries will return a `404` and the tag will abort the request.
 
 ### 3. Update the GTM Configuration
 1. Open your Client-side Google Tag Manager workspace.
 2. Navigate to the **Nameless Analytics Client-side Tracker Configuration Variable**.
 3. Expand the **Advanced settings** section.
-4. Replace the default CDN URLs with the absolute URLs of your newly hosted first-party scripts.
+4. Enable **Load JavaScript libraries in first-party mode**.
+5. Fill in **Custom library domain name** with your domain only, without protocol and without a trailing slash (e.g. `www.yourdomain.com`).
+6. Fill in **Custom library path** with the folder holding the files: it must start with `/` and must not end with `/` (e.g. `/assets/js`).
+
+> Following the example above, the tag will request `https://www.yourdomain.com/assets/js/nameless-analytics_vX.X.X.min.js`.
 
 ### 4. Authorize the new domain in the template permissions
 Google Tag Manager blocks script injections from unauthorized domains by default to protect the site from XSS.

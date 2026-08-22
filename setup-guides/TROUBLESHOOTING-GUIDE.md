@@ -188,7 +188,7 @@ Browser console shows:
 `[event_name] > 🔴 UA parser library not loaded from: [URL]`
 
 - **Issue:** The browser couldn't fetch the core tracker scripts, often due to ad-blockers blocking `jsdelivr.net`.
-- **Solution:** Verify the library URL or check for ad-blockers. For a robust setup, use **First-Party mode** by hosting scripts on your own sub-domain (e.g., `https://gtm.yourdomain.com/lib/nameless-analytics.js`).
+- **Solution:** Verify the library URL or check for ad-blockers. For a robust setup, use **First-Party mode** by hosting scripts on your own sub-domain (e.g., `https://gtm.yourdomain.com/lib/nameless-analytics_vX.X.X.min.js`). Note that the file name is built by the tag from the library version: you configure only the domain and the path, never the file name. See [How to set up First-Party Library Hosting](SETUP-GUIDES.md#how-to-set-up-first-party-library-hosting).
 
 Browser console shows: 
 
@@ -303,6 +303,16 @@ Server logs show:
 - **Issue:** The server could not find the required user or session cookie while handling the `get_user_data` request.
 - **Solution:** Ensure the visitor has valid `na_u` and `na_s` cookies before clicking a configured cross-domain link.
 
+Server logs show:
+
+```text
+🟠 Invalid cross-domain ID format. Value ignored.
+```
+
+- **Issue:** The `cross_domain_id` received in the payload does not match the format of a valid `session_id` (15 alphanumeric characters, an underscore, 15 alphanumeric characters).
+- **Result:** The value is discarded and a new session is created. The event is still processed and stored normally.
+- **Solution:** If you are generating `na_id` manually, verify that the `session_id` you encode is a real one issued by the server. See [Cross-domain Architecture](../README.md#cross-domain-architecture).
+
 **Caveat:** The handshake mechanism intercepts the click event. If a user opens the link through **right-click (“Open in new tab”)** or **“Open in new window”**, the decoration logic does not run. This is a technical limitation of the real-time secure-cookie handshake.
 
 ### Invalid or Expired `na_id`
@@ -325,6 +335,15 @@ The destination domain may display one of the following browser console messages
 ```
 
 - **Issue:** The decoded value does not follow the expected `{session_id}.{decoration_timestamp_ms}` structure.
+- **Result:** The value is ignored and `cross_domain_id` remains `null`.
+
+#### Invalid `session_id` Format
+
+```text
+[page_view] > 🔴 Invalid cross-domain ID: invalid session_id format
+```
+
+- **Issue:** The decoded value has the expected `{session_id}.{decoration_timestamp_ms}` structure, but the `session_id` does not match the required format: 15 alphanumeric characters, an underscore, 15 alphanumeric characters.
 - **Result:** The value is ignored and `cross_domain_id` remains `null`.
 
 #### Expired Cross-domain ID

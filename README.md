@@ -460,7 +460,23 @@ The `na_id` parameter is an ephemeral, Base64-encoded cross-domain value. Before
 The encoded value is added to the destination URL using URLSearchParams. On the destination domain, the Client-side Tracker Tag decodes and validates the value before adding the original session_id to the event payload as cross_domain_id.
 The value is accepted only on the first page view of the destination page and expires five minutes after URL decoration. Malformed values, timestamps in the future and expired values are rejected.
 
+The value is validated **twice**, on both sides of the request:
+
+| Where | What is checked |
+| :--- | :--- |
+| **Client-side Tracker Tag** | Base64 decoding, `{session_id}.{decoration_timestamp_ms}` structure, `session_id` format, timestamp not in the future, no more than five minutes elapsed |
+| **Server-side Client Tag** | `session_id` format |
+
+The required `session_id` format is 15 alphanumeric characters, an underscore, 15 alphanumeric characters — the same shape the server issues. A value rejected by the server is discarded and a new session is created: the event itself is still processed and stored, and `🟠 Invalid cross-domain ID format` is logged in GTM Server Preview.
+
 Since link decoration happens dynamically upon clicking, cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
+
+#### Manually built cross-domain links
+The `na_id` parameter can be generated outside the tracker — for example by a backend, an email platform or an external redirect service — as long as it respects the structure `base64({session_id}.{decoration_timestamp_ms})`, carries a `session_id` issued by the server and is no older than five minutes.
+
+Validation is on the **format**, not on a signature. Anyone holding a valid `session_id` can therefore attach traffic to that session. This is a deliberate trade-off: signing `na_id` would make server-to-server integrations and externally generated links impossible. Since a `session_id` is only visible to the visitor it belongs to and expires with the session, the practical exposure is limited to attributing extra traffic to an existing session.
+
+Values that do not respect the format never reach the identity layer: they are discarded before any cookie is written.
 
 <details><summary>How the cross-domain handshake works</summary>
 
@@ -555,6 +571,8 @@ The **Server-side Client Tag** sits between the public internet and your cloud i
 
 ### Security and Validation
 Validates request origins and authorized domains (CORS) before processing to prevent unauthorized usage.
+
+Identifiers are validated before being trusted: the `na_u` and `na_s` cookies must match their expected format, and the `cross_domain_id` carried in the payload must match the format of a server-issued `session_id`. Requests carrying malformed cookies are rejected with `403`; a malformed `cross_domain_id` is discarded and the event is processed as a new session.
 
 
 ### Transparency
