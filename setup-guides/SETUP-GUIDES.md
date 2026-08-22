@@ -248,19 +248,23 @@ Push a custom event and its associated context parameters to the `dataLayer`:
 
 ```javascript
 dataLayer.push({
-  event: 'new_lead',
-  lead_type: 'b2b_consulting',
-  lead_value: 500
+  event: 'file_downloaded',
+  file_name: 'nameless-analytics-guide.pdf',
+  file_type: 'pdf'
 });
 ```
 
 ### 2. Configure the GTM Tag
-- **Create the Trigger**: Create a Custom Event Trigger matching your event name (e.g., `new_lead`).
-- **Create DataLayer Variables**: Create Data Layer Variables for the custom parameters (e.g., `lead_type` and `lead_value`).
-- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag** and assign the trigger to it.
+- **Create the Trigger**: Create a Custom Event Trigger matching your event name (e.g., `file_downloaded`).
+- **Create DataLayer Variables**: Create Data Layer Variables for the custom parameters (e.g., `file_name` and `file_type`).
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, set **Event name** to **Custom event name**, type your event name in the field and assign the trigger to it.
 - **Map the Parameters**: Expand the **Event Parameters** section within the tag configuration and add your custom parameters in the table, assigning the DataLayer Variables you created as their values.
 
-When the tag fires, it will automatically use the `event` key as the final `event_name` in BigQuery and map all the configured parameters into the `event_data` array column.
+The value set in the **Custom event name** field becomes the final `event_name` in BigQuery, and all the configured parameters are mapped into the `event_data` array column.
+
+> **Reusing the dataLayer event name.** The field accepts GTM variables: map the built-in `{{Event}}` variable into it and the tag will use the `event` key pushed to the dataLayer, without typing the name twice. Keep in mind that whatever `{{Event}}` resolves to becomes the `event_name`, including GTM internal events such as `gtm.click` when the tag is fired by a built-in trigger.
+
+> **Reserved names.** The [standard event names](#how-to-track-standard-events) cannot be used in the **Custom event name** field: select them from **Standard event name** instead.
 
 
 
