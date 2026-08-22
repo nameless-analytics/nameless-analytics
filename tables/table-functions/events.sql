@@ -233,8 +233,8 @@ select
     -- Only for search event
     (select value.string from unnest(event_data) where name = 'search_term') as search_term,
 
-    -- Only for form form submission event
-     (select value.string from unnest(event_data) where name = 'lead_type') as lead_type,
+    -- Only for lead event
+    (select value.string from unnest(event_data) where name = 'lead_type') as lead_type,
 
     -- Add event level custom dimension here
     -- (select value.string from unnest(event_data) where name = 'parameter_name') as parameter_name -- Always include Streaming Protocol events

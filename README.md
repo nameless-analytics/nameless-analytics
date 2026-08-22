@@ -143,7 +143,7 @@ The request data is sent via a POST request in JSON format. It is structured int
     "user_last_session_timestamp": 1768661707758
   },
   "session_date": "2026-01-20",
-  "session_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU",
+  "session_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJUa",
   "session_data": {
     "session_number": 2,
     "cross_domain_session": "No",
@@ -173,7 +173,7 @@ The request data is sent via a POST request in JSON format. It is structured int
     "session_end_timestamp": 1768661707758
   },
   "page_date": "2026-01-20",
-  "page_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y",
+  "page_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y",
   "page_data": {
     "page_title": "Tommaso Moretti | Freelance digital data analyst",
     "page_hostname_protocol": "https",
@@ -189,7 +189,7 @@ The request data is sent via a POST request in JSON format. It is structured int
   },
   "event_date": "2026-01-20",
   "event_timestamp": 1768661707758,
-  "event_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV",
+  "event_id": "lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV",
   "event_name": "page_view",
   "event_origin": "Website",
   "event_data": {
@@ -391,8 +391,8 @@ The tracker automatically generates and manages unique identifiers for pages, an
 
 | Parameter name | Renewed            | Example values                                                 | Value composition                           |
 |----------------|--------------------|----------------------------------------------------------------|---------------------------------------------|
-| **page_id**    | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Page ID            |
-| **event_id**   | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Page ID _ Event ID |
+| **page_id**    | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Page ID            |
+| **event_id**   | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Page ID _ Event ID |
 
 </details>
 
@@ -423,7 +423,7 @@ To maximize data collection accuracy, Nameless Analytics supports **First-Party 
 
 </br>
 
-This is the core engine that supports the GTM tag by exposing utility functions for execution in a standard JavaScript environment. Source code: [nameless-analytics.js](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/nameless-analytics.js)
+This is the core engine that supports the GTM tag by exposing utility functions for execution in a standard JavaScript environment. [Source code](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/)
 
 It handles the following background operations:
 
@@ -439,7 +439,7 @@ It handles the following background operations:
 
 </br>
 
-Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. Source code: [ua-parser.min.js](https://github.com/faisalman/ua-parser-js)
+Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. Source code: [ua-parser.pack.min.js](https://github.com/faisalman/ua-parser-js)
 
 This data is mapped into the `event_data` object under `device_vendor`, `os_version`, `device_model`, etc.
 
@@ -571,7 +571,7 @@ The Nameless Analytics Server-side Client Tag automatically generates and manage
 | Parameter name | Renewed                       | Example values                 | Value composition             |
 |----------------|-------------------------------|--------------------------------|-------------------------------|
 | **client_id**  | when `na_u` cookie is created | lZc919IBsqlhHks                | Client ID                     |
-| **session_id** | when `na_s` cookie is created | lZc919IBsqlhHks_1KMIqneQ7dsDJU | Client ID _ Random Session ID |
+| **session_id** | when `na_s` cookie is created | lZc919IBsqlhHks_1KMIqneQ7dsDJUa | Client ID _ Random Session ID |
 
 </details>
 
@@ -675,7 +675,7 @@ Cookies are created or updated on every event to track the user's session and id
 | Cookie Name | Default expiration | Example values | Value composition | Usage |
 | :--- | :--- | :--- | :--- | :--- |
 | **na_u**    | 400 days           | lZc919IBsqlhHks                                | Client ID                             | Used as client_id |
-| **na_s**    | 30 minutes         | lZc919IBsqlhHks_1KMIqneQ7dsDJU-WVTWEorF69ZEk3y | Client ID _ Session ID - Last Page ID | Used as session_id and to retrieve the current page_id for the **Streaming Protocol** requests. |
+| **na_s**    | 30 minutes         | lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y | Client ID _ Session ID - Last Page ID | Used as session_id and to retrieve the current page_id for the **Streaming Protocol** requests. |
 
 </details>
 

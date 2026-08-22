@@ -227,15 +227,15 @@ For these events, the `user_id` must be mapped within the Nameless Analytics Cli
 
 ```javascript
 dataLayer.push({
-  event: 'login', // Or 'logout', 'account_creation'
+  event: 'login', // Or 'logout', 'sign_up'
   user_id: 'ABC-12345'
 });
 ```
 
 Setup:
-- **Create the Trigger**: Create a Custom Event Trigger matching the event name (e.g., `login`, `logout`, or `account_creation`).
+- **Create the Trigger**: Create a Custom Event Trigger matching the event name (e.g., `login`, `logout`, or `sign_up`).
 - **Create a Variable**: Create a Data Layer Variable for the `user_id`.
-- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `login` event (or `logout` or `account_creation`) and assign the trigger to it.
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `login` event (or `logout` or `sign_up`) and assign the trigger to it.
 - **Map the Parameter**: Open the **Nameless Analytics Client-side Tracker Configuration Variable**. Under the **Session Data** section, map the `user_id` field to the DataLayer Variable you created.
 
 
@@ -467,8 +467,8 @@ By doing so, the browser will treat the tracker scripts as critical, first-party
 
 ### 1. Download the core libraries
 Download the raw code of the two required JavaScript files:
-1. **[nameless-analytics.js](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/nameless-analytics.js)**: The main execution engine.
-2. **[ua-parser.min.js](https://github.com/faisalman/ua-parser-js/blob/master/dist/ua-parser.min.js)**: The dependency used for precise User-Agent parsing.
+1. **[nameless-analytics_vX.X.X.min.js](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/)**: The main execution engine. (check version inside the tracker tag template code under)
+2. **[ua-parser.pack.min.js](https://github.com/faisalman/ua-parser-js/blob/master/dist/ua-parser.pack.min.js)**: The dependency used for precise User-Agent parsing.
 
 ### 2. Host the libraries on your infrastructure
 Upload both `.js` files to your own server or Content Delivery Network (CDN). 
