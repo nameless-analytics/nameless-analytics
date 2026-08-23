@@ -380,6 +380,11 @@ When "Add ecommerce data" is enabled, an `ecommerce` parameter will be added to 
     
 </details>
 
+#### Payload size limit
+Requests are sent with the `keepalive` flag, so an event fired while the visitor is leaving completes even after the page is gone. In exchange, browsers cap the body of a `keepalive` request at **64 KiB**: a larger payload is rejected before it leaves the browser and **the event is lost**, with `🔴 Request not sent successfully` in the console and no request in the Network tab. The budget is shared with every other in-flight `keepalive` request and `navigator.sendBeacon()` call of the page, including other vendors' tags, so the usable ceiling is lower when several tags fire together.
+
+A standard event weighs around 2.8 KB, far from the limit. The two optional parts that can approach it are [Add current dataLayer state](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#add-current-datalayer-state), which grows with every push on the page, and `ecommerce` objects carrying very long item arrays. When either is enabled on a rich page, check the resulting size and prefer sending the parameters you actually need as event parameters.
+
 
 ### ID Management
 The tracker automatically generates and manages unique identifiers for pages, and events.
