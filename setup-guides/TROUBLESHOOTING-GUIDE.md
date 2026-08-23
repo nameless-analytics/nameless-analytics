@@ -316,7 +316,11 @@ Server logs show:
 - **Result:** The value is discarded and a new session is created. The event is still processed and stored normally.
 - **Solution:** If you are generating `na_id` manually, verify that the `session_id` you encode is a real one issued by the server. See [Cross-domain Architecture](../README.md#cross-domain-architecture).
 
-**Caveat:** The handshake mechanism intercepts the click event. If a user opens the link through **right-click (“Open in new tab”)** or **“Open in new window”**, the decoration logic does not run. This is a technical limitation of the real-time secure-cookie handshake.
+**Caveat:** the handshake is driven by a `click` listener, so it only runs on a plain left click on an `<a href>`. The decoration does **not** run when the link is opened through the right-click menu (“Open in new tab” / “Open in new window”), with a keyboard modifier (`Cmd`/`Ctrl`+click, `Shift`+click, `Alt`+click) or with the middle mouse button, and when the navigation does not come from a link at all (JS button, `window.open()`, form submit, pasted URL, bookmark).
+
+Modified clicks are ignored **on purpose**: intercepting them would cancel the browser's native behaviour and force the destination into the current tab, against the visitor's intent. The trade-off is a new session on the destination instead of a broken navigation.
+
+No console message is logged in these cases, because the tracker never takes over the click: the absence of `cross-domain > ASK USER DATA` in the console of the source page is the signal. See [When link decoration does not happen](../README.md#when-link-decoration-does-not-happen) for the complete list.
 
 ### Invalid or Expired `na_id`
 

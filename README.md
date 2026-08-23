@@ -468,7 +468,26 @@ The value is validated **twice**, on both sides of the request:
 
 The required `session_id` format is 15 alphanumeric characters, an underscore, 15 alphanumeric characters — the same shape the server issues. A value rejected by the server is discarded and the event is processed as if no cross-domain ID were present: user and session are resolved from the local `na_u` and `na_s` cookies, which in the typical case — a visitor arriving from another domain with no active session on the destination — means a new session. The event itself is still processed and stored, and `🟠 Invalid cross-domain ID format` is logged in GTM Server Preview.
 
-Since link decoration happens dynamically upon clicking, cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
+#### When link decoration does not happen
+Link decoration is driven by a delegated `click` listener on the document, so it only runs when the visitor activates a link with a plain left click. In every case below the visitor still reaches the destination normally, but without `na_id`: the destination resolves identity from its own `na_u` and `na_s` cookies, which for a first visit means a **new user and a new session**.
+
+| Case | Why | Workaround |
+| :--- | :--- | :--- |
+| Right-click → "Open link in new tab" / "Open in new window" | The context menu does not fire a `click` event | None |
+| `Cmd`/`Ctrl`+click, `Shift`+click, `Alt`/`Option`+click, middle click | The tracker deliberately ignores modified clicks so the browser keeps its native behaviour (new tab, new window, download). Hijacking them would break the visitor's intent | None. This is a deliberate trade-off: correct navigation over attribution |
+| Link copied and pasted, opened from bookmarks, history or an external app | No click on the source page | None |
+| Navigation not driven by an `<a href>` (JS button, `window.open()`, form submit, server-side redirect) | There is no link for the listener to decorate | Decorate the URL server-side, or move the navigation to a real `<a href>` |
+| `href` starting with `#`, `javascript:`, `tel:` or `mailto:` | Skipped by design | None |
+| Another script calls `stopPropagation()` on the click | The event never reaches the document-level listener | Remove the `stopPropagation()`, or bind the other handler in the capture phase |
+| Destination domain not listed in **Cross-domain domains**, or same domain as the source | Not a cross-domain link | Add the domain to the list |
+| The main library is blocked (ad blocker, CSP, CDN failure) | The listener is never registered | Use [First-Party mode](setup-guides/SETUP-GUIDES.md#how-to-set-up-first-party-library-hosting) |
+| Consent Mode missing while `respect_consent_mode` is enabled | The tracker aborts before decorating | None: this is the intended privacy behaviour |
+| `analytics_storage` denied | No identity handshake is performed. The URL still receives the `na_*` acquisition parameters, but only if the `na_temp` cookie exists | None: this is the intended privacy behaviour |
+| `get_user_data` fails, or `na_u` / `na_s` are missing server-side | No `session_id` to encode. The visitor is redirected to the original URL | Verify the endpoint is reachable and the visitor has valid cookies |
+
+On links carrying `target="_blank"` the new tab is opened by the tracker itself, not by the browser. As browsers do for `target="_blank"`, the destination gets no `window.opener` reference back to the source page, unless the link explicitly declares `rel="opener"`.
+
+A decorated link can also be **rejected on arrival**, with the same outcome. This happens when more than five minutes elapse between the click and the first `page_view` on the destination (link opened in a background tab, slow connection, machine suspended), when the `page_view` is not the first one of the physical page, or when the destination page runs an incompatible version of the tag. See the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md#cross-domain-issues) for the corresponding console messages.
 
 <details><summary>How the cross-domain handshake works</summary>
 
