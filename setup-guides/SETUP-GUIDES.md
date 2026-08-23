@@ -33,7 +33,7 @@ Setting up Nameless Analytics involves using a dual GTM containers strategy, com
 
 ### 1. Prerequisites
 Before proceeding, ensure the Google Cloud environment is fully provisioned:
-- **BigQuery**: Dataset, `events_raw` and `calendar_dates` tables must be created according to the [SQL schemas](../tables/TABLES.md).
+- **BigQuery**: Dataset, `events_raw` and `calendar_dates` tables must be created according to the [SQL schemas](../tables/TABLES.md). The setup script ends with an `ALTER PROJECT` statement that enables the BigQuery Advanced Runtime: it needs the project level `bigquery.projects.update` permission. Without it that last statement fails, but dataset and tables are already created and everything works — you only miss the query optimization.
 - **Firestore**: A database instance (Native Mode) should be initialized (usually the `(default)` instance).
 - **Server-side GTM**: The instance (Cloud Run, App Engine or Stape) must be active and mapped to a custom first-party domain.
 

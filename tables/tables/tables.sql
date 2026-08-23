@@ -201,9 +201,6 @@ declare dates_table_sql string default FORMAT(
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Enable BigQuery advanced runtime
-execute immediate enable_bigquery_advanced_runtime; 
-
 # Create main dataset
 execute immediate main_dataset_sql; 
 
@@ -211,4 +208,7 @@ execute immediate main_dataset_sql;
 execute immediate main_table_sql; 
 
 # Create dates table
-execute immediate dates_table_sql; 
+execute immediate dates_table_sql;
+
+# Enable BigQuery advanced runtime
+execute immediate enable_bigquery_advanced_runtime; 

@@ -231,6 +231,9 @@ Common issues related to missing data or unexpected values in reporting.
 ### BigQuery Advanced Runtime
 If you experience slow query performance or errors with SQL Table Functions, ensure that **BigQuery Advanced Runtime** is enabled for your project (see [TABLES.md](../tables/TABLES.md) for the DDL command).
 
+- **Issue:** the setup script fails on the last statement with a permission error mentioning `ALTER PROJECT`.
+- **Solution:** enabling the Advanced Runtime requires the project level `bigquery.projects.update` permission, which a dataset level role does not grant. The statement runs last on purpose, so dataset and tables are already created and the platform works normally: ask a project administrator to run that single statement, or skip it and accept the default runtime.
+
 ### Missing Geolocation Data
 - **Issue:** The `country` and `city` fields are `null` in BigQuery.
 - **Solution:** Nameless Analytics relies on server-provided headers. Ensure your environment is configured to forward geolocation:
