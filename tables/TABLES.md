@@ -12,6 +12,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
 - [Setup](#setup)
   - [Create raw tables](#create-raw-tables)
   - [Create custom functions](#create-custom-functions)
+  - [Create external campaign tables](#create-external-campaign-tables)
   - [Create table functions](#create-table-functions)
 - [Reporting fields](#reporting-fields)
 - [Raw tables](#raw-tables)
@@ -42,9 +43,11 @@ The following SQL scripts are used to initialize the Nameless Analytics reportin
 
 
 ### Create raw tables
-This script is used to create the raw tables in BigQuery, the main dataset `nameless_analytics` and the `events_raw` and `calendar_dates` tables. This script also enables BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. [Read more about it](https://cloud.google.com/bigquery/docs/advanced-runtime).
+This script is used to create the raw tables in BigQuery, the main dataset `nameless_analytics` and the `events_raw` and `calendar_dates` tables. 
 
-- [Raw tables](tables/tables.sql)
+This script also enables BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. [Read more about it](https://cloud.google.com/bigquery/docs/advanced-runtime).
+
+[Create Raw tables](tables/tables.sql)
 
 
 ### Create custom functions
@@ -54,8 +57,78 @@ The `get_custom_channel_grouping` UDF uses the same identical logic as the [serv
 
 The `get_campaign_part` UDF extracts structured campaign dimensions (year, country, funnel stage, platform, type, marketing objective, campaign name) from pipe-delimited campaign strings.
 
-- [Custom Channel Grouping function](user-defined-functions/get_custom_channel_grouping.sql)
-- [Get Campaign Part function](user-defined-functions/get_campaign_part.sql)
+[Create Custom Channel Grouping function](user-defined-functions/get_custom_channel_grouping.sql)
+[Create Get Campaign Part function](user-defined-functions/get_campaign_part.sql)
+
+
+### Create external campaign tables
+The `campaigns` and `media_plan` table functions read advertising data from two tables that **are not created by any script in this repository**. You have to create, populate and keep them updated yourself. Both must live in the same dataset as the table functions.
+
+All the other table functions work without them: create these two only if you need campaign cost analysis or media plan tracking.
+
+| Table | How to populate it | How often |
+| :--- | :--- | :--- |
+| `online_campaign_performance_sheets` | Preferably a native table loaded automatically with the campaign data exported from your advertising platforms. As a simpler alternative, a Google Sheet connected as an external table. | Daily |
+| `media_plan_sheets` | A Google Sheet connected as an external table, so the plan stays editable by the marketing team without any load job. | Whenever the media plan is ready or gets revised |
+
+A reference spreadsheet containing both tabs is available [here](https://docs.google.com/spreadsheets/d/1aDfDJ3aDDH88ybJ4HH7y2m7cSRcKLhl6R9Z8ZbBmE0Y). Opening it requires being signed in with a Google account.
+
+
+#### online_campaign_performance_sheets
+Daily media performance, one row per campaign per day.
+
+| Column | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `date` | DATE | Yes | The day the spend occurred. Join key with `session_date`. |
+| `campaign` | STRING | Yes | Campaign name. Must match **exactly** the `utm_campaign` value used on landing URLs, otherwise the row will not join with analytics data. |
+| `campaign_id` | STRING | No | Campaign ID from the advertising platform. Must match `utm_id` when used. An empty value on both sides is a valid match. |
+| `cost` | FLOAT | Yes | Spend for that campaign on that day, in your reporting currency. |
+| `impression` | INTEGER | No | Impressions served. Missing values are returned as `0`. |
+| `click` | INTEGER | No | Clicks received. Used to calculate `avg_cost_per_click` and `avg_click_through_rate`. |
+
+All six columns are read by the table functions.
+
+
+#### media_plan_sheets
+Planned budget per campaign. Budgets are aggregated by month.
+
+| Column | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `date` | DATE | Yes | Any day belonging to the month the budget refers to. Rows are grouped by month. In the source sheet the value must be written as `MM/DD/YYYY` so that BigQuery converts it to a `DATE`. |
+| `year` | INTEGER | No | Campaign year. Not read by the table functions: the `year` dimension in the output is derived from `date`. |
+| `country` | STRING | No | Target country (e.g. `IT`). |
+| `funnel_stage` | STRING | No | Funnel stage (e.g. `Upper funnel`). |
+| `platform` | STRING | No | Advertising platform (e.g. `Google Ads`). |
+| `campaign_type` | STRING | No | Campaign type (e.g. `Search ads`). |
+| `marketing_objective` | STRING | No | Marketing objective (e.g. `Brand awareness`). |
+| `campaign_name` | STRING | No | Campaign name without the taxonomy prefix. |
+| `full_campaign_name` | STRING | Yes | The complete campaign taxonomy, with the seven parts joined by a pipe (`\|`) — see [Campaign taxonomy](../README.md#campaign-taxonomy). Join key with the `campaign` column of `online_campaign_performance_sheets`. |
+| `budget` | FLOAT | Yes | Planned budget for the campaign in that month. Summed over the selected period. |
+
+> **Only three columns are read.** `date`, `full_campaign_name` and `budget` are the only ones the table functions query. The seven taxonomy columns exist to keep the source sheet readable: reporting dimensions are always re-derived from `full_campaign_name` through `get_campaign_part`. If a taxonomy column and `full_campaign_name` disagree, **reports follow `full_campaign_name`**. The same applies to `year`, which is recomputed from `date`.
+
+
+#### Connecting a Google Sheet to BigQuery
+1. In BigQuery, open the dataset and select **Create table**.
+2. Set **Create table from** to `Drive`, paste the spreadsheet URL and choose `Google Sheet` as the file format.
+3. Set **Sheet range** to the tab holding the data:
+    - `Media plan pivot!A:J` for `media_plan_sheets`
+    - `Online campaigns performances!A:F` for `online_campaign_performance_sheets`
+4. Name the table, provide the schema above and set **Header rows to skip** to `1`.
+
+The external table always reads the current content of the sheet, so edits are reflected in the reports at the next query with no reload.
+
+
+#### Matching campaigns across the three sources
+The same campaign string has to appear identically in three places, otherwise the joins produce unmatched rows:
+
+| Where | Column or parameter | Read by |
+| :--- | :--- | :--- |
+| Landing page URL | `utm_campaign` | `sessions` → `session_campaign` |
+| `online_campaign_performance_sheets` | `campaign` | `campaigns`, `media_plan` |
+| `media_plan_sheets` | `full_campaign_name` | `media_plan` |
+
+`campaigns` joins on **date + campaign + campaign ID**, `media_plan` joins on **month + campaign**. Unmatched rows are preserved on both sides, so naming discrepancies stay visible instead of silently disappearing.
 
 
 ### Create table functions
@@ -80,11 +153,9 @@ To create the table functions you need, run the following SQL scripts in the ord
 
 
 ## Reporting fields
-The Reporting Fields Matrix provides an interactive overview of all reporting fields available across Nameless Analytics table functions, including functional scope, field type, value type, and field descriptions. The report is generated directly from the current BigQuery table function schemas, so it reflects the latest available reporting fields.
+The Reporting Fields Matrix provides an interactive overview of all reporting fields available across Nameless Analytics table functions, including functional scope, field type, value type, and field descriptions.
 
-[Available metrics and dimensions](https://datastudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d)
-
-</br>
+[Available metrics and dimensions](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d)
 
 
 
@@ -287,6 +358,8 @@ select * from `project.nameless_analytics.attribution_multi_touch`(start_date, e
 ### Media Plan
 Combines monthly planned campaign budgets with actual campaign spend for the selected date range, preserving campaign taxonomy dimensions.
 
+Requires the `media_plan_sheets` and `online_campaign_performance_sheets` tables. See [Create external campaign tables](#create-external-campaign-tables).
+
 ```sql
 select * from `project.nameless_analytics.media_plan`(start_date, end_date)
 ```
@@ -298,6 +371,8 @@ select * from `project.nameless_analytics.media_plan`(start_date, end_date)
 Combines daily campaign media performance with post-click user, session, conversion, ecommerce, and ROAS metrics.
 
 Unmatched advertising and analytics campaigns are preserved in the results. Missing numeric metrics are returned as zero, making campaign naming and ID discrepancies visible.
+
+Requires the `online_campaign_performance_sheets` table. See [Create external campaign tables](#create-external-campaign-tables).
 
 ```sql
 select * from `project.nameless_analytics.campaigns`(start_date, end_date)

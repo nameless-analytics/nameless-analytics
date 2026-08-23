@@ -10,7 +10,6 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
 ## Table of Contents
 
 - [Introduction](#introduction)
-  - [Session enrichment](#session-enrichment)
   - [BigQuery enrichment](#bigquery-enrichment)
   - [Automatic type handling](#automatic-type-handling)
   - [Error handling](#error-handling)
@@ -38,12 +37,8 @@ Events sent via the Streaming Protocol **do not extend the session duration** (`
 **`page_view` events are not allowed** via the Streaming Protocol and must be sent through the standard website tracker to correctly initialize the session context.
 
 
-### Session enrichment
-Automatically enriches server-side events with the active session context by extracting relevant `session_data` directly from BigQuery based on the `na_s` cookie. This ensures that offline or backend events are seamlessly tied to the user's original session, inheriting source, campaign, and user metadata without breaking the journey.
-
-
 ### BigQuery enrichment
-Automatically retrieves user, session and page data from the BigQuery `events_raw` table based on the `na_s` cookie, allowing for enriching server-side events with the correct context.
+Automatically retrieves page_data from the BigQuery `events_raw` table based on the `na_s` cookie (`page_id` is equal to `na_s`). This ensures that offline or backend events are seamlessly tied to the user's original session and page, inheriting source, campaign, and user metadata without breaking the journey.
 
 
 ### Automatic type handling

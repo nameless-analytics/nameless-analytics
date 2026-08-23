@@ -98,7 +98,7 @@ Server logs show:
   
   The system currently blocks any User-Agent containing the following keywords:
   - **HTTP Libraries:** `curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.
-  - **AI Agents & LLMs:** `gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytspider`, `ccbot`.
+  - **AI Agents & LLMs:** `gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytespider`, `ccbot`.
   - **SEO & Marketing Bots:** `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
   - **Automation & Security:** `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
 
@@ -235,8 +235,8 @@ If you experience slow query performance or errors with SQL Table Functions, ens
 - **Issue:** The `country` and `city` fields are `null` in BigQuery.
 - **Solution:** Nameless Analytics relies on server-provided headers. Ensure your environment is configured to forward geolocation:
   - **App Engine:** Forward `X-Appengine-Country` and `X-Appengine-City`.
-  - **Cloud Run:** Configure the Load Balancer to include `X-Gclb-Country` and `X-Gclb-Region`.
-  - **Stape:** Enable "Geo headers" power-up.
+  - **Cloud Run:** Configure the Load Balancer to include `X-Gclb-Country: {client_region}` and `X-Gclb-City: {client_city}`. Note that `{client_region}` holds the country code, not the region.
+  - **Stape:** Enable the "GEO Headers" power-up, which provides `X-GEO-Country` and `X-GEO-City`.
 
 ### Unexpected Channel Grouping
 - **Issue:** Events are categorized as `referral` instead of expected channels like `paid_search` or `organic_social`.

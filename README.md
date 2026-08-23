@@ -32,6 +32,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Security and Validation](#security-and-validation)
   - [Transparency](#transparency)
   - [ID Management](#id-management-1)
+  - [User ID lifecycle](#user-id-lifecycle)
   - [Data Integrity](#data-integrity)
   - [Real-time Forwarding](#real-time-forwarding)
   - [Self-Monitoring & Performance](#self-monitoring-performance)
@@ -45,6 +46,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Firestore as Last updated Snapshot](#firestore-as-last-updated-snapshot)
   - [BigQuery as Historical Timeline](#bigquery-as-historical-timeline)
 - [Reporting](#reporting)
+  - [Campaign taxonomy](#campaign-taxonomy)
 - [AI support](#ai-support)
   - [Q&A Agents](#qa-agents)
   - [Conversational Analysis Agent in BigQuery Studio](#conversational-analysis-agent-in-bigquery-studio)
@@ -79,7 +81,7 @@ Before starting, ensure you have the following resources under the same account 
 - A Client-side Google Tag Manager container
 - A Server-side Google Tag Manager container running on:
   - [App Engine](https://www.simoahava.com/analytics/provision-server-side-tagging-application-manually/) (thanks to [Simo Ahava](https://www.simoahava.com/))
-  - or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) with `X-Gclb-Country` and `X-Gclb-Region` headers configured (thanks to [Simo Ahava](https://www.simoahava.com/))
+  - or [Cloud run](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/) with `X-Gclb-Country` and `X-Gclb-City` headers configured (thanks to [Simo Ahava](https://www.simoahava.com/))
   - or [Stape](https://stape.io) with geo headers power up enabled
 - A Google Cloud Project with an active billing account
 - A Google BigQuery project + dedicated dataset
@@ -214,7 +216,8 @@ The request data is sent via a POST request in JSON format. It is structured int
     "viewport_size": "1512x823",
     "country": "IT",
     "city": "venice",
-    "tld_source": "google.com"
+    "tld_source": "google.com",
+    "cross_domain_id": null
   },
   "consent_data": {
     "consent_type": "Update",
@@ -263,7 +266,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 | session_date       |                               | String   | Server-Side | Session date                                  |
 | session_id         |                               | String   | Server-Side | Unique session identifier                     |
 | session_data       | session_number                | Integer  | Server-Side | Session number for the user                   |
-|                    | cross_domain_session          | String   | Server-Side | Indicates if the session is cross-domain      |
+|                    | cross_domain_session          | String   | Server-Side | `Yes` if any hit in the session carried a valid cross-domain ID, `No` otherwise |
 |                    | session_channel_grouping      | String   | Server-Side | Channel grouping for the session              |
 |                    | session_source                | String   | Server-Side | Session source                                |
 |                    | session_tld_source            | String   | Server-Side | Session top-level domain source               |
@@ -278,10 +281,12 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | session_hostname              | String   | Server-Side | Website hostname for session                  |
 |                    | session_browser_name          | String   | Server-Side | Browser name used in session                  |
 |                    | session_landing_page_category | String   | Server-Side | Landing page category                         |
+|                    | session_landing_page_url      | String   | Server-Side | Landing page URL                              |
 |                    | session_landing_page_path | String   | Server-Side | Landing page path                             |
 |                    | session_landing_page_title    | String   | Server-Side | Landing page title                            |
 |                    | session_city                  | String   | Server-Side | Session geolocation city                      |
 |                    | session_exit_page_category    | String   | Server-Side | Exit page category                            |
+|                    | session_exit_page_url         | String   | Server-Side | Exit page URL                                 |
 |                    | session_exit_page_path    | String   | Server-Side | Exit page path                                |
 |                    | session_exit_page_title       | String   | Server-Side | Exit page title                               |
 |                    | session_start_timestamp       | Integer  | Server-Side | Session start timestamp                       |
@@ -292,6 +297,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 | page_data          | page_title                    | String   | Client-Side | Page title                                    |
 |                    | page_hostname_protocol        | String   | Client-Side | Page hostname protocol (http/https)           |
 |                    | page_hostname                 | String   | Client-Side | Page hostname                                 |
+|                    | page_url                      | String   | Client-Side | Page full URL                                 |
 |                    | page_path                 | String   | Client-Side | Page path                                     |
 |                    | page_fragment                 | String   | Client-Side | URL fragment                                  |
 |                    | page_query                    | String   | Client-Side | URL query string                              |
@@ -327,6 +333,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | country                       | String   | Server-Side | Event geolocation country                     |
 |                    | city                          | String   | Server-Side | Event geolocation city                        |
 |                    | tld_source                    | String   | Client-Side | Event top-level domain source                 |
+|                    | cross_domain_id               | String   | Client-Side | Session ID decoded and validated from the `na_id` URL parameter. Set only on the first `page_view` of the destination page, `null` on every other event |
 | consent_data       | consent_type                  | String   | Client-Side | Consent update type                           |
 |                    | respect_consent_mode          | String   | Client-Side | Whether Consent Mode is respected             |
 |                    | ad_user_data                  | String   | Client-Side | Ad user data consent                          |
@@ -371,14 +378,6 @@ When "Add ecommerce data" is enabled, an `ecommerce` parameter will be added to 
 |--------------------|-------------------|----------|-------------|-----------------------|
 | ecommerce          |                   | JSON     | Client-Side | Ecommerce data        |
     
-#### Cross-domain data
-When "Enable cross-domain tracking" is enabled, the `cross_domain_session` and the `cross_domain_id` parameters will be added to the payload in `session_data` and `event_data`   respectively:
-  
-| **Parameter name** | **Sub-parameter**    | **Type** | **Added**   | **Field description**   |
-|--------------------|----------------------|----------|-------------|-------------------------|
-| session_data       | cross_domain_session | String   | Server-Side | Is cross-domain session |
-| event_data         | cross_domain_id      | String   | Client-Side | Validated cross-domain session ID decoded from the `na_id` URL parameter |
-
 </details>
 
 
@@ -594,6 +593,23 @@ The Nameless Analytics Server-side Client Tag automatically generates and manage
 </details>
 
 
+### User ID lifecycle
+The `user_id` is a session-level parameter. It is taken from the payload when the session is created, and from that moment it is **frozen**: a regular event cannot change it, even if it carries a different value.
+
+Two event names are the exception, and they are handled explicitly by the Server-side Client Tag:
+
+| Event name | Effect on `user_id` |
+| :--- | :--- |
+| `login` | Overwrites the session `user_id` with the value carried by that event |
+| `logout` | Clears the session `user_id`, setting it to `null` |
+
+Because `login` writes whatever the payload carries at that moment, make sure the User ID is already available in the Configuration Variable when the `login` tag fires: otherwise the session is updated with an empty value. `logout` always clears the value, regardless of the payload.
+
+The updated value is reflected in BigQuery starting from the same event, since the session record is written back to the payload after the Firestore update.
+
+Renaming these two standard events breaks this behaviour silently: the session `user_id` will simply stop being updated.
+
+
 ### Data Integrity
 The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
 
@@ -612,7 +628,7 @@ Actively detects and blocks automated traffic returning a `403 Forbidden` status
 <details><summary>See bot protection list</summary>
 
 #### AI Agents & LLMs 
-`gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytspider`, `ccbot`.
+`gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytespider`, `ccbot`.
 
 #### SEO & Marketing Bots 
 `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
@@ -628,7 +644,17 @@ Actively detects and blocks automated traffic returning a `403 Forbidden` status
 ### Geolocation & Privacy by Design
 Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations. 
 
-To enable this feature, your server must be configured to forward geolocation headers. The platform natively supports **Google App Engine** (via `X-Appengine` headers) and **Google Cloud Run** (via `X-Gclb` headers). For Cloud Run, ensure the Load Balancer is [properly configured](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us again).
+To enable this feature, your server must be configured to forward geolocation headers:
+
+| Environment | Country header | City header |
+| :--- | :--- | :--- |
+| **App Engine** | `X-Appengine-Country` | `X-Appengine-City` |
+| **Cloud Run** | `X-Gclb-Country: {client_region}` | `X-Gclb-City: {client_city}` |
+| **Stape** | `X-GEO-Country` | `X-GEO-City` |
+
+App Engine provides its headers with no configuration. On Cloud Run the two headers must be added as custom request headers on the Load Balancer, following [this guide](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us again). On Stape, enable the GEO Headers power-up.
+
+> **Watch out for the naming**: Google's `{client_region}` variable holds the **country** code, not the region. The variable that holds a province or state is `{client_region_subdivision}`, and it returns a CLDR code such as `USCA`, not a city name.
 
 
 ### Channel Grouping logic
@@ -656,8 +682,8 @@ The following table describes how the channel grouping is determined based on th
 | `organic_shopping` | **Shopping** | No |
 | `paid_video` | **Video** | Yes |
 | `organic_video` | **Video** | No |
-| `ai` | **AI** | Yes |
-| `email` | **Email** | Yes |
+| `ai` | **AI** | Any |
+| `email` | **Email** | Any |
 | `referral` | None of the above | No |
 | `affiliate` | None of the above | Yes |
 
@@ -735,10 +761,10 @@ Firestore ensures data integrity by managing how parameters are updated across h
 
 | Scope | Type | Parameters | Logic |
 | :--- | :--- | :--- | :--- |
-| **User** | **First-Touch** | `user_date`, `user_source`, `user_tld_source`, `user_campaign`, `user_campaign_id`, `user_campaign_click_id`, `user_campaign_term`, `user_campaign_content`, `user_channel_grouping`, `user_device_type`, `user_country`, `user_language`,   `user_first_session_timestamp` | Recorded at first visit, **never overwritten**. |
+| **User** | **First-Touch** | `user_date`, `user_source`, `user_tld_source`, `user_campaign`, `user_campaign_id`, `user_campaign_click_id`, `user_campaign_term`, `user_campaign_content`, `user_channel_grouping`, `user_device_type`, `user_country`, `user_city`, `user_language`,   `user_first_session_timestamp` | Recorded at first visit, **never overwritten**. |
 | **User** | **Last-Touch** | `user_last_session_timestamp` | Updated at the start of every new session. |
-| **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`,   `session_channel_grouping`, `session_device_type`, `session_country`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_path`, `session_landing_page_title`, `user_id` | Set at session start, persists throughout   the session. |
-| **Session** | **Last-Touch** | `session_exit_page_category`, `session_exit_page_path`, `session_exit_page_title`, `session_end_timestamp` | **Updated on every hit** to reflect the latest state. |
+| **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`,   `session_channel_grouping`, `session_device_type`, `session_country`, `session_city`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_url`, `session_landing_page_path`, `session_landing_page_title`, `user_id` | Set at session start, persists throughout   the session. |
+| **Session** | **Last-Touch** | `session_exit_page_category`, `session_exit_page_url`, `session_exit_page_path`, `session_exit_page_title`, `session_end_timestamp` | **Updated on every hit** to reflect the latest state. |
 | **Session** | **Progressive** | `cross_domain_session` | Flags as 'Yes' if any hit in the session is cross-domain. |
 
 </details>
@@ -801,6 +827,28 @@ Nameless Analytics offers a set of BigQuery [SQL Table Functions](tables/TABLES.
 - [Media Plan](tables/table-functions/media_plan.sql) - [View schema](tables/TABLES.md#media-plan)
 
 This is a [reporting example made in Looker Studio](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd) based on the SQL functions.
+
+
+### Campaign taxonomy
+Nameless Analytics does not store campaign dimensions separately: it parses them at query time from the campaign string, through the [`get_campaign_part`](tables/user-defined-functions/get_campaign_part.sql) UDF. The convention is a pipe-delimited string whose parts are read by position:
+
+| Position | Extracted as | Example |
+| :--- | :--- | :--- |
+| 1 | `campaign_year` | `2026` |
+| 2 | `campaign_country` | `IT` |
+| 3 | `campaign_funnel_stage` | `Upper funnel` |
+| 4 | `campaign_platform` | `Google Ads` |
+| 5 | `campaign_type` | `Search ads` |
+| 6 | `campaign_marketing_objective` | `Brand awareness` |
+| 7 | `campaign_name` | `Nameless Analytics` |
+
+```text
+2026|IT|Upper funnel|Google Ads|Search ads|Brand awareness|Nameless Analytics
+```
+
+The same string is used as `utm_campaign` on landing URLs, so the taxonomy travels with the click and every session inherits it. Missing parts return `NULL`: a shorter string does not break the query, it simply produces empty dimensions.
+
+Since parsing happens at query time, editing the UDF changes the taxonomy retroactively across all historical data, exactly like the [channel grouping](#channel-grouping-logic) function.
 
 
 
