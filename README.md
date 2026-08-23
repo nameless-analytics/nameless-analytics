@@ -817,9 +817,7 @@ Nameless Analytics offers a set of BigQuery [SQL Table Functions](tables/TABLES.
 - [Campaigns](tables/table-functions/campaigns.sql) - [View schema](tables/TABLES.md#campaigns)
 - [Media Plan](tables/table-functions/media_plan.sql) - [View schema](tables/TABLES.md#media-plan)
 
-The [Fields catalog explorer](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d) lists every field exposed by these table functions, with its scope, type and description. See also [Reporting fields](tables/TABLES.md#reporting-fields).
-
-This is a [reporting example made in Looker Studio](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_ebkun2sknd) based on the SQL functions.
+The [Fields catalog explorer](https://datastudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d) lists every field exposed by these table functions, with its scope, type and description.
 
 
 ### Campaign taxonomy
