@@ -258,6 +258,16 @@ Browser console shows:
 - **Issue:** The network request from the browser failed to reach the server.
 - **Solution:** Check for client-side connectivity issues, local firewalls, or DNS misconfigurations for your server-side endpoint.
 
+- **Issue:** The payload is larger than 64 KB. Requests are sent with the `keepalive` flag, so they survive the page being closed, but browsers cap the body of a `keepalive` request at **64 KiB**: above that the request is rejected before leaving the browser and the event is lost. The line above in the console (`[event_name] > 🔴 TypeError: Failed to fetch`) confirms it, and the request never appears in the Network tab.
+- **Solution:** Reduce the payload. The usual causes are [Add current dataLayer state](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#add-current-datalayer-state) on a page with a large `dataLayer` and very long `ecommerce` item arrays. Inspect the size with the snippet below, then disable the dataLayer state, or send only the parameters you need as event parameters.
+
+  ```javascript
+  // Size in KB of the current dataLayer, the heaviest optional part of the payload
+  Math.round(new Blob([JSON.stringify(window.dataLayer)]).size / 1024 * 10) / 10
+  ```
+
+  Note that the 64 KiB budget is shared with every other in-flight `keepalive` request and `navigator.sendBeacon()` call of the page, including those of other vendors' tags, so the effective ceiling is lower than 64 KiB when several tags fire together.
+
 Browser console shows: 
 
 `[event_name] > 🔴 [error]`
