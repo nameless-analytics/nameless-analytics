@@ -10,7 +10,7 @@
 }
 */
 
-declare project_name string default 'PROJECT NAME';  -- Change this
+declare project_name string default 'PROJECT ID';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
 declare users string default format ("""
@@ -59,8 +59,8 @@ with raw_user_data as (
       json_value(ecommerce, '$.transaction_id') as transaction_id,
       if(event_name = 'purchase', timestamp_millis(event_timestamp), null) as first_purchase_timestamp,
       if(event_name = 'purchase', timestamp_millis(event_timestamp), null) as last_purchase_timestamp,
-      sum(case when event_name = 'purchase' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)) else 0 end) as purchase_revenue,
-      sum(case when event_name = 'refund' then (ifnull(safe_cast(json_value(items, '$.price') as float64), 0.0) * ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0)) else 0 end) as refund_revenue,
+      if(event_name = 'purchase', ifnull(safe_cast(json_value(ecommerce, '$.value') as float64), 0.0), 0.0) as purchase_revenue,
+      if(event_name = 'refund', ifnull(safe_cast(json_value(ecommerce, '$.value') as float64), 0.0), 0.0) as refund_revenue,
       sum(case when event_name = 'purchase' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as purchase_qty,
       sum(case when event_name = 'refund' then ifnull(safe_cast(json_value(items, '$.quantity') as int64), 0) else 0 end) as refund_qty,
 

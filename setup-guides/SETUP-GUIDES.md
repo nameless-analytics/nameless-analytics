@@ -380,7 +380,7 @@ To configure cross-domain tracking you need to:
 
     ![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/c8ab4d08-5069-4833-8465-5ca4ddea0863)
 
-2. Create a **Regex Lookup Table** variable to dynamically switch the endpoint domain based on the current page hostname:
+2. Create a **Regex Lookup Table** variable to dynamically switch the endpoint domain based on the current `page_hostname`:
 
     ![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/a7b54f23-18b5-4e54-ba80-216a06a51f2d)
 
@@ -475,7 +475,7 @@ By doing so, the browser will treat the tracker scripts as critical, first-party
 ### 1. Download the core libraries
 Download the raw code of the two required JavaScript files:
 1. **[nameless-analytics_vX.X.X.min.js](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/)**: The main execution engine. (check version inside the tracker tag template code under)
-2. **[ua-parser.pack.min.js](https://github.com/faisalman/ua-parser-js/blob/master/dist/ua-parser.pack.min.js)**: The dependency used for precise User-Agent parsing.
+2. **[ua-parser.pack.min.js](https://cdn.jsdelivr.net/npm/ua-parser-js@1.0.40/dist/ua-parser.pack.min.js)**: The dependency used for precise User-Agent parsing. Download this exact version: the Client-side Tracker Tag is pinned to `ua-parser-js@1.0.40`.
 
 ### 2. Host the libraries on your infrastructure
 Upload both `.js` files to your own server or Content Delivery Network (CDN), **keeping their original file names**. 

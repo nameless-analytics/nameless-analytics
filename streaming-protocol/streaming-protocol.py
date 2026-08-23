@@ -5,7 +5,6 @@
 
 import requests
 import secrets
-from urllib.parse import urlparse
 from datetime import datetime, timezone
 from google.cloud import bigquery
 
@@ -16,12 +15,13 @@ from google.cloud import bigquery
 
 # User cookies
 na_s = 'THar5XDi2SYUiR2_QqQrCtRqZvObDt7-Tk94Ptz7ByIA65h' # Modify this according to the current user's na_s cookie value
+page_date = '2026-04-08' # Modify this according to the date (YYYY-MM-DD) of the page view you want to attach the event to
 
 # Request settings
 full_endpoint = 'https://gtm.domain.com/tm/nameless' # Modify this according to your GTM Server-side endpoint 
 origin = 'https://domain.com' # Modify this according to website origin
 api_key = '1234' # Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA==' # Modify this according to the GTM Server-side preview header
+gtm_preview_header = '' # Modify this according to the GTM Server-side preview header
 
 # Event data
 client_id = na_s.split('_')[0]
@@ -91,7 +91,7 @@ table_id = 'events_raw'
 # --------------------------------------------------------------------------------------------------------------
 
 def get_page_data_from_bq():
-    print(f'👉 Retrieve page data from BigQuery for page_id: {na_s}')
+    print(f'👉 Retrieve page data from BigQuery for page_id: {na_s} on {page_date}')
 
     page_date_from_bq = ""
     page_data_from_bq = {}
@@ -101,12 +101,14 @@ def get_page_data_from_bq():
         query = f"""
             SELECT page_date, page_data
             FROM `{project_id}.{dataset_id}.{table_id}`
-            WHERE page_id = @na_s
+            WHERE page_date = @page_date
+              AND page_id = @na_s
             LIMIT 1
         """
         job_config = bigquery.QueryJobConfig(
             query_parameters=[
                 bigquery.ScalarQueryParameter("na_s", "STRING", na_s),
+                bigquery.ScalarQueryParameter("page_date", "DATE", page_date),
             ]
         )
 
@@ -133,7 +135,7 @@ def get_page_data_from_bq():
                                 break
         
         if not row_found:
-            print("  🔴 Page ID not found in BigQuery. Request aborted")
+            print("  🔴 Page ID not found in BigQuery for the given page_date. Request aborted")
             return
         else:
             print("  🟢 Page data retrieved from BigQuery")
@@ -167,7 +169,6 @@ def build_payload(page_date_from_bq, page_data_from_bq):
         "event_origin": "Streaming Protocol", # Do not modify
         "event_data": {
             "event_type": "event", # Do not modify
-            "hostname": urlparse(origin).netloc, # Website domain origin
             "source": 'direct', # Do not modify
             "campaign": None, # Do not modify
             "campaign_id": None, # Do not modify

@@ -10,7 +10,7 @@
 }
 */
 
-declare project_name string default 'PROJECT NAME';  -- Change this
+declare project_name string default 'tom-moretti';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
 declare events string default format ("""
@@ -275,6 +275,7 @@ select
 
   from `%s.%s.events_raw`
   where true
+    and event_date >= start_date 
     and case 
       when date_scope = 'user' then user_date
       when date_scope = 'session' then session_date

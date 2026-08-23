@@ -22,7 +22,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [ID Management](#id-management)
   - [Sequential Execution Queue](#sequential-execution-queue)
   - [Smart Consent Management](#smart-consent-management)
-  - [SPA & History Management](#spa-history-management)
+  - [SPA & History Management](#spa--history-management)
   - [Core Libraries Functioning](#core-libraries-functioning)
   - [Cross-domain Architecture](#cross-domain-architecture)
   - [Parameter hierarchy](#parameter-hierarchy)
@@ -35,9 +35,9 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [User ID lifecycle](#user-id-lifecycle)
   - [Data Integrity](#data-integrity)
   - [Real-time Forwarding](#real-time-forwarding)
-  - [Self-Monitoring & Performance](#self-monitoring-performance)
+  - [Self-Monitoring & Performance](#self-monitoring--performance)
   - [Bot protection](#bot-protection)
-  - [Geolocation & Privacy by Design](#geolocation-privacy-by-design)
+  - [Geolocation & Privacy by Design](#geolocation--privacy-by-design)
   - [Channel Grouping logic](#channel-grouping-logic)
   - [Server-side cookies](#server-side-cookies)
   - [Streaming Protocol](#streaming-protocol)
@@ -53,7 +53,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
 - [Google Cloud costs](#google-cloud-costs)
   - [Data processing](#data-processing)
   - [Data storage](#data-storage)
-  - [Data Governance & Deletion](#data-governance-deletion)
+  - [Data Governance & Deletion](#data-governance--deletion)
   - [Cost Summary Table](#cost-summary-table)
 - [License](#license)
 
@@ -438,7 +438,7 @@ It handles the following background operations:
 
 </br>
 
-Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. Source code: [ua-parser.pack.min.js](https://github.com/faisalman/ua-parser-js)
+Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. Source code: [ua-parser-js](https://github.com/faisalman/ua-parser-js). The tag is pinned to version **1.0.40**, the latest release under the MIT licence.
 
 This data is mapped into the `event_data` object under `device_vendor`, `os_version`, `device_model`, etc.
 
@@ -466,7 +466,7 @@ The value is validated **twice**, on both sides of the request:
 | **Client-side Tracker Tag** | Base64 decoding, `{session_id}.{decoration_timestamp_ms}` structure, `session_id` format, timestamp not in the future, no more than five minutes elapsed |
 | **Server-side Client Tag** | `session_id` format |
 
-The required `session_id` format is 15 alphanumeric characters, an underscore, 15 alphanumeric characters — the same shape the server issues. A value rejected by the server is discarded and a new session is created: the event itself is still processed and stored, and `🟠 Invalid cross-domain ID format` is logged in GTM Server Preview.
+The required `session_id` format is 15 alphanumeric characters, an underscore, 15 alphanumeric characters — the same shape the server issues. A value rejected by the server is discarded and the event is processed as if no cross-domain ID were present: user and session are resolved from the local `na_u` and `na_s` cookies, which in the typical case — a visitor arriving from another domain with no active session on the destination — means a new session. The event itself is still processed and stored, and `🟠 Invalid cross-domain ID format` is logged in GTM Server Preview.
 
 Since link decoration happens dynamically upon clicking, cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
 
@@ -571,7 +571,7 @@ The **Server-side Client Tag** sits between the public internet and your cloud i
 ### Security and Validation
 Validates request origins and authorized domains (CORS) before processing to prevent unauthorized usage.
 
-Identifiers are validated before being trusted: the `na_u` and `na_s` cookies must match their expected format, and the `cross_domain_id` carried in the payload must match the format of a server-issued `session_id`. Requests carrying malformed cookies are rejected with `403`; a malformed `cross_domain_id` is discarded and the event is processed as a new session.
+Identifiers are validated before being trusted: the `na_u` and `na_s` cookies must match their expected format, and the `cross_domain_id` carried in the payload must match the format of a server-issued `session_id`. Requests carrying malformed cookies are rejected with `403`; a malformed `cross_domain_id` is discarded and the event is processed as if it had not been sent, leaving user and session to be resolved from the `na_u` and `na_s` cookies.
 
 
 ### Transparency
@@ -892,7 +892,9 @@ Query processing (scanning data in BigQuery for analysis/reporting) is billed se
 ### Data Governance & Deletion
 To comply with GDPR and privacy regulations, Nameless Analytics provides a dedicated **[User Data Deletion Script](setup-guides/SETUP-GUIDES.md#data-governance--privacy-compliance)**. 
 
-This Python utility allows you to remove all data for a specific `client_id` from both BigQuery and Firestore in a single operation, ensuring a complete "Right to be Forgotten" implementation.
+This Python utility allows you to remove all data for a specific `client_id` from both BigQuery and Firestore in a single operation: the historical timeline and the real-time snapshot are both erased server-side.
+
+The script does not remove the `na_u` cookie from the visitor's browser: it is a first-party cookie that the server cannot delete remotely, and it lasts up to 400 days. If that visitor returns to the site, the Server-side Client Tag reads the existing `na_u` and recreates the user under the **same `client_id`**, so data collected from that point on is associated with that identifier again. To complete the erasure client-side as well, the visitor must clear the site cookies.
 
 
 ### Cost Summary Table

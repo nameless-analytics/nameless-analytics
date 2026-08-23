@@ -13,12 +13,13 @@ const { BigQuery } = require('@google-cloud/bigquery');
 
 // User cookies
 const na_s = 'THar5XDi2SYUiR2_QqQrCtRqZvObDt7-Tk94Ptz7ByIA65h'; // Modify this according to the current user's na_s cookie value
+const page_date = '2026-04-08'; // Modify this according to the date (YYYY-MM-DD) of the page view you want to attach the event to
 
 // Request settings
 const full_endpoint = 'https://gtm.domain.com/tm/nameless'; // Modify this according to your GTM Server-side endpoint 
 const origin = 'https://domain.com'; // Modify this according to website origin
 const api_key = '1234'; // Modify this according to the API key set in the Nameless Analytics Server-side Client Tag
-const gtm_preview_header = 'ZW52LTEwMnxUWk9Pd1l1SW5YWFU0eFpzQlMtZHN3fDE5ZGMwMDhhYTZiYTE5NmZkNDkxZA=='; // Modify this according to the GTM Server-side preview header
+const gtm_preview_header = ''; // Modify this according to the GTM Server-side preview header
 
 // Event data
 const client_id = na_s.split('_')[0];
@@ -88,7 +89,7 @@ const table_id = 'events_raw';
 // --------------------------------------------------------------------------------------------------------------
 
 async function get_page_data_from_bq() {
-    console.log(`👉 Retrieve page data from BigQuery for page_id: ${na_s}`);
+    console.log(`👉 Retrieve page data from BigQuery for page_id: ${na_s} on ${page_date}`);
 
     let page_date_from_bq = "";
     const page_data_from_bq = {};
@@ -102,13 +103,15 @@ async function get_page_data_from_bq() {
         const query = `
             SELECT page_date, page_data
             FROM \`${project_id}.${dataset_id}.${table_id}\`
-            WHERE page_id = @na_s
+            WHERE page_date = @page_date
+              AND page_id = @na_s
             LIMIT 1
         `;
 
         const options = {
             query: query,
-            params: { na_s: na_s }
+            params: { na_s: na_s, page_date: page_date },
+            types: { na_s: 'STRING', page_date: 'DATE' }
         };
 
         const [rows] = await bigquery.query(options);
@@ -145,7 +148,7 @@ async function get_page_data_from_bq() {
         }
 
         if (!row_found) {
-            console.log("  🔴 Page ID not found in BigQuery. Request aborted");
+            console.log("  🔴 Page ID not found in BigQuery for the given page_date. Request aborted");
             return;
         } else {
             console.log("  🟢 Page data retrieved from BigQuery");
@@ -187,7 +190,6 @@ async function build_payload(page_date_from_bq, page_data_from_bq) {
         "event_origin": "Streaming Protocol", // Do not modify
         "event_data": {
             "event_type": "event", // Do not modify
-            "hostname": new URL(origin).hostname, // Website domain origin
             "source": 'direct', // Do not modify
             "campaign": null, // Do not modify
             "campaign_id": null, // Do not modify

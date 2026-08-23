@@ -346,7 +346,7 @@ with raw_session_data as (
     (case when newsletter_sign_up >= 1 then 1 else 0 end) as session_with_newsletter_sign_up,
     (case when new_lead >= 1 then 1 else 0 end) as session_with_new_lead,
     (case when purchase >= 1 then 1 else 0 end) as session_with_purchase,
-    (case when sum(refund) >= 1 then 1 else 0 end) as session_with_refund,
+    (case when refund >= 1 then 1 else 0 end) as session_with_refund,
     safe_divide(sum(total_page_views), count(distinct session_id)) as page_view_per_session,
 
     # EVENTS

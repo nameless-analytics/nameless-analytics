@@ -11,15 +11,15 @@ from google.cloud import firestore
 # CONFIGURATION
 # --------------------------------------------------------------------------------------------------------------
 
-client_id = '9XYP7ZNT84N750' # Set to the client_id you want to delete
+client_id = 'lZc919IBsqlhHks' # Set to the client_id you want to delete
 
 # Project settings
-project_id = 'tom-moretti'
+project_id = 'PROJECT ID'
 dataset_id = 'nameless_analytics'
 table_id = 'events_raw'
 
 # Path to your Google Cloud Service Account JSON key
-credentials_path = '/Users/tommasomoretti/Library/CloudStorage/GoogleDrive-tommasomoretti88@gmail.com/Il mio Drive/Lavoro/Nameless Analytics/worker_service_account.json'
+credentials_path = './service_account.json'
 
 
 # --------------------------------------------------------------------------------------------------------------

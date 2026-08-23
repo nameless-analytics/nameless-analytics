@@ -38,7 +38,9 @@ Events sent via the Streaming Protocol **do not extend the session duration** (`
 
 
 ### BigQuery enrichment
-Automatically retrieves page_data from the BigQuery `events_raw` table based on the `na_s` cookie (`page_id` is equal to `na_s`). This ensures that offline or backend events are seamlessly tied to the user's original session and page, inheriting source, campaign, and user metadata without breaking the journey.
+Automatically retrieves page_data from the BigQuery `events_raw` table based on the `na_s` cookie (`page_id` is equal to `na_s`) and on the date of that page view. This ensures that offline or backend events are seamlessly tied to the user's original session and page, inheriting source, campaign, and user metadata without breaking the journey.
+
+> **Store the page date alongside the cookie.** The lookup filters on `page_date`, which is a clustering key of `events_raw`: without it BigQuery has no way to narrow the search and every single event would scan the whole table. `page_date` cannot be derived from the `na_s` cookie, so when you save the cookie value for later use you must also save the date of the page view you want the conversion to be attached to, and pass it as `page_date` in `YYYY-MM-DD` format.
 
 
 ### Automatic type handling
@@ -97,7 +99,6 @@ The Streaming Protocol requires a POST request with a JSON body.
   "event_origin": "Streaming Protocol", // Do not modify
   "event_data": {
     "event_type": "event", // Do not modify
-    "hostname": "namelessanalytics.com", // Website domain origin
     "source": "direct", // Do not modify
     "campaign": null, // Do not modify
     "campaign_id": null, // Do not modify
@@ -170,8 +171,9 @@ The Streaming Protocol requires a POST request with a JSON body.
  
 Open `streaming-protocol.py` or `streaming-protocol.js` and configure the following settings:
  
-1. User Cookies:
+1. User Cookies and page date:
     - Set the `na_s` cookie value (the user unique identifier `na_u` will be automatically derived from it).
+    - Set `page_date` to the date of the page view you want the event to be attached to, in `YYYY-MM-DD` format. It must be stored together with the cookie value at collection time: it is not derivable from `na_s` and the BigQuery lookup filters on it.
 2. Request Settings:
     - `full_endpoint`: Your GTM Server-side URL (e.g., `https://gtm.yourdomain.com/tm/nameless`).
     - `origin`: The allowed origin domain (e.g., `https://yourdomain.com`).
