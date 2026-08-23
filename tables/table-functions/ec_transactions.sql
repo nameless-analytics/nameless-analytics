@@ -188,6 +188,7 @@ with raw_transaction_data as (
     end as purchase,
     case
       when transaction_id is null then 0
+      when event_name != 'purchase' then 0
       else countif(event_name = 'purchase') over (partition by transaction_id)
     end as duplicate_purchase,
     if(event_name = 'purchase', ifnull(transaction_revenue, 0.0), 0) as purchase_revenue,
@@ -202,8 +203,9 @@ with raw_transaction_data as (
     end as refund,
     case
       when transaction_id is null then 0
+      when event_name != 'refund' then 0
       else countif(event_name = 'refund') over (partition by transaction_id)
-    end as duplicate_refund,     
+    end as duplicate_refund,
     if(event_name = 'refund', ifnull(transaction_revenue, 0.0), 0) as refund_revenue,
     if(event_name = 'refund', ifnull(transaction_shipping, 0.0), 0) as refund_shipping,
     if(event_name = 'refund', ifnull(transaction_tax, 0.0), 0) as refund_tax,
