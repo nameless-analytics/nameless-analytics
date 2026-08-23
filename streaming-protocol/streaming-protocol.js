@@ -240,7 +240,7 @@ async function send_request(payload) {
     try {
         const headers = {
             'X-Api-Key': api_key,
-            'X-Gtm-Server-Preview': gtm_preview_header,
+            // 'X-Gtm-Server-Preview': gtm_preview_header, // Only for debug
             'Content-Type': 'application/json',
             'Origin': origin,
             'User-Agent': 'Nameless Analytics - Streaming Protocol',
