@@ -470,13 +470,6 @@ The required `session_id` format is 15 alphanumeric characters, an underscore, 1
 
 Since link decoration happens dynamically upon clicking, cross-domain tracking **will not work** if the user opens the link via right-click menu like "Open link in new tab".
 
-#### Manually built cross-domain links
-The `na_id` parameter can be generated outside the tracker — for example by a backend, an email platform or an external redirect service — as long as it respects the structure `base64({session_id}.{decoration_timestamp_ms})`, carries a `session_id` issued by the server and is no older than five minutes.
-
-Validation is on the **format**, not on a signature. Anyone holding a valid `session_id` can therefore attach traffic to that session. This is a deliberate trade-off: signing `na_id` would make server-to-server integrations and externally generated links impossible. Since a `session_id` is only visible to the visitor it belongs to and expires with the session, the practical exposure is limited to attributing extra traffic to an existing session.
-
-Values that do not respect the format never reach the identity layer: they are discarded before any cookie is written.
-
 <details><summary>How the cross-domain handshake works</summary>
 
 </br>
