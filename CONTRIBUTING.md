@@ -5,7 +5,7 @@ Nameless Analytics contributing guidelines.
 
 
 ## How to Contribute
-I appreciate your interest in contributing to Nameless Analytics! For now contribution are not open, but stay tuned for future updates.
+I appreciate your interest in contributing to Nameless Analytics! For now contributions are not open, but stay tuned for future updates.
 
 # 
 
