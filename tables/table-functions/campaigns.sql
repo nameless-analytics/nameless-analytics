@@ -158,7 +158,7 @@ with session_data as (
   FROM session_data
   FULL JOIN online_campaigns_performances
     ON session_data.session_date = online_campaigns_performances.date
-    AND session_data.session_campaign = online_campaigns_performances.session_campaign
+    AND lower(session_data.session_campaign) = lower(online_campaigns_performances.session_campaign)
     AND ifnull(session_data.session_campaign_id, "") = ifnull(online_campaigns_performances.session_campaign_id, "")
 );
 """,
