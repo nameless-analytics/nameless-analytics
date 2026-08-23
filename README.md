@@ -647,8 +647,6 @@ To enable this feature, your server must be configured to forward geolocation he
 
 App Engine provides its headers with no configuration. On Cloud Run the two headers must be added as custom request headers on the Load Balancer, following [this guide](https://www.simoahava.com/analytics/cloud-run-server-side-tagging-google-tag-manager/#add-geolocation-headers-to-the-traffic) (thanks to [Simo Ahava](https://www.simoahava.com/) for helping us again). On Stape, enable the GEO Headers power-up.
 
-> **Watch out for the naming**: Google's `{client_region}` variable holds the **country** code, not the region. The variable that holds a province or state is `{client_region_subdivision}`, and it returns a CLDR code such as `USCA`, not a city name.
-
 
 ### Channel Grouping logic
 Automatically categorizes traffic sources into predefined groups (e.g., Organic Search, Paid Social, AI, Email) using a server-side regex-based pattern matching system. 
