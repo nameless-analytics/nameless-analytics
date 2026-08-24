@@ -37,10 +37,16 @@ An **Orphan Event** is any interaction (click, scroll, etc.) that reaches the se
 
 Browser console shows: 
 
-`[event_name] > 🔴 Event fired before a page view event. The first event on any page must be page_view. Request aborted`
+```text
+[event_name] >   🔴 Event fired before a page view event. The first event on any page must be page_view.
+[event_name] > REQUEST STATUS
+[event_name] >   🔴 Request aborted
+```
 
 - **Issue:** An interaction event is fired before the `page_view` event has been dispatched.
 - **Solution:** Nameless Analytics utilizes an internal fetch queue to manage requests, which prevents most race conditions. However, every event must be preceded by a `page_view` event. Ensure the page view is the first event sent at every page load.
+
+> **`🔴 Request aborted` is not specific to orphan events.** It is the closing line of every path that stops the tag before the request is sent — invalid configuration variable, libraries not loaded, `inject_script` permission denied, Consent Mode missing, consent denied. Always read the cause in the line above it, not in the abort line itself.
 
 Server logs show: 
 
