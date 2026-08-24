@@ -83,8 +83,8 @@ Server logs show:
 
 `🔴 Request origin not authorized`
 
-- **Issue:** The request came from an unauthorized domain.
-- **Solution:** Add the domain (e.g., `https://example.com`) to the **Authorized domains** list in the Server-side Client Tag configuration.
+- **Issue:** The request came from a domain that is not in the **Authorized domains** list, or it carried no `Origin` header at all. The header is missing on server-to-server calls, so a Streaming Protocol implementation that does not set it is refused here as soon as the option is enabled.
+- **Solution:** Add the domain to the **Authorized domains** list in the Server-side Client Tag configuration, as a bare host name without protocol (e.g., `example.com`, not `https://example.com`, which the field validation rejects). Only the Effective TLD+1 is compared, so one entry covers all subdomains. In a cross-domain setup list every domain involved, and make sure your backend sends the `Origin` header.
 
 Server logs show: 
 
@@ -116,6 +116,13 @@ Server logs show:
 
 - **Issue:** The `X-Api-Key` header for Streaming Protocol is missing or incorrect.
 - **Solution:** Ensure your request includes the `X-Api-Key` header with the correct value as configured in the Client Tag.
+
+Server logs show: 
+
+`🔴 Add API key for Streaming Protocol is not enabled.`
+
+- **Issue:** the request declares `event_origin: "Streaming Protocol"` but **"Add API key for Streaming Protocol" is not enabled** in the Server-side Client Tag. The API key is mandatory for this origin: with the option off there is no key to compare against, so every Streaming Protocol request is refused with `403`, whether or not it carries an `X-Api-Key` header. Requests with `event_origin: "Website"` are not affected and keep working.
+- **Solution:** open the Server-side Client Tag, enable **Add API key for Streaming Protocol**, set a key, publish the container, and send that same value in the `X-Api-Key` header of your backend requests.
 
 Server logs show: 
 
@@ -228,6 +235,23 @@ Server logs show:
 
 - **Issue:** The streaming insert to BigQuery failed.
 - **Solution:** Check BigQuery dataset/table permissions. Ensure the service account has `roles/bigquery.dataEditor`. Ensure you have created the schema using the provided SQL scripts. 
+
+Server logs show: 
+
+`🔴 Firestore request failed`
+
+`🔴 BigQuery request failed`
+
+`🔴 Custom endpoint request failed`
+
+`🔴 Request processing failed`
+
+- **Issue:** these four messages are different from the ones above. The messages above are **handled** failures: the write was attempted and the service answered with an error. These four are raised when the processing chain throws an **unexpected** exception at a given stage, so the tag never gets an answer to report. They are the only responses returned with `status_code: 500`, and the underlying error object is printed on the line right after the message in GTM Server Preview.
+- **Solution:** read that error object first, it carries the actual cause. Typical ones are a Firestore document that exceeded the [1 MiB limit](../README.md#known-limitations-firestore-1-mib-document-limit), a payload whose types do not match the BigQuery schema, a service temporarily unreachable, or an unreachable custom endpoint URL. `🔴 Request processing failed` is the fallback for an exception raised outside the three stages.
+
+The stage that failed is also readable in the `processing` object of the response, which reports `success`, `failed`, `skipped` or `pending` for each step: everything after the failing stage is marked `skipped`, and the event is not stored.
+
+> **A failing custom endpoint does not fail the event.** If Firestore and BigQuery succeeded and only the forwarding failed, the response is still `200` with `🟢 Request processed successfully`, and the failure is visible only as `custom_endpoint: failed` in the `processing` object. The event is stored: nothing needs to be resent, only the forwarding was lost.
 
 
 

@@ -417,6 +417,19 @@ Fully integrated with Google Consent Mode. Choose between respect or not respect
 ### SPA & History Management
 Native support for Single Page Applications. See the [Page View Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-track-page-views) for implementation examples.
 
+The tracker counts the `page_view` events fired within the same physical page load. The first one is the real page view; every following one is a **virtual page view**, and from that moment the tag stops treating the visit as an arrival and starts treating it as internal navigation.
+
+| On virtual page views | Behaviour |
+| :--- | :--- |
+| `page_referrer` | Set to the URL of the previous page view, so the SPA route change looks like internal navigation instead of inheriting the original external referrer. Events fired on a virtual page inherit that page's referrer |
+| `source`, `campaign`, `campaign_id`, `campaign_term`, `campaign_content`, `campaign_click_id` | Reset to `null`, **unless the current URL still carries the corresponding parameter** (`utm_*`, a click ID such as `gclid` or `fbclid`, or an `na_*` cross-domain parameter). Since SPA routing usually drops the query string on the first route change, in practice they become `null` |
+
+The consequence to keep in mind when querying: on virtual page views and on the events fired on them, `event_data.source` is `null`, `event_data.tld_source` is absent and the server therefore resolves `event_data.channel_grouping` to `direct` — see [Channel Grouping logic](#channel-grouping-logic). This is **event-level** attribution only.
+
+User and session attribution are not affected: `user_source`, `session_source`, their campaign fields and the two channel groupings are first-touch values, written once when the user or the session is created and never overwritten (see [Firestore as Last updated Snapshot](#firestore-as-last-updated-snapshot)). A session that starts from Google Ads keeps `session_channel_grouping = paid_search_engine` for its whole duration, no matter how many virtual page views follow.
+
+So, for acquisition reporting always use the session or user fields. Use the event-level `source` and `channel_grouping` only to answer a different question: which events happened on the landing page, still carrying the acquisition context, and which happened after the visitor moved on.
+
 
 ### Core Libraries Functioning
 The tracker relies on a main external library and a dependency library loaded by Nameless Analytics Client-side Tracker Tag.

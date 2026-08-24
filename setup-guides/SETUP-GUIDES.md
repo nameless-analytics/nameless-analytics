@@ -79,6 +79,8 @@ Page view tracking is not only used to track the number of page views on a websi
 
 For this reason, the `page_view` event must be the **first** event triggered on every page load. Triggering other events before it will result in [orphan events](TROUBLESHOOTING-GUIDE.md#orphan-events--sequence-issues). 
 
+Every `page_view` after the first one within the same physical page load is treated as a **virtual page view**: the page referrer becomes the previous page URL and the event level acquisition parameters are reset, while user and session attribution stay untouched. Read [SPA & History Management](../README.md#spa--history-management) before building reports on the event level `source` and `channel_grouping`.
+
 Page view tags can be triggered in many ways:
 
 
@@ -527,11 +529,12 @@ The payload forwarded to the custom endpoint is the exact same enriched JSON tha
 The Nameless Analytics Server-side Client Tag acts as a security gateway, allowing you to control which requests are processed and which are discarded.
 
 ### 1. Authorized domains (CORS-like Protection)
-To prevent unauthorized websites from sending data to your endpoint, you can restrict access to specific top-level domains.
+To prevent unauthorized websites from sending data to your endpoint, you can restrict access to specific top-level domains. **While the option is off, requests from any origin are accepted**, so this is the first setting to turn on for a production container.
 1. Open the **Nameless Analytics Server-side Client Tag**.
 2. Scroll down to **Advanced settings** and check **Accept requests from authorized domains only**.
-3. Add your domains to the **Authorized domains** list (e.g., `https://www.yourdomain.com`).
-4. Ensure you include all production, staging, and development domains.
+3. Add your domains to the **Authorized domains** list as bare host names, without protocol and without trailing slash (e.g., `www.yourdomain.com`). A value that includes `https://` is rejected by the field validation. Only the Effective TLD+1 is compared, so one entry covers all the subdomains of that domain.
+4. Ensure you include all production, staging, and development domains, and every domain of a cross-domain setup.
+5. Remember that requests without an `Origin` header are refused once the option is on: browser traffic always sends it, backend calls such as the [Streaming Protocol](../streaming-protocol/STREAMING-PROTOCOL.md) must set it explicitly.
 
 ### 2. Bot & Automated Traffic Protection
 Nameless Analytics includes a built-in filter to block requests from known bots, scrapers, and automated libraries (e.g., curl, python-requests, chatgpt).

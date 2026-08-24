@@ -16,6 +16,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Create table functions](#create-table-functions)
 - [Reporting fields](#reporting-fields)
 - [Raw tables](#raw-tables)
+  - [Dates are UTC](#dates-are-utc)
 - [Table functions](#table-functions)
   - [Events](#events)
   - [Events Debug](#events-debug)
@@ -169,6 +170,27 @@ All data is partitioned by date and clustered by key dimensions to ensure optima
 The main table is partitioned by `event_date` and clustered by `user_date`, `session_date`, `page_date`, and `event_name`.
 
 The dates table is partitioned by `date` and clustered by `month_name` and `day_name`.
+
+
+### Dates are UTC
+`event_date` and `page_date` are computed by the client-side library from the event timestamp using UTC, and `user_date` and `session_date` inherit the `event_date` of the event that created the user or the session. Every date field in the platform is therefore a **UTC calendar date**, and so are the date ranges of the table functions, which filter on those fields.
+
+The timestamps are unaffected: `event_timestamp`, `session_start_timestamp`, `page_load_timestamp` and the others are Unix epoch milliseconds, an absolute instant with no time zone attached.
+
+What this means in practice, for a site whose audience is not on UTC: an event fired at 00:30 in Rome (UTC+1) carries the **previous** day as `event_date`. Daily totals are therefore shifted by the local offset, and the shift grows to two hours during daylight saving time. Sessions that start before midnight UTC and continue after it are stored with the `session_date` of the day they started, so they stay whole; only their later events fall in the next partition, and the table functions do not put an upper bound on `event_date`, so those events are still returned.
+
+To report on local days, convert from the timestamp instead of using the date fields, and keep the partition filter on `event_date` so the query stays cheap:
+
+```sql
+select
+  date(timestamp_millis(event_timestamp), 'Europe/Rome') as local_date,
+  count(*) as events
+from `project.nameless_analytics.events`(start_date, end_date, 'event')
+group by all
+order by local_date
+```
+
+Bear in mind that a query filtered on UTC dates and grouped by local dates returns two partially empty days at the edges of the range: widen the range by one day on each side and discard them.
 
 
 
