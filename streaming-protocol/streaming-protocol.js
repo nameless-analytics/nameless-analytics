@@ -103,7 +103,8 @@ async function get_page_data_from_bq() {
         const query = `
             SELECT page_date, page_data
             FROM \`${project_id}.${dataset_id}.${table_id}\`
-            WHERE page_date = @page_date
+            WHERE true
+              AND event_date = @page_date
               AND page_id = @na_s
             LIMIT 1
         `;
