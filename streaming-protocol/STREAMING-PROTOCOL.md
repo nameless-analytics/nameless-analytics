@@ -211,13 +211,17 @@ The script will:
 **Expected Output:**
 ```text
 NAMELESS ANALYTICS
-Streaming Protocol
-👉 Retrieve page data from BigQuery for page_id: [PAGE ID]
+STREAMING PROTOCOL
+👉 Retrieve page data from BigQuery for page_id: [PAGE ID] on [PAGE DATE]
   🟢 Page data retrieved from BigQuery
 👉 Send request to [FULL ENDPOINT]
-   {"status_code": 200, "response": "🟢 Request claimed successfully", "data": {...}}
+   🟢 Request processed successfully
 Function execution end: 👍
 ```
+
+The last line before the outcome is the `response` field of the server reply, printed as is. `🟢 Request processed successfully` is the message of a fully processed event: the server returns it with `status_code: 200` only after Firestore, BigQuery and, when enabled, the custom endpoint have all completed. Any other value means the event was not stored — look it up in the [Troubleshooting Guide](../setup-guides/TROUBLESHOOTING-GUIDE.md).
+
+Do not match on `🟢 Request claimed successfully`: that message belongs to the `get_user_data` cross-domain handshake, which the Streaming Protocol never performs.
 
 # 
 
