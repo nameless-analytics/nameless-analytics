@@ -2,6 +2,7 @@
 The Nameless Analytics Setup guides provide instructions for configuring the platform across both client-side and server-side environments.
 For an overview of how Nameless Analytics works [start from here](../README.md#overview).
 
+
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
@@ -10,60 +11,60 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
 
 - [How to set up Nameless Analytics in GTM](#how-to-set-up-nameless-analytics-in-gtm)
   - [1. Prerequisites](#1-prerequisites)
-  - [2. Template Integration](#2-template-integration)
-  - [3a. Client-side Container Configuration](#3a-client-side-container-configuration)
-  - [3b. Server-side Container Configuration](#3b-server-side-container-configuration)
-  - [4. Pipeline Validation & QA](#4-pipeline-validation--qa)
+  - [2. Template integration](#2-template-integration)
+  - [3a. Client-side container configuration](#3a-client-side-container-configuration)
+  - [3b. Server-side container configuration](#3b-server-side-container-configuration)
+  - [4. Pipeline validation & QA](#4-pipeline-validation--qa)
 - [How to track page views](#how-to-track-page-views)
   - [Via GTM standard page view trigger](#via-gtm-standard-page-view-trigger)
-  - [Via browser history (Route change)](#via-browser-history-route-change)
+  - [Via browser history (route change)](#via-browser-history-route-change)
   - [Via custom dataLayer event](#via-custom-datalayer-event)
 - [How to track standard events](#how-to-track-standard-events)
-  - [Consent Update](#consent-update)
-  - [Page Load Time](#page-load-time)
-  - [Page Closed](#page-closed)
-  - [Search Results View](#search-results-view)
-  - [Search Result Click](#search-result-click)
+  - [Consent update](#consent-update)
+  - [Page load time](#page-load-time)
+  - [Page closed](#page-closed)
+  - [Search results view](#search-results-view)
+  - [Search result click](#search-result-click)
   - [Authentication](#authentication)
-  - [New Lead](#new-lead)
-  - [Newsletter Sign Up](#newsletter-sign-up)
+  - [New lead](#new-lead)
+  - [Newsletter sign up](#newsletter-sign-up)
 - [How to track custom events](#how-to-track-custom-events)
   - [1. Fire a custom event](#1-fire-a-custom-event)
-  - [2. Configure the GTM Tag](#2-configure-the-gtm-tag)
-- [How to set up User ID and user properties](#how-to-set-up-user-id-and-user-properties)
+  - [2. Configure the GTM tag](#2-configure-the-gtm-tag)
+- [How to set up user ID and user properties](#how-to-set-up-user-id-and-user-properties)
   - [1. Expose user data to the dataLayer](#1-expose-user-data-to-the-datalayer)
   - [2. Configure Nameless Analytics Client-side Tracker Configuration Variable](#2-configure-nameless-analytics-client-side-tracker-configuration-variable)
 - [How to respect user consents](#how-to-respect-user-consents)
-  - [1. Enable Consent Initialization](#1-enable-consent-initialization)
-  - [2. Configure the Tracker Variable](#2-configure-the-tracker-variable)
-  - [3. Preserving Acquisition Data (The na_temp cookie)](#3-preserving-acquisition-data-the-na_temp-cookie)
+  - [1. Enable consent initialization](#1-enable-consent-initialization)
+  - [2. Configure the tracker variable](#2-configure-the-tracker-variable)
+  - [3. Preserving acquisition data (the na_temp cookie)](#3-preserving-acquisition-data-the-na_temp-cookie)
 - [How to set up cross-domain tracking](#how-to-set-up-cross-domain-tracking)
   - [One client-side GTM container for multiple sites](#one-client-side-gtm-container-for-multiple-sites)
   - [Two client-side GTM containers, one per site](#two-client-side-gtm-containers-one-per-site)
   - [One server-side GTM container for multiple sites](#one-server-side-gtm-container-for-multiple-sites)
   - [Two server-side GTM containers, one per site](#two-server-side-gtm-containers-one-per-site)
 - [How to set up and customize ecommerce tracking](#how-to-set-up-and-customize-ecommerce-tracking)
-  - [Ecommerce Tracking Initialization](#ecommerce-tracking-initialization)
-  - [1. DataLayer Requirement](#1-datalayer-requirement)
-  - [2. Tracker Configuration](#2-tracker-configuration)
-  - [3. Server-side Processing](#3-server-side-processing)
-  - [Advanced Ecommerce Reporting](#advanced-ecommerce-reporting)
+  - [Ecommerce tracking initialization](#ecommerce-tracking-initialization)
+  - [1. dataLayer requirement](#1-datalayer-requirement)
+  - [2. Tracker configuration](#2-tracker-configuration)
+  - [3. Server-side processing](#3-server-side-processing)
+  - [Advanced ecommerce reporting](#advanced-ecommerce-reporting)
 - [How to send events via Streaming Protocol](#how-to-send-events-via-streaming-protocol)
-- [How to set up First-Party Library Hosting](#how-to-set-up-first-party-library-hosting)
+- [How to set up first-party library hosting](#how-to-set-up-first-party-library-hosting)
   - [1. Download the core libraries](#1-download-the-core-libraries)
   - [2. Host the libraries on your infrastructure](#2-host-the-libraries-on-your-infrastructure)
-  - [3. Update the GTM Configuration](#3-update-the-gtm-configuration)
+  - [3. Update the GTM configuration](#3-update-the-gtm-configuration)
   - [4. Authorize the new domain in the template permissions](#4-authorize-the-new-domain-in-the-template-permissions)
-- [How to configure Real-time Forwarding](#how-to-configure-real-time-forwarding)
-  - [Configuration Steps](#configuration-steps)
-- [How to enforce Security & Bot Protection](#how-to-enforce-security--bot-protection)
-  - [1. Authorized domains (CORS-like Protection)](#1-authorized-domains-cors-like-protection)
-  - [2. Bot & Automated Traffic Protection](#2-bot--automated-traffic-protection)
-  - [3. IP Blacklisting](#3-ip-blacklisting)
-- [How to configure a Conversational Analysis Agent in BigQuery Studio](#how-to-configure-a-conversational-analysis-agent-in-bigquery-studio)
-  - [Knowledge Sources Configuration](#knowledge-sources-configuration)
-  - [Best Practices for Accuracy](#best-practices-for-accuracy)
-- [Data Governance & Privacy compliance](#data-governance--privacy-compliance)
+- [How to configure real-time forwarding](#how-to-configure-real-time-forwarding)
+  - [Configuration steps](#configuration-steps)
+- [How to enforce security & bot protection](#how-to-enforce-security--bot-protection)
+  - [1. Authorized domains (CORS-like protection)](#1-authorized-domains-cors-like-protection)
+  - [2. Bot & automated traffic protection](#2-bot--automated-traffic-protection)
+  - [3. IP blacklisting](#3-ip-blacklisting)
+- [How to configure a conversational analysis agent in BigQuery Studio](#how-to-configure-a-conversational-analysis-agent-in-bigquery-studio)
+  - [Knowledge sources configuration](#knowledge-sources-configuration)
+  - [Best practices for accuracy](#best-practices-for-accuracy)
+- [Data governance & privacy compliance](#data-governance--privacy-compliance)
 
 
 
@@ -80,7 +81,7 @@ Before proceeding, ensure the Google Cloud environment is fully provisioned:
 - **Server-side GTM**: The instance (Cloud Run, App Engine or Stape) must be active and mapped to a custom first-party domain.
 
 
-### 2. Template Integration
+### 2. Template integration
 Download and import the `.tpl` files into GTM Client-side and Server-side environments with the following steps:
 1. Navigate to **Templates**
 2. Click **New** in the Tag Templates or Variable Templates section
@@ -88,7 +89,7 @@ Download and import the `.tpl` files into GTM Client-side and Server-side enviro
 4. Upload the corresponding `.tpl` file and **Save**
 
 
-### 3a. Client-side Container Configuration
+### 3a. Client-side container configuration
 Create a new:
 1. GTM variable using the template **Nameless Analytics Client-side Tracker Configuration Variable**
   - Under **Server-side endpoint settings** → **Endpoint domain name**, set the domain of your Server-side GTM instance (e.g., `gtm.yourdomain.com`). Enter the bare domain: no `https://`, no trailing `/`
@@ -99,14 +100,14 @@ Create a new:
   - Use **All Pages** as trigger for the tag
 
 
-### 3b. Server-side Container Configuration
+### 3b. Server-side container configuration
 Create a new:
 1. GTM client tag using the template **Nameless Analytics Server-side Client Tag**
   - Under **Client settings** → **Endpoint path**, set the **same path** configured in the Configuration Variable (e.g., `/na/collect`). The container routes each incoming request to the client that claims its path, so the two values must be identical, and the path should be dedicated to Nameless Analytics rather than shared with another client of the same container
   - Under **Google BigQuery settings**, fill in **Google BigQuery project ID**, **Google BigQuery dataset ID** and **Google BigQuery table ID**. All three are required and start empty, and the dataset and the table must already exist
 
 
-### 4. Pipeline Validation & QA
+### 4. Pipeline validation & QA
 1. Launch **Preview Mode** for both the Web and Server containers simultaneously.
 2. Interacting with the website verify tracker initialization via JavaScript console logs.
 3. In the Server-side GTM preview, verify that incoming requests are correctly received and processed by the **Nameless Analytics Server-side Client Tag**
@@ -128,7 +129,7 @@ Page view tags can be triggered in many ways:
 Using any standard GTM trigger (such as **All Pages**).
 
 
-### Via browser history (Route change)
+### Via browser history (route change)
 Using history changes `pushState` or `replaceState`. Make sure to update the page title and any relevant dataLayer parameters before the history change otherwise the Page Title and Page Category will not be set correctly.
 
 This is the preferred method for SPAs since the page referrer for virtual page views is maintained even if a page is reloaded and page information is retrieved automatically from the history state.
@@ -167,7 +168,8 @@ Make sure to [override the page parameters](https://github.com/nameless-analytic
 ## How to track standard events
 Nameless Analytics supports several standard events to measure common user interactions and performance metrics. To track these, push the specific event to the `dataLayer` and map any required variables in Google Tag Manager using the **Nameless Analytics Client-side Tracker Tag**.
 
-### Consent Update
+
+### Consent update
 Fired when a user updates their privacy consent preferences. No custom parameters are required.
 
 Setup:
@@ -175,7 +177,7 @@ Setup:
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `consent_update` event and assign the trigger to it.
 
 
-### Page Load Time
+### Page load time
 Measures the time it takes for a page to fully load.
 
 Setup:
@@ -216,7 +218,7 @@ function() {
 ```
 
 
-### Page Closed
+### Page closed
 Fired when a user leaves or closes the page.
 
 Setup:
@@ -224,7 +226,7 @@ Setup:
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `page_closed` event and assign the trigger to it.
 
 
-### Search Results View
+### Search results view
 Fired when a user views a search results page.
 
 Setup:
@@ -243,7 +245,7 @@ dataLayer.push({
 - **Map the Parameter**: Expand the **Event parameters** section within the tag configuration and add the `search_term` parameter, assigning the DataLayer Variable you created as its value.
 
 
-### Search Result Click
+### Search result click
 Fired when a user clicks on a specific search result.
 
 Setup:
@@ -280,10 +282,11 @@ Setup:
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `login` event (or `logout` or `sign_up`) and assign the trigger to it.
 - **Map the Parameter**: Open the **Nameless Analytics Client-side Tracker Configuration Variable**. Under the **Session data** section, map the `user_id` field to the DataLayer Variable you created.
 
+> [!IMPORTANT]
 > **`logout` clears the User ID.** `login` overwrites the session `user_id` with whatever the payload carries at that moment, and `logout` sets it back to `null`. Renaming either event breaks this silently: the session `user_id` simply stops being updated. See [User ID lifecycle](../README.md#user-id-lifecycle).
 
 
-### New Lead
+### New lead
 Fired when a user submits a form. No custom parameters are required.
 
 Setup:
@@ -293,7 +296,7 @@ Setup:
 Add any context you need — form name, lead type, campaign — as event parameters in the tag.
 
 
-### Newsletter Sign Up
+### Newsletter sign up
 Fired when a user subscribes to a newsletter. No custom parameters are required.
 
 Setup:
@@ -304,6 +307,7 @@ Setup:
 
 ## How to track custom events
 You can track any custom interaction (e.g., button clicks, form submissions, file downloads) by pushing a custom event to the `dataLayer` and mapping its variables in Google Tag Manager.
+
 
 ### 1. Fire a custom event
 Push a custom event and its associated context parameters to the `dataLayer`:
@@ -316,7 +320,8 @@ dataLayer.push({
 });
 ```
 
-### 2. Configure the GTM Tag
+
+### 2. Configure the GTM tag
 - **Create the Trigger**: Create a Custom Event Trigger matching your event name (e.g., `file_downloaded`).
 - **Create DataLayer Variables**: Create Data Layer Variables for the custom parameters (e.g., `file_name` and `file_type`).
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, set **Event name** to **Custom event name**, type your event name in the field and assign the trigger to it.
@@ -324,13 +329,15 @@ dataLayer.push({
 
 The value set in the **Custom event name** field becomes the final `event_name` in BigQuery, and all the configured parameters are mapped into the `event_data` array column.
 
+> [!TIP]
 > **Reusing the dataLayer event name.** The field accepts GTM variables: map the built-in `{{Event}}` variable into it and the tag will use the `event` key pushed to the dataLayer, without typing the name twice. Keep in mind that whatever `{{Event}}` resolves to becomes the `event_name`, including GTM internal events such as `gtm.click` when the tag is fired by a built-in trigger.
 
+> [!NOTE]
 > **Reserved names.** The [standard event names](#how-to-track-standard-events) cannot be used in the **Custom event name** field: select them from **Standard event name** instead.
 
 
 
-## How to set up User ID and user properties
+## How to set up user ID and user properties
 To track authenticated users across devices and enrich their profiles with custom metadata (e.g., subscription tier, company size), use the `user_id` and custom User Properties.
 
 User ID will be applied at session level and will be stored in Firestore as well as in the BigQuery `session_data` array for each event.
@@ -348,6 +355,7 @@ dataLayer.push({
 });
 ```
 
+
 ### 2. Configure Nameless Analytics Client-side Tracker Configuration Variable
 1. Create Data Layer Variables for `user_id` and any custom properties you exposed (e.g., `user_tier`).
 2. Open the **Nameless Analytics Client-side Tracker Configuration Variable**.
@@ -363,11 +371,11 @@ dataLayer.push({
 Nameless Analytics natively integrates with Google Consent Mode to ensure privacy compliance while maximizing data attribution accuracy.
 
 
-### 1. Enable Consent Initialization
+### 1. Enable consent initialization
 Ensure that your Consent Management Platform (CMP) or custom HTML script triggers the default `gtag('consent', 'default', ...)` command **before** the Google Tag Manager container loads.
 
 
-### 2. Configure the Tracker Variable
+### 2. Configure the tracker variable
 In your GTM Client-side workspace, locate the **Nameless Analytics Client-side Tracker Configuration Variable**.
 Under the "Consent Settings" section, ensure the **Respect Google Consent Mode** option is enabled.
 
@@ -377,7 +385,7 @@ When this option is enabled:
 - If Consent Mode is entirely missing from the page, the tag aborts execution to prevent accidental non-compliant tracking.
 
 
-### 3. Preserving Acquisition Data (The na_temp cookie)
+### 3. Preserving acquisition data (the na_temp cookie)
 Nameless Analytics features a "Smart Consent Management" system to prevent attribution loss (like turning organic traffic into "direct" traffic) while users navigate your site before accepting cookies.
 
 When a user lands on the site and `analytics_storage` is `denied`, the Client-side Tracker intercepts the acquisition parameters (UTMs, Referrer, etc.) and temporarily stores them in a first-party session cookie named `na_temp`.
@@ -496,26 +504,30 @@ No special configuration is required as requests per domain are handled independ
 ## How to set up and customize ecommerce tracking
 Nameless Analytics supports full ecommerce tracking following the standard GA4 schema.
 
-### Ecommerce Tracking Initialization
+
+### Ecommerce tracking initialization
 The system is designed to automatically capture ecommerce data from your website's `dataLayer`, provided it follows the standard GA4 format.
 
 If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the extraction paths in the BigQuery SQL Table Functions.
 
-### 1. DataLayer Requirement
+
+### 1. dataLayer requirement
 Your website must push ecommerce events to the `dataLayer` using the standard structure (e.g., `view_item`, `add_to_cart`, `begin_checkout`, `purchase`). The tracker will automatically look for the `ecommerce` object within the event that triggers the tag.
 
-### 2. Tracker Configuration
+
+### 2. Tracker configuration
 In your GTM Client-side Tracker Tag configuration:
 - Under **Advanced settings**, check **Add ecommerce data from dataLayer**.
 - This tells the tracker to capture the `ecommerce` object from the current dataLayer state and include it in the payload sent to the server.
 
-### 3. Server-side Processing
+
+### 3. Server-side processing
 The Nameless Analytics Server-side Client Tag receives the request, extracts the `ecommerce` data and stores it directly in the `ecommerce` column of your BigQuery `events_raw` table.
 
 If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the JSON extraction paths in the BigQuery [transactions](../tables/TABLES.md#transactions) and [products](../tables/TABLES.md#products) Table Functions.
 
 
-### Advanced Ecommerce Reporting
+### Advanced ecommerce reporting
 Once data is in BigQuery, you can leverage built-in Table Functions for deep analysis. These functions process the raw JSON and flatten it into structured reporting tables:
 
 - **[Transactions](../tables/TABLES.md#transactions)**: Provides a high-level view of orders: revenue, tax, shipping, and transaction IDs.
@@ -529,23 +541,27 @@ The Streaming Protocol is specifically designed for server-to-server communicati
 
 
 
-## How to set up First-Party Library Hosting
+## How to set up first-party library hosting
 To maximize data collection accuracy and reduce the impact of common client-side restrictions like ad blockers or Intelligent Tracking Prevention (ITP), Nameless Analytics allows you to serve its core dependencies directly from your own domain rather than relying on public CDNs (like `jsdelivr.net`).
 
 By doing so, the browser will treat the tracker scripts as critical, first-party website assets, significantly reducing the chances of them being blocked by privacy extensions.
+
 
 ### 1. Download the core libraries
 Download the raw code of the two required JavaScript files:
 1. **[nameless-analytics_vX.X.X.min.js](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/)**: The main execution engine. (Check right library version inside the used Nameless Analytics Client-side Tracker Tag template code)
 2. **[ua-parser.pack.min.js](https://cdn.jsdelivr.net/npm/ua-parser-js@1.0.40/dist/ua-parser.pack.min.js)**: The dependency used for precise User-Agent parsing. Download this exact version: the Client-side Tracker Tag is pinned to `ua-parser-js@1.0.40`.
 
+
 ### 2. Host the libraries on your infrastructure
 Upload both `.js` files to your own server or Content Delivery Network (CDN), **keeping their original file names**.
 Ensure they are served over HTTPS and from the exact same primary domain as your website (for example: `https://www.yourdomain.com/assets/js/nameless-analytics_vX.X.X.min.js`).
 
+> [!IMPORTANT]
 > **Important**: do not rename the files. The Client-side Tracker Tag builds the final URL itself, appending `/nameless-analytics_v{version}.min.js` and `/ua-parser.pack.min.js` to the domain and path you configure. If the file names on your server do not match, the libraries will return a `404` and the tag will abort the request.
 
-### 3. Update the GTM Configuration
+
+### 3. Update the GTM configuration
 1. Open your Client-side Google Tag Manager workspace.
 2. Navigate to the **Nameless Analytics Client-side Tracker Configuration Variable**.
 3. Expand the **Advanced settings** section.
@@ -554,6 +570,7 @@ Ensure they are served over HTTPS and from the exact same primary domain as your
 6. Fill in **Custom library path** with the folder holding the files: it must start with `/` and must not end with `/` (e.g. `/assets/js`).
 
 > Following the example above, the tag will request `https://www.yourdomain.com/assets/js/nameless-analytics_vX.X.X.min.js`.
+
 
 ### 4. Authorize the new domain in the template permissions
 Google Tag Manager blocks script injections from unauthorized domains by default to protect the site from XSS.
@@ -564,16 +581,18 @@ Google Tag Manager blocks script injections from unauthorized domains by default
 5. Add your new custom domain URL pattern (e.g., `https://www.yourdomain.com/*`) so that GTM allows the template to fetch the scripts from it.
 6. Save the template and publish the container.
 
+> [!NOTE]
 > **Note on Content Security Policy (CSP)**: If your website enforces a strict CSP, ensuring these libraries are loaded from your own origin will also prevent CSP violation errors that normally occur when pulling scripts from third-party networks.
 
 
 
-## How to configure Real-time Forwarding
+## How to configure real-time forwarding
 Nameless Analytics supports instantaneous data streaming to external HTTP endpoints immediately after an event is processed. This is ideal for activating your data in real-time across CRMs, marketing automation tools, or custom backend services.
 
 The payload forwarded to the custom endpoint is the exact same enriched JSON that is stored in BigQuery, including server-side metadata like geolocation and channel grouping.
 
-### Configuration Steps
+
+### Configuration steps
 1. Open the **Nameless Analytics Server-side Client Tag**.
 2. Scroll down to **Advanced settings** and check **Send data to custom endpoint**.
 3. In **Full endpoint domain path**, enter the destination (e.g., `https://api.yourcrm.com/v1/events`). It must start with `https://`.
@@ -581,14 +600,16 @@ The payload forwarded to the custom endpoint is the exact same enriched JSON tha
 5. Populate the **Custom request headers** table, one header per row, with the **Header name** and **Header value** columns (e.g., `Authorization` / `Bearer your_token`).
 6. Save the tag and publish the container.
 
+> [!TIP]
 > **Security Tip**: Since this request originates from your private server-side environment, sensitive credentials like API keys remain invisible to the user's browser, ensuring a secure server-to-server communication.
 
 
 
-## How to enforce Security & Bot Protection
+## How to enforce security & bot protection
 The Nameless Analytics Server-side Client Tag acts as a security gateway, allowing you to control which requests are processed and which are discarded.
 
-### 1. Authorized domains (CORS-like Protection)
+
+### 1. Authorized domains (CORS-like protection)
 To prevent unauthorized websites from sending data to your endpoint, you can restrict access to specific top-level domains. **While the option is off, requests from any origin are accepted**, so this is the first setting to turn on for a production container.
 1. Open the **Nameless Analytics Server-side Client Tag**.
 2. Under **Client settings** → **Security rules**, check **Accept requests from authorized domains only**.
@@ -596,35 +617,39 @@ To prevent unauthorized websites from sending data to your endpoint, you can res
 4. Ensure you include all production, staging, and development domains, and every domain of a cross-domain setup.
 5. Remember that requests without an `Origin` header are refused once the option is on: browser traffic always sends it, backend calls such as the [Streaming Protocol](../streaming-protocol/STREAMING-PROTOCOL.md) must set it explicitly.
 
-### 2. Bot & Automated Traffic Protection
+
+### 2. Bot & automated traffic protection
 Nameless Analytics includes a built-in filter to block requests from known bots, scrapers, and automated libraries (e.g., curl, python-requests, chatgpt).
 1. Under **Client settings** → **Security rules**, check **Enable Bot protection**.
 2. All identified automated requests will be rejected with a `403 Forbidden` status. See the full list of blocked agents in the [main README](../README.md#bot-protection).
 3. Two other `User-Agent` checks run even when this option is off: a missing or empty header is always rejected, and a Streaming Protocol request is always rejected unless its `User-Agent` is exactly `Nameless Analytics - Streaming Protocol`.
 
-### 3. IP Blacklisting
+
+### 3. IP blacklisting
 If you identify specific IP addresses that are spamming your endpoint, you can manually block them.
 1. Under **Client settings** → **Security rules**, check **Reject requests by IP**.
 2. Add the target IP addresses to the **Banned IPs** table, one per row in the **Internet Protocol address** column. Both IPv4 and IPv6 are accepted.
 
 
 
-## How to configure a Conversational Analysis Agent in BigQuery Studio
+## How to configure a conversational analysis agent in BigQuery Studio
 In BigQuery Studio, you can configure a Data Agent (powered by Gemini) for conversational analysis, allowing users to query data in natural language. In order for the agent to provide accurate answers (in the form of text, tables, or charts) leveraging pre-calculated business logic, it must be properly configured by setting both raw tables and table functions as its knowledge sources.
 
-### Knowledge Sources Configuration
+
+### Knowledge sources configuration
 During the agent creation in the BigQuery Studio Agent Catalog, ensure to:
 1. **Select the Raw Tables:** Add the `events_raw` and `calendar_dates` tables to provide direct access to granular data and the time dimension.
 2. **Select the Table Functions:** Add all the table functions provided in the project (such as `users`, `sessions`, `pages`, `events`, etc.). The agent will leverage their parameterized interface to query aggregated metrics and pre-calculated logic (e.g., session duration, acquisition channel).
 
-### Best Practices for Accuracy
+
+### Best practices for accuracy
 - **Metadata:** Carefully populate the parameter descriptions (metadata) within the functions and tables to help the agent understand the meaning of the various fields.
 - **System Instructions:** Provide clear and contextual instructions to the agent on how to interpret and cross-reference the data.
 - **Golden Queries:** Include real examples of questions and their corresponding verified SQL queries. This step is essential to train the model to understand your specific business context and ensure it always returns syntactically and logically correct queries.
 
 
 
-## Data Governance & Privacy compliance
+## Data governance & privacy compliance
 To comply with GDPR "Right to be Forgotten" (RTBF) requests, data must be removed from both the historical timeline (**BigQuery**) and the real-time snapshots (**Firestore**).
 
 The most efficient way to handle these requests is using the provided automation:

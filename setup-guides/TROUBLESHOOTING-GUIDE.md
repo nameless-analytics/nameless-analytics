@@ -2,30 +2,31 @@
 The Nameless Analytics Troubleshooting Guide identifies, explains, and resolves common issues encountered during implementation.
 For an overview of how Nameless Analytics works [start from here](../README.md#overview).
 
+
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
 
 ## Table of Contents
 
-- [Troubleshooting Tip](#troubleshooting-tip)
-- [Orphan Events & Sequence Issues](#orphan-events--sequence-issues)
-- [Validation Errors (403 Forbidden)](#validation-errors-403-forbidden)
+- [Troubleshooting tip](#troubleshooting-tip)
+- [Orphan events & sequence issues](#orphan-events--sequence-issues)
+- [Validation errors (403 Forbidden)](#validation-errors-403-forbidden)
 - [Google Consent Mode](#google-consent-mode)
-- [Library Loading & Configuration Issues](#library-loading--configuration-issues)
-- [Storage & Cloud Permissions](#storage--cloud-permissions)
-- [BigQuery & Data Analysis Issues](#bigquery--data-analysis-issues)
+- [Library loading & configuration issues](#library-loading--configuration-issues)
+- [Storage & cloud permissions](#storage--cloud-permissions)
+- [BigQuery & data analysis issues](#bigquery--data-analysis-issues)
   - [BigQuery Advanced Runtime](#bigquery-advanced-runtime)
-  - [Missing Geolocation Data](#missing-geolocation-data)
-  - [Unexpected Channel Grouping](#unexpected-channel-grouping)
-- [Network & Custom Endpoint Issues](#network--custom-endpoint-issues)
-- [Cross-domain Issues](#cross-domain-issues)
-  - [Link Not Decorated (`na_id` Missing)](#link-not-decorated-na_id-missing)
-  - [Invalid or Expired `na_id`](#invalid-or-expired-na_id)
+  - [Missing geolocation data](#missing-geolocation-data)
+  - [Unexpected channel grouping](#unexpected-channel-grouping)
+- [Network & custom endpoint issues](#network--custom-endpoint-issues)
+- [Cross-domain issues](#cross-domain-issues)
+  - [Link not decorated (`na_id` missing)](#link-not-decorated-na_id-missing)
+  - [Invalid or expired `na_id`](#invalid-or-expired-na_id)
 
 
 
-## Troubleshooting Tip
+## Troubleshooting tip
 Use the **Browser console** to check tags execution status and event data sent to the server.
 
 Use the **GTM Server Preview Mode** to check incoming events and how the Server-side Client Tag responds to them.
@@ -34,7 +35,7 @@ Inspect a network request to see the data sent by client from Preview and data r
 
 
 
-## Orphan Events & Sequence Issues
+## Orphan events & sequence issues
 An **Orphan Event** is any interaction (click, scroll, etc.) that reaches the server without a valid session context established by a preceding `page_view` event or the request is without a valid user and session cookie.
 
 
@@ -49,6 +50,7 @@ Browser console shows:
 - **Issue:** An interaction event is fired before the `page_view` event has been dispatched.
 - **Solution:** Nameless Analytics utilizes an internal fetch queue to manage requests, which prevents most race conditions. However, every event must be preceded by a `page_view` event. Ensure the page view is the first event sent at every page load.
 
+> [!NOTE]
 > **`🔴 Request aborted` is not specific to orphan events.** It is the closing line of every path that stops the tag before the request is sent — invalid configuration variable, libraries not loaded, `inject_script` permission denied, Consent Mode missing, consent denied. Always read the cause in the line above it, not in the abort line itself.
 
 Server logs show:
@@ -71,7 +73,7 @@ Server logs show:
 
 
 
-## Validation Errors (403 Forbidden)
+## Validation errors (403 Forbidden)
 The Server-side Client Tag acts as a security gateway. If a request doesn't meet strict criteria, it is rejected with a `403 Forbidden` status.
 
 
@@ -186,7 +188,7 @@ Browser console shows:
 
 
 
-## Library Loading & Configuration Issues
+## Library loading & configuration issues
 The tracker requires its core libraries and a valid configuration to initiate.
 
 
@@ -217,7 +219,7 @@ Browser console shows:
 
 
 
-## Storage & Cloud Permissions
+## Storage & cloud permissions
 Errors occurring when the server attempts to persist data to Firestore or BigQuery.
 
 
@@ -254,12 +256,14 @@ Server logs show:
 
 The stage that failed is also readable in the `processing` object of the response, which reports `success`, `failed`, `skipped` or `pending` for each step: everything after the failing stage is marked `skipped`, and the event is not stored.
 
+> [!NOTE]
 > **A failing custom endpoint does not fail the event.** If Firestore and BigQuery succeeded and only the forwarding failed, the response is still `200` with `🟢 Request processed successfully`, and the failure is visible only as `custom_endpoint: failed` in the `processing` object. The event is stored: nothing needs to be resent, only the forwarding was lost.
 
 
 
-## BigQuery & Data Analysis Issues
+## BigQuery & data analysis issues
 Common issues related to missing data or unexpected values in reporting.
+
 
 ### BigQuery Advanced Runtime
 If you experience slow query performance or errors with SQL Table Functions, ensure that **BigQuery Advanced Runtime** is enabled for your project (see [TABLES.md](../tables/TABLES.md) for the DDL command).
@@ -267,20 +271,22 @@ If you experience slow query performance or errors with SQL Table Functions, ens
 - **Issue:** the setup script fails on the last statement with a permission error mentioning `ALTER PROJECT`.
 - **Solution:** enabling the Advanced Runtime requires the project level `bigquery.projects.update` permission, which a dataset level role does not grant. The statement runs last on purpose, so dataset and tables are already created and the platform works normally: ask a project administrator to run that single statement, or skip it and accept the default runtime.
 
-### Missing Geolocation Data
+
+### Missing geolocation data
 - **Issue:** The `country` and `city` fields are `null` in BigQuery.
 - **Solution:** Nameless Analytics relies on server-provided headers. Ensure your environment is configured to forward geolocation:
   - **App Engine:** Forward `X-Appengine-Country` and `X-Appengine-City`.
   - **Cloud Run:** Configure the Load Balancer to include `X-Gclb-Country: {client_region}` and `X-Gclb-City: {client_city}`. Note that `{client_region}` holds the country code, not the region.
   - **Stape:** Enable the "GEO Headers" power-up, which provides `X-GEO-Country` and `X-GEO-City`.
 
-### Unexpected Channel Grouping
+
+### Unexpected channel grouping
 - **Issue:** Events are categorized as `referral` instead of expected channels like `paid_search` or `organic_social`.
 - **Solution:** Nameless Analytics uses a server-side regex system based on `source` and `campaign`. Verify your traffic sources against the [standard grouping rules](../README.md#channel-grouping-logic). If a source is not in the list, it will default to `referral` (or `affiliate` if a campaign is present).
 
 
 
-## Network & Custom Endpoint Issues
+## Network & custom endpoint issues
 Technical issues preventing communication between the browser and the GTM Server, or between the server and external destinations.
 
 
@@ -323,9 +329,10 @@ Server logs show:
 - **Solution:** Verify the custom endpoint URL and ensure your server-side environment has the necessary network access.
 
 
-## Cross-domain Issues
 
-### Link Not Decorated (`na_id` Missing)
+## Cross-domain issues
+
+### Link not decorated (`na_id` missing)
 
 Browser console shows:
 
@@ -359,17 +366,19 @@ Server logs show:
 - **Result:** The value is discarded and a new session is created. The event is still processed and stored normally.
 - **Solution:** If you are generating `na_id` manually, verify that the `session_id` you encode is a real one issued by the server. See [Cross-domain Architecture](../README.md#cross-domain-architecture).
 
-**Caveat:** the handshake is driven by a `click` listener, so it only runs on a plain left click on an `<a href>`. The decoration does **not** run when the link is opened through the right-click menu (“Open in new tab” / “Open in new window”), with a keyboard modifier (`Cmd`/`Ctrl`+click, `Shift`+click, `Alt`+click) or with the middle mouse button, and when the navigation does not come from a link at all (JS button, `window.open()`, form submit, pasted URL, bookmark).
+> [!NOTE]
+> **Caveat:** the handshake is driven by a `click` listener, so it only runs on a plain left click on an `<a href>`. The decoration does **not** run when the link is opened through the right-click menu (“Open in new tab” / “Open in new window”), with a keyboard modifier (`Cmd`/`Ctrl`+click, `Shift`+click, `Alt`+click) or with the middle mouse button, and when the navigation does not come from a link at all (JS button, `window.open()`, form submit, pasted URL, bookmark).
 
 Modified clicks are ignored **on purpose**: intercepting them would cancel the browser's native behaviour and force the destination into the current tab, against the visitor's intent. The trade-off is a new session on the destination instead of a broken navigation.
 
 No console message is logged in these cases, because the tracker never takes over the click: the absence of `cross-domain > ASK USER DATA` in the console of the source page is the signal. See [When link decoration does not happen](../README.md#when-link-decoration-does-not-happen) for the complete list.
 
-### Invalid or Expired `na_id`
+
+### Invalid or expired `na_id`
 
 The destination domain may display one of the following browser console messages.
 
-#### Unable to Decode `na_id`
+#### Unable to decode `na_id`
 
 ```text
 [page_view] > 🔴 Invalid cross-domain ID: unable to decode na_id
@@ -378,7 +387,7 @@ The destination domain may display one of the following browser console messages
 - **Issue:** The `na_id` URL parameter is not a valid Base64-encoded value.
 - **Result:** The value is ignored and `cross_domain_id` remains `null`.
 
-#### Invalid Format
+#### Invalid format
 
 ```text
 [page_view] > 🔴 Invalid cross-domain ID: invalid format
@@ -387,7 +396,7 @@ The destination domain may display one of the following browser console messages
 - **Issue:** The decoded value does not follow the expected `{session_id}.{decoration_timestamp_ms}` structure.
 - **Result:** The value is ignored and `cross_domain_id` remains `null`.
 
-#### Invalid `session_id` Format
+#### Invalid `session_id` format
 
 ```text
 [page_view] > 🔴 Invalid cross-domain ID: invalid session_id format
@@ -396,7 +405,7 @@ The destination domain may display one of the following browser console messages
 - **Issue:** The decoded value has the expected `{session_id}.{decoration_timestamp_ms}` structure, but the `session_id` does not match the required format: 15 alphanumeric characters, an underscore, 15 alphanumeric characters.
 - **Result:** The value is ignored and `cross_domain_id` remains `null`.
 
-#### Expired Cross-domain ID
+#### Expired cross-domain ID
 
 ```text
 [page_view] > 🟠 Expired cross-domain ID
@@ -405,7 +414,7 @@ The destination domain may display one of the following browser console messages
 - **Issue:** More than five minutes elapsed between URL decoration and execution of the first `page_view` on the destination page.
 - **Result:** The expired `session_id` is ignored and `cross_domain_id` remains `null`.
 
-#### Invalid Cross-domain ID
+#### Invalid cross-domain ID
 
 ```text
 [page_view] > 🔴 Invalid cross-domain ID
@@ -414,7 +423,7 @@ The destination domain may display one of the following browser console messages
 - **Issue:** The decoded value contains an invalid timestamp or a timestamp in the future.
 - **Result:** The value is ignored and `cross_domain_id` remains `null`.
 
-#### Valid Cross-domain ID
+#### Valid cross-domain ID
 
 ```text
 [page_view] > 🟢 Valid cross-domain ID

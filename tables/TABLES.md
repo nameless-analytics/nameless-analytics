@@ -3,6 +3,7 @@ The Nameless Analytics Reporting Tables provide a structured set of BigQuery res
 
 For an overview of how Nameless Analytics works [start from here](../README.md#overview).
 
+
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
@@ -34,11 +35,13 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Attribution Multi Touch](#attribution-multi-touch)
   - [Media Plan](#media-plan)
   - [Campaigns](#campaigns)
-- [Data Governance and Maintenance](#data-governance-and-maintenance)
+- [Data governance & maintenance](#data-governance--maintenance)
   - [Cookies are not deleted](#cookies-are-not-deleted)
   - [Delete user data script](#delete-user-data-script)
   - [Manual user data deletion](#manual-user-data-deletion)
   - [Data Health Check](#data-health-check)
+
+
 
 ## Setup
 The following SQL scripts are used to initialize the Nameless Analytics reporting environment in BigQuery.
@@ -107,6 +110,7 @@ Planned budget per campaign. Budgets are aggregated by month.
 | `full_campaign_name` | STRING | Yes | The complete campaign taxonomy, with the seven parts joined by a pipe (`\|`) — see [Campaign taxonomy](../README.md#campaign-taxonomy). Join key with the `campaign` column of `online_campaign_performance_sheets`. |
 | `budget` | FLOAT | Yes | Planned budget for the campaign in that month. Summed over the selected period. |
 
+> [!NOTE]
 > **Only three columns are read.** `date`, `full_campaign_name` and `budget` are the only ones the table functions query. The seven taxonomy columns exist to keep the source sheet readable: reporting dimensions are always re-derived from `full_campaign_name` through `get_campaign_part`. If a taxonomy column and `full_campaign_name` disagree, **reports follow `full_campaign_name`**. The same applies to `year`, which is recomputed from `date`.
 
 
@@ -246,7 +250,7 @@ For example: if you filter the events table function at event level, you probabl
 [View SQL code](table-functions/events.sql)
 
 
-### Events Debug
+### Events debug
 Returns event-level raw and typed parameter structures for debugging and data validation, including user, session, page, event, ecommerce, dataLayer, and consent data.
 
 ```sql
@@ -318,7 +322,7 @@ select * from `project.nameless_analytics.ec_products`(start_date, end_date)
 [View SQL code](table-functions/ec_products.sql)
 
 
-### Ecommerce Funnel
+### Ecommerce funnel
 Builds a cumulative presence-based ecommerce funnel within each session, from session start to purchase. A step is marked as reached when its event type and all preceding funnel event types are present in the session.
 
 ```sql
@@ -328,7 +332,7 @@ select * from `project.nameless_analytics.ec_funnel`(start_date, end_date)
 [View SQL code](table-functions/ec_funnel.sql)
 
 
-### Ecommerce Funnel Pivot
+### Ecommerce funnel pivot
 Returns the presence-based ecommerce funnel in long format with one row per session and funnel step, including step reach status and next-step client ID for drop-off analysis.
 
 ```sql
@@ -350,7 +354,7 @@ select * from `project.nameless_analytics.consents`(start_date, end_date)
 [View SQL code](table-functions/consents.sql)
 
 
-### Attribution Comparison
+### Attribution comparison
 Aggregates attributed conversion credit and revenue by traffic dimensions across single-touch and multi-touch attribution models.
 
 ```sql
@@ -360,7 +364,7 @@ select * from `project.nameless_analytics.attribution_comparison`(start_date, en
 [View SQL code](table-functions/attribution_comparison.sql)
 
 
-### Attribution Single Touch
+### Attribution single touch
 Calculates single-touch attribution per conversion using the user first click, the conversion-session last click, and the most recent non-direct session within the specified lookback window.
 
 The last-click non-direct model ignores direct sessions when a non-direct touchpoint exists within the lookback window. If only direct sessions exist, credit is assigned to the conversion-session direct touchpoint.
@@ -372,7 +376,7 @@ select * from `project.nameless_analytics.attribution_single_touch`(start_date, 
 [View SQL code](table-functions/attribution_single_touch.sql)
 
 
-### Attribution Multi Touch
+### Attribution multi touch
 Calculates multi-touch attribution at touchpoint level using linear, time-decay, and position-based models across sessions within the specified lookback window.
 
 ```sql
@@ -382,7 +386,7 @@ select * from `project.nameless_analytics.attribution_multi_touch`(start_date, e
 [View SQL code](table-functions/attribution_multi_touch.sql)
 
 
-### Media Plan
+### Media plan
 Combines monthly planned campaign budgets with actual campaign spend for the selected date range, preserving campaign taxonomy dimensions.
 
 Requires the `media_plan_sheets` and `online_campaign_performance_sheets` tables. See [Create external campaign tables](#create-external-campaign-tables).
@@ -409,7 +413,7 @@ select * from `project.nameless_analytics.campaigns`(start_date, end_date)
 
 
 
-## Data Governance and Maintenance
+## Data governance & maintenance
 Below are SQL templates to help you manage data integrity and comply with privacy regulations.
 
 To comply with GDPR "Right to be Forgotten" requests, data must be removed from both the historical timeline (BigQuery) and the real-time snapshots (Firestore).
@@ -429,6 +433,7 @@ You can use the provided [`Users deletion tool`](users-deletion-tool.py) Python 
 This is the recommended method.
 
 The script reads the user's `user_date` from the Firestore document before deleting anything, and uses it to narrow the BigQuery statement. Since the Server-side Client Tag writes to BigQuery only after a successful Firestore write, that value is always there and always matches the one stored in BigQuery. A user present in BigQuery with no Firestore document can only be the result of a manual deletion: the script then falls back to `client_id` alone, scanning the whole table, because completeness wins over cost.
+
 
 ### Manual user data deletion
 If you prefer manual deletion, please remove data from both BigQuery and Firestore.
@@ -451,7 +456,7 @@ WHERE true
 Locate the document in the `users` collection where the Document ID matches the `client_id` and delete it. This will remove the user profile and all associated session summaries.
 
 
-### Data Health Check
+### Data health check
 To ensure your data pipeline is healthy and active, use this query to monitor the event volume per day. Sudden drops might indicate configuration issues in GTM or Cloud Run.
 
 ```sql

@@ -3,6 +3,7 @@ The Nameless Analytics Streaming Protocol is a specialized implementation for se
 
 For an overview of how Nameless Analytics works [start from here](../README.md#overview).
 
+
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
@@ -40,6 +41,7 @@ Events sent via the Streaming Protocol **do not extend the session duration** (`
 ### BigQuery enrichment
 Automatically retrieves page_data from the BigQuery `events_raw` table based on the `na_s` cookie (the stored `page_id` is equal to the full `na_s` cookie value) and on the date of that page view. This ensures that offline or backend events are seamlessly tied to the user's original session and page, inheriting source, campaign, and user metadata without breaking the journey.
 
+> [!IMPORTANT]
 > **Store the page date alongside the cookie.** The lookup filters on `event_date`, the partition key of `events_raw`: without it BigQuery has no way to narrow the search and every single event would scan the whole table. The date works as a partition filter because a page always carries the date of the event that created it, so the `page_view` that opened the page is guaranteed to sit in that partition. `page_date` cannot be derived from the `na_s` cookie, so when you save the cookie value for later use you must also save the date of the page view you want the conversion to be attached to, and pass it as `page_date` in `YYYY-MM-DD` format.
 
 
@@ -59,6 +61,7 @@ Supports API Key authentication for secure server-side ingestion.
 ## Validation requirements
 To ensure requests are accepted by the server, following requirements must be met:
 
+
 ### Mandatory headers
 - **User-Agent**: You must use the following User-Agent: `Nameless Analytics - Streaming Protocol`. Any deviation will result in a 403 error.
 - **API Key**: The `X-Api-Key` header must match your Server-side Client Tag configuration.
@@ -76,10 +79,11 @@ The JSON payload must include the following top-level fields:
 
 
 
-## JSON Payload Structure
+## JSON payload structure
 The Streaming Protocol requires a POST request with a JSON body.
 
-### Example Payload
+
+### Example payload
 ```json
 {
   "user_data": {}, // Optional
@@ -137,21 +141,28 @@ The Streaming Protocol requires a POST request with a JSON body.
 }
 ```
 
+> [!NOTE]
 > **Note on `event_type`**: For the Streaming Protocol, set always `event_type` to `event`, as `page_view` is restricted to the website tracker, since **`page_view` events are not allowed** via the Streaming Protocol.
 
+> [!NOTE]
 > **Note on `event_origin`**: This must be set to `Streaming Protocol` to allow API Key authentication and distinguish server-side events.
 
+> [!NOTE]
 > **Note on `channel_grouping`**: You don't need to provide this parameter. The [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag) will automatically calculate it based on the `source` and `campaign` parameters provided in the `event_data` object.
 
+> [!NOTE]
 > **Note on ID Management**: The tracking of `client_id` and `session_id` is exclusively handled through the HTTP `Cookie` header. Do not include them in the JSON payload, as the server will securely extract and assign them from the cookies context.
 
+> [!NOTE]
 > **Note on ID composition**: `page_id` and `event_id` travel in the payload as **partial values**, exactly as the website tracker sends them. The `na_s` cookie has the structure `{client_id}_{session_id}-{page_id}`: send only the segment after the `-` as `page_id`, and build `event_id` as that same segment, an underscore, and a new random 15 character identifier. The Server-side Client Tag prefixes both with `{client_id}_{session_id}-` resolved from the cookies, so the values written to BigQuery are the full ones — `lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y` and `lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV`. Do not send the complete value: the server would prefix it a second time. See [Server-side ID Management](../README.md#server-side-id-management).
 
 
 
 ## Implementation
 
+> [!NOTE]
 > **💡 Reference Implementations**: The provided scripts (`streaming-protocol.py` and `streaming-protocol.js`) act as **Proof of Concept (PoC)** to demonstrate the end-to-end data flow. In a production environment, developers should implement this logic dynamically (e.g., via AWS Lambda, Node.js backends, etc.) utilizing Environment Variables or Secret Managers for keys, rather than hardcoding them.
+
 
 ### Installation
 
