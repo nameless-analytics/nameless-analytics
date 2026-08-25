@@ -61,9 +61,7 @@ Create a new:
 Create a new:
 1. GTM client tag using the template **Nameless Analytics Server-side Client Tag**
   - Under **Client settings** → **Endpoint path**, set the **same path** configured in the Configuration Variable (e.g., `/na/collect`). The container routes each incoming request to the client that claims its path, so the two values must be identical, and the path should be dedicated to Nameless Analytics rather than shared with another client of the same container
-  - Under **Google BigQuery Project ID**, set the **ID** of your BigQuery project
-  - Under **Google BigQuery Dataset ID**, set the **ID** of your BigQuery dataset
-  - Under **Google BigQuery Table ID**, set the **ID** of your BigQuery table
+  - Under **Google BigQuery settings**, fill in **Google BigQuery project ID**, **Google BigQuery dataset ID** and **Google BigQuery table ID**. All three are required and start empty, and the dataset and the table must already exist
 
 
 ### 4. Pipeline Validation & QA
