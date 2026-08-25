@@ -373,7 +373,7 @@ When the "Add current dataLayer state" option is enabled, a `dataLayer` paramete
 | dataLayer          |                   | JSON     | Client-side | DataLayer data        |
     
 #### Ecommerce data
-When "Add ecommerce data" is enabled, an `ecommerce` parameter will be added to the payload:
+When **Add ecommerce data from dataLayer** is enabled, an `ecommerce` parameter will be added to the payload:
   
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
@@ -766,7 +766,7 @@ Use the Streaming Protocol to:
 
 To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming Protocol.
 
-The Server-side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming Protocol" and does not include a valid `x-api-key` header matching your configuration.
+The Server-side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming Protocol" and does not include a valid `X-Api-Key` header matching your configuration.
 
 
 ### Debugging requests

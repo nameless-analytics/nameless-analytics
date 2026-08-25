@@ -52,7 +52,7 @@ Create a new:
   - Under **Server-side endpoint settings** → **Endpoint domain name**, set the domain of your Server-side GTM instance (e.g., `gtm.yourdomain.com`). Enter the bare domain: no `https://`, no trailing `/`
   - Under **Server-side endpoint settings** → **Endpoint path**, set the **path** of your dedicated Server-side GTM URL (e.g., `/na/collect`). It must start with `/` and must not end with `/`
 2. GTM tag using the template **Nameless Analytics Client-side Tracker Tag**
-  - Under **Event name**, select **standard event name** and then **page view**
+  - Under **Event name**, select **Standard event name** and then `page_view`
   - Under **Configuration variable settings**, add the created **Nameless Analytics Client-side Tracker Configuration Variable**
   - Use **All Pages** as trigger for the tag
 
@@ -140,7 +140,7 @@ Setup:
 - **Create the Trigger**: Create a Trigger for when the page has fully loaded using the **Window Loaded** event.
 - **Create a Variable**: Create a Custom JavaScript Variable for `total_page_load_time`.
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `page_load_time` event and assign the trigger to it.
-- **Map the Parameter**: Expand the **Event Parameters** section within the tag configuration and add the `total_page_load_time` parameter, assigning the Custom JavaScript Variable you created as its value.
+- **Map the Parameter**: Expand the **Event parameters** section within the tag configuration and add the `total_page_load_time` parameter, assigning the Custom JavaScript Variable you created as its value.
 
 Custom JavaScript Variable code for total_page_load_time:
 
@@ -198,7 +198,7 @@ dataLayer.push({
 - **Create the Trigger**: Create a Custom Event Trigger matching the event name `search_result_view`.
 - **Create a Variable**: Create a Data Layer Variable for the `search_term`.
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `search_result_view` event and assign the trigger to it.
-- **Map the Parameter**: Expand the **Event Parameters** section within the tag configuration and add the `search_term` parameter, assigning the DataLayer Variable you created as its value.
+- **Map the Parameter**: Expand the **Event parameters** section within the tag configuration and add the `search_term` parameter, assigning the DataLayer Variable you created as its value.
 
 
 ### Search Result Click
@@ -218,12 +218,12 @@ dataLayer.push({
 - **Create the Trigger**: Create a Custom Event Trigger matching the event name `search_result_click`.
 - **Create Variables**: Create two Data Layer Variables for `search_term` and `search_results_name`.
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `search_result_click` event and assign the trigger to it.
-- **Map the Parameter**: Expand the **Event Parameters** section within the tag configuration and add both the `search_term` and `search_results_name` parameters, assigning the DataLayer Variables you created as their values.
+- **Map the Parameter**: Expand the **Event parameters** section within the tag configuration and add both the `search_term` and `search_results_name` parameters, assigning the DataLayer Variables you created as their values.
 
 
 ### Authentication
 Fired when a user logs in, logs out, or creates an account. 
-For these events, the `user_id` must be mapped within the Nameless Analytics Client-side Tracker Configuration Variable, under the **Session Data** section using the **User ID** field.
+For these events, the `user_id` must be mapped within the Nameless Analytics Client-side Tracker Configuration Variable, under the **Session data** section using the **User ID** field.
 
 ```javascript
 dataLayer.push({
@@ -236,7 +236,7 @@ Setup:
 - **Create the Trigger**: Create a Custom Event Trigger matching the event name (e.g., `login`, `logout`, or `sign_up`).
 - **Create a Variable**: Create a Data Layer Variable for the `user_id`.
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `login` event (or `logout` or `sign_up`) and assign the trigger to it.
-- **Map the Parameter**: Open the **Nameless Analytics Client-side Tracker Configuration Variable**. Under the **Session Data** section, map the `user_id` field to the DataLayer Variable you created.
+- **Map the Parameter**: Open the **Nameless Analytics Client-side Tracker Configuration Variable**. Under the **Session data** section, map the `user_id` field to the DataLayer Variable you created.
 
 
 
@@ -258,7 +258,7 @@ dataLayer.push({
 - **Create the Trigger**: Create a Custom Event Trigger matching your event name (e.g., `file_downloaded`).
 - **Create DataLayer Variables**: Create Data Layer Variables for the custom parameters (e.g., `file_name` and `file_type`).
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, set **Event name** to **Custom event name**, type your event name in the field and assign the trigger to it.
-- **Map the Parameters**: Expand the **Event Parameters** section within the tag configuration and add your custom parameters in the table, assigning the DataLayer Variables you created as their values.
+- **Map the Parameters**: Expand the **Event parameters** section within the tag configuration and add your custom parameters in the table, assigning the DataLayer Variables you created as their values.
 
 The value set in the **Custom event name** field becomes the final `event_name` in BigQuery, and all the configured parameters are mapped into the `event_data` array column.
 
@@ -392,13 +392,13 @@ To configure cross-domain tracking you need to:
 ### Two client-side GTM containers, one per site
 To configure cross-domain tracking across separate containers, follow these steps:
 
-1. **Enable Cross-Domain Tracking**: In each Nameless Analytics Client-side Tracker Configuration Variable, enable the cross-domain option and add the counterparty domain to the domain list.
+1. In each Nameless Analytics Client-side Tracker Configuration Variable, check **Enable cross-domain tracking** and add the counterparty domain to the **Cross-domain domains** table.
 
     - For **namelessanalytics.com**, the counterparty domain will be `tommasomoretti.com`.
     - For **tommasomoretti.com**, the counterparty domain will be `namelessanalytics.com`.
 
 
-2. **Configure Request Endpoints**: Set the **Endpoint domain name** field for each container to point to its respective server-side GTM subdomain.
+2. Set the **Endpoint domain name** field of each container to point to its respective server-side GTM subdomain.
 
     - For **namelessanalytics.com**, the endpoint will be `gtm.namelessanalytics.com`.
     - For **tommasomoretti.com**, the endpoint will be `gtm.tommasomoretti.com`.
@@ -444,7 +444,7 @@ Your website must push ecommerce events to the `dataLayer` using the standard st
 
 ### 2. Tracker Configuration
 In your GTM Client-side Tracker Tag configuration:
-- Ensure the **"Add ecommerce data"** checkbox is enabled. 
+- Under **Advanced settings**, check **Add ecommerce data from dataLayer**. 
 - This tells the tracker to capture the `ecommerce` object from the current dataLayer state and include it in the payload sent to the server.
 
 ### 3. Server-side Processing
@@ -514,9 +514,9 @@ The payload forwarded to the custom endpoint is the exact same enriched JSON tha
 ### Configuration Steps
 1. Open the **Nameless Analytics Server-side Client Tag**.
 2. Scroll down to **Advanced settings** and check **Send data to custom endpoint**.
-3. Enter your **Destination URL** (e.g., `https://api.yourcrm.com/v1/events`).
+3. In **Full endpoint domain path**, enter the destination (e.g., `https://api.yourcrm.com/v1/events`). It must start with `https://`.
 4. If your API requires authentication, check **Add custom request headers**.
-5. Populate the headers table with the required keys and values (e.g., `Authorization: Bearer your_token` or `x-api-key: your_key`).
+5. Populate the **Custom request headers** table, one header per row, with the **Header name** and **Header value** columns (e.g., `Authorization` / `Bearer your_token`).
 6. Save the tag and publish the container.
 
 > **Security Tip**: Since this request originates from your private server-side environment, sensitive credentials like API keys remain invisible to the user's browser, ensuring a secure server-to-server communication.
