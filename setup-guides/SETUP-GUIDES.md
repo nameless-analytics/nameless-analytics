@@ -407,7 +407,7 @@ To configure cross-domain tracking across separate containers, follow these step
 
 
 ### One server-side GTM container for multiple sites
-If **Accept requests from authorized domains only** option is enabled in **Nameless Analytics Server-side Client** configuration, ensure that all domains involved in the cross-domain setup are explicitly added to the **Authorized domains** list. This prevents requests from being blocked when the tracker switches domains.
+If the **Accept requests from authorized domains only** option is enabled in the **Nameless Analytics Server-side Client Tag** configuration, ensure that all domains involved in the cross-domain setup are explicitly added to the **Authorized domains** list. This prevents requests from being blocked when the tracker switches domains.
 
 The endpoint path must be the same for all domains.
 
@@ -531,7 +531,7 @@ The Nameless Analytics Server-side Client Tag acts as a security gateway, allowi
 ### 1. Authorized domains (CORS-like Protection)
 To prevent unauthorized websites from sending data to your endpoint, you can restrict access to specific top-level domains. **While the option is off, requests from any origin are accepted**, so this is the first setting to turn on for a production container.
 1. Open the **Nameless Analytics Server-side Client Tag**.
-2. Scroll down to **Advanced settings** and check **Accept requests from authorized domains only**.
+2. Under **Client settings** → **Security rules**, check **Accept requests from authorized domains only**.
 3. Add your domains to the **Authorized domains** list as bare host names, without protocol and without trailing slash (e.g., `www.yourdomain.com`). A value that includes `https://` is rejected by the field validation. Only the Effective TLD+1 is compared, so one entry covers all the subdomains of that domain.
 4. Ensure you include all production, staging, and development domains, and every domain of a cross-domain setup.
 5. Remember that requests without an `Origin` header are refused once the option is on: browser traffic always sends it, backend calls such as the [Streaming Protocol](../streaming-protocol/STREAMING-PROTOCOL.md) must set it explicitly.
