@@ -13,10 +13,8 @@ Here is a wishlist of ideas and features for future releases, representing a lis
 
 - Complete Dataform datamodel with ML models
 - Add core web vitals metrics (Client-side Tracker Tag) for page_load_time event
-- Add force cast value as string at event parameter level 
+- Add force cast value as string at event parameter level
 
-# 
+#
 
 [Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_roadmap) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)
-
-

@@ -11,7 +11,6 @@ For upcoming features and planned improvements, see the [roadmap](ROADMAP.md).
 ### 2026-01-01 | Beta v1.0
 Initial release.
 
-# 
+#
 
 [Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_changelog) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)
-

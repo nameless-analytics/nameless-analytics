@@ -60,7 +60,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
 - [License](#license)
 
 ## What is Nameless Analytics
-Nameless Analytics is a privacy-first, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics. 
+Nameless Analytics is a privacy-first, first-party data collection infrastructure designed for organizations and analysts that demand complete control over their digital analytics.
 
 Built upon a transparent pipeline hosted entirely on a private Google Cloud Platform environment, the platform solves critical challenges in modern analytics:
 
@@ -124,7 +124,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 
 <details><summary>Example of the final enriched payload as processed and returned by the server (standard parameters only)</summary>
 
-</br>
+<br>
 
 ```json
 {
@@ -361,26 +361,26 @@ The request data is sent via a POST request in JSON format. It is structured int
 <details><summary>Request payload additional data parameters</summary>
 
 #### Page status code
-When the "Add page status code" option is enabled, a `page_status_code` parameter will be added to the page_data object in the payload: 
-  
+When the "Add page status code" option is enabled, a `page_status_code` parameter will be added to the page_data object in the payload:
+
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
-| page_status_code   |                   | Integer  | Client-side | Page status code      | 
-  
+| page_status_code   |                   | Integer  | Client-side | Page status code      |
+
 #### Add dataLayer data
-When the "Add current dataLayer state" option is enabled, a `dataLayer` parameter will be added to the payload: 
-  
+When the "Add current dataLayer state" option is enabled, a `dataLayer` parameter will be added to the payload:
+
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
 | dataLayer          |                   | JSON     | Client-side | DataLayer data        |
-    
+
 #### Ecommerce data
 When **Add ecommerce data from dataLayer** is enabled, an `ecommerce` parameter will be added to the payload:
-  
+
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
 | ecommerce          |                   | JSON     | Client-side | Ecommerce data        |
-    
+
 </details>
 
 #### Payload size limit
@@ -396,7 +396,7 @@ The values sent in the payload are **partial**. The tracker cannot read `client_
 
 <details><summary>See page ID and event ID values</summary>
 
-</br>
+<br>
 
 | Parameter name | Renewed            | Sent in the payload             | Stored in BigQuery                                              | Value composition                           |
 |----------------|--------------------|---------------------------------|-----------------------------------------------------------------|---------------------------------------------|
@@ -443,7 +443,7 @@ To maximize data collection accuracy, Nameless Analytics supports **First-Party 
 
 <details><summary>Main library</summary>
 
-</br>
+<br>
 
 This is the core engine that supports the GTM tag by exposing utility functions for execution in a standard JavaScript environment. [Source code](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/)
 
@@ -459,7 +459,7 @@ It handles the following background operations:
 
 <details><summary>Dependency library</summary>
 
-</br>
+<br>
 
 Parses the browser's `User-Agent` string and extracts granular information about the device vendor, model, operating system, and browser engine version. Source code: [ua-parser-js](https://github.com/faisalman/ua-parser-js). The tag is pinned to version **1.0.40**, the latest release under the MIT licence.
 
@@ -469,7 +469,7 @@ This data is mapped into the `event_data` object under `device_vendor`, `os_vers
 
 
 ### Cross-domain Architecture
-Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links. 
+Nameless Analytics uses `HttpOnly` cookies for security, identifiers are invisible to client-side JavaScript and cannot be read directly to decorate links.
 
 For retrieving the active `client_id` and `session_id` the Nameless Analytics Client-side Tracker Tag needs to perform a handshake with the server before redirecting and decorating outbound URLs with the `na_id` parameter in real time.
 
@@ -514,17 +514,17 @@ A decorated link can also be **rejected on arrival**, with the same outcome. Thi
 
 <details><summary>How the cross-domain handshake works</summary>
 
-</br>
+<br>
 
 - When `respect_consent_mode` is disabled or `respect_consent_mode` is enabled and `analytics_storage` = granted:
   - **Handshake Initialization**: When a user clicks a link toward a configured cross-domain, the tracker intercepts the event, **pauses navigation**, and performs a real-time asynchronous POST call to the Server-side GTM endpoint with `event_name: 'get_user_data'`.
   - **Identity Extraction (`HttpOnly` bypass)**: The Server-side Client Tag receives the request. Since the call is directed to its own domain, it has access to the `HttpOnly` cookies (`na_u` and `na_s`). It securely extracts the `client_id` and `session_id`.
-  - **Real-time Response**: Instead of streaming the data to BigQuery, the server immediately responds to the browser by providing both identifiers in a JSON payload. 
+  - **Real-time Response**: Instead of streaming the data to BigQuery, the server immediately responds to the browser by providing both identifiers in a JSON payload.
   - **URL Decoration**: The tracker combines the server-issued `session_id` with the current timestamp using the `{session_id}.{decoration_timestamp_ms}` structure. The complete value is Base64-encoded and assigned to the `na_id` URL parameter before navigation continues.
   - **Cross-domain ID Validation**: On the destination domain, the Client-side Tracker Tag decodes `na_id` and validates its structure and timestamp. The value is accepted only on the first `page_view` and only within five minutes of URL decoration.
   - **Session Stitching**: If the value is valid, the decoded `session_id` is added to the event payload as `cross_domain_id` and sent to the destination domain's Server-side Client Tag. Invalid or expired values are ignored. If identifying parameters are missing but `na_*` acquisition parameters are present, the tracker instead initializes a local `na_temp` cookie to preserve attribution context.
-  
-  By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics improves the reliability of the identifiers passed to the destination domain. 
+
+  By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics improves the reliability of the identifiers passed to the destination domain.
 
   While this can introduce very small latency, it eliminates session fragmentation and ensures reliable cross-domain attribution in environments with strict privacy restrictions.
 
@@ -549,7 +549,7 @@ User, session, and event parameters follow this hierarchy of overriding:
 
 <details><summary>See user and sessions parameters hierarchy</summary>
 
-</br>
+<br>
 
 | **Priority** | **Level**                           | **Source**                                                    |
 |--------------|-------------------------------------|---------------------------------------------------------------|
@@ -558,9 +558,9 @@ User, session, and event parameters follow this hierarchy of overriding:
 
 </details>
 
-<details> <summary>See event parameters hierarchy</summary>
+<details><summary>See event parameters hierarchy</summary>
 
-</br>
+<br>
 
 | **Priority** | **Level**                  | **Source**                                                    |
 |--------------|----------------------------|---------------------------------------------------------------|
@@ -573,19 +573,19 @@ User, session, and event parameters follow this hierarchy of overriding:
 
 
 ### Client-side cookies
-The temporary attribution cookie `na_temp` is set by the Nameless Analytics Client-side Tracker when respect consent mode is enabled and consent for analytics_storage has been denied. 
+The temporary attribution cookie `na_temp` is set by the Nameless Analytics Client-side Tracker when respect consent mode is enabled and consent for analytics_storage has been denied.
 
 It expires when consent given or at browser session level, whichever happens first.
 
-<details> <summary>See temp cookie value</summary>
+<details><summary>See temp cookie value</summary>
 
-</br>
+<br>
 
 | Cookie Name | Default expiration | Example values | Value composition | Usage |
 | :--- | :--- | :--- | :--- | :--- |
 | **na_temp** | Session | {<br> &nbsp; &nbsp; "source": "google", <br> &nbsp; &nbsp; "campaign": "summer_sale", <br> &nbsp; &nbsp; "campaign_id": "12345", <br> &nbsp; &nbsp; "campaign_click_id": "67890", <br> &nbsp; &nbsp; "campaign_content": "ad_group_1", <br> &nbsp; &nbsp; "campaign_term": "running_shoes", <br> &nbsp; &nbsp; "page_referrer": "https://www.google.com/" <br>}| JSON object of acquisition parameters | Temporarily stores acquisition parameters when `analytics_storage` is denied. |
 
-This is the lifecycle of `na_temp` cookie: 
+This is the lifecycle of `na_temp` cookie:
 - **Session Expiration**: `na_temp` is a standard session cookie. Unlike persistent cookies, it lives exclusively in the browser's temporary memory. It expires and is automatically deleted by the browser as soon as the **entire browser process is closed** (closing only a single tab or window will not delete the cookie). This ensures attribution remains consistent even if the user navigates your site across multiple tabs.
 - **Conditional Deletion**: the cookie is not deleted immediately upon consent grant. Instead, it is forcefully removed during the **first `page_view` event (standard or virtual) that occurs while `analytics_storage` is already set to granted**. This ensures that if consent is granted mid-page, the original acquisition data remains available to attribute all subsequent events on that page before being purged on the next page transition.
 
@@ -593,7 +593,7 @@ This is the lifecycle of `na_temp` cookie:
 
 
 ### Debugging events
-Real-time tracker logs and errors are logged to the **Browser Console**, ensuring immediate feedback during implementation. 
+Real-time tracker logs and errors are logged to the **Browser Console**, ensuring immediate feedback during implementation.
 
 For a detailed guide on resolving common sequence and integration issues, see the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md).
 
@@ -620,7 +620,7 @@ It also completes the identifiers generated upstream: the `page_id` and `event_i
 
 <details><summary>See client ID and session ID values</summary>
 
-</br>
+<br>
 
 | Parameter name | Renewed                       | Example values                 | Value composition             |
 |----------------|-------------------------------|--------------------------------|-------------------------------|
@@ -672,7 +672,7 @@ Actively detects and blocks automated traffic returning a `403 Forbidden` status
 
 
 ### Geolocation & Privacy by Design
-Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations. 
+Automatically maps the incoming request IP to geographic data (Country, City) for regional analysis. The system is designed to **never persist the raw IP address** in BigQuery, ensuring native compliance with strict privacy regulations.
 
 To enable this feature, your server must be configured to forward geolocation headers:
 
@@ -686,7 +686,7 @@ App Engine provides its headers with no configuration. On Cloud Run the two head
 
 
 ### Channel Grouping logic
-Automatically categorizes traffic sources into predefined groups (e.g., Organic Search, Paid Social, AI, Email) using a server-side regex-based pattern matching system. 
+Automatically categorizes traffic sources into predefined groups (e.g., Organic Search, Paid Social, AI, Email) using a server-side regex-based pattern matching system.
 
 The Server-side Client Tag automatically processes attribution data for every incoming request. By analyzing the `source` and `campaign` parameters, it applies a regex-based logic to categorize the traffic into standard groups (e.g., Organic Search, Paid Social, Email, etc.).
 
@@ -696,7 +696,7 @@ This centralized processing ensures that:
 
 <details><summary>See channel grouping rules</summary>
 
-The following table describes how the channel grouping is determined based on the `source` and `campaign` parameters of the event. 
+The following table describes how the channel grouping is determined based on the `source` and `campaign` parameters of the event.
 
 | Channel grouping | Source category | Campaign |
 | :--- | :--- | :--- |
@@ -736,13 +736,13 @@ The same logic is also available as a BigQuery [User-Defined Function (UDF)](tab
 ### Server-side cookies
 The server-side identity cookies `na_u` and `na_s` are HttpOnly, Secure and SameSite=Strict.
 
-The platform automatically calculates the appropriate cookie domain by extracting the **Effective TLD+1** from the request origin. This ensures seamless identity persistence across subdomains without manual configuration. 
+The platform automatically calculates the appropriate cookie domain by extracting the **Effective TLD+1** from the request origin. This ensures seamless identity persistence across subdomains without manual configuration.
 
 Cookies are created or updated on every event to track the user's session and identity across the entire journey. The expiration of the client identifier cookie (`na_u`) is set to **400 days**, which is the maximum lifespan allowed by modern browsers (e.g., Chrome, Safari) for first-party cookies, ensuring long-term user recognition while remaining compliant with browser restrictions.
 
-<details> <summary>See user and session cookie values</summary>
+<details><summary>See user and session cookie values</summary>
 
-</br>
+<br>
 
 | Cookie Name | Default expiration | Example values | Value composition | Usage |
 | :--- | :--- | :--- | :--- | :--- |
@@ -765,7 +765,7 @@ The Server-side Client Tag will automatically reject any request where `event_or
 
 
 ### Debugging requests
-Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**. 
+Developers can monitor the server-side logic in real-time through **GTM Server Preview Mode**.
 
 For detailed information on server-side errors and validation issues, refer to the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md).
 
@@ -781,7 +781,7 @@ It maintains **the latest available state for every user and session** (for exam
 
 <details><summary>Firestore document structure example</summary>
 
-</br>
+<br>
 
 ![Nameless Analytics - Firestore collection schema](https://github.com/user-attachments/assets/d27c3ca6-f039-4702-853e-81e71ed033c2)
 
@@ -796,17 +796,17 @@ Firestore ensures data integrity by managing how parameters are updated across h
 | **Session** | **Progressive** | `cross_domain_session` | Flags as 'Yes' if any hit in the session is cross-domain. |
 
 </details>
-  
+
 #### Known limitations: Firestore 1 MiB document limit
-Google Firestore imposes a hard limit of [1 MiB per document](https://firebase.google.com/docs/firestore/quotas#limits). 
-Nameless Analytics continuously appends new sessions to the user's document array to maintain cross-session context. 
+Google Firestore imposes a hard limit of [1 MiB per document](https://firebase.google.com/docs/firestore/quotas#limits).
+Nameless Analytics continuously appends new sessions to the user's document array to maintain cross-session context.
 Due to how Firestore calculates document size (billing the repeated byte weight of all 29 keys for every single element in the array), the weight of a single session object fluctuates based on the length of inbound URLs, typically ranging from 1.1 KB to over 2 KB for extreme URLs. Consequently, a user document can safely store anywhere between **~300 and ~900 unique sessions** before hitting the limit.
 
-Given the `na_u` cookie's maximum 400-day expiration, a user would need to return to the site and trigger a new session almost every day to exceed this quota. While this is mathematically possible for high-frequency SaaS applications, it is extremely unlikely for standard websites (e-commerce, blogs, corporate). 
+Given the `na_u` cookie's maximum 400-day expiration, a user would need to return to the site and trigger a new session almost every day to exceed this quota. While this is mathematically possible for high-frequency SaaS applications, it is extremely unlikely for standard websites (e-commerce, blogs, corporate).
 
 **Adding Custom Parameters:** If you customize the Server-side code to track additional custom parameters, keep in mind that:
   - **User parameters** (stored at the root of the document) are only written once and have a negligible impact on this limit.
-  - **Session parameters** are appended inside the array and multiplied by every single session. 
+  - **Session parameters** are appended inside the array and multiplied by every single session.
 Adding custom Session parameters will increase the base byte weight of the session object, proportionally reducing the maximum number of sessions the document can store before hitting the 1 MiB limit.
 
 **Warning:** To maintain strict data consistency, Nameless Analytics processes BigQuery inserts only after a successful Firestore update. If a user document exceeds the 1 MiB limit, the Firestore write will fail, causing the server to abort the request (403 Forbidden). Consequently, subsequent events for that specific user will not be recorded in either Firestore or BigQuery.
@@ -814,7 +814,7 @@ Adding custom Session parameters will increase the base byte weight of the sessi
 
 ### BigQuery as Historical Timeline
 It maintains **every single state transition** for every user and session (for example, all different `user_level` custom parameter values through time).
-  
+
 - **User data**: Stores the current user profile state at event occurs, including first/last session timestamps, original acquisition source, and persistent device metadata.
 - **Session data**: Stores the current session state at event occurs, including real-time counters (total events, page views), landing/exit page details, and session-specific attribution.
 - **Page data**: Stores the current page state at event occurs, including page name, timestamp, and page-specific attributes.
@@ -825,11 +825,11 @@ It maintains **every single state transition** for every user and session (for e
 - **Events Debug data**: Stores the current events debug state at event occurs, including metrics, timestamp, and specific attributes.
 
 <details><summary>BigQuery schema example</summary>
-  
-</br>
-  
+
+<br>
+
 ![Nameless Analytics - BigQuery event_raw schema](https://github.com/user-attachments/assets/d23e3959-ab7a-453c-88db-a4bc2c7b32f4)
-  
+
 </details>
 
 
@@ -882,15 +882,15 @@ Since parsing happens at query time, editing the UDF changes the taxonomy retroa
 
 ## AI support
 ### Q&A Agents
-Get expert help for implementation and technical documentation: 
+Get expert help for implementation and technical documentation:
 
 - **[Nameless Analytics QnA](https://notebooklm.google.com/notebook/73cd9ce3-9873-40cf-9d52-110d74dff5f9)**: Specialized Google Notebook LM trained on the platform docs.
 
 
 ### Conversational Analysis Agent in BigQuery Studio
-In BigQuery Studio, it is possible to configure a Data Agent (powered by Gemini) for conversational analysis, allowing users to explore and query datasets using simple natural language. These agents leverage tables, views, and **table functions** as "knowledge sources" to learn the data schema and business logic. 
+In BigQuery Studio, it is possible to configure a Data Agent (powered by Gemini) for conversational analysis, allowing users to explore and query datasets using simple natural language. These agents leverage tables, views, and **table functions** as "knowledge sources" to learn the data schema and business logic.
 
-Table functions are particularly strategic in this scenario: by accepting parameters, they allow encapsulating and centralizing complex metrics and business logic, providing the agent with a clean and reusable interface to filter results dynamically. 
+Table functions are particularly strategic in this scenario: by accepting parameters, they allow encapsulating and centralizing complex metrics and business logic, providing the agent with a clean and reusable interface to filter results dynamically.
 
 To maximize the accuracy of the agent's responses, it is crucial to enrich these sources with well-defined metadata descriptions at the schema level, provide contextual system instructions, and include a set of "golden queries" to train the model on the organization's specific use cases. To learn how to configure this agent with your data, check the [Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-configure-a-conversational-analysis-agent-in-bigquery-studio).
 
@@ -918,7 +918,7 @@ Data will be stored in two different locations:
 Query processing (scanning data in BigQuery for analysis/reporting) is billed separately by Google Cloud based on usage. However, the first **1 TB per month** is always free.
 
 ### Data Governance & Deletion
-To comply with GDPR and privacy regulations, Nameless Analytics provides a dedicated **[User Data Deletion Script](setup-guides/SETUP-GUIDES.md#data-governance--privacy-compliance)**. 
+To comply with GDPR and privacy regulations, Nameless Analytics provides a dedicated **[User Data Deletion Script](setup-guides/SETUP-GUIDES.md#data-governance--privacy-compliance)**.
 
 This Python utility allows you to remove all data for a specific `client_id` from both BigQuery and Firestore in a single operation: the historical timeline and the real-time snapshot are both erased server-side.
 
@@ -938,13 +938,13 @@ This is an estimated monthly cost breakdown for the platform, based on **real-wo
 | **Enterprise** | 10M | ~$20 – $40 / ~$120** / $100 | ~$12 | ~$0.6 | $33 – $53 / $133+ / $113+ |
 | **Enterprise+** | 50M | ~$80 – $130 / ~$120** / $200 | ~$60 | ~$2.8 | $143 – $193 / $183+ / $263+ |
 
-</br>
+<br>
 
-\* App Engine **Standard Environment (F1 instance)** – suitable for low/medium traffic  
-\** App Engine **Flexible Environment (multi-instance cluster)** – suitable for high traffic  
+\* App Engine **Standard Environment (F1 instance)** – suitable for low/medium traffic<br>
+\** App Engine **Flexible Environment (multi-instance cluster)** – suitable for high traffic<br>
 \*** Stape.io **Personal ($0), Pro ($20), Business ($100), Enterprise ($200)** plans based on traffic
 
-**Pricing sources** (verified April 2026): [Cloud Run](https://cloud.google.com/run/pricing) · [App Engine Standard](https://cloud.google.com/appengine/pricing#standard_instance_pricing) · [App Engine Flexible](https://cloud.google.com/appengine/pricing#flexible-environment) · [Firestore](https://cloud.google.com/firestore/pricing) · [BigQuery](https://cloud.google.com/bigquery/pricing) · [Stape.io](https://stape.io/pricing)  
+**Pricing sources** (verified April 2026): [Cloud Run](https://cloud.google.com/run/pricing) · [App Engine Standard](https://cloud.google.com/appengine/pricing#standard_instance_pricing) · [App Engine Flexible](https://cloud.google.com/appengine/pricing#flexible-environment) · [Firestore](https://cloud.google.com/firestore/pricing) · [BigQuery](https://cloud.google.com/bigquery/pricing) · [Stape.io](https://stape.io/pricing)
 
 
 
@@ -954,6 +954,6 @@ This project is open-source and distributed under the **Apache License 2.0**.
 
 See the [LICENSE](LICENSE) file for the full license text.
 
-# 
+#
 
 [Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_readme) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)

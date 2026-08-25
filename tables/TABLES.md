@@ -45,7 +45,7 @@ The following SQL scripts are used to initialize the Nameless Analytics reportin
 
 
 ### Create raw tables
-This script is used to create the raw tables in BigQuery, the main dataset `nameless_analytics` and the `events_raw` and `calendar_dates` tables. 
+This script is used to create the raw tables in BigQuery, the main dataset `nameless_analytics` and the `events_raw` and `calendar_dates` tables.
 
 This script also enables BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. [Read more about it](https://cloud.google.com/bigquery/docs/advanced-runtime).
 
@@ -239,7 +239,7 @@ select * from `project.nameless_analytics.events`(start_date, end_date, 'page')
 select * from `project.nameless_analytics.events`(start_date, end_date, 'event')
 ```
 
-Always select data with the same data scope and date scope. 
+Always select data with the same data scope and date scope.
 
 For example: if you filter the events table function at event level, you probably will miss some data related to the user, like a change in his status that happened out of the selected date period.
 
@@ -424,7 +424,7 @@ A complete Right to be Forgotten request therefore has two parts: running the de
 
 
 ### Delete user data script
-You can use the provided [`Users deletion tool`](users-deletion-tool.py) Python script to handle both deletions in a single command. 
+You can use the provided [`Users deletion tool`](users-deletion-tool.py) Python script to handle both deletions in a single command.
 
 This is the recommended method.
 
@@ -468,7 +468,6 @@ GROUP BY 1
 ORDER BY 1 DESC;
 ```
 
-# ---
+#
 
 [Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_tables) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)
-

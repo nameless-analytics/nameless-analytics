@@ -3,7 +3,7 @@ The Nameless Analytics Streaming Protocol is a specialized implementation for se
 
 For an overview of how Nameless Analytics works [start from here](../README.md#overview).
 
-### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change 🚧
+### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
 
@@ -47,9 +47,9 @@ Automatically retrieves page_data from the BigQuery `events_raw` table based on 
 Correctly maps BigQuery data types (`string`, `int`, `float`, `json` and `bool`) to the JSON payload.
 
 
-### Error handling 
+### Error handling
 Includes robust error handling for API responses and database queries.
- 
+
 
 ### Security
 Supports API Key authentication for secure server-side ingestion.
@@ -154,7 +154,7 @@ The Streaming Protocol requires a POST request with a JSON body.
 > **💡 Reference Implementations**: The provided scripts (`streaming-protocol.py` and `streaming-protocol.js`) act as **Proof of Concept (PoC)** to demonstrate the end-to-end data flow. In a production environment, developers should implement this logic dynamically (e.g., via AWS Lambda, Node.js backends, etc.) utilizing Environment Variables or Secret Managers for keys, rather than hardcoding them.
 
 ### Installation
- 
+
 1.  Clone the repository.
 2.  Install the required dependencies:
 
@@ -167,12 +167,12 @@ The Streaming Protocol requires a POST request with a JSON body.
     ```bash
     npm install @google-cloud/bigquery
     ```
- 
+
 
 ### Configuration
- 
+
 Open `streaming-protocol.py` or `streaming-protocol.js` and configure the following settings:
- 
+
 1. User Cookies and page date:
     - Set the `na_s` cookie value (the user unique identifier `na_u` will be automatically derived from it).
     - Set `page_date` to the date of the page view you want the event to be attached to, in `YYYY-MM-DD` format. It must be stored together with the cookie value at collection time: it is not derivable from `na_s`, and the BigQuery lookup uses it as the partition filter.
@@ -191,9 +191,9 @@ Open `streaming-protocol.py` or `streaming-protocol.js` and configure the follow
     - `ecommerce_data`: Provide relevant ecommerce or transaction data.
 
 
-### Usage 
+### Usage
 Run the script using your preferred language:
- 
+
 **Python:**
 ```bash
 python streaming-protocol.py
@@ -203,7 +203,7 @@ python streaming-protocol.py
 ```bash
 node streaming-protocol.js
 ```
- 
+
 The script will:
 1.  Connect to BigQuery to fetch the latest page context for the given session.
 2.  Construct a robust event payload.
@@ -225,7 +225,6 @@ The last line before the outcome is the `response` field of the server reply, pr
 
 Do not match on `🟢 Request claimed successfully`: that message belongs to the `get_user_data` cross-domain handshake, which the Streaming Protocol never performs.
 
-# 
+#
 
 [Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_streaming_protocol) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)
-

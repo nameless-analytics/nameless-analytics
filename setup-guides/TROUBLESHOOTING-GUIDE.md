@@ -1,5 +1,6 @@
 # Nameless Analytics | Troubleshooting Guide
 The Nameless Analytics Troubleshooting Guide identifies, explains, and resolves common issues encountered during implementation.
+For an overview of how Nameless Analytics works [start from here](../README.md#overview).
 
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
@@ -37,7 +38,7 @@ Inspect a network request to see the data sent by client from Preview and data r
 An **Orphan Event** is any interaction (click, scroll, etc.) that reaches the server without a valid session context established by a preceding `page_view` event or the request is without a valid user and session cookie.
 
 
-Browser console shows: 
+Browser console shows:
 
 ```text
 [event_name] >   🔴 Event fired before a page view event. The first event on any page must be page_view.
@@ -50,7 +51,7 @@ Browser console shows:
 
 > **`🔴 Request aborted` is not specific to orphan events.** It is the closing line of every path that stops the tag before the request is sent — invalid configuration variable, libraries not loaded, `inject_script` permission denied, Consent Mode missing, consent denied. Always read the cause in the line above it, not in the abort line itself.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Orphan event: missing user cookie. Trigger a page_view event first to create a new user and a new session`
 
@@ -59,7 +60,7 @@ Server logs show:
 - **Issue:** A user leaves a tab open for more than 30 minutes (default session timeout). When they return and click, the session cookie (`na_s`) has expired.
 - **Solution:** This is expected defensive behavior to ensure data integrity. Nameless Analytics rejects these to avoid "zombie" sessions without attribution.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Orphan event: user doesn't exist in Firestore. Trigger a page_view event first to create a new user and a new session`
 
@@ -74,36 +75,36 @@ Server logs show:
 The Server-side Client Tag acts as a security gateway. If a request doesn't meet strict criteria, it is rejected with a `403 Forbidden` status.
 
 
-Browser console shows: 
+Browser console shows:
 
 `[event_name] > 🔴 Request refused`
 
 - **Issue:** The Server-side Client Tag refused the request due to a validation failure.
 - **Solution:** Check the server-side GTM preview mode "Inbound Request" logs for the specific cause (Origin, IP, Bot protection, etc.).
 
-Server logs show: 
+Server logs show:
 
 `🔴 Request origin not authorized`
 
 - **Issue:** The request came from a domain that is not in the **Authorized domains** table, or it carried no `Origin` header at all. The header is missing on server-to-server calls, so a Streaming Protocol implementation that does not set it is refused here as soon as the option is enabled.
 - **Solution:** Add the domain to the **Authorized domains** table in the Server-side Client Tag configuration, as a bare host name without protocol (e.g., `example.com`, not `https://example.com`, which the field validation rejects). Only the Effective TLD+1 is compared, so one entry covers all subdomains. In a cross-domain setup list every domain involved, and make sure your backend sends the `Origin` header.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Request IP not authorized`
 
 - **Issue:** The request came from an IP address listed in the **Banned IPs** table.
 - **Solution:** Remove the IP from the list if it's a false positive.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Missing User-Agent header. Request from bot`
 
 `🔴 Invalid User-Agent header value. Request from bot`
 
 - **Issue:** The request was identified as an automated bot, a scraper, or originated from a common HTTP library.
-- **Solution:** Nameless Analytics blocks requests from non-browser environments to ensure data quality. Testing must be performed from a standard, modern browser. 
-  
+- **Solution:** Nameless Analytics blocks requests from non-browser environments to ensure data quality. Testing must be performed from a standard, modern browser.
+
   The system currently blocks any User-Agent containing the following keywords:
   - **HTTP Libraries:** `curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.
   - **AI Agents & LLMs:** `gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytespider`, `ccbot`.
@@ -112,35 +113,35 @@ Server logs show:
 
   If you are using the **Streaming Protocol**, the `User-Agent` must be exactly `Nameless Analytics - Streaming Protocol`. This is a separate check from the blacklist above: it runs **even when Enable Bot protection is off**, and the value must match exactly — any prefix or suffix is rejected with this same message.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Invalid API key`
 
 - **Issue:** The `X-Api-Key` header for Streaming Protocol is missing or incorrect.
 - **Solution:** Ensure your request includes the `X-Api-Key` header with the correct value as configured in the Client Tag.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Add API key for Streaming Protocol is not enabled.`
 
 - **Issue:** the request declares `event_origin: "Streaming Protocol"` but **"Add API key for Streaming Protocol" is not enabled** in the Server-side Client Tag. The API key is mandatory for this origin: with the option off there is no key to compare against, so every Streaming Protocol request is refused with `403`, whether or not it carries an `X-Api-Key` header. Requests with `event_origin: "Website"` are not affected and keep working.
 - **Solution:** open the Server-side Client Tag, enable **Add API key for Streaming Protocol**, set a key, publish the container, and send that same value in the `X-Api-Key` header of your backend requests.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Invalid cookie format`
 
 - **Issue:** The `na_u` or `na_s` cookie does not match the expected alphanumeric format (15 characters for `na_u`, or the specific `client_id_session_id-page_id` structure for `na_s`).
 - **Solution:** Ensure cookies haven't been manually tampered with. If using the **Streaming Protocol**, verify that you are passing the cookies in the exact format generated by the website tracker.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Request method not correct`
 
 - **Issue:** The incoming request was not sent using the correct HTTP method.
 - **Solution:** The server expects the data via `POST`. Ensure your client-side implementation is correctly configured to use POST requests.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Invalid event_origin parameter value. Accepted values: Website`
 
@@ -149,14 +150,14 @@ Server logs show:
 - **Issue:** The `event_origin` parameter is missing or incorrect.
 - **Solution:** Ensure the client-side tracker or your streaming implementation is correctly setting the origin to "Website" or "Streaming Protocol".
 
-Server logs show: 
+Server logs show:
 
 `🔴 Invalid event_name. Can't send page_view from Streaming Protocol`
 
 - **Issue:** Sequence error: `page_view` cannot be sent via Streaming Protocol.
 - **Solution:** Use the website tracker for `page_view` events.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Missing required parameters: [parameters]`
 
@@ -169,14 +170,14 @@ Server logs show:
 Nameless Analytics is deeply integrated with GCM. If consent isn't handled correctly, data might be lost or delayed.
 
 
-Browser console shows: 
+Browser console shows:
 
 `[event_name] > 🔴 analytics_storage denied`
 
 - **Issue:** Tracking is blocked by Google Consent Mode.
 - **Solution:** This is expected behavior for users who opt-out. If events never fire even after consent is granted, the tracker automatically queues events if `analytics_storage` is pending. If they never release, verify that your Consent Management Platform (CMP) correctly triggers a `gtag('consent', 'update', ...)` call.
 
-Browser console shows: 
+Browser console shows:
 
 `[event_name] > 🔴 Google Consent Mode not found`
 
@@ -189,14 +190,14 @@ Browser console shows:
 The tracker requires its core libraries and a valid configuration to initiate.
 
 
-Browser console shows: 
+Browser console shows:
 
 `[event_name] > 🔴 Tracker configuration error: event has invalid Nameless Analytics Client-side Tracker Configuration Variable`
 
 - **Issue:** The tag is missing the required config variable or it's incorrectly set.
 - **Solution:** Check the "Configuration Variable" field in the tag and ensure it points to a valid NA Config Variable.
 
-Browser console shows: 
+Browser console shows:
 
 `[event_name] > 🔴 Main library not loaded from: [URL]`
 
@@ -205,7 +206,7 @@ Browser console shows:
 - **Issue:** The browser couldn't fetch the core tracker scripts, often due to ad-blockers blocking `jsdelivr.net`.
 - **Solution:** Verify the library URL or check for ad-blockers. For a robust setup, use **First-Party mode** by hosting scripts on your own sub-domain (e.g., `https://gtm.yourdomain.com/lib/nameless-analytics_vX.X.X.min.js`). Note that the file name is built by the tag from the library version: you configure only the domain and the path, never the file name. See [How to set up First-Party Library Hosting](SETUP-GUIDES.md#how-to-set-up-first-party-library-hosting).
 
-Browser console shows: 
+Browser console shows:
 
 `[event_name] > 🔴 Permission denied: unable to load Main library from [URL]`
 
@@ -220,7 +221,7 @@ Browser console shows:
 Errors occurring when the server attempts to persist data to Firestore or BigQuery.
 
 
-Server logs show: 
+Server logs show:
 
 `🔴 User or session data not created to Firestore`
 
@@ -231,14 +232,14 @@ Server logs show:
 - **Issue:** The Firestore write operation failed.
 - **Solution:** Verify the Google Cloud Project permissions and quotas. Ensure the **Service Account** running your GTM Server (e.g., the Cloud Run or App Engine default service account) has the `roles/datastore.user` role. Also, verify that Firestore is initialized in **Native Mode**, as Datastore Mode is not supported.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Payload data not inserted into BigQuery`
 
 - **Issue:** The streaming insert to BigQuery failed.
-- **Solution:** Check BigQuery dataset/table permissions. Ensure the service account has `roles/bigquery.dataEditor`. Ensure you have created the schema using the provided SQL scripts. 
+- **Solution:** Check BigQuery dataset/table permissions. Ensure the service account has `roles/bigquery.dataEditor`. Ensure you have created the schema using the provided SQL scripts.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Firestore request failed`
 
@@ -283,7 +284,7 @@ If you experience slow query performance or errors with SQL Table Functions, ens
 Technical issues preventing communication between the browser and the GTM Server, or between the server and external destinations.
 
 
-Browser console shows: 
+Browser console shows:
 
 `[event_name] > 🔴 Request not sent successfully`
 
@@ -300,21 +301,21 @@ Browser console shows:
 
   Note that the 64 KiB budget is shared with every other in-flight `keepalive` request and `navigator.sendBeacon()` call of the page, including those of other vendors' tags, so the effective ceiling is lower than 64 KiB when several tags fire together.
 
-Browser console shows: 
+Browser console shows:
 
 `[event_name] > 🔴 [error]`
 
 - **Issue:** A generic JavaScript error occurred during the fetch request.
 - **Solution:** Check the browser console for details.
 
-Browser console shows: 
+Browser console shows:
 
 `[event_name] > 🔴 Request aborted`
 
 - **Issue:** A generic issue stopped the tag execution.
 - **Solution:** Check the previous logs in the console to find the specific cause.
 
-Server logs show: 
+Server logs show:
 
 `🔴 Request not sent successfully. Error: [result]`
 
@@ -428,7 +429,6 @@ If no cross-domain ID validation message is displayed, verify that:
 - the current event is the first `page_view` of the current physical page
 - all involved domains use compatible versions of the main library and the Client-side Tracker Tag.
 
-# 
+#
 
 [Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_troubleshooting_guide) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)
-

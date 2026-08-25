@@ -81,7 +81,7 @@ Before proceeding, ensure the Google Cloud environment is fully provisioned:
 
 
 ### 2. Template Integration
-Download and import the `.tpl` files into GTM Client-side and Server-side environments with the following steps: 
+Download and import the `.tpl` files into GTM Client-side and Server-side environments with the following steps:
 1. Navigate to **Templates**
 2. Click **New** in the Tag Templates or Variable Templates section
 3. Click the **three dots menu** (top right) and select **Import**
@@ -90,7 +90,7 @@ Download and import the `.tpl` files into GTM Client-side and Server-side enviro
 
 ### 3a. Client-side Container Configuration
 Create a new:
-1. GTM variable using the template **Nameless Analytics Client-side Tracker Configuration Variable** 
+1. GTM variable using the template **Nameless Analytics Client-side Tracker Configuration Variable**
   - Under **Server-side endpoint settings** → **Endpoint domain name**, set the domain of your Server-side GTM instance (e.g., `gtm.yourdomain.com`). Enter the bare domain: no `https://`, no trailing `/`
   - Under **Server-side endpoint settings** → **Endpoint path**, set the **path** of your dedicated Server-side GTM URL (e.g., `/na/collect`). It must start with `/` and must not end with `/`
 2. GTM tag using the template **Nameless Analytics Client-side Tracker Tag**
@@ -115,9 +115,9 @@ Create a new:
 
 
 ## How to track page views
-Page view tracking is not only used to track the number of page views on a website, they are responsible for creating and updating sessions and users in Firestore, releasing cookies and more. 
+Page view tracking is not only used to track the number of page views on a website, they are responsible for creating and updating sessions and users in Firestore, releasing cookies and more.
 
-For this reason, the `page_view` event must be the **first** event triggered on every page load. Triggering other events before it will result in [orphan events](TROUBLESHOOTING-GUIDE.md#orphan-events--sequence-issues). 
+For this reason, the `page_view` event must be the **first** event triggered on every page load. Triggering other events before it will result in [orphan events](TROUBLESHOOTING-GUIDE.md#orphan-events--sequence-issues).
 
 Every `page_view` after the first one within the same physical page load is treated as a **virtual page view**: the page referrer becomes the previous page URL and the event level acquisition parameters are reset, while user and session attribution stay untouched. Read [SPA & History Management](../README.md#spa--history-management) before building reports on the event level `source` and `channel_grouping`.
 
@@ -176,7 +176,7 @@ Setup:
 
 
 ### Page Load Time
-Measures the time it takes for a page to fully load. 
+Measures the time it takes for a page to fully load.
 
 Setup:
 - **Create the Trigger**: Create a Trigger for when the page has fully loaded using the **Window Loaded** event.
@@ -264,7 +264,7 @@ dataLayer.push({
 
 
 ### Authentication
-Fired when a user logs in, logs out, or creates an account. 
+Fired when a user logs in, logs out, or creates an account.
 For these events, the `user_id` must be mapped within the Nameless Analytics Client-side Tracker Configuration Variable, under the **Session data** section using the **User ID** field.
 
 ```javascript
@@ -331,7 +331,7 @@ The value set in the **Custom event name** field becomes the final `event_name` 
 
 
 ## How to set up User ID and user properties
-To track authenticated users across devices and enrich their profiles with custom metadata (e.g., subscription tier, company size), use the `user_id` and custom User Properties. 
+To track authenticated users across devices and enrich their profiles with custom metadata (e.g., subscription tier, company size), use the `user_id` and custom User Properties.
 
 User ID will be applied at session level and will be stored in Firestore as well as in the BigQuery `session_data` array for each event.
 
@@ -380,7 +380,7 @@ When this option is enabled:
 ### 3. Preserving Acquisition Data (The na_temp cookie)
 Nameless Analytics features a "Smart Consent Management" system to prevent attribution loss (like turning organic traffic into "direct" traffic) while users navigate your site before accepting cookies.
 
-When a user lands on the site and `analytics_storage` is `denied`, the Client-side Tracker intercepts the acquisition parameters (UTMs, Referrer, etc.) and temporarily stores them in a first-party session cookie named `na_temp`. 
+When a user lands on the site and `analytics_storage` is `denied`, the Client-side Tracker intercepts the acquisition parameters (UTMs, Referrer, etc.) and temporarily stores them in a first-party session cookie named `na_temp`.
 
 Once the user accepts the cookie policy and the CMP fires the `gtag('consent', 'update', {'analytics_storage': 'granted'})` event:
 1. The tracker reads the original acquisition data from the `na_temp` cookie.
@@ -393,9 +393,9 @@ This mechanism is designed to support consent-aware attribution while preserving
 
 
 ## How to set up cross-domain tracking
-Nameless Analytics utilizes server-side **HttpOnly cookies** for maximum security and data integrity. 
+Nameless Analytics utilizes server-side **HttpOnly cookies** for maximum security and data integrity.
 
-Since these cookies are inaccessible to client-side JavaScript, the tracker employs a real-time 'handshake' mechanism via a specific event called **`get_user_data`**. 
+Since these cookies are inaccessible to client-side JavaScript, the tracker employs a real-time 'handshake' mechanism via a specific event called **`get_user_data`**.
 
 When a user clicks an outbound link to a configured domain, the tracker intercepts the click and sends an asynchronous `get_user_data` request to the Server-side GTM endpoint.
 
@@ -436,7 +436,7 @@ Follow these guides for:
 
 
 ### One client-side GTM container for multiple sites
-To configure cross-domain tracking you need to: 
+To configure cross-domain tracking you need to:
 
 1. Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable and add the domains to the list (one per row).
 
@@ -446,7 +446,7 @@ To configure cross-domain tracking you need to:
 
     ![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/a7b54f23-18b5-4e54-ba80-216a06a51f2d)
 
-3. Set this dynamic variable in the **Endpoint domain name** field. 
+3. Set this dynamic variable in the **Endpoint domain name** field.
 
     ![Dynamic endpoint domain name](https://github.com/user-attachments/assets/3d052798-20d9-4578-ab00-35ff4edca695)
 
@@ -497,7 +497,7 @@ No special configuration is required as requests per domain are handled independ
 Nameless Analytics supports full ecommerce tracking following the standard GA4 schema.
 
 ### Ecommerce Tracking Initialization
-The system is designed to automatically capture ecommerce data from your website's `dataLayer`, provided it follows the standard GA4 format. 
+The system is designed to automatically capture ecommerce data from your website's `dataLayer`, provided it follows the standard GA4 format.
 
 If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the extraction paths in the BigQuery SQL Table Functions.
 
@@ -506,11 +506,11 @@ Your website must push ecommerce events to the `dataLayer` using the standard st
 
 ### 2. Tracker Configuration
 In your GTM Client-side Tracker Tag configuration:
-- Under **Advanced settings**, check **Add ecommerce data from dataLayer**. 
+- Under **Advanced settings**, check **Add ecommerce data from dataLayer**.
 - This tells the tracker to capture the `ecommerce` object from the current dataLayer state and include it in the payload sent to the server.
 
 ### 3. Server-side Processing
-The Nameless Analytics Server-side Client Tag receives the request, extracts the `ecommerce` data and stores it directly in the `ecommerce` column of your BigQuery `events_raw` table. 
+The Nameless Analytics Server-side Client Tag receives the request, extracts the `ecommerce` data and stores it directly in the `ecommerce` column of your BigQuery `events_raw` table.
 
 If ecommerce data uses a non-standard schema, you can still track ecommerce by modifying the JSON extraction paths in the BigQuery [transactions](../tables/TABLES.md#transactions) and [products](../tables/TABLES.md#products) Table Functions.
 
@@ -540,7 +540,7 @@ Download the raw code of the two required JavaScript files:
 2. **[ua-parser.pack.min.js](https://cdn.jsdelivr.net/npm/ua-parser-js@1.0.40/dist/ua-parser.pack.min.js)**: The dependency used for precise User-Agent parsing. Download this exact version: the Client-side Tracker Tag is pinned to `ua-parser-js@1.0.40`.
 
 ### 2. Host the libraries on your infrastructure
-Upload both `.js` files to your own server or Content Delivery Network (CDN), **keeping their original file names**. 
+Upload both `.js` files to your own server or Content Delivery Network (CDN), **keeping their original file names**.
 Ensure they are served over HTTPS and from the exact same primary domain as your website (for example: `https://www.yourdomain.com/assets/js/nameless-analytics_vX.X.X.min.js`).
 
 > **Important**: do not rename the files. The Client-side Tracker Tag builds the final URL itself, appending `/nameless-analytics_v{version}.min.js` and `/ua-parser.pack.min.js` to the domain and path you configure. If the file names on your server do not match, the libraries will return a `404` and the tag will abort the request.
@@ -635,6 +635,6 @@ Alternatively, you can perform [manual deletions](../tables/TABLES.md#manual-use
 Bear in mind that both methods delete data, not identifiers: the `na_u` cookie stays in the visitor's browser for 400 days, so a returning visitor recreates a user document with the same `client_id` and starts a new history from that `page_view`. A complete request also requires the visitor to clear the site data from their own browser. See [Cookies are not deleted](../tables/TABLES.md#cookies-are-not-deleted).
 
 
-# 
+#
 
 [Website](https://namelessanalytics.com/?utm_source=github.com&utm_medium=referral&utm_campaign=nameless_analytics_setup_guides) | [Twitter](https://x.com/nmlssanalytics) | [LinkedIn](https://www.linkedin.com/company/nameless-analytics/)
