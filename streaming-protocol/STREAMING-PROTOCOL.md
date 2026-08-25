@@ -38,7 +38,7 @@ Events sent via the Streaming Protocol **do not extend the session duration** (`
 
 
 ### BigQuery enrichment
-Automatically retrieves page_data from the BigQuery `events_raw` table based on the `na_s` cookie (`page_id` is equal to `na_s`) and on the date of that page view. This ensures that offline or backend events are seamlessly tied to the user's original session and page, inheriting source, campaign, and user metadata without breaking the journey.
+Automatically retrieves page_data from the BigQuery `events_raw` table based on the `na_s` cookie (the stored `page_id` is equal to the full `na_s` cookie value) and on the date of that page view. This ensures that offline or backend events are seamlessly tied to the user's original session and page, inheriting source, campaign, and user metadata without breaking the journey.
 
 > **Store the page date alongside the cookie.** The lookup filters on `event_date`, the partition key of `events_raw`: without it BigQuery has no way to narrow the search and every single event would scan the whole table. The date works as a partition filter because a page always carries the date of the event that created it, so the `page_view` that opened the page is guaranteed to sit in that partition. `page_date` cannot be derived from the `na_s` cookie, so when you save the cookie value for later use you must also save the date of the page view you want the conversion to be attached to, and pass it as `page_date` in `YYYY-MM-DD` format.
 
@@ -89,12 +89,12 @@ The Streaming Protocol requires a POST request with a JSON body.
   },
          
   "page_date": "2026-04-08", // Automatically retrieved from BigQuery if page_id exists in BigQuery
-  "page_id": "WVTWEorF69ZEk3y", // Extracted from na_s cookie
+  "page_id": "WVTWEorF69ZEk3y", // Page segment of the na_s cookie, see "Note on ID composition"
   "page_data": {}, // Automatically retrieved from BigQuery if page_id exists in BigQuery
 
   "event_date": "2026-04-08",
   "event_timestamp": 1712604000000,
-  "event_id": "WVTWEorF69ZEk3y_XIkjlUOkXKn99IV", // Automatically generated based on na_s cookie
+  "event_id": "WVTWEorF69ZEk3y_XIkjlUOkXKn99IV", // Page segment of the na_s cookie + a new random ID
   "event_name": "purchase",
   "event_origin": "Streaming Protocol", // Do not modify
   "event_data": {
@@ -144,6 +144,8 @@ The Streaming Protocol requires a POST request with a JSON body.
 > **Note on `channel_grouping`**: You don't need to provide this parameter. The [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag) will automatically calculate it based on the `source` and `campaign` parameters provided in the `event_data` object.
 
 > **Note on ID Management**: The tracking of `client_id` and `session_id` is exclusively handled through the HTTP `Cookie` header. Do not include them in the JSON payload, as the server will securely extract and assign them from the cookies context.
+
+> **Note on ID composition**: `page_id` and `event_id` travel in the payload as **partial values**, exactly as the website tracker sends them. The `na_s` cookie has the structure `{client_id}_{session_id}-{page_id}`: send only the segment after the `-` as `page_id`, and build `event_id` as that same segment, an underscore, and a new random 15 character identifier. The Server-side Client Tag prefixes both with `{client_id}_{session_id}-` resolved from the cookies, so the values written to BigQuery are the full ones — `lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y` and `lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV`. Do not send the complete value: the server would prefix it a second time. See [Server-Side ID Management](../README.md#server-side-id-management).
 
 
 

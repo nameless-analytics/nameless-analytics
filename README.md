@@ -19,7 +19,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Resources](#resources)
 - [Client-Side Collection](#client-side-collection)
   - [Request payload data](#request-payload-data)
-  - [ID Management](#id-management)
+  - [Client-Side ID Management](#client-side-id-management)
   - [Sequential Execution Queue](#sequential-execution-queue)
   - [Smart Consent Management](#smart-consent-management)
   - [SPA & History Management](#spa--history-management)
@@ -31,7 +31,7 @@ Collect, analyze, and activate website interaction data with a free real-time di
 - [Server-Side Processing](#server-side-processing)
   - [Security and Validation](#security-and-validation)
   - [Transparency](#transparency)
-  - [ID Management](#id-management-1)
+  - [Server-Side ID Management](#server-side-id-management)
   - [User ID lifecycle](#user-id-lifecycle)
   - [Data Integrity](#data-integrity)
   - [Real-time Forwarding](#real-time-forwarding)
@@ -180,6 +180,7 @@ The request data is sent via a POST request in JSON format. It is structured int
     "page_title": "Tommaso Moretti | Freelance digital data analyst",
     "page_hostname_protocol": "https",
     "page_hostname": "tommasomoretti.com",
+    "page_url": "https://tommasomoretti.com/",
     "page_path": "/",
     "page_fragment": null,
     "page_query": "gtm_debug=1765021707758",
@@ -386,17 +387,19 @@ Requests are sent with the `keepalive` flag, so an event fired while the visitor
 A standard event weighs around 2.8 KB, far from the limit. The two optional parts that can approach it are [Add current dataLayer state](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#add-current-datalayer-state), which grows with every push on the page, and `ecommerce` objects carrying very long item arrays. When either is enabled on a rich page, check the resulting size and prefer sending the parameters you actually need as event parameters.
 
 
-### ID Management
-The tracker automatically generates and manages unique identifiers for pages, and events.
-  
+### Client-Side ID Management
+The tracker automatically generates and manages unique identifiers for pages and events: a random 15 character identifier for every page, and one for every event.
+
+The values sent in the payload are **partial**. The tracker cannot read `client_id` and `session_id`, which live in the `HttpOnly` cookies `na_u` and `na_s`, so it sends only the segments it owns. The Server-side Client Tag prefixes both with `{client_id}_{session_id}-` before storing the event, so the value written to BigQuery — and returned to the browser in the response — is always the full one. See [Server-Side ID Management](#server-side-id-management).
+
 <details><summary>See page ID and event ID values</summary>
 
 </br>
 
-| Parameter name | Renewed            | Example values                                                 | Value composition                           |
-|----------------|--------------------|----------------------------------------------------------------|---------------------------------------------|
-| **page_id**    | at every page_view | lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Page ID            |
-| **event_id**   | at every event     | lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Page ID _ Event ID |
+| Parameter name | Renewed            | Sent in the payload             | Stored in BigQuery                                              | Value composition                           |
+|----------------|--------------------|---------------------------------|-----------------------------------------------------------------|---------------------------------------------|
+| **page_id**    | at every page_view | WVTWEorF69ZEk3y                 | lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y                 | Client ID _ Session ID - Page ID            |
+| **event_id**   | at every event     | WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | lZc919IBsqlhHks_1KMIqneQ7dsDJUa-WVTWEorF69ZEk3y_XIkjlUOkXKn99IV | Client ID _ Session ID - Page ID _ Event ID |
 
 </details>
 
@@ -608,8 +611,10 @@ Identifiers are validated before being trusted: the `na_u` and `na_s` cookies mu
 The data processed by the server is returned to the client within the request response. This provides full visibility into the collected information, allowing for real-time verification and ensuring the entire data pipeline remains transparent and auditable directly from the browser's network tab.
 
 
-### ID Management
+### Server-Side ID Management
 The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
+
+It also completes the identifiers generated upstream: the `page_id` and `event_id` carried by the payload are partial values, and the tag prefixes both with `{client_id}_{session_id}-` resolved from the `na_u` and `na_s` cookies. This applies identically to website requests and to [Streaming Protocol](#streaming-protocol) requests, so the same event always ends up with the same identifier shape in BigQuery.
 
 <details><summary>See client ID and session ID values</summary>
 

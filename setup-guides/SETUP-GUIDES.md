@@ -380,7 +380,7 @@ To configure cross-domain tracking you need to:
 
 1. Enable cross-domain tracking in the Nameless Analytics Client-side Tracker Configuration Variable and add the domains to the list (one per row).
 
-    ![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/c8ab4d08-5069-4833-8465-5ca4ddea0863)
+    ![Cross-domain domains list](https://github.com/user-attachments/assets/c8ab4d08-5069-4833-8465-5ca4ddea0863)
 
 2. Create a **Regex Lookup Table** variable to dynamically switch the endpoint domain based on the current `page_hostname`:
 
@@ -409,7 +409,7 @@ To configure cross-domain tracking across separate containers, follow these step
 ### One server-side GTM container for multiple sites
 If **Accept requests from authorized domains only** option is enabled in **Nameless Analytics Server-side Client** configuration, ensure that all domains involved in the cross-domain setup are explicitly added to the **Authorized domains** list. This prevents requests from being blocked when the tracker switches domains.
 
-The endpoint path must be unique for all domains.
+The endpoint path must be the same for all domains.
 
 ![Authorized domains](https://github.com/user-attachments/assets/d6172c1a-4171-46e5-9c57-c6ad0157b082)
 
