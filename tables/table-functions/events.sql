@@ -275,13 +275,13 @@ select
 
   from `%s.%s.events_raw`
   where true
-    and event_date >= start_date 
-    and case 
-      when date_scope = 'user' then user_date
-      when date_scope = 'session' then session_date
-      when date_scope = 'page' then page_date
-      when date_scope = 'event' then event_date
-    end between start_date and end_date
+    and event_date >= start_date
+    and (
+      (date_scope = 'user' and user_date between start_date and end_date) or
+      (date_scope = 'session' and session_date between start_date and end_date) or
+      (date_scope = 'page' and page_date between start_date and end_date) or
+      (date_scope = 'event' and event_date between start_date and end_date)
+    )
 );
 """,
 project_name, dataset_name,

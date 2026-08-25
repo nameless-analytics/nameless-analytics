@@ -415,6 +415,8 @@ You can use the provided [`Users deletion tool`](users-deletion-tool.py) Python 
 
 This is the recommended method.
 
+The script reads the user's `user_date` from the Firestore document before deleting anything, and uses it to narrow the BigQuery statement. If the document is missing or the field cannot be read, the deletion still runs on `client_id` alone: completeness always wins over cost.
+
 ### Manual user data deletion
 If you prefer manual deletion, please remove data from both BigQuery and Firestore.
 
@@ -424,8 +426,13 @@ Use the following DML statement to delete all records for a specific client_id. 
 ```sql
 # Delete all records for a specific client_id
 DELETE FROM `project.nameless_analytics.events_raw`
-WHERE client_id = 'USER_CLIENT_ID';
+WHERE true
+  AND client_id = 'USER_CLIENT_ID'
+  AND user_date = 'USER_DATE'    # Optional, see below
+  AND event_date >= 'USER_DATE'; # Optional, see below
 ```
+
+`client_id` alone is enough to delete every row of that user, but it is neither the partition key nor a clustering key, so the statement scans and rewrites the whole table. Adding `user_date` — the `user_date` field at the top level of the user's Firestore document, in `YYYY-MM-DD` format — restricts the work to that user's cohort: the value is first-touch and never overwritten, and `event_date` is always greater than or equal to it, so neither filter can leave a row behind. Omit both if you cannot retrieve the date: a slower deletion is better than an incomplete one.
 
 #### Firestore user data deletion
 Locate the document in the `users` collection where the Document ID matches the `client_id` and delete it. This will remove the user profile and all associated session summaries.

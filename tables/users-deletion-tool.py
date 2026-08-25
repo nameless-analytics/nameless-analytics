@@ -3,6 +3,7 @@
 # This script removes all data associated with a specific client_id from both BigQuery and Firestore.
 # ------------------------------------------------------------------------------------------------------------------------------------------------------
 
+from datetime import datetime
 from google.cloud import bigquery
 from google.cloud import firestore
 
@@ -11,15 +12,17 @@ from google.cloud import firestore
 # CONFIGURATION
 # --------------------------------------------------------------------------------------------------------------
 
-client_id = 'lZc919IBsqlhHks' # Set to the client_id you want to delete
+client_id = 'O7ylGXyUVBHEFF7' # Set to the client_id you want to delete
 
 # Project settings
-project_id = 'PROJECT ID'
+project_id = 'tom-moretti'
 dataset_id = 'nameless_analytics'
 table_id = 'events_raw'
 
 # Path to your Google Cloud Service Account JSON key
-credentials_path = './service_account.json'
+# credentials_path = './service_account.json'
+credentials_path = '/Users/tommasomoretti/Desktop/worker_service_account.json'
+
 
 
 # --------------------------------------------------------------------------------------------------------------
@@ -34,20 +37,57 @@ def delete_user_data():
 
     print(f"👉 Delete data for client_id: {client_id}")
 
+    # Retrieve user_date from Firestore
+    print("👉 Retrieve user_date from Firestore")
+
+    user_date = None
+
+    try:
+        db = firestore.Client.from_service_account_json(credentials_path)
+        doc = db.collection('users').document(client_id).get()
+
+        if doc.exists:
+            try:
+                user_date = datetime.strptime(doc.to_dict().get('user_date'), '%Y-%m-%d').date()
+                print(f"  🟢 Firestore: user_date '{user_date}' found for client_id '{client_id}'")
+            except (TypeError, ValueError):
+                print(f"  🟠 Firestore: user_date missing or malformed for client_id '{client_id}'")
+        else:
+            print(f"  🟠 Firestore: document '{client_id}' not found")
+
+    except Exception as e:
+        print(f"  🟠 Firestore Error: {e}")
+
+    if not user_date:
+        print("  🟠 The BigQuery deletion will scan the whole table")
+
+
     # Delete BigQuery data
     print("👉 Delete data from BigQuery")
-    
+
     try:
         client = bigquery.Client.from_service_account_json(credentials_path)
+
+        # user_date is a first-touch value that is never overwritten, and event_date is always greater than or equal to
+        # user_date: both filters are logically redundant and cannot exclude any row of this client_id. They are here
+        # only to prune partitions and clusters, turning a full table scan into a scan of the user's own cohort.
+        user_date_filter = """
+              AND user_date = @user_date
+              AND event_date >= @user_date""" if user_date else ""
+
         query = f"""
             DELETE FROM `{project_id}.{dataset_id}.{table_id}`
-            WHERE client_id = @client_id
+            WHERE true
+              AND client_id = @client_id{user_date_filter}
         """
-        job_config = bigquery.QueryJobConfig(
-            query_parameters=[
-                bigquery.ScalarQueryParameter("client_id", "STRING", client_id),
-            ]
-        )
+        query_parameters = [
+            bigquery.ScalarQueryParameter("client_id", "STRING", client_id),
+        ]
+
+        if user_date:
+            query_parameters.append(bigquery.ScalarQueryParameter("user_date", "DATE", user_date))
+
+        job_config = bigquery.QueryJobConfig(query_parameters=query_parameters)
 
         query_job = client.query(query, job_config=job_config)
         results = query_job.result()
@@ -61,7 +101,7 @@ def delete_user_data():
     except Exception as e:
         print(f"  🔴 BigQuery Error: {e}")
         print("Function execution end: 🖕")
-        return 
+        return
 
 
     # Delete Firestore data
@@ -70,7 +110,7 @@ def delete_user_data():
     try:
         db = firestore.Client.from_service_account_json(credentials_path)
         doc_ref = db.collection('users').document(client_id)
-        
+
 
         if doc_ref.get().exists:
             doc_ref.delete()
