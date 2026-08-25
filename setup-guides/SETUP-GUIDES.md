@@ -474,7 +474,7 @@ By doing so, the browser will treat the tracker scripts as critical, first-party
 
 ### 1. Download the core libraries
 Download the raw code of the two required JavaScript files:
-1. **[nameless-analytics_vX.X.X.min.js](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/)**: The main execution engine. (check version inside the tracker tag template code under)
+1. **[nameless-analytics_vX.X.X.min.js](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/)**: The main execution engine. (Check right library version inside the used Nameless Analytics Client-side Tracker Tag template code)
 2. **[ua-parser.pack.min.js](https://cdn.jsdelivr.net/npm/ua-parser-js@1.0.40/dist/ua-parser.pack.min.js)**: The dependency used for precise User-Agent parsing. Download this exact version: the Client-side Tracker Tag is pinned to `ua-parser-js@1.0.40`.
 
 ### 2. Host the libraries on your infrastructure
