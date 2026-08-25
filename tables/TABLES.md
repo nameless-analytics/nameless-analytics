@@ -169,6 +169,10 @@ All data is partitioned by date and clustered by key dimensions to ensure optima
 
 The main table is partitioned by `event_date` and clustered by `user_date`, `session_date`, `page_date`, and `event_name`.
 
+`event_date` is the partition key because it is the largest of the four dates — `user_date` ≤ `session_date` ≤ `page_date` ≤ `event_date`, since each one inherits the event date of the event that created that entity. That ordering is what makes `event_date >= start_date` a valid lower bound for every scope of the table functions, and it is also the only column that grows with ingestion, so new events always land in the newest partition.
+
+`user_date` comes first among the clustering keys, and the order is not the one you would guess from how often each column is filtered. Block pruning works on the minimum and maximum value of a column within each block, and the sort only matters for columns that need it to end up with narrow ranges. Inside a given `event_date` partition, `session_date` and `page_date` are almost constant — a session or a page can only span midnight UTC, never more — so their blocks have narrow ranges whatever the order is, and they prune from any position. `user_date` is the opposite: within the same partition it spans the entire history of the property, because returning visitors keep generating events years after their first visit. It is the only one of the four that becomes prunable *because* of the sort, so it takes the only position where the sort is guaranteed. Moving `session_date` first would give it nothing it does not already have, and would take from `user_date` the one thing it needs.
+
 The dates table is partitioned by `date` and clustered by `month_name` and `day_name`.
 
 
