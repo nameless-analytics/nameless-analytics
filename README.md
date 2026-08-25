@@ -17,9 +17,9 @@ Collect, analyze, and activate website interaction data with a free real-time di
 - [Quick start](#quick-start)
   - [Documentation](#documentation)
   - [Resources](#resources)
-- [Client-Side Collection](#client-side-collection)
+- [Client-side Collection](#client-side-collection)
   - [Request payload data](#request-payload-data)
-  - [Client-Side ID Management](#client-side-id-management)
+  - [Client-side ID Management](#client-side-id-management)
   - [Sequential Execution Queue](#sequential-execution-queue)
   - [Smart Consent Management](#smart-consent-management)
   - [SPA & History Management](#spa--history-management)
@@ -28,10 +28,10 @@ Collect, analyze, and activate website interaction data with a free real-time di
   - [Parameter hierarchy](#parameter-hierarchy)
   - [Client-side cookies](#client-side-cookies)
   - [Debugging events](#debugging-events)
-- [Server-Side Processing](#server-side-processing)
+- [Server-side Processing](#server-side-processing)
   - [Security and Validation](#security-and-validation)
   - [Transparency](#transparency)
-  - [Server-Side ID Management](#server-side-id-management)
+  - [Server-side ID Management](#server-side-id-management)
   - [User ID lifecycle](#user-id-lifecycle)
   - [Data Integrity](#data-integrity)
   - [Real-time Forwarding](#real-time-forwarding)
@@ -113,7 +113,7 @@ Read the [setup guides](setup-guides/SETUP-GUIDES.md) for more details.
 
 
 
-## Client-Side Collection
+## Client-side Collection
 The **Client-side Tracker Tag** abstracts complex logic to ensure reliable data capture under any condition.
 
 
@@ -248,112 +248,112 @@ The request data is sent via a POST request in JSON format. It is structured int
 
 | **Parameter name** | **Sub-parameter**             | **Type** | **Added**   | **Field description**                         |
 |--------------------|-------------------------------|----------|-------------|-----------------------------------------------|
-| user_date          |                               | String   | Server-Side | User data collection date                     |
-| client_id          |                               | String   | Server-Side | Unique client identifier                      |
-| user_data          | user_channel_grouping         | String   | Server-Side | User channel grouping                         |
-|                    | user_source                   | String   | Server-Side | User source                                   |
-|                    | user_tld_source               | String   | Server-Side | User top-level domain source                  |
-|                    | user_campaign                 | String   | Server-Side | User campaign name                            |
-|                    | user_campaign_id              | String   | Server-Side | User campaign ID                              |
-|                    | user_campaign_click_id        | String   | Server-Side | User campaign click identifier                |
-|                    | user_campaign_content         | String   | Server-Side | User campaign content                         |
-|                    | user_campaign_term            | String   | Server-Side | User campaign term                            |
-|                    | user_device_type              | String   | Server-Side | User device type                              |
-|                    | user_city                     | String   | Server-Side | User city                                     |
-|                    | user_country                  | String   | Server-Side | User country                                  |
-|                    | user_language                 | String   | Server-Side | User language                                 |
-|                    | user_first_session_timestamp  | Integer  | Server-Side | Timestamp of user's first session             |
-|                    | user_last_session_timestamp   | Integer  | Server-Side | Timestamp of user's last session              |
-| session_date       |                               | String   | Server-Side | Session date                                  |
-| session_id         |                               | String   | Server-Side | Unique session identifier                     |
-| session_data       | session_number                | Integer  | Server-Side | Session number for the user                   |
-|                    | cross_domain_session          | String   | Server-Side | `Yes` if any hit in the session carried a valid cross-domain ID, `No` otherwise |
-|                    | session_channel_grouping      | String   | Server-Side | Channel grouping for the session              |
-|                    | session_source                | String   | Server-Side | Session source                                |
-|                    | session_tld_source            | String   | Server-Side | Session top-level domain source               |
-|                    | session_campaign              | String   | Server-Side | Session campaign name                         |
-|                    | session_campaign_id           | String   | Server-Side | Session campaign ID                           |
-|                    | session_campaign_click_id     | String   | Server-Side | Session campaign click ID                     |
-|                    | session_campaign_term         | String   | Server-Side | Session campaign term                         |
-|                    | session_campaign_content      | String   | Server-Side | Session campaign content                      |
-|                    | session_device_type           | String   | Server-Side | Device type used in session                   |
-|                    | session_country               | String   | Server-Side | Session country                               |
-|                    | session_language              | String   | Server-Side | Session language                              |
-|                    | session_hostname              | String   | Server-Side | Website hostname for session                  |
-|                    | session_browser_name          | String   | Server-Side | Browser name used in session                  |
-|                    | session_landing_page_category | String   | Server-Side | Landing page category                         |
-|                    | session_landing_page_url      | String   | Server-Side | Landing page URL                              |
-|                    | session_landing_page_path | String   | Server-Side | Landing page path                             |
-|                    | session_landing_page_title    | String   | Server-Side | Landing page title                            |
-|                    | session_city                  | String   | Server-Side | Session geolocation city                      |
-|                    | session_exit_page_category    | String   | Server-Side | Exit page category                            |
-|                    | session_exit_page_url         | String   | Server-Side | Exit page URL                                 |
-|                    | session_exit_page_path    | String   | Server-Side | Exit page path                                |
-|                    | session_exit_page_title       | String   | Server-Side | Exit page title                               |
-|                    | session_start_timestamp       | Integer  | Server-Side | Session start timestamp                       |
-|                    | session_end_timestamp         | Integer  | Server-Side | Session end timestamp                         |
-|                    | user_id                       | String   | Client-Side | Unique user identifier (if logged in)         |
-| page_date          |                               | String   | Client-Side | Page data date                                |
-| page_id            |                               | String   | Client-Side | Unique page identifier                        |
-| page_data          | page_title                    | String   | Client-Side | Page title                                    |
-|                    | page_hostname_protocol        | String   | Client-Side | Page hostname protocol (http/https)           |
-|                    | page_hostname                 | String   | Client-Side | Page hostname                                 |
-|                    | page_url                      | String   | Client-Side | Page full URL                                 |
-|                    | page_path                 | String   | Client-Side | Page path                                     |
-|                    | page_fragment                 | String   | Client-Side | URL fragment                                  |
-|                    | page_query                    | String   | Client-Side | URL query string                              |
-|                    | page_extension                | String   | Client-Side | Page file extension                           |
-|                    | page_referrer                 | String   | Client-Side | Referrer URL                                  |
-|                    | page_load_timestamp           | Integer  | Client-Side | Page load timestamp                           |
-|                    | page_category                 | String   | Client-Side | Page category                                 |
-|                    | page_language                 | String   | Client-Side | Page language                                 |
-| event_date         |                               | String   | Client-Side | Event date                                    |
-| event_timestamp    |                               | Integer  | Client-Side | Event timestamp                               |
-| event_id           |                               | String   | Client-Side | Unique event identifier                       |
-| event_name         |                               | String   | Client-Side | Event name                                    |
-| event_origin       |                               | String   | Client-Side | Event origin (Website or Streaming Protocol)  |
-| event_data         | event_type                    | String   | Client-Side | Event classification (automatically set to `page_view` or `event`) |
-|                    | channel_grouping              | String   | Server-Side | Channel grouping for the event (see [detailed logic](#channel-grouping-logic)) |
-|                    | source                        | String   | Client-Side | Event traffic source                          |
-|                    | campaign                      | String   | Client-Side | Event campaign                                |
-|                    | campaign_id                   | String   | Client-Side | Event campaign ID                             |
-|                    | campaign_click_id             | String   | Client-Side | Event campaign click ID                       |
-|                    | campaign_term                 | String   | Client-Side | Event campaign term                           |
-|                    | campaign_content              | String   | Client-Side | Event campaign content                        |
-|                    | user_agent                    | String   | Client-Side | Browser user agent string                     |
-|                    | browser_name                  | String   | Client-Side | Browser name                                  |
-|                    | browser_language              | String   | Client-Side | Browser language                              |
-|                    | browser_version               | String   | Client-Side | Browser version                               |
-|                    | device_type                   | String   | Client-Side | Device type                                   |
-|                    | device_vendor                 | String   | Client-Side | Device manufacturer                           |
-|                    | device_model                  | String   | Client-Side | Device model                                  |
-|                    | os_name                       | String   | Client-Side | Operating system name                         |
-|                    | os_version                    | String   | Client-Side | Operating system version                      |
-|                    | screen_size                   | String   | Client-Side | Screen resolution                             |
-|                    | viewport_size                 | String   | Client-Side | Browser viewport size                         |
-|                    | country                       | String   | Server-Side | Event geolocation country                     |
-|                    | city                          | String   | Server-Side | Event geolocation city                        |
-|                    | tld_source                    | String   | Client-Side | Event top-level domain source                 |
-|                    | cross_domain_id               | String   | Client-Side | Session ID decoded and validated from the `na_id` URL parameter. Set only on the first `page_view` of the destination page, `null` on every other event |
-| consent_data       | consent_type                  | String   | Client-Side | Consent update type                           |
-|                    | respect_consent_mode          | String   | Client-Side | Whether Consent Mode is respected             |
-|                    | ad_user_data                  | String   | Client-Side | Ad user data consent                          |
-|                    | ad_personalization            | String   | Client-Side | Ad personalization consent                    |
-|                    | ad_storage                    | String   | Client-Side | Ad storage consent                            |
-|                    | analytics_storage             | String   | Client-Side | Analytics storage consent                     |
-|                    | functionality_storage         | String   | Client-Side | Functionality storage consent                 |
-|                    | personalization_storage       | String   | Client-Side | Personalization storage consent               |
-|                    | security_storage              | String   | Client-Side | Security storage consent                      |
-| gtm_data           | cs_hostname                   | String   | Client-Side | Client-side container hostname                |
-|                    | cs_container_id               | String   | Client-Side | Client-side container ID                      |
-|                    | cs_tag_name                   | String   | Client-Side | Client-side tag name                          |
-|                    | cs_tag_id                     | Integer  | Client-Side | Client-side tag ID                            |
-|                    | ss_hostname                   | String   | Server-Side | Server-side container hostname                |
-|                    | ss_container_id               | String   | Server-Side | Server-side container ID                      |
-|                    | ss_tag_name                   | String   | Server-Side | Server-side tag name                          |
-|                    | ss_tag_id                     | Integer  | Server-Side | Server-side tag ID                            |
-|                    | processing_event_timestamp    | Integer  | Server-Side | Event processing timestamp                    |
-|                    | content_length                | Integer  | Server-Side | Request content length                        |
+| user_date          |                               | String   | Server-side | User data collection date                     |
+| client_id          |                               | String   | Server-side | Unique client identifier                      |
+| user_data          | user_channel_grouping         | String   | Server-side | User channel grouping                         |
+|                    | user_source                   | String   | Server-side | User source                                   |
+|                    | user_tld_source               | String   | Server-side | User top-level domain source                  |
+|                    | user_campaign                 | String   | Server-side | User campaign name                            |
+|                    | user_campaign_id              | String   | Server-side | User campaign ID                              |
+|                    | user_campaign_click_id        | String   | Server-side | User campaign click identifier                |
+|                    | user_campaign_content         | String   | Server-side | User campaign content                         |
+|                    | user_campaign_term            | String   | Server-side | User campaign term                            |
+|                    | user_device_type              | String   | Server-side | User device type                              |
+|                    | user_city                     | String   | Server-side | User city                                     |
+|                    | user_country                  | String   | Server-side | User country                                  |
+|                    | user_language                 | String   | Server-side | User language                                 |
+|                    | user_first_session_timestamp  | Integer  | Server-side | Timestamp of user's first session             |
+|                    | user_last_session_timestamp   | Integer  | Server-side | Timestamp of user's last session              |
+| session_date       |                               | String   | Server-side | Session date                                  |
+| session_id         |                               | String   | Server-side | Unique session identifier                     |
+| session_data       | session_number                | Integer  | Server-side | Session number for the user                   |
+|                    | cross_domain_session          | String   | Server-side | `Yes` if any hit in the session carried a valid cross-domain ID, `No` otherwise |
+|                    | session_channel_grouping      | String   | Server-side | Channel grouping for the session              |
+|                    | session_source                | String   | Server-side | Session source                                |
+|                    | session_tld_source            | String   | Server-side | Session top-level domain source               |
+|                    | session_campaign              | String   | Server-side | Session campaign name                         |
+|                    | session_campaign_id           | String   | Server-side | Session campaign ID                           |
+|                    | session_campaign_click_id     | String   | Server-side | Session campaign click ID                     |
+|                    | session_campaign_term         | String   | Server-side | Session campaign term                         |
+|                    | session_campaign_content      | String   | Server-side | Session campaign content                      |
+|                    | session_device_type           | String   | Server-side | Device type used in session                   |
+|                    | session_country               | String   | Server-side | Session country                               |
+|                    | session_language              | String   | Server-side | Session language                              |
+|                    | session_hostname              | String   | Server-side | Website hostname for session                  |
+|                    | session_browser_name          | String   | Server-side | Browser name used in session                  |
+|                    | session_landing_page_category | String   | Server-side | Landing page category                         |
+|                    | session_landing_page_url      | String   | Server-side | Landing page URL                              |
+|                    | session_landing_page_path | String   | Server-side | Landing page path                             |
+|                    | session_landing_page_title    | String   | Server-side | Landing page title                            |
+|                    | session_city                  | String   | Server-side | Session geolocation city                      |
+|                    | session_exit_page_category    | String   | Server-side | Exit page category                            |
+|                    | session_exit_page_url         | String   | Server-side | Exit page URL                                 |
+|                    | session_exit_page_path    | String   | Server-side | Exit page path                                |
+|                    | session_exit_page_title       | String   | Server-side | Exit page title                               |
+|                    | session_start_timestamp       | Integer  | Server-side | Session start timestamp                       |
+|                    | session_end_timestamp         | Integer  | Server-side | Session end timestamp                         |
+|                    | user_id                       | String   | Client-side | Unique user identifier (if logged in)         |
+| page_date          |                               | String   | Client-side | Page data date                                |
+| page_id            |                               | String   | Client-side | Unique page identifier                        |
+| page_data          | page_title                    | String   | Client-side | Page title                                    |
+|                    | page_hostname_protocol        | String   | Client-side | Page hostname protocol (http/https)           |
+|                    | page_hostname                 | String   | Client-side | Page hostname                                 |
+|                    | page_url                      | String   | Client-side | Page full URL                                 |
+|                    | page_path                 | String   | Client-side | Page path                                     |
+|                    | page_fragment                 | String   | Client-side | URL fragment                                  |
+|                    | page_query                    | String   | Client-side | URL query string                              |
+|                    | page_extension                | String   | Client-side | Page file extension                           |
+|                    | page_referrer                 | String   | Client-side | Referrer URL                                  |
+|                    | page_load_timestamp           | Integer  | Client-side | Page load timestamp                           |
+|                    | page_category                 | String   | Client-side | Page category                                 |
+|                    | page_language                 | String   | Client-side | Page language                                 |
+| event_date         |                               | String   | Client-side | Event date                                    |
+| event_timestamp    |                               | Integer  | Client-side | Event timestamp                               |
+| event_id           |                               | String   | Client-side | Unique event identifier                       |
+| event_name         |                               | String   | Client-side | Event name                                    |
+| event_origin       |                               | String   | Client-side | Event origin (Website or Streaming Protocol)  |
+| event_data         | event_type                    | String   | Client-side | Event classification (automatically set to `page_view` or `event`) |
+|                    | channel_grouping              | String   | Server-side | Channel grouping for the event (see [detailed logic](#channel-grouping-logic)) |
+|                    | source                        | String   | Client-side | Event traffic source                          |
+|                    | campaign                      | String   | Client-side | Event campaign                                |
+|                    | campaign_id                   | String   | Client-side | Event campaign ID                             |
+|                    | campaign_click_id             | String   | Client-side | Event campaign click ID                       |
+|                    | campaign_term                 | String   | Client-side | Event campaign term                           |
+|                    | campaign_content              | String   | Client-side | Event campaign content                        |
+|                    | user_agent                    | String   | Client-side | Browser user agent string                     |
+|                    | browser_name                  | String   | Client-side | Browser name                                  |
+|                    | browser_language              | String   | Client-side | Browser language                              |
+|                    | browser_version               | String   | Client-side | Browser version                               |
+|                    | device_type                   | String   | Client-side | Device type                                   |
+|                    | device_vendor                 | String   | Client-side | Device manufacturer                           |
+|                    | device_model                  | String   | Client-side | Device model                                  |
+|                    | os_name                       | String   | Client-side | Operating system name                         |
+|                    | os_version                    | String   | Client-side | Operating system version                      |
+|                    | screen_size                   | String   | Client-side | Screen resolution                             |
+|                    | viewport_size                 | String   | Client-side | Browser viewport size                         |
+|                    | country                       | String   | Server-side | Event geolocation country                     |
+|                    | city                          | String   | Server-side | Event geolocation city                        |
+|                    | tld_source                    | String   | Client-side | Event top-level domain source                 |
+|                    | cross_domain_id               | String   | Client-side | Session ID decoded and validated from the `na_id` URL parameter. Set only on the first `page_view` of the destination page, `null` on every other event |
+| consent_data       | consent_type                  | String   | Client-side | Consent update type                           |
+|                    | respect_consent_mode          | String   | Client-side | Whether Consent Mode is respected             |
+|                    | ad_user_data                  | String   | Client-side | Ad user data consent                          |
+|                    | ad_personalization            | String   | Client-side | Ad personalization consent                    |
+|                    | ad_storage                    | String   | Client-side | Ad storage consent                            |
+|                    | analytics_storage             | String   | Client-side | Analytics storage consent                     |
+|                    | functionality_storage         | String   | Client-side | Functionality storage consent                 |
+|                    | personalization_storage       | String   | Client-side | Personalization storage consent               |
+|                    | security_storage              | String   | Client-side | Security storage consent                      |
+| gtm_data           | cs_hostname                   | String   | Client-side | Client-side container hostname                |
+|                    | cs_container_id               | String   | Client-side | Client-side container ID                      |
+|                    | cs_tag_name                   | String   | Client-side | Client-side tag name                          |
+|                    | cs_tag_id                     | Integer  | Client-side | Client-side tag ID                            |
+|                    | ss_hostname                   | String   | Server-side | Server-side container hostname                |
+|                    | ss_container_id               | String   | Server-side | Server-side container ID                      |
+|                    | ss_tag_name                   | String   | Server-side | Server-side tag name                          |
+|                    | ss_tag_id                     | Integer  | Server-side | Server-side tag ID                            |
+|                    | processing_event_timestamp    | Integer  | Server-side | Event processing timestamp                    |
+|                    | content_length                | Integer  | Server-side | Request content length                        |
 </details>
 
 <details><summary>Request payload additional data parameters</summary>
@@ -363,21 +363,21 @@ When the "Add page status code" option is enabled, a `page_status_code` paramete
   
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
-| page_status_code   |                   | Integer  | Client-Side | Page status code      | 
+| page_status_code   |                   | Integer  | Client-side | Page status code      | 
   
 #### Add dataLayer data
 When the "Add current dataLayer state" option is enabled, a `dataLayer` parameter will be added to the payload: 
   
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
-| dataLayer          |                   | JSON     | Client-Side | DataLayer data        |
+| dataLayer          |                   | JSON     | Client-side | DataLayer data        |
     
 #### Ecommerce data
 When "Add ecommerce data" is enabled, an `ecommerce` parameter will be added to the payload:
   
 | **Parameter name** | **Sub-parameter** | **Type** | **Added**   | **Field description** |
 |--------------------|-------------------|----------|-------------|-----------------------|
-| ecommerce          |                   | JSON     | Client-Side | Ecommerce data        |
+| ecommerce          |                   | JSON     | Client-side | Ecommerce data        |
     
 </details>
 
@@ -387,10 +387,10 @@ Requests are sent with the `keepalive` flag, so an event fired while the visitor
 A standard event weighs around 2.8 KB, far from the limit. The two optional parts that can approach it are [Add current dataLayer state](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#add-current-datalayer-state), which grows with every push on the page, and `ecommerce` objects carrying very long item arrays. When either is enabled on a rich page, check the resulting size and prefer sending the parameters you actually need as event parameters.
 
 
-### Client-Side ID Management
+### Client-side ID Management
 The tracker automatically generates and manages unique identifiers for pages and events: a random 15 character identifier for every page, and one for every event.
 
-The values sent in the payload are **partial**. The tracker cannot read `client_id` and `session_id`, which live in the `HttpOnly` cookies `na_u` and `na_s`, so it sends only the segments it owns. The Server-side Client Tag prefixes both with `{client_id}_{session_id}-` before storing the event, so the value written to BigQuery — and returned to the browser in the response — is always the full one. See [Server-Side ID Management](#server-side-id-management).
+The values sent in the payload are **partial**. The tracker cannot read `client_id` and `session_id`, which live in the `HttpOnly` cookies `na_u` and `na_s`, so it sends only the segments it owns. The Server-side Client Tag prefixes both with `{client_id}_{session_id}-` before storing the event, so the value written to BigQuery — and returned to the browser in the response — is always the full one. See [Server-side ID Management](#server-side-id-management).
 
 <details><summary>See page ID and event ID values</summary>
 
@@ -597,7 +597,7 @@ For a detailed guide on resolving common sequence and integration issues, see th
 
 
 
-## Server-Side Processing
+## Server-side Processing
 The **Server-side Client Tag** sits between the public internet and your cloud infrastructure, verifying, claiming or rejecting every request.
 
 
@@ -611,7 +611,7 @@ Identifiers are validated before being trusted: the `na_u` and `na_s` cookies mu
 The data processed by the server is returned to the client within the request response. This provides full visibility into the collected information, allowing for real-time verification and ensuring the entire data pipeline remains transparent and auditable directly from the browser's network tab.
 
 
-### Server-Side ID Management
+### Server-side ID Management
 The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
 
 It also completes the identifiers generated upstream: the `page_id` and `event_id` carried by the payload are partial values, and the tag prefixes both with `{client_id}_{session_id}-` resolved from the `na_u` and `na_s` cookies. This applies identically to website requests and to [Streaming Protocol](#streaming-protocol) requests, so the same event always ends up with the same identifier shape in BigQuery.
@@ -809,7 +809,7 @@ Due to how Firestore calculates document size (billing the repeated byte weight 
 
 Given the `na_u` cookie's maximum 400-day expiration, a user would need to return to the site and trigger a new session almost every day to exceed this quota. While this is mathematically possible for high-frequency SaaS applications, it is extremely unlikely for standard websites (e-commerce, blogs, corporate). 
 
-**Adding Custom Parameters:** If you customize the Server-Side code to track additional custom parameters, keep in mind that:
+**Adding Custom Parameters:** If you customize the Server-side code to track additional custom parameters, keep in mind that:
   - **User parameters** (stored at the root of the document) are only written once and have a negligible impact on this limit.
   - **Session parameters** are appended inside the array and multiplied by every single session. 
 Adding custom Session parameters will increase the base byte weight of the session object, proportionally reducing the maximum number of sessions the document can store before hitting the 1 MiB limit.

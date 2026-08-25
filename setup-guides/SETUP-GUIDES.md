@@ -49,8 +49,8 @@ Download and import the `.tpl` files into GTM Client-side and Server-side enviro
 ### 3a. Client-side Container Configuration
 Create a new:
 1. GTM variable using the template **Nameless Analytics Client-side Tracker Configuration Variable** 
-  - Under **Endpoint Domain Name**, set the endpoint domain name of Server-side GTM (e.g., `gtm.yourdomain.com`)
-  - Under **Endpoint Path**, set the **path** of your dedicated Server-side GTM URL (e.g., `/na/collect`)
+  - Under **Server-side endpoint settings** → **Endpoint domain name**, set the domain of your Server-side GTM instance (e.g., `gtm.yourdomain.com`). Enter the bare domain: no `https://`, no trailing `/`
+  - Under **Server-side endpoint settings** → **Endpoint path**, set the **path** of your dedicated Server-side GTM URL (e.g., `/na/collect`). It must start with `/` and must not end with `/`
 2. GTM tag using the template **Nameless Analytics Client-side Tracker Tag**
   - Under **Event name**, select **standard event name** and then **page view**
   - Under **Configuration variable settings**, add the created **Nameless Analytics Client-side Tracker Configuration Variable**
@@ -60,7 +60,7 @@ Create a new:
 ### 3b. Server-side Container Configuration
 Create a new:
 1. GTM client tag using the template **Nameless Analytics Server-side Client Tag**
-  - Under **Request Endpoint Path**, set the **path** of your dedicated Server-side GTM URL (e.g., `/na/collect`)
+  - Under **Client settings** → **Endpoint path**, set the **same path** configured in the Configuration Variable (e.g., `/na/collect`). The container routes each incoming request to the client that claims its path, so the two values must be identical, and the path should be dedicated to Nameless Analytics rather than shared with another client of the same container
   - Under **Google BigQuery Project ID**, set the **ID** of your BigQuery project
   - Under **Google BigQuery Dataset ID**, set the **ID** of your BigQuery dataset
   - Under **Google BigQuery Table ID**, set the **ID** of your BigQuery table
@@ -386,9 +386,9 @@ To configure cross-domain tracking you need to:
 
     ![Lookup Table for dynamic endpoints](https://github.com/user-attachments/assets/a7b54f23-18b5-4e54-ba80-216a06a51f2d)
 
-3. Set this dynamic variable in the **Request endpoint domain** field. 
+3. Set this dynamic variable in the **Endpoint domain name** field. 
 
-    ![Dynamic request endpoint domain](https://github.com/user-attachments/assets/3d052798-20d9-4578-ab00-35ff4edca695)
+    ![Dynamic endpoint domain name](https://github.com/user-attachments/assets/3d052798-20d9-4578-ab00-35ff4edca695)
 
 
 ### Two client-side GTM containers, one per site
@@ -400,7 +400,7 @@ To configure cross-domain tracking across separate containers, follow these step
     - For **tommasomoretti.com**, the counterparty domain will be `namelessanalytics.com`.
 
 
-2. **Configure Request Endpoints**: Set the **Request endpoint domain** field for each container to point to its respective server-side GTM subdomain.
+2. **Configure Request Endpoints**: Set the **Endpoint domain name** field for each container to point to its respective server-side GTM subdomain.
 
     - For **namelessanalytics.com**, the endpoint will be `gtm.namelessanalytics.com`.
     - For **tommasomoretti.com**, the endpoint will be `gtm.tommasomoretti.com`.
