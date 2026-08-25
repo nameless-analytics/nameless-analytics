@@ -238,6 +238,26 @@ Setup:
 - **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `login` event (or `logout` or `sign_up`) and assign the trigger to it.
 - **Map the Parameter**: Open the **Nameless Analytics Client-side Tracker Configuration Variable**. Under the **Session data** section, map the `user_id` field to the DataLayer Variable you created.
 
+> **`logout` clears the User ID.** `login` overwrites the session `user_id` with whatever the payload carries at that moment, and `logout` sets it back to `null`. Renaming either event breaks this silently: the session `user_id` simply stops being updated. See [User ID lifecycle](../README.md#user-id-lifecycle).
+
+
+### New Lead
+Fired when a user submits a form. No custom parameters are required.
+
+Setup:
+- **Create the Trigger**: Create a trigger matching the form submission (a Custom Event Trigger on your own dataLayer event, or a GTM Form Submission trigger).
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `new_lead` event and assign the trigger to it.
+
+Add any context you need — form name, lead type, campaign — as event parameters in the tag.
+
+
+### Newsletter Sign Up
+Fired when a user subscribes to a newsletter. No custom parameters are required.
+
+Setup:
+- **Create the Trigger**: Create a trigger matching the subscription (a Custom Event Trigger on your own dataLayer event, or a GTM Form Submission trigger).
+- **Configure the Tag**: Create a new **Nameless Analytics Client-side Tracker Tag**, select the `newsletter_sign_up` event and assign the trigger to it.
+
 
 
 ## How to track custom events

@@ -135,8 +135,8 @@ The request data is sent via a POST request in JSON format. It is structured int
     "user_campaign": null,
     "user_campaign_id": null,
     "user_campaign_click_id": null,
-    "user_campaign_content": null,
     "user_campaign_term": null,
+    "user_campaign_content": null,
     "user_device_type": "desktop",
     "user_country": "IT",
     "user_city": "venice",
@@ -155,8 +155,8 @@ The request data is sent via a POST request in JSON format. It is structured int
     "session_campaign": null,
     "session_campaign_id": null,
     "session_campaign_click_id": null,
-    "session_campaign_content": null,
     "session_campaign_term": null,
+    "session_campaign_content": null,
     "session_device_type": "desktop",
     "session_country": "IT",
     "session_city": "venice",
@@ -164,13 +164,13 @@ The request data is sent via a POST request in JSON format. It is structured int
     "session_hostname": "tommasomoretti.com",
     "session_browser_name": "Chrome",
     "session_landing_page_category": "Homepage",
+    "session_landing_page_url": "https://tommasomoretti.com/",
     "session_landing_page_path": "/",
     "session_landing_page_title": "Tommaso Moretti | Freelance digital data analyst",
-    "session_landing_page_url": "https://tommasomoretti.com/",
     "session_exit_page_category": "Homepage",
+    "session_exit_page_url": "https://tommasomoretti.com/",
     "session_exit_page_path": "/",
     "session_exit_page_title": "Tommaso Moretti | Freelance digital data analyst",
-    "session_exit_page_url": "https://tommasomoretti.com/",
     "session_start_timestamp": 1768661707758,
     "session_end_timestamp": 1768661707758
   },
@@ -256,11 +256,11 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | user_campaign                 | String   | Server-side | User campaign name                            |
 |                    | user_campaign_id              | String   | Server-side | User campaign ID                              |
 |                    | user_campaign_click_id        | String   | Server-side | User campaign click identifier                |
-|                    | user_campaign_content         | String   | Server-side | User campaign content                         |
 |                    | user_campaign_term            | String   | Server-side | User campaign term                            |
+|                    | user_campaign_content         | String   | Server-side | User campaign content                         |
 |                    | user_device_type              | String   | Server-side | User device type                              |
-|                    | user_city                     | String   | Server-side | User city                                     |
 |                    | user_country                  | String   | Server-side | User country                                  |
+|                    | user_city                     | String   | Server-side | User city                                     |
 |                    | user_language                 | String   | Server-side | User language                                 |
 |                    | user_first_session_timestamp  | Integer  | Server-side | Timestamp of user's first session             |
 |                    | user_last_session_timestamp   | Integer  | Server-side | Timestamp of user's last session              |
@@ -278,6 +278,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | session_campaign_content      | String   | Server-side | Session campaign content                      |
 |                    | session_device_type           | String   | Server-side | Device type used in session                   |
 |                    | session_country               | String   | Server-side | Session country                               |
+|                    | session_city                  | String   | Server-side | Session geolocation city                      |
 |                    | session_language              | String   | Server-side | Session language                              |
 |                    | session_hostname              | String   | Server-side | Website hostname for session                  |
 |                    | session_browser_name          | String   | Server-side | Browser name used in session                  |
@@ -285,7 +286,6 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | session_landing_page_url      | String   | Server-side | Landing page URL                              |
 |                    | session_landing_page_path | String   | Server-side | Landing page path                             |
 |                    | session_landing_page_title    | String   | Server-side | Landing page title                            |
-|                    | session_city                  | String   | Server-side | Session geolocation city                      |
 |                    | session_exit_page_category    | String   | Server-side | Exit page category                            |
 |                    | session_exit_page_url         | String   | Server-side | Exit page URL                                 |
 |                    | session_exit_page_path    | String   | Server-side | Exit page path                                |
@@ -410,10 +410,10 @@ Implements specific logic to handle high-frequency events (e.g., rapid clicks), 
 
 ### Smart Consent Management
 Fully integrated with Google Consent Mode. Choose between respect or not respect consent mode:
-- When Google Consent Mode is present and `respect_consent_mode` is enabled, the events are sent only if a user consents. 
-  - `analytics_storage` is equal to `denied`, the Nameless Analytics Client-side Tracker waits until consent is granted. The tag automatically preserves the original acquisition context (source and campaign data and page referrer) using a temporary first-party cookie named `na_temp`. Once consent is granted (even multiple pages later), the tag retrieves the data from the cookie and correctly attributes the session, preventing incorrect "direct" or "internal" referral attribution.    
-  - `analytics_storage` changes from `denied` to `granted`, all pending tags for that page will be fired in execution order
-- When Google Consent Mode not present and `respect_consent_mode` is enabled, none of the events are sent. 
+- When Google Consent Mode is present and `respect_consent_mode` is enabled, the events are sent only if a user consents.
+  - if `analytics_storage` is equal to `denied`, the Nameless Analytics Client-side Tracker waits until consent is granted. The tag automatically preserves the original acquisition context (source and campaign data and page referrer) using a temporary first-party cookie named `na_temp`. Once consent is granted (even multiple pages later), the tag retrieves the data from the cookie and correctly attributes the session, preventing incorrect "direct" or "internal" referral attribution.
+  - if `analytics_storage` changes from `denied` to `granted`, all pending tags for the page will be fired in execution order
+- When Google Consent Mode is not present and `respect_consent_mode` is enabled, none of the events are sent.
 - When `respect_consent_mode` is disabled, all events are sent regardless of presence of Google Consent Mode.
 
 
@@ -662,17 +662,10 @@ Actively detects and blocks automated traffic returning a `403 Forbidden` status
 
 <details><summary>See bot protection list</summary>
 
-#### AI Agents & LLMs 
-`gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytespider`, `ccbot`.
-
-#### SEO & Marketing Bots 
-`ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
-
-#### HTTP Libraries 
-`curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.
-
-#### Automation & Security 
-`nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
+- **HTTP Libraries:** `curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.
+- **AI Agents & LLMs:** `gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytespider`, `ccbot`.
+- **SEO & Marketing Bots:** `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
+- **Automation & Security:** `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
 </details>
 
 
