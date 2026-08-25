@@ -14,7 +14,7 @@
 
 # Project settings
 declare project_name string default 'PROJECT NAME';  -- Change this
-declare dataset_name string default 'nameless_analytics'; -- Change this
+declare dataset_name string default 'nameless_analytics';
 declare dataset_location string default 'eu'; -- Change this
 
 # Tables

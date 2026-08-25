@@ -35,6 +35,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Media Plan](#media-plan)
   - [Campaigns](#campaigns)
 - [Data Governance and Maintenance](#data-governance-and-maintenance)
+  - [Cookies are not deleted](#cookies-are-not-deleted)
   - [Delete user data script](#delete-user-data-script)
   - [Manual user data deletion](#manual-user-data-deletion)
   - [Data Health Check](#data-health-check)
