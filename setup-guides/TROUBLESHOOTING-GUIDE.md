@@ -83,14 +83,14 @@ Server logs show:
 
 `🔴 Request origin not authorized`
 
-- **Issue:** The request came from a domain that is not in the **Authorized domains** list, or it carried no `Origin` header at all. The header is missing on server-to-server calls, so a Streaming Protocol implementation that does not set it is refused here as soon as the option is enabled.
-- **Solution:** Add the domain to the **Authorized domains** list in the Server-side Client Tag configuration, as a bare host name without protocol (e.g., `example.com`, not `https://example.com`, which the field validation rejects). Only the Effective TLD+1 is compared, so one entry covers all subdomains. In a cross-domain setup list every domain involved, and make sure your backend sends the `Origin` header.
+- **Issue:** The request came from a domain that is not in the **Authorized domains** table, or it carried no `Origin` header at all. The header is missing on server-to-server calls, so a Streaming Protocol implementation that does not set it is refused here as soon as the option is enabled.
+- **Solution:** Add the domain to the **Authorized domains** table in the Server-side Client Tag configuration, as a bare host name without protocol (e.g., `example.com`, not `https://example.com`, which the field validation rejects). Only the Effective TLD+1 is compared, so one entry covers all subdomains. In a cross-domain setup list every domain involved, and make sure your backend sends the `Origin` header.
 
 Server logs show: 
 
 `🔴 Request IP not authorized`
 
-- **Issue:** The request came from an IP address listed in the **Banned IPs** section.
+- **Issue:** The request came from an IP address listed in the **Banned IPs** table.
 - **Solution:** Remove the IP from the list if it's a false positive.
 
 Server logs show: 
