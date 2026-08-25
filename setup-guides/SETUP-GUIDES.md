@@ -538,8 +538,9 @@ To prevent unauthorized websites from sending data to your endpoint, you can res
 
 ### 2. Bot & Automated Traffic Protection
 Nameless Analytics includes a built-in filter to block requests from known bots, scrapers, and automated libraries (e.g., curl, python-requests, chatgpt).
-1. Scroll down to **Advanced settings** and check **Enable bot protection**.
+1. Under **Client settings** → **Security rules**, check **Enable Bot protection**.
 2. All identified automated requests will be rejected with a `403 Forbidden` status. See the full list of blocked agents in the [main README](../README.md#bot-protection).
+3. Two other `User-Agent` checks run even when this option is off: a missing or empty header is always rejected, and a Streaming Protocol request is always rejected unless its `User-Agent` is exactly `Nameless Analytics - Streaming Protocol`.
 
 ### 3. IP Blacklisting
 If you identify specific IP addresses that are spamming your endpoint, you can manually block them.

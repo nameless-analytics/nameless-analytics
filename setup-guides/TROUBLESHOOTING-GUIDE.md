@@ -108,7 +108,7 @@ Server logs show:
   - **SEO & Marketing Bots:** `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
   - **Automation & Security:** `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
 
-  If you are using the **Streaming Protocol**, you must send the following mandatory User-Agent to bypass this check: `Nameless Analytics - Streaming Protocol`.
+  If you are using the **Streaming Protocol**, the `User-Agent` must be exactly `Nameless Analytics - Streaming Protocol`. This is a separate check from the blacklist above: it runs **even when Enable Bot protection is off**, and the value must match exactly — any prefix or suffix is rejected with this same message.
 
 Server logs show: 
 
