@@ -414,12 +414,20 @@ Below are SQL templates to help you manage data integrity and comply with privac
 To comply with GDPR "Right to be Forgotten" requests, data must be removed from both the historical timeline (BigQuery) and the real-time snapshots (Firestore).
 
 
+### Cookies are not deleted
+Both methods below remove data, not identifiers. The `na_u` cookie stays in the visitor's browser for 400 days, and since it is `HttpOnly` it cannot be removed from JavaScript.
+
+If the visitor comes back to the site, the first `page_view` recreates a user document carrying the same `client_id`, and the user history starts over from that event: `user_date` is the date of that `page_view`, `session_number` is back to `1`, and the first-touch attribution is recomputed from the source the visitor arrived with. Every event that is not a `page_view` is rejected with a `403` until that document exists again.
+
+A complete Right to be Forgotten request therefore has two parts: running the deletion, and having the visitor clear the site data from their own browser.
+
+
 ### Delete user data script
 You can use the provided [`Users deletion tool`](users-deletion-tool.py) Python script to handle both deletions in a single command. 
 
 This is the recommended method.
 
-The script reads the user's `user_date` from the Firestore document before deleting anything, and uses it to narrow the BigQuery statement. If the document is missing or the field cannot be read, the deletion still runs on `client_id` alone: completeness always wins over cost.
+The script reads the user's `user_date` from the Firestore document before deleting anything, and uses it to narrow the BigQuery statement. Since the Server-side Client Tag writes to BigQuery only after a successful Firestore write, that value is always there and always matches the one stored in BigQuery. A user present in BigQuery with no Firestore document can only be the result of a manual deletion: the script then falls back to `client_id` alone, scanning the whole table, because completeness wins over cost.
 
 ### Manual user data deletion
 If you prefer manual deletion, please remove data from both BigQuery and Firestore.

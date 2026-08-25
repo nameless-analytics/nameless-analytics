@@ -12,7 +12,7 @@ from google.cloud import firestore
 # CONFIGURATION
 # --------------------------------------------------------------------------------------------------------------
 
-client_id = 'O7ylGXyUVBHEFF7' # Set to the client_id you want to delete
+client_id = 'h56z1Uvp8j1B8Xb' # Set to the client_id you want to delete
 
 # Project settings
 project_id = 'tom-moretti'
@@ -37,29 +37,42 @@ def delete_user_data():
 
     print(f"👉 Delete data for client_id: {client_id}")
 
-    # Retrieve user_date from Firestore
-    print("👉 Retrieve user_date from Firestore")
-
-    user_date = None
-
     try:
         db = firestore.Client.from_service_account_json(credentials_path)
-        doc = db.collection('users').document(client_id).get()
+        doc_ref = db.collection('users').document(client_id)
+        doc = doc_ref.get()
 
+        # The Server-side Client Tag writes to BigQuery only after a successful Firestore write, so whenever a user
+        # exists in Firestore its user_date exists too and matches the one stored in BigQuery. A user present in
+        # BigQuery with no Firestore document can only come from a manual deletion: in that case user_date stays
+        # empty and the statement below falls back to scanning the whole table.
+        user_date = datetime.strptime(doc.to_dict()['user_date'], '%Y-%m-%d').date() if doc.exists else None
+
+    # Without the Firestore document the deletion cannot be completed anyway: the user would still be recognised by
+    # the Server-side Client Tag and written back to BigQuery a few events later, undoing the deletion.
+    except Exception as e:
+        print(f"🔴 Firestore Error: {e}")
+        print("Function execution end: 🖕")
+        return
+
+
+    # Delete Firestore data first: once the user document is gone the Server-side Client Tag rejects any further event
+    # for this client_id as an orphan (403), so almost nothing can be written back to BigQuery while the deletion below
+    # is running. The only exception is a page_view, which recreates the user document from the na_u cookie.
+    # The cost of this order is that a failure below leaves no user_date behind, so the retry scans the whole table.
+    print("👉 Delete data from Firestore")
+
+    try:
         if doc.exists:
-            try:
-                user_date = datetime.strptime(doc.to_dict().get('user_date'), '%Y-%m-%d').date()
-                print(f"  🟢 Firestore: user_date '{user_date}' found for client_id '{client_id}'")
-            except (TypeError, ValueError):
-                print(f"  🟠 Firestore: user_date missing or malformed for client_id '{client_id}'")
+            doc_ref.delete()
+            print(f"  🟢 Firestore: Document '{client_id}' deleted successfully")
         else:
-            print(f"  🟠 Firestore: document '{client_id}' not found")
+            print(f"  🟠 Firestore: Document '{client_id}' not found")
 
     except Exception as e:
-        print(f"  🟠 Firestore Error: {e}")
-
-    if not user_date:
-        print("  🟠 The BigQuery deletion will scan the whole table")
+        print(f"  🔴 Firestore Error: {e}")
+        print("Function execution end: 🖕")
+        return
 
 
     # Delete BigQuery data
@@ -98,30 +111,10 @@ def delete_user_data():
         else:
             print(f"  🟠 BigQuery: client_id '{client_id}' not found")
 
-    except Exception as e:
-        print(f"  🔴 BigQuery Error: {e}")
-        print("Function execution end: 🖕")
-        return
-
-
-    # Delete Firestore data
-    print("👉 Delete data from Firestore")
-
-    try:
-        db = firestore.Client.from_service_account_json(credentials_path)
-        doc_ref = db.collection('users').document(client_id)
-
-
-        if doc_ref.get().exists:
-            doc_ref.delete()
-            print(f"  🟢 Firestore: Document '{client_id}' deleted successfully")
-        else:
-            print(f"  🟠 Firestore: Document '{client_id}' not found")
-
         print("Function execution end: 👍")
 
     except Exception as e:
-        print(f"  🔴 Firestore Error: {e}")
+        print(f"  🔴 BigQuery Error: {e}")
         print("Function execution end: 🖕")
         return
 
@@ -134,4 +127,3 @@ if __name__ == "__main__":
     print("USER DELETION TOOL")
 
     delete_user_data()
-

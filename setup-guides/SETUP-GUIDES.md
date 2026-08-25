@@ -571,6 +571,8 @@ The most efficient way to handle these requests is using the provided automation
 
 Alternatively, you can perform [manual deletions](../tables/TABLES.md#manual-user-data-deletion).
 
+Bear in mind that both methods delete data, not identifiers: the `na_u` cookie stays in the visitor's browser for 400 days, so a returning visitor recreates a user document with the same `client_id` and starts a new history from that `page_view`. A complete request also requires the visitor to clear the site data from their own browser. See [Cookies are not deleted](../tables/TABLES.md#cookies-are-not-deleted).
+
 
 # 
 
