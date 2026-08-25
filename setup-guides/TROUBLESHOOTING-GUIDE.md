@@ -146,12 +146,10 @@ Server logs show:
 
 Server logs show:
 
-`🔴 Invalid event_origin parameter value. Accepted values: Website`
-
 `🔴 Invalid event_origin parameter value. Accepted values: Website or Streaming Protocol`
 
-- **Issue:** The `event_origin` parameter is missing or incorrect.
-- **Solution:** Ensure the client-side tracker or your streaming implementation is correctly setting the origin to "Website" or "Streaming Protocol".
+- **Issue:** The `event_origin` parameter is missing or holds a value other than `Website` or `Streaming Protocol`. Two separate checks emit this message, one for `get_user_data` requests and one for every other event: the `👉 Event name` line logged just above tells you which request was refused.
+- **Solution:** Ensure the client-side tracker or your streaming implementation is correctly setting the origin to `Website` or `Streaming Protocol`.
 
 Server logs show:
 
