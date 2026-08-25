@@ -19,6 +19,8 @@ The Nameless Analytics Troubleshooting Guide identifies, explains, and resolves 
   - [Unexpected Channel Grouping](#unexpected-channel-grouping)
 - [Network & Custom Endpoint Issues](#network--custom-endpoint-issues)
 - [Cross-domain Issues](#cross-domain-issues)
+  - [Link Not Decorated (`na_id` Missing)](#link-not-decorated-na_id-missing)
+  - [Invalid or Expired `na_id`](#invalid-or-expired-na_id)
 
 
 
