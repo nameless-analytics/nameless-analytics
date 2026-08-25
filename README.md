@@ -649,6 +649,13 @@ The updated value is reflected in BigQuery starting from the same event, since t
 
 Renaming these two standard events breaks this behaviour silently: the session `user_id` will simply stop being updated.
 
+#### Reporting resolves it differently from the raw data
+In `events_raw` every event stores the `user_id` as it was at that moment, so the events fired after a `logout` carry `null`.
+
+The [`events`](tables/TABLES.md#events) table function does not: it resolves `user_id` with `FIRST_VALUE(... IGNORE NULLS)` over the whole session, so **every row of a session carries the most recent non-null value**, including the events before the `login` and those after the `logout`. The `sessions`, `users` and `pages` functions read from `events` and inherit the same resolution.
+
+The practical consequence: a `logout` clears the value in Firestore and in the raw table, but it does not make the session anonymous in the reports. A session where the visitor logged in is attributed to that `user_id` end to end. To see the value as it was at each single event, query `session_data` directly in `events_raw` instead of using the table functions.
+
 
 ### Data integrity
 The server will reject any interaction (e.g., click, scroll) with a `403 Forbidden` status if it hasn't been preceded by a valid `page_view` event for that session. This ensures every session in BigQuery has a clear starting point and reliable attribution.
@@ -701,34 +708,36 @@ This centralized processing ensures that:
 
 The following table describes how the channel grouping is determined based on the `source` and `campaign` parameters of the event.
 
-| Channel grouping | Source category | Campaign |
-| :--- | :--- | :--- |
-| `direct` | **Direct** | Any |
-| `gtm_debugger` | **GTM Debugger** | Any |
-| `paid_search_engine` | **Search Engine** | Yes |
-| `organic_search_engine` | **Search Engine** | No |
-| `paid_social` | **Social** | Yes |
-| `organic_social` | **Social** | No |
-| `paid_shopping` | **Shopping** | Yes |
-| `organic_shopping` | **Shopping** | No |
-| `paid_video` | **Video** | Yes |
-| `organic_video` | **Video** | No |
-| `ai` | **AI** | Any |
-| `email` | **Email** | Any |
-| `referral` | None of the above | No |
-| `affiliate` | None of the above | Yes |
+The rules are evaluated **in the order below** and the first match wins. The order matters for sources that belong to two categories: `gemini.google.com` matches both **AI** and **Search Engine**, and is classified as `ai` because AI is checked first.
 
-The channel grouping logic uses the following Source categories based on the source name:
+| # | Channel grouping | Source category | Campaign |
+| :--- | :--- | :--- | :--- |
+| 1 | `direct` | **Direct** | Any |
+| 2 | `gtm_debugger` | **GTM Debugger** | Any |
+| 3 | `ai` | **AI** | Any |
+| 4 | `paid_search_engine` | **Search Engine** | Yes |
+| 4 | `organic_search_engine` | **Search Engine** | No |
+| 5 | `paid_social` | **Social** | Yes |
+| 5 | `organic_social` | **Social** | No |
+| 6 | `paid_shopping` | **Shopping** | Yes |
+| 6 | `organic_shopping` | **Shopping** | No |
+| 7 | `paid_video` | **Video** | Yes |
+| 7 | `organic_video` | **Video** | No |
+| 8 | `email` | **Email** | Any |
+| 9 | `referral` | None of the above | No |
+| 9 | `affiliate` | None of the above | Yes |
+
+The channel grouping logic uses the following Source categories based on the source name. Matching is case-insensitive and works on substrings, so `google` also catches `news.google.com`. The only exception is the `.ai` rule, which matches the top-level domain and therefore catches `perplexity.ai` but not a source literally named `ai`.
 
 | Source category | Source |
 | :--- | :--- |
 | **Direct** | `null`, `direct` |
 | **GTM Debugger** | `tagassistant.google.com` |
-| **Search Engine** | `360.cn`, `alice`, `aol`, `yahoo`, `ask`, `bing`, `google`, `yandex`, `baidu`, `ecosia`, `duckduckgo`, `sogou`, `naver`, `seznam` |
+| **Search Engine** | `360.cn`, `alice`, `aol`, `ar.search.yahoo.com`, `ask`, `bing`, `google`, `yahoo`, `yandex`, `baidu`, `ecosia`, `duckduckgo`, `sogou`, `naver`, `seznam` |
 | **Social** | `facebook`, `twitter`, `t.co`, `bsky.app`, `instagram`, `pinterest`, `linkedin`, `reddit`, `vk.com`, `tiktok`, `snapchat`, `tumblr`, `wechat`, `whatsapp` |
 | **Shopping** | `amazon`, `ebay`, `etsy`, `shopify`, `stripe`, `walmart`, `mercadolibre`, `alibaba`, `naver.shopping` |
 | **Video** | `youtube`, `vimeo`, `netflix`, `twitch`, `dailymotion`, `hulu`, `disneyplus`, `wistia`, `youku` |
-| **AI** | `chatgpt`, `gemini`, `bard`, `claude`, `alexa`, `siri`, `assistant`, `ai` |
+| **AI** | `chatgpt`, `gemini`, `bard`, `claude`, `alexa`, `siri`, `assistant`, plus any source on a `.ai` domain |
 | **Email** | `email`, `e-mail`, `newsletter`, `mailchimp`, `sendgrid`, `sparkpost` |
 
 </details>
@@ -796,9 +805,10 @@ Firestore ensures data integrity by managing how parameters are updated across h
 | :--- | :--- | :--- | :--- |
 | **User** | **First-Touch** | `user_date`, `user_source`, `user_tld_source`, `user_campaign`, `user_campaign_id`, `user_campaign_click_id`, `user_campaign_term`, `user_campaign_content`, `user_channel_grouping`, `user_device_type`, `user_country`, `user_city`, `user_language`,   `user_first_session_timestamp` | Recorded at first visit, **never overwritten**. |
 | **User** | **Last-Touch** | `user_last_session_timestamp` | Updated at the start of every new session. |
-| **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`,   `session_channel_grouping`, `session_device_type`, `session_country`, `session_city`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_url`, `session_landing_page_path`, `session_landing_page_title`, `user_id` | Set at session start, persists throughout   the session. |
+| **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`,   `session_channel_grouping`, `session_device_type`, `session_country`, `session_city`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_url`, `session_landing_page_path`, `session_landing_page_title` | Set at session start, persists throughout the session. |
 | **Session** | **Last-Touch** | `session_exit_page_category`, `session_exit_page_url`, `session_exit_page_path`, `session_exit_page_title`, `session_end_timestamp` | **Updated on every hit** to reflect the latest state. |
 | **Session** | **Progressive** | `cross_domain_session` | Flags as 'Yes' if any hit in the session is cross-domain. |
+| **Session** | **Event-driven** | `user_id` | Set at session start, then overwritten by `login` and cleared by `logout`. See [User ID lifecycle](#user-id-lifecycle). |
 
 </details>
 

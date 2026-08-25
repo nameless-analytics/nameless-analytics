@@ -42,6 +42,7 @@ An **Orphan Event** is any interaction (click, scroll, etc.) that reaches the se
 Browser console shows:
 
 ```text
+[event_name] > CHECKING EVENT
 [event_name] >   🔴 Event fired before a page view event. The first event on any page must be page_view.
 [event_name] > REQUEST STATUS
 [event_name] >   🔴 Request aborted
