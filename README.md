@@ -77,7 +77,7 @@ Built upon a transparent pipeline hosted entirely on a private Google Cloud Plat
 ## Overview
 The following diagram illustrates the real-time data flow from the user's browser, through the server-side processing layer, to the final storage and visualization destinations:
 
-![Nameless Analytics schema](https://github.com/user-attachments/assets/e9ff1593-f7c9-442e-a600-798a51a02a1e)
+![Nameless Analytics schema](https://namelessanalytics.com/img/Nameless%20Analytics%20schema.png)
 
 
 
