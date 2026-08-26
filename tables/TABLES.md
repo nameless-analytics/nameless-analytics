@@ -77,7 +77,9 @@ All the other table functions work without them: create these two only if you ne
 | `online_campaign_performance_sheets` | Preferably a native table loaded automatically with the campaign data exported from your advertising platforms. As a simpler alternative, a Google Sheet connected as an external table. | Daily |
 | `media_plan_sheets` | A Google Sheet connected as an external table, so the plan stays editable by the marketing team without any load job. | Whenever the media plan is ready or gets revised |
 
-A reference spreadsheet containing both tabs is available [here](https://docs.google.com/spreadsheets/d/1aDfDJ3aDDH88ybJ4HH7y2m7cSRcKLhl6R9Z8ZbBmE0Y). Opening it requires being signed in with a Google account.
+Reference [Google Sheet for online_campaign_performance_sheets](https://docs.google.com/spreadsheets/d/1aDfDJ3aDDH88ybJ4HH7y2m7cSRcKLhl6R9Z8ZbBmE0Y/#gid=418285084)
+
+Reference [Google Sheet for media_plan_sheets](https://docs.google.com/spreadsheets/d/1aDfDJ3aDDH88ybJ4HH7y2m7cSRcKLhl6R9Z8ZbBmE0Y/#gid=1267353944)
 
 
 #### online_campaign_performance_sheets
@@ -110,9 +112,6 @@ Planned budget per campaign. Budgets are aggregated by month.
 | `campaign_name` | STRING | No | Campaign name without the taxonomy prefix. |
 | `full_campaign_name` | STRING | Yes | The complete campaign taxonomy, with the seven parts joined by a pipe (`\|`) — see [Campaign taxonomy](../README.md#campaign-taxonomy). Join key with the `campaign` column of `online_campaign_performance_sheets`. |
 | `budget` | FLOAT | Yes | Planned budget for the campaign in that month. Summed over the selected period. |
-
-> [!NOTE]
-> **Only three columns are read.** `date`, `full_campaign_name` and `budget` are the only ones the table functions query. The seven taxonomy columns exist to keep the source sheet readable: reporting dimensions are always re-derived from `full_campaign_name` through `get_campaign_part`. If a taxonomy column and `full_campaign_name` disagree, **reports follow `full_campaign_name`**. The same applies to `year`, which is recomputed from `date`.
 
 
 #### Connecting a Google Sheet to BigQuery
