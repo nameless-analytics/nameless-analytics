@@ -67,8 +67,8 @@ The `get_campaign_part` UDF extracts structured campaign dimensions (year, count
 [Create Get Campaign Part function](user-defined-functions/get_campaign_part.sql)
 
 
-### Create external campaign tables
-The `campaigns` and `media_plan` table functions read advertising data from two tables that **are not created by any script in this repository**. You have to create, populate and keep them updated yourself. Both must live in the same dataset as the table functions.
+### Create external tables
+To populate the corresponding reports, the `campaigns` and `media_plan` table functions read advertising data from two tables that **are not created by any script in this repository**. You must create, populate, and keep them up to date yourself. Both must reside in the same dataset as the table functions.
 
 All the other table functions work without them: create these two only if you need campaign cost analysis or media plan tracking.
 
