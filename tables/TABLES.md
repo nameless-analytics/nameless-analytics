@@ -63,6 +63,7 @@ The `get_custom_channel_grouping` UDF uses the same identical logic as the [serv
 The `get_campaign_part` UDF extracts structured campaign dimensions (year, country, funnel stage, platform, type, marketing objective, campaign name) from pipe-delimited campaign strings.
 
 [Create Custom Channel Grouping function](user-defined-functions/get_custom_channel_grouping.sql)
+
 [Create Get Campaign Part function](user-defined-functions/get_campaign_part.sql)
 
 
