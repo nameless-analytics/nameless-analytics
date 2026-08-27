@@ -509,7 +509,7 @@ Link decoration is driven by a delegated `click` listener on the document, so it
 | The main library is blocked (ad blocker, CSP, CDN failure) | The listener is never registered | Use [First-Party mode](setup-guides/SETUP-GUIDES.md#how-to-set-up-first-party-library-hosting) |
 | Consent Mode missing while `respect_consent_mode` is enabled | The tracker aborts before decorating | None: this is the intended privacy behaviour |
 | `analytics_storage` denied | No identity handshake is performed. The URL still receives the `na_*` acquisition parameters, but only if the `na_temp` cookie exists | None: this is the intended privacy behaviour |
-| `get_user_data` fails, or `na_u` / `na_s` are missing server-side | No `session_id` to encode. The visitor is redirected to the original URL | Verify the endpoint is reachable and the visitor has valid cookies |
+| `get_user_data` fails, exceeds the two-second timeout, or `na_u` / `na_s` are missing server-side | No `session_id` to encode. The visitor is redirected to the original URL without `na_id` | Verify the endpoint is reachable and the visitor has valid cookies |
 
 On links carrying `target="_blank"` the new tab is opened by the tracker itself, not by the browser. As browsers do for `target="_blank"`, the destination gets no `window.opener` reference back to the source page, unless the link explicitly declares `rel="opener"`.
 
@@ -529,7 +529,7 @@ A decorated link can also be **rejected on arrival**, with the same outcome. Thi
 
   By intercepting the link click to perform a real-time server-side identity check, Nameless Analytics improves the reliability of the identifiers passed to the destination domain.
 
-  While this can introduce very small latency, it eliminates session fragmentation and ensures reliable cross-domain attribution in environments with strict privacy restrictions.
+  The handshake waits for at most two seconds. If the endpoint does not answer in time, navigation continues to the original URL without `na_id`: attribution falls back to the identifiers available on the destination domain instead of blocking the visitor.
 
 - When `respect_consent_mode` is enabled and `analytics_storage` = denied:
   - **Handshake Bypass**: To protect user privacy and comply with consent policies, the server-side identity handshake is skipped. No identifiers (`client_id` or `session_id`) are retrieved or transferred.
@@ -608,6 +608,8 @@ The **Server-side Client Tag** sits between the public internet and your cloud i
 
 ### Security & validation
 Validates request origins and authorized domains (CORS) before processing to prevent unauthorized usage.
+
+Missing, malformed, or non-object JSON request bodies are rejected with `400 Bad Request` before the GTM container runs; Firestore, BigQuery, and custom endpoint forwarding are skipped.
 
 Identifiers are validated before being trusted: the `na_u` and `na_s` cookies must match their expected format, and the `cross_domain_id` carried in the payload must match the format of a server-issued `session_id`. Requests carrying malformed cookies are rejected with `403`; a malformed `cross_domain_id` is discarded and the event is processed as if it had not been sent, leaving user and session to be resolved from the `na_u` and `na_s` cookies.
 

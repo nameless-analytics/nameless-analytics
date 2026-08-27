@@ -50,7 +50,7 @@ Correctly maps BigQuery data types (`string`, `int`, `float`, `json` and `bool`)
 
 
 ### Error handling
-Includes robust error handling for API responses and database queries.
+Includes robust error handling for API responses and database queries. A missing, malformed, or non-object JSON request body is rejected by the Server-side Client Tag with `400 Bad Request` before Firestore, BigQuery, or custom forwarding is executed.
 
 
 ### Security
