@@ -17,7 +17,6 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
 - [Library loading & configuration issues](#library-loading--configuration-issues)
 - [Storage & cloud permissions](#storage--cloud-permissions)
 - [BigQuery & data analysis issues](#bigquery--data-analysis-issues)
-  - [BigQuery Advanced Runtime](#bigquery-advanced-runtime)
   - [Missing geolocation data](#missing-geolocation-data)
   - [Unexpected channel grouping](#unexpected-channel-grouping)
 - [Network & custom endpoint issues](#network--custom-endpoint-issues)
@@ -249,13 +248,12 @@ Server logs show:
 
 Server logs show:
 
-`🔴 Firestore request failed`
-
-`🔴 BigQuery request failed`
-
-`🔴 Custom endpoint request failed`
-
-`🔴 Request processing failed`
+```text
+🔴 Firestore request failed
+🔴 BigQuery request failed
+🔴 Custom endpoint request failed
+🔴 Request processing failed
+```
 
 - **Issue:** these four messages are different from the ones above. The messages above are **handled** failures: the write was attempted and the service answered with an error. These four are raised when the processing chain throws an **unexpected** exception at a given stage, so the tag never gets an answer to report. They are the only responses returned with `status_code: 500`, and the underlying error object is printed on the line right after the message in GTM Server Preview.
 - **Solution:** read that error object first, it carries the actual cause. Typical ones are a Firestore document that exceeded the [1 MiB limit](../README.md#known-limitations-firestore-1-mib-document-limit), a payload whose types do not match the BigQuery schema, a service temporarily unreachable, or an unreachable custom endpoint URL. `🔴 Request processing failed` is the fallback for an exception raised outside the three stages.
@@ -269,13 +267,6 @@ The stage that failed is also readable in the `processing` object of the respons
 
 ## BigQuery & data analysis issues
 Common issues related to missing data or unexpected values in reporting.
-
-
-### BigQuery Advanced Runtime
-If you experience slow query performance or errors with SQL Table Functions, ensure that **BigQuery Advanced Runtime** is enabled for your project (see [TABLES.md](../tables/TABLES.md) for the DDL command).
-
-- **Issue:** the setup script fails on the last statement with a permission error mentioning `ALTER PROJECT`.
-- **Solution:** enabling the Advanced Runtime requires the project level `bigquery.projects.update` permission, which a dataset level role does not grant. The statement runs last on purpose, so dataset and tables are already created and the platform works normally: ask a project administrator to run that single statement, or skip it and accept the default runtime.
 
 
 ### Missing geolocation data
@@ -296,12 +287,18 @@ If you experience slow query performance or errors with SQL Table Functions, ens
 Technical issues preventing communication between the browser and the GTM Server, or between the server and external destinations.
 
 
+### Browser request to Nameless Analytics failed
+
 Browser console shows:
 
-`[event_name] > 🔴 Request not sent successfully`
+```text
+[event_name] > 🔴 Request not sent successfully
+```
 
-- **Issue:** The network request from the browser failed to reach the server.
-- **Solution:** Check for client-side connectivity issues, local firewalls, or DNS misconfigurations for your server-side endpoint.
+- **Direction:** Client-side Tracker → Nameless Analytics Server-side Client.
+- **Issue:** The browser did not complete the tracker request with a readable Nameless Analytics JSON response. The request may have failed before leaving the browser, may not have reached the server, or the browser may have been unable to read the response because of a network, DNS, CORS, or response-format problem. This message is **not related to Custom Endpoint forwarding**.
+- **Result:** The browser alone cannot determine whether the event was stored. If no request appears in the Network tab, it did not leave the browser. If a request appears, inspect its response and the GTM Server Preview logs to determine how far processing progressed.
+- **Solution:** Check the browser Network tab, client-side connectivity, local firewalls, DNS, CORS configuration, and the server-side endpoint.
 
 - **Issue:** The payload is larger than 64 KB. Requests are sent with the `keepalive` flag, so they survive the page being closed, but browsers cap the body of a `keepalive` request at **64 KiB**: above that the request is rejected before leaving the browser and the event is lost. The line above in the console (`[event_name] > 🔴 TypeError: Failed to fetch`) confirms it, and the request never appears in the Network tab.
 - **Solution:** Reduce the payload. The usual causes are [Add current dataLayer state](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#add-current-datalayer-state) on a page with a large `dataLayer` and very long `ecommerce` item arrays. Inspect the size with the snippet below, then disable the dataLayer state, or send only the parameters you need as event parameters.
@@ -315,24 +312,35 @@ Browser console shows:
 
 Browser console shows:
 
-`[event_name] > 🔴 [error]`
+```text
+[event_name] > 🔴 [error]
+```
 
 - **Issue:** A generic JavaScript error occurred during the fetch request.
-- **Solution:** Check the browser console for details.
+- **Solution:** Check the preceding browser-console error and the corresponding request in the Network tab. This error is followed by `[event_name] > 🔴 Request not sent successfully`.
 
 Browser console shows:
 
-`[event_name] > 🔴 Request aborted`
+```text
+[event_name] > 🔴 Request aborted
+```
 
 - **Issue:** A generic issue stopped the tag execution.
 - **Solution:** Check the previous logs in the console to find the specific cause.
 
+
+### Nameless Analytics forwarding to Custom Endpoint failed
+
 Server logs show:
 
-`🔴 Request not sent successfully. Error: [result]`
+```text
+🔴 Request not sent successfully. Error: [result]
+```
 
-- **Issue:** Forwarding to the custom endpoint failed, either because the endpoint answered with an error status or because it could not be reached.
-- **Solution:** Verify the custom endpoint URL and ensure your server-side environment has the necessary network access. The event itself is not lost: Firestore and BigQuery have already succeeded at this point, so the response is still `200` and only `custom_endpoint: failed` appears in the `processing` object.
+- **Direction:** Nameless Analytics Server-side Client → Custom Endpoint.
+- **Issue:** The incoming analytics event already passed Firestore and BigQuery, but the subsequent outbound forwarding request received a non-success HTTP response or could not reach the configured Custom Endpoint. This is a **server-side forwarding error**, not the browser error `[event_name] > 🔴 Request not sent successfully` described above.
+- **Result:** The analytics event is stored in Firestore and BigQuery. The Server-side Client returns `200` with `🟢 Request processed successfully`, while the response reports `custom_endpoint: failed`. Only the optional forwarding was lost.
+- **Solution:** Inspect `[result]`, verify the Custom Endpoint URL and authentication headers, and ensure the server-side environment has permission and network access to reach it. Do not resend the original analytics event solely because this forwarding failed.
 
 
 
