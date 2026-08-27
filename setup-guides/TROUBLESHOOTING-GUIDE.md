@@ -11,7 +11,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
 
 - [Troubleshooting tip](#troubleshooting-tip)
 - [Orphan events & sequence issues](#orphan-events--sequence-issues)
-- [Malformed request (400 Bad Request)](#malformed-request-400-bad-request)
+- [Malformed request or payload (400 Bad Request)](#malformed-request-or-payload-400-bad-request)
 - [Validation errors (403 Forbidden)](#validation-errors-403-forbidden)
 - [Google Consent Mode](#google-consent-mode)
 - [Library loading & configuration issues](#library-loading--configuration-issues)
@@ -75,8 +75,8 @@ Server logs show:
 
 
 
-## Malformed request (400 Bad Request)
-Before any other check, the Server-side Client Tag verifies that the request body parses to a JSON object. This runs first, so it happens even before the origin, IP and HTTP method checks.
+## Malformed request or payload (400 Bad Request)
+Before any other check, the Server-side Client Tag verifies that the request body parses to a JSON object and matches the Nameless Analytics payload schema. These checks run before the origin, IP and HTTP method checks and before any data is written.
 
 
 Server logs show:
@@ -85,7 +85,15 @@ Server logs show:
 
 - **Issue:** the request body is not a JSON object. This covers a missing or empty body, malformed JSON, and JSON that parses correctly but is not an object — an array, a number, a string or `null`. The most common cause is not an implementation bug: opening the endpoint URL directly in a browser sends a `GET` with no body, and uptime checks or crawlers hitting the path do the same.
 - **Solution:** send a `POST` whose body is a JSON object. If you are implementing a custom backend, check that the payload is serialised as an object and not wrapped in an array.
-- **Result:** the request is refused with `400 Bad Request` and the response carries `claim_request: failed`, with Firestore, BigQuery and custom endpoint forwarding all `skipped`. It is the only check that answers with `400`: every other refusal uses `403`.
+- **Result:** the request is refused with `400 Bad Request` and the response carries `claim_request: failed`, with Firestore, BigQuery and custom endpoint forwarding all `skipped`.
+
+Server logs show:
+
+`🔴 Invalid payload schema: [details]`
+
+- **Issue:** the body is valid JSON, but one or more fields are missing or have an invalid type, format, or relationship. The details identify every detected problem, for example an invalid date, a string timestamp, a malformed identifier, an array where an object is required, or an unsupported top-level parameter.
+- **Solution:** compare the payload with the documented schema. Required dates must be real `YYYY-MM-DD` dates, timestamps must be positive integers, `page_id` and `event_id` must use their partial 15-character identifier format, and the required data containers and their system fields must have the documented types. Put custom parameters inside the appropriate scoped data object rather than at the payload root.
+- **Result:** the request is refused with `400 Bad Request` before Firestore, BigQuery, or custom endpoint forwarding is called. The minimal `get_user_data` request is validated separately and requires only `event_name` and `event_origin`.
 
 
 
@@ -161,26 +169,10 @@ Server logs show:
 
 Server logs show:
 
-`🔴 Invalid event_origin parameter value. Accepted values: Website or Streaming Protocol`
-
-- **Issue:** The `event_origin` parameter is missing or holds a value other than `Website` or `Streaming Protocol`. Two separate checks emit this message, one for `get_user_data` requests and one for every other event: the `👉 Event name` line logged just above tells you which request was refused.
-- **Solution:** Ensure the client-side tracker or your streaming implementation is correctly setting the origin to `Website` or `Streaming Protocol`.
-
-Server logs show:
-
 `🔴 Invalid event_name. Can't send page_view from Streaming Protocol`
 
 - **Issue:** Sequence error: `page_view` cannot be sent via Streaming Protocol.
 - **Solution:** Use the website tracker for `page_view` events.
-
-Server logs show:
-
-`🔴 Missing required parameters: [parameters]`
-
-- **Issue:** The server rejected the JSON payload because it's missing one or more mandatory top-level fields: `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
-- **Solution:** If you are using the standard GTM tags, this shouldn't happen. If implementing a custom tracker or using the **Streaming Protocol**, verify that the JSON payload includes all the mandatory root fields listed above.
-
-
 
 ## Google Consent Mode
 Nameless Analytics is deeply integrated with GCM. If consent isn't handled correctly, data might be lost or delayed.

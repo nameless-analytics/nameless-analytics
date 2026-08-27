@@ -50,7 +50,7 @@ Correctly maps BigQuery data types (`string`, `int`, `float`, `json` and `bool`)
 
 
 ### Error handling
-Includes robust error handling for API responses and database queries. A missing, malformed, or non-object JSON request body is rejected by the Server-side Client Tag with `400 Bad Request` before Firestore, BigQuery, or custom forwarding is executed.
+Includes robust error handling for API responses and database queries. A missing, malformed, non-object, or schema-invalid JSON request body is rejected by the Server-side Client Tag with `400 Bad Request` before Firestore, BigQuery, or custom forwarding is executed.
 
 
 ### Security
@@ -72,10 +72,18 @@ To ensure requests are accepted by the server, following requirements must be me
 The JSON payload must include the following top-level fields:
 `page_id`, `page_date`, `page_data`, `event_origin`, `event_date`, `event_timestamp`, `event_name`, `event_id`, `event_data`.
 
+The `get_user_data` cross-domain handshake is the only exception: its payload must contain only `event_name` and `event_origin`. It is reserved for the website tracker and must not be sent through the Streaming Protocol: a server-to-server request has no access to the visitor's browser cookies, so the `Cookie` header would contain values supplied by the caller itself rather than cookies read from the browser.
+
 
 ### Data formats
-- **Dates**: Must be strings in `YYYY-MM-DD` format (e.g., `2026-04-08`).
-- **Timestamps**: Must be an integer representing Unix timestamp in **milliseconds** (e.g., `1712604000000`).
+- **Dates**: `page_date` and `event_date` must be real calendar dates expressed as strings in `YYYY-MM-DD` format (e.g., `2026-04-08`).
+- **Timestamps**: `event_timestamp` must be a positive integer representing Unix time in **milliseconds** (e.g., `1775606400000`).
+- **Identifiers**: `page_id` must be a 15-character alphanumeric string. `event_id` must contain that same `page_id`, an underscore, and a new 15-character alphanumeric identifier.
+- **Required containers**: `page_data` and `event_data` must be non-empty JSON objects. `page_data` must contain `page_title`, `page_hostname`, `page_url`, `page_path`, and a positive integer `page_load_timestamp`. `event_data.event_type` must be `event`, while `source`, `campaign`, `campaign_id`, `campaign_click_id`, `campaign_term`, and `campaign_content` must be strings or `null`.
+- **Optional containers**: `user_data`, `session_data`, and `gtm_data` must be JSON objects or `null` when provided. `consent_data` must be a non-empty object or `null`, `ecommerce` must be an object or `null`, and `datalayer` must be an array or `null`.
+- **Top-level fields**: Unknown top-level fields are rejected. Add custom parameters inside the appropriate `user_data`, `session_data`, `page_data`, or `event_data` object instead.
+
+Payloads that do not match this schema are rejected with `400 Bad Request` before Firestore, BigQuery, or a custom endpoint is called.
 
 
 
@@ -94,10 +102,16 @@ The Streaming Protocol requires a POST request with a JSON body.
          
   "page_date": "2026-04-08", // Automatically retrieved from BigQuery if page_id exists in BigQuery
   "page_id": "WVTWEorF69ZEk3y", // Page segment of the na_s cookie, see "Note on ID composition"
-  "page_data": {}, // Automatically retrieved from BigQuery if page_id exists in BigQuery
+  "page_data": { // Automatically retrieved from BigQuery if page_id exists in BigQuery
+    "page_title": "Checkout",
+    "page_hostname": "example.com",
+    "page_url": "https://example.com/checkout",
+    "page_path": "/checkout",
+    "page_load_timestamp": 1775606400000
+  },
 
   "event_date": "2026-04-08",
-  "event_timestamp": 1712604000000,
+  "event_timestamp": 1775606400000,
   "event_id": "WVTWEorF69ZEk3y_XIkjlUOkXKn99IV", // Page segment of the na_s cookie + a new random ID
   "event_name": "purchase",
   "event_origin": "Streaming Protocol", // Do not modify
@@ -234,7 +248,7 @@ Function execution end: 👍
 
 The last line before the outcome is the `response` field of the server reply, printed as is. `🟢 Request processed successfully` is the message of a fully processed event: the server returns it with `status_code: 200` only after Firestore, BigQuery and, when enabled, the custom endpoint have all completed. Any other value means the event was not stored — look it up in the [Troubleshooting Guide](../setup-guides/TROUBLESHOOTING-GUIDE.md).
 
-Do not match on `🟢 Request claimed successfully`: that message belongs to the `get_user_data` cross-domain handshake, which the Streaming Protocol never performs.
+Do not match on `🟢 Request claimed successfully`: that message belongs to the `get_user_data` cross-domain handshake, which the Streaming Protocol never performs. If manually sent through the protocol, the Server-side Client Tag would only read back the `na_u` and `na_s` values supplied in that request's `Cookie` header; it cannot retrieve cookies from the visitor's browser. The call is therefore not a valid cross-domain identity lookup.
 
 #
 
