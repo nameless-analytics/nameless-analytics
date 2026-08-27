@@ -20,6 +20,8 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
   - [Missing geolocation data](#missing-geolocation-data)
   - [Unexpected channel grouping](#unexpected-channel-grouping)
 - [Network & custom endpoint issues](#network--custom-endpoint-issues)
+  - [Browser request to Nameless Analytics failed](#browser-request-to-nameless-analytics-failed)
+  - [Nameless Analytics forwarding to Custom Endpoint failed](#nameless-analytics-forwarding-to-custom-endpoint-failed)
 - [Cross-domain issues](#cross-domain-issues)
   - [Link not decorated (`na_id` missing)](#link-not-decorated-na_id-missing)
   - [Invalid or expired `na_id`](#invalid-or-expired-na_id)
