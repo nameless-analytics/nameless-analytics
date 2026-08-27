@@ -9,6 +9,9 @@ from datetime import datetime, timezone
 from google.cloud import bigquery
 
 
+ID_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+
 # --------------------------------------------------------------------------------------------------------------
 # CONFIGURATION
 # --------------------------------------------------------------------------------------------------------------
@@ -151,6 +154,10 @@ def get_page_data_from_bq():
 # BUILD PAYLOAD
 # --------------------------------------------------------------------------------------------------------------
 
+def generate_alphanumeric_id(length=15):
+    return ''.join(secrets.choice(ID_ALPHABET) for _ in range(length))
+
+
 def build_payload(page_date_from_bq, page_data_from_bq):
     payload = {
         "user_data": {}, # Optional
@@ -165,7 +172,7 @@ def build_payload(page_date_from_bq, page_data_from_bq):
 
         "event_date": datetime.now(timezone.utc).strftime('%Y-%m-%d'),
         "event_timestamp": int(datetime.now(timezone.utc).timestamp() * 1000),
-        "event_id": f"{na_s.split('-')[1]}_{secrets.token_hex(8)}", # Automatically generated based on na_s cookie
+        "event_id": f"{na_s.split('-')[1]}_{generate_alphanumeric_id()}", # Automatically generated based on na_s cookie
         "event_name": event_name,
         "event_origin": "Streaming Protocol", # Do not modify
         "event_data": {

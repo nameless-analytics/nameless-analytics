@@ -773,9 +773,9 @@ Use the Streaming Protocol to:
 - Attribute realtime events to a session by sending data from your backend when a purchase or subscription is completed.
 - Attribute offline events to a session by sending data from your backend days after a session ended.
 
-To protect against unauthorized data injection from external servers, the system supports an optional **API Key authentication** for the Streaming Protocol.
+To protect against unauthorized data injection from external servers, the Streaming Protocol requires **API Key authentication**.
 
-The Server-side Client Tag will automatically reject any request where `event_origin` is not set to "Streaming Protocol" and does not include a valid `X-Api-Key` header matching your configuration.
+The Server-side Client Tag accepts a request where `event_origin` is set to "Streaming Protocol" only when **Add API key for Streaming Protocol** is enabled and the `X-Api-Key` header matches the configured key. Requests originating from the website are not subject to this API Key check.
 
 
 ### Debugging requests
@@ -793,7 +793,7 @@ Nameless Analytics employs a complementary storage strategy to balance real-time
 It maintains **the latest available state for every user and session** (for example, a custom `user_level` parameter).
 
 - **User data**: Stores the latest user profile state, including first/last session timestamps, original acquisition source, and persistent device metadata.
-- **Session data**: Stores the latest session state, including real-time counters (total events, page views), landing/exit page details, and session-specific attribution.
+- **Session data**: Stores the latest session state, including landing/exit page details, timestamps, and session-specific attribution.
 
 <details><summary>Firestore document structure example</summary>
 
@@ -834,7 +834,7 @@ Adding custom Session parameters will increase the base byte weight of the sessi
 It maintains **every single state transition** for every user and session (for example, all different `user_level` custom parameter values through time).
 
 - **User data**: Stores the current user profile state at event occurs, including first/last session timestamps, original acquisition source, and persistent device metadata.
-- **Session data**: Stores the current session state at event occurs, including real-time counters (total events, page views), landing/exit page details, and session-specific attribution.
+- **Session data**: Stores the current session state when each event occurs, including landing/exit page details, timestamps, and session-specific attribution.
 - **Page data**: Stores the current page state at event occurs, including page name, timestamp, and page-specific attributes.
 - **Event data**: Stores the current event state at event occurs, including event name, timestamp, and event-specific attributes.
 - **dataLayer data**: Stores the current dataLayer state at event occurs, including dataLayer name, timestamp, and dataLayer-specific attributes.

@@ -7,6 +7,9 @@ const crypto = require('crypto');
 const { BigQuery } = require('@google-cloud/bigquery');
 
 
+const ID_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+
 // --------------------------------------------------------------------------------------------------------------
 // CONFIGURATION
 // --------------------------------------------------------------------------------------------------------------
@@ -167,11 +170,22 @@ async function get_page_data_from_bq() {
 // BUILD PAYLOAD
 // --------------------------------------------------------------------------------------------------------------
 
+function generateAlphanumericId(length = 15) {
+    let value = '';
+
+    for (let i = 0; i < length; i++) {
+        value += ID_ALPHABET[crypto.randomInt(ID_ALPHABET.length)];
+    }
+
+    return value;
+}
+
+
 async function build_payload(page_date_from_bq, page_data_from_bq) {
     const now = new Date();
     const event_date = now.toISOString().split('T')[0];
     const event_timestamp = now.getTime();
-    const event_id_suffix = crypto.randomBytes(8).toString('hex');
+    const event_id_suffix = generateAlphanumericId();
 
     const payload = {
         "user_data": {}, // Optional
