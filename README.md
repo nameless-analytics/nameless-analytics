@@ -513,7 +513,7 @@ Link decoration is driven by a delegated `click` listener on the document, so it
 
 On links carrying `target="_blank"` the new tab is opened by the tracker itself, not by the browser. As browsers do for `target="_blank"`, the destination gets no `window.opener` reference back to the source page, unless the link explicitly declares `rel="opener"`.
 
-A decorated link can also be **rejected on arrival**, with the same outcome. This happens when more than five minutes elapse between the click and the first `page_view` on the destination (link opened in a background tab, slow connection, machine suspended), when the `page_view` is not the first one of the physical page, or when the destination page runs an incompatible version of the tag. See the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md#cross-domain-issues) for the corresponding console messages.
+A decorated link can also be **rejected on arrival**, with the same outcome. This happens when more than five minutes elapse between the click and the first `page_view` on the destination (link opened in a background tab, slow connection, machine suspended), when the `page_view` is not the first one of the physical page, or when the destination page runs an incompatible version of the tag. See the [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md#cross-domain-decoration) for the corresponding console messages.
 
 <details><summary>How the cross-domain handshake works</summary>
 

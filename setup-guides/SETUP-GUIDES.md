@@ -118,7 +118,7 @@ Create a new:
 ## How to track page views
 Page view tracking is not only used to track the number of page views on a website, they are responsible for creating and updating sessions and users in Firestore, releasing cookies and more.
 
-For this reason, the `page_view` event must be the **first** event triggered on every page load. Triggering other events before it will result in [orphan events](TROUBLESHOOTING-GUIDE.md#orphan-events--sequence-issues).
+For this reason, the `page_view` event must be the **first** event triggered on every page load. Triggering other events before it will result in [orphan events](TROUBLESHOOTING-GUIDE.md#event-sequence).
 
 Every `page_view` after the first one within the same physical page load is treated as a **virtual page view**: the page referrer becomes the previous page URL and the event level acquisition parameters are reset, while user and session attribution stay untouched. Read [SPA & History Management](../README.md#spa--history-management) before building reports on the event level `source` and `channel_grouping`.
 
