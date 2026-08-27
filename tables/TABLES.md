@@ -13,7 +13,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
 - [Setup](#setup)
   - [Create raw tables](#create-raw-tables)
   - [Create custom functions](#create-custom-functions)
-  - [Create external campaign tables](#create-external-campaign-tables)
+  - [Create external tables](#create-external-tables)
   - [Create table functions](#create-table-functions)
 - [Reporting fields](#reporting-fields)
 - [Raw tables](#raw-tables)
@@ -389,7 +389,7 @@ select * from `project.nameless_analytics.attribution_multi_touch`(start_date, e
 ### Media plan
 Combines monthly planned campaign budgets with actual campaign spend for the selected date range, preserving campaign taxonomy dimensions.
 
-Requires the `media_plan_sheets` and `online_campaign_performance_sheets` tables. See [Create external campaign tables](#create-external-campaign-tables).
+Requires the `media_plan_sheets` and `online_campaign_performance_sheets` tables. See [Create external tables](#create-external-tables).
 
 ```sql
 select * from `project.nameless_analytics.media_plan`(start_date, end_date)
@@ -403,7 +403,7 @@ Combines daily campaign media performance with post-click user, session, convers
 
 Unmatched advertising and analytics campaigns are preserved in the results. Missing numeric metrics are returned as zero, making campaign naming and ID discrepancies visible.
 
-Requires the `online_campaign_performance_sheets` table. See [Create external campaign tables](#create-external-campaign-tables).
+Requires the `online_campaign_performance_sheets` table. See [Create external tables](#create-external-tables).
 
 ```sql
 select * from `project.nameless_analytics.campaigns`(start_date, end_date)

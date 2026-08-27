@@ -11,6 +11,7 @@ For an overview of how Nameless Analytics works [start from here](../README.md#o
 
 - [Troubleshooting tip](#troubleshooting-tip)
 - [Orphan events & sequence issues](#orphan-events--sequence-issues)
+- [Malformed request (400 Bad Request)](#malformed-request-400-bad-request)
 - [Validation errors (403 Forbidden)](#validation-errors-403-forbidden)
 - [Google Consent Mode](#google-consent-mode)
 - [Library loading & configuration issues](#library-loading--configuration-issues)
@@ -71,6 +72,20 @@ Server logs show:
 
 - **Issue:** Firestore does not contain a record for this user or session.
 - **Solution:** Ensure the first event triggered on every page load is always a `page_view` to initialize the user and session profile in Firestore.
+
+
+
+## Malformed request (400 Bad Request)
+Before any other check, the Server-side Client Tag verifies that the request body parses to a JSON object. This runs first, so it happens even before the origin, IP and HTTP method checks.
+
+
+Server logs show:
+
+`🔴 Invalid JSON request body`
+
+- **Issue:** the request body is not a JSON object. This covers a missing or empty body, malformed JSON, and JSON that parses correctly but is not an object — an array, a number, a string or `null`. The most common cause is not an implementation bug: opening the endpoint URL directly in a browser sends a `GET` with no body, and uptime checks or crawlers hitting the path do the same.
+- **Solution:** send a `POST` whose body is a JSON object. If you are implementing a custom backend, check that the payload is serialised as an object and not wrapped in an array.
+- **Result:** the request is refused with `400 Bad Request` and the response carries `claim_request: failed`, with Firestore, BigQuery and custom endpoint forwarding all `skipped`. It is the only check that answers with `400`: every other refusal uses `403`.
 
 
 
@@ -324,8 +339,8 @@ Server logs show:
 
 `🔴 Request not sent successfully. Error: [result]`
 
-- **Issue:** Forwarding to the custom endpoint failed.
-- **Solution:** Verify the custom endpoint URL and ensure your server-side environment has the necessary network access.
+- **Issue:** Forwarding to the custom endpoint failed, either because the endpoint answered with an error status or because it could not be reached.
+- **Solution:** Verify the custom endpoint URL and ensure your server-side environment has the necessary network access. The event itself is not lost: Firestore and BigQuery have already succeeded at this point, so the response is still `200` and only `custom_endpoint: failed` appears in the `processing` object.
 
 
 
