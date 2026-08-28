@@ -12,9 +12,8 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 ## Wishlist
 Here is a wishlist of ideas and features for future releases, representing a list of intentions rather than a strict roadmap.
 
-- Complete Dataform datamodel with ML models
+- Complete Dataform datamodel
 - Add core web vitals metrics (Client-side Tracker Tag) for page_load_time event
-- Add force cast value as string at event parameter level
 
 #
 
