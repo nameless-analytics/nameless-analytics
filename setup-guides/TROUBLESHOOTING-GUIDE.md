@@ -168,6 +168,8 @@ Always read the preceding line: `Request aborted` is only the final outcome, not
 | Browser log | Meaning and action |
 |:---|:---|
 | `[event_name] > 🔴 Tracker configuration error: event has invalid Nameless Analytics Client-side Tracker Configuration Variable` | The tag has no valid configuration variable. Select a valid Nameless Analytics configuration in the tag. This message can appear even when normal logs are disabled. |
+| `[event_name] > 🔴 Unable to send request. Unauthorized domain: [hostname]` | The configuration has no endpoint for the current website. Add the hostname and its server-side endpoint to the configuration variable. |
+| `[event_name] > 🔴 Invalid server-side endpoint domain: [domain]` | The configured endpoint domain contains an invalid protocol, path or host value. Enter only a valid domain name; configure the path separately. |
 | `[event_name] > 🔴 Main library not loaded from: [URL]` | The main tracker library could not be downloaded. Check the URL, Content Security Policy and ad blockers; first-party hosting avoids third-party CDN blocking. |
 | `[event_name] > 🔴 UA parser library not loaded from: [URL]` | The UA parser could not be downloaded. Check the URL, Content Security Policy and ad blockers. |
 | `[event_name] > 🔴 Permission denied: unable to load Main library from [URL]` | The template lacks permission to load the main library URL. Add it to the template's **Inject Scripts** permission. |
@@ -205,6 +207,12 @@ Large `dataLayer` states or ecommerce item arrays can exceed the browser's `keep
 A preceding generic message such as `[event_name] > 🔴 [error]` contains the browser error that triggered this final line.
 
 ### Cross-domain decoration
+
+```text
+cross-domain > Google Consent Mode not found. Cross-domain decoration aborted.
+```
+
+Cross-domain tracking respects the same consent configuration as normal events. Initialize Consent Mode before GTM, or disable consent enforcement only when appropriate for your implementation.
 
 ```text
 cross-domain > 🔴 Error while fetching user data: [error]
