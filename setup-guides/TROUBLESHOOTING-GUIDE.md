@@ -104,17 +104,13 @@ The request is not allowed to proceed, or Firestore refused a handled write oper
 
 For the three Firestore messages, verify the project, quotas, Firestore Native Mode and that the runtime service account has `roles/datastore.user`. BigQuery and custom forwarding are not attempted for that request. Although the current response is `403`, these messages describe a storage failure, not invalid caller credentials.
 
-<details>
-<summary>Blocked User-Agent signatures</summary>
+The exact blocked signatures and the checks that remain active when general bot protection is disabled are documented under [Enable Bot protection](https://github.com/nameless-analytics/server-side-client-tag#enable-bot-protection).
 
-- **HTTP Libraries:** `curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.
-- **AI Agents & LLMs:** `gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytespider`, `ccbot`.
-- **SEO & Marketing Bots:** `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
-- **Automation & Security:** `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
+#### Firestore 1 MiB document limit
 
-If you are using the **Streaming Protocol**, its exact User-Agent check runs even when general bot protection is disabled.
+Firestore user documents have a hard [1 MiB limit](https://firebase.google.com/docs/firestore/quotas#limits). The document grows as sessions and custom user or session parameters are added.
 
-</details>
+When the next update would exceed the limit, Firestore refuses it and BigQuery and custom forwarding are not attempted for that event. Reduce the stored custom fields or session history before retrying, and review the snapshot model for users with many sessions.
 
 ### 405 Method Not Allowed
 

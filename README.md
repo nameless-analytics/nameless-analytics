@@ -492,13 +492,7 @@ In `events_raw`, each event retains the value valid at that moment. The reportin
 ### Bot protection
 When enabled, bot protection rejects User-Agent values matching the maintained signature list. A missing User-Agent is always rejected, and Streaming Protocol requests must use their exact dedicated value even when the optional blacklist is disabled.
 
-<details><summary>See bot protection list</summary>
-
-- **HTTP Libraries:** `curl`, `wget`, `python`, `requests`, `httpie`, `go-http-client`, `java`, `okhttp`, `libwww`, `perl`, `axios`, `node`, `fetch`, `php`, `guzzle`, `ruby`, `faraday`, `rest-client`.
-- **AI Agents & LLMs:** `gptbot`, `chatgpt`, `anthropic`, `claude`, `perplexity`, `bytespider`, `ccbot`.
-- **SEO & Marketing Bots:** `ahrefs`, `semrush`, `dotbot`, `mj12`, `rogerbot`, `bot`, `crawler`, `spider`, `scraper`.
-- **Automation & Security:** `nmap`, `zgrab`, `masscan`, `shodan`, `headless`, `phantomjs`, `selenium`, `puppeteer`, `playwright`, `cypress`, `electron`.
-</details>
+See [Enable Bot protection](https://github.com/nameless-analytics/server-side-client-tag#enable-bot-protection) for the exact signatures and mandatory checks.
 
 
 ### Channel grouping logic
@@ -591,12 +585,6 @@ Firestore ensures data integrity by managing how parameters are updated across h
 | **Session** | **Event-driven** | `user_id` | Set at session start, then overwritten by `login` and cleared by `logout`. See [User ID lifecycle](#user-id-lifecycle). |
 
 </details>
-
-#### Known limitations: Firestore 1 MiB document limit
-Firestore has a hard [1 MiB document limit](https://firebase.google.com/docs/firestore/quotas#limits). The session array grows whenever a user starts a new session, and custom session parameters increase every stored entry.
-
-If the document reaches the limit, the Firestore update fails and BigQuery is not attempted for that event. High-frequency applications should monitor document size and adapt the snapshot model before reaching this boundary.
-
 
 ### BigQuery as historical timeline
 `events_raw` stores the enriched state attached to every event, including user, session, page, event, consent, ecommerce, dataLayer and GTM metadata. Unlike Firestore, earlier values remain available for historical analysis.

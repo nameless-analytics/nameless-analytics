@@ -265,7 +265,7 @@ dataLayer.push({
 2. Map `user_id` under **Session parameters**.
 3. Add profile properties such as `user_tier` under **User parameters**.
 
-Avoid unnecessary or sensitive fields. Every custom property grows the Firestore user document and may accelerate the [1 MiB document limit](../README.md#known-limitations-firestore-1-mib-document-limit).
+Avoid unnecessary or sensitive fields. Every custom property grows the Firestore user document and may accelerate the [1 MiB document limit](TROUBLESHOOTING-GUIDE.md#firestore-1-mib-document-limit).
 
 ## How to respect user consents
 
@@ -412,7 +412,7 @@ Requests without `Origin` are rejected when this option is enabled. The browser 
 
 ### 2. Bot & automated traffic protection
 
-Enable **Enable Bot protection** to reject User-Agents matching the built-in automation list. This is a heuristic and can produce false positives. A missing User-Agent is always rejected; Streaming Protocol requests must use exactly `Nameless Analytics - Streaming Protocol` even when general bot protection is disabled. See [Bot protection](../README.md#bot-protection) for the maintained signature list.
+Enable **Enable Bot protection** to reject User-Agents matching the built-in automation list. This is a heuristic and can produce false positives. A missing User-Agent is always rejected; Streaming Protocol requests must use exactly `Nameless Analytics - Streaming Protocol` even when general bot protection is disabled. See [Enable Bot protection](https://github.com/nameless-analytics/server-side-client-tag#enable-bot-protection) for the maintained signature list.
 
 ### 3. IP blacklisting
 
