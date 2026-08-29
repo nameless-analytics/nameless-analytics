@@ -207,7 +207,10 @@ dataLayer.push({
 Use the reserved events `login`, `logout` and `sign_up`. Map `user_id` under the configuration variable's **Session parameters**:
 
 ```javascript
-dataLayer.push({ event: 'login', user_id: 'ABC-12345' });
+dataLayer.push({
+  event: 'login', 
+  user_id: 'ABC-12345'
+});
 ```
 
 `login` sets the session `user_id`; `logout` clears it. Renaming either event prevents this lifecycle logic from running. See [User ID lifecycle](../README.md#user-id-lifecycle).
