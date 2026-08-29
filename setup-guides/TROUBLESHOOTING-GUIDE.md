@@ -238,7 +238,7 @@ On the destination, these messages all mean that `na_id` was ignored and a new o
 | `[page_view] > 🟠 Expired cross-domain ID` | The five-minute decoration window elapsed. |
 | `[page_view] > 🔴 Invalid cross-domain ID` | The timestamp is invalid or in the future. |
 
-Decoration runs only on normal link clicks. Modified clicks, browser “Open in new tab” actions and programmatic navigation may reach the destination without `na_id`; this preserves native browser navigation. See [when link decoration does not happen](../README.md#when-link-decoration-does-not-happen).
+Decoration runs only on normal link clicks. Modified clicks, browser “Open in new tab” actions and programmatic navigation may reach the destination without `na_id`; this preserves native browser navigation.
 
 If no validation message appears, verify that cross-domain tracking is enabled, the destination URL contains `na_id`, and the Client-side Tracker Tag fires on the first `page_view`.
 
