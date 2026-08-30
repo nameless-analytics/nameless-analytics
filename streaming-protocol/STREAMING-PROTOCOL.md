@@ -61,7 +61,10 @@ The JSON body must follow these rules:
 | `event_name` | Non-empty backend or offline event name; not `page_view` or `get_user_data` |
 | `event_origin` | Exactly `Streaming Protocol` |
 | `event_data` | Non-empty object with `event_type: "event"` and the required nullable attribution fields shown below |
-| Optional containers | `user_data`, `session_data`, `gtm_data`, `consent_data`, `ecommerce` and `datalayer`. Follow the same scoped structure used by website events |
+| `user_data`, `session_data`, `gtm_data` | Optional JSON object or `null`; an empty object is allowed |
+| `consent_data` | Optional non-empty JSON object or `null` |
+| `ecommerce` | Optional JSON object or `null`; an empty object is allowed |
+| `datalayer` | Optional JSON array or `null`; an empty array is allowed |
 
 Unknown top-level fields are rejected. Put custom parameters inside the appropriate scoped object. Invalid cookies or payloads return `400`; authentication and User-Agent failures return `401` or `403`. See the [Troubleshooting Guide](../setup-guides/TROUBLESHOOTING-GUIDE.md) for individual responses.
 
