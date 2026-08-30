@@ -65,7 +65,7 @@ The browser tracker builds the event, the Server-side Client Tag validates and e
 You need a web GTM container, a server GTM container, a Google Cloud project, a BigQuery dataset and Firestore in Native Mode.
 
 1. Create the raw tables and reporting functions with the provided [SQL resources](tables/TABLES.md).
-2. Import the three templates: [Client-side Tracker Tag](https://github.com/nameless-analytics/client-side-tracker-tag), [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/client-side-tracker-configuration-variable) and [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag).
+2. Import the three templates: [Client-side Tracker Tag](https://github.com/nameless-analytics/client-side-tracker-tag/), [Client-side Tracker Configuration Variable](https://github.com/nameless-analytics/client-side-tracker-configuration-variable/) and [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag/).
 3. Configure matching client/server endpoint paths and send `page_view` as the first event.
 4. Verify Firestore and BigQuery processing in GTM Preview.
 
@@ -389,7 +389,7 @@ In a Single Page Application, changing route does not reload the document. Fire 
 
 For virtual page views, the previous tracked page becomes `page_referrer`. Event-level acquisition is recalculated from the new URL and normally becomes direct when the route no longer contains campaign parameters. User- and session-level acquisition remain unchanged, so use those scopes for acquisition reporting.
 
-See [How to track page views](setup-guides/SETUP-GUIDES.md#how-to-track-page-views) for History Change and custom `dataLayer` implementations. Page fields can be mapped through the [Configuration Variable](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#override-default-page-parameters).
+See [How to track page views](setup-guides/SETUP-GUIDES.md#how-to-track-page-views) for History Change and custom `dataLayer` implementations. Page fields can be mapped through the [Configuration Variable](https://github.com/nameless-analytics/client-side-tracker-configuration-variable/#override-default-page-parameters).
 
 The tracker sends events through a FIFO queue and can load its JavaScript dependencies from your own domain. See [First-party library hosting](setup-guides/SETUP-GUIDES.md#how-to-set-up-first-party-library-hosting).
 
@@ -457,7 +457,7 @@ The tag can restrict browser requests by authorized origin, reject listed IP add
 
 Malformed JSON, unsupported fields, invalid identifiers and cookies are rejected before storage. Invalid cookie formats return `400`. A malformed cross-domain ID is ignored rather than rejecting the event, so the destination falls back to its local identity context.
 
-Streaming Protocol requests have separate API-key and User-Agent requirements. See the [Server-side Client Tag reference](https://github.com/nameless-analytics/server-side-client-tag#client-settings) and [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md).
+Streaming Protocol requests have separate API-key and User-Agent requirements. See the [Server-side Client Tag reference](https://github.com/nameless-analytics/server-side-client-tag/#client-settings) and [Troubleshooting Guide](setup-guides/TROUBLESHOOTING-GUIDE.md).
 
 ### Server-side ID management
 The Nameless Analytics Server-side Client Tag automatically generates and manages unique identifiers for users and sessions.
@@ -492,7 +492,7 @@ In `events_raw`, each event retains the value valid at that moment. The reportin
 ### Bot protection
 When enabled, bot protection rejects User-Agent values matching the maintained signature list. A missing User-Agent is always rejected, and Streaming Protocol requests must use their exact dedicated value even when the optional blacklist is disabled.
 
-See [Enable Bot protection](https://github.com/nameless-analytics/server-side-client-tag#enable-bot-protection) for the exact signatures and mandatory checks.
+See [Enable Bot protection](https://github.com/nameless-analytics/server-side-client-tag/#enable-bot-protection) for the exact signatures and mandatory checks.
 
 
 ### Channel grouping logic

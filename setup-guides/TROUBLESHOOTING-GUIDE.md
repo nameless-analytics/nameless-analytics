@@ -104,7 +104,7 @@ The request is not allowed to proceed, or Firestore refused a handled write oper
 
 For the three Firestore messages, verify the project, quotas, Firestore Native Mode and that the runtime service account has `roles/datastore.user`. BigQuery and custom forwarding are not attempted for that request. Although the current response is `403`, these messages describe a storage failure, not invalid caller credentials.
 
-The exact blocked signatures and the checks that remain active when general bot protection is disabled are documented under [Enable Bot protection](https://github.com/nameless-analytics/server-side-client-tag#enable-bot-protection).
+The exact blocked signatures and the checks that remain active when general bot protection is disabled are documented under [Enable Bot protection](https://github.com/nameless-analytics/server-side-client-tag/#enable-bot-protection).
 
 #### Firestore 1 MiB document limit
 

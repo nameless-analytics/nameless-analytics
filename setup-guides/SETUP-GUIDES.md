@@ -150,7 +150,7 @@ dataLayer.push({
 });
 ```
 
-Map or [override the page parameters](https://github.com/nameless-analytics/client-side-tracker-configuration-variable#page-data) in the configuration variable before firing the tag.
+Map or [override the page parameters](https://github.com/nameless-analytics/client-side-tracker-configuration-variable/#page-data) in the configuration variable before firing the tag.
 
 ## How to track standard events
 
@@ -415,7 +415,7 @@ Requests without `Origin` are rejected when this option is enabled. The browser 
 
 ### 2. Bot & automated traffic protection
 
-Enable **Enable Bot protection** to reject User-Agents matching the built-in automation list. This is a heuristic and can produce false positives. A missing User-Agent is always rejected; Streaming Protocol requests must use exactly `Nameless Analytics - Streaming Protocol` even when general bot protection is disabled. See [Enable Bot protection](https://github.com/nameless-analytics/server-side-client-tag#enable-bot-protection) for the maintained signature list.
+Enable **Enable Bot protection** to reject User-Agents matching the built-in automation list. This is a heuristic and can produce false positives. A missing User-Agent is always rejected; Streaming Protocol requests must use exactly `Nameless Analytics - Streaming Protocol` even when general bot protection is disabled. See [Enable Bot protection](https://github.com/nameless-analytics/server-side-client-tag/#enable-bot-protection) for the maintained signature list.
 
 ### 3. IP blacklisting
 
