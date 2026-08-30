@@ -17,7 +17,6 @@ A first-party digital analytics platform built with [Google Tag Manager](https:/
   - [Documentation](#documentation)
 - [Client-side collection](#client-side-collection)
   - [Request payload data](#request-payload-data)
-  - [Campaign taxonomy](#campaign-taxonomy)
   - [Client-side ID management](#client-side-id-management)
   - [Smart consent management](#smart-consent-management)
   - [SPA & history management](#spa--history-management)
@@ -35,6 +34,7 @@ A first-party digital analytics platform built with [Google Tag Manager](https:/
   - [Firestore as last updated snapshot](#firestore-as-last-updated-snapshot)
   - [BigQuery as historical timeline](#bigquery-as-historical-timeline)
 - [Reporting](#reporting)
+  - [Campaign taxonomy](#campaign-taxonomy)
 - [AI support](#ai-support)
 - [Google Cloud costs](#google-cloud-costs)
 - [License](#license)
@@ -338,29 +338,6 @@ The request data is sent via a POST request in JSON format. It is structured int
 
 </details>
 
-### Campaign taxonomy
-Campaign naming is optional. When `utm_campaign` follows the seven-part pattern below, the tracker stores the complete value as `campaign` and the reporting queries expose each part as a separate dimension.
-
-| Position | Extracted as | Example |
-| :--- | :--- | :--- |
-| 1 | `campaign_year` | `2026` |
-| 2 | `campaign_country` | `IT` |
-| 3 | `campaign_funnel_stage` | `Upper funnel` |
-| 4 | `campaign_platform` | `Google Ads` |
-| 5 | `campaign_type` | `Search ads` |
-| 6 | `campaign_marketing_objective` | `Brand awareness` |
-| 7 | `campaign_name` | `Nameless Analytics` |
-
-Separate the values with a pipe and use the full string in the landing URL:
-
-```text
-utm_campaign=2026|IT|Upper funnel|Google Ads|Search ads|Brand awareness|Nameless Analytics
-```
-
-The extracted dimensions are available at user, session and event scope and are reused by the reporting queries for users, sessions, pages, events, ecommerce, attribution, campaign performance and media plans. For example, the first part is exposed as `user_campaign_year`, `session_campaign_year` or `campaign_year`, depending on the scope.
-
-Extraction is positional: missing parts return `NULL`, while values in the wrong position are assigned to the wrong dimension. The original campaign string remains unchanged. See the [`get_campaign_part`](tables/user-defined-functions/get_campaign_part.sql) function for the mapping used by BigQuery.
-
 ### Client-side ID management
 The tracker automatically generates and manages unique identifiers for pages and events: a random 15 character identifier for every page, and one for every event.
 
@@ -613,6 +590,29 @@ BigQuery table functions transform `events_raw` into reporting-ready datasets:
 | Validation | [Events Debug](tables/TABLES.md#events-debug) and [Consents](tables/TABLES.md#consents) |
 
 See [Reporting Tables](tables/TABLES.md) for setup, parameters and SQL source, or use the [Fields catalog explorer](https://datastudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d) to browse fields.
+
+### Campaign taxonomy
+Campaign naming is optional. When `utm_campaign` follows the seven-part pattern below, the tracker stores the complete value as `campaign` and the reporting queries expose each part as a separate dimension.
+
+| Position | Extracted as | Example |
+| :--- | :--- | :--- |
+| 1 | `campaign_year` | `2026` |
+| 2 | `campaign_country` | `IT` |
+| 3 | `campaign_funnel_stage` | `Upper funnel` |
+| 4 | `campaign_platform` | `Google Ads` |
+| 5 | `campaign_type` | `Search ads` |
+| 6 | `campaign_marketing_objective` | `Brand awareness` |
+| 7 | `campaign_name` | `Nameless Analytics` |
+
+Separate the values with a pipe and use the full string in the landing URL:
+
+```text
+utm_campaign=2026|IT|Upper funnel|Google Ads|Search ads|Brand awareness|Nameless Analytics
+```
+
+The extracted dimensions are available at user, session and event scope and are reused by the reporting queries for users, sessions, pages, events, ecommerce, attribution, campaign performance and media plans. For example, the first part is exposed as `user_campaign_year`, `session_campaign_year` or `campaign_year`, depending on the scope.
+
+Extraction is positional: missing parts return `NULL`, while values in the wrong position are assigned to the wrong dimension. The original campaign string remains unchanged. See the [`get_campaign_part`](tables/user-defined-functions/get_campaign_part.sql) function for the mapping used by BigQuery.
 
 ## AI support
 
