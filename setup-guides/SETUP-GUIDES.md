@@ -71,7 +71,7 @@ Nameless Analytics uses a client-side GTM container, a server-side GTM container
 
 Prepare the following before importing the templates:
 
-- **BigQuery:** create the dataset, `events_raw` and `calendar_dates` with the provided [SQL setup](../tables/TABLES.md). The final `ALTER PROJECT` statement enables Advanced Runtime and requires `bigquery.projects.update`; it is optional for normal operation.
+- **BigQuery:** create the dataset, `events_raw` and `calendar_dates` with the provided [SQL setup](../tables/TABLES.md).
 - **Firestore:** initialize a Native Mode database, normally the `(default)` database.
 - **Server-side GTM:** deploy the tagging server and map it to a first-party domain.
 - **Runtime permissions:** grant the tagging server service account `roles/datastore.user` and `roles/bigquery.dataEditor` on the selected project.

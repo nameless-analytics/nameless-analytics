@@ -54,8 +54,6 @@ Before running a script, update the variables declared at the top:
 
 The raw tables, custom functions, table functions and optional campaign source tables must use the same project and dataset.
 
-`tables.sql` also contains a project-level statement that enables [BigQuery Advanced Runtime](https://cloud.google.com/bigquery/docs/advanced-runtime). BigQuery now enables Advanced Runtime by default, so this statement is not required by Nameless Analytics and can be omitted if the account running the script cannot modify project settings.
-
 ### Create raw tables
 
 Run [`tables.sql`](tables/tables.sql) to create the dataset, `events_raw` and `calendar_dates`.

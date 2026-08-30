@@ -29,17 +29,6 @@ declare dates_table_path string default CONCAT('`', project_name, '.', dataset_n
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Enable BigQuery advanced runtime, a more advanced query execution engine that automatically improves performance and efficiency for complex analytical queries. For more information: https://cloud.google.com/bigquery/docs/advanced-runtime
-declare enable_bigquery_advanced_runtime string default format(
-  """
-    ALTER PROJECT `%s`
-    SET OPTIONS (
-      `region-%s.query_runtime` = 'advanced' # default null
-    );
-  """
-, project_name, dataset_location);
-
-
 # Create main dataset (for more info https://cloud.google.com/bigquery/docs/datasets#sql)
 declare main_dataset_sql string default format(
   """
@@ -209,6 +198,3 @@ execute immediate main_table_sql;
 
 # Create dates table
 execute immediate dates_table_sql;
-
-# Enable BigQuery advanced runtime
-execute immediate enable_bigquery_advanced_runtime; 
