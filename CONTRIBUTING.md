@@ -1,12 +1,10 @@
 # Nameless Analytics | Contributing
-Nameless Analytics contributing guidelines.
-
 
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
+## Contributions
 
-## How to contribute
-I appreciate your interest in contributing to Nameless Analytics! For now contributions are not open, but stay tuned for future updates.
+External contributions are not currently accepted. This page will be updated with the contribution process when submissions open.
 
 #
 
