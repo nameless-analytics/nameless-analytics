@@ -296,7 +296,7 @@ select * from `project.nameless_analytics.consents`(start_date, end_date)
 
 ### Attribution single touch
 
-Calculates user first click, conversion-session last click and last non-direct click within the configured lookback window. The last non-direct model falls back to the direct conversion session when no non-direct touchpoint exists.
+Calculates user first click, conversion-session last click and last non-direct click within the configured lookback window. The date range follows `session_date`, matching `sessions`; `lookback_days` only expands the search for earlier sessions. The last non-direct model falls back to the direct conversion session when no non-direct touchpoint exists.
 
 ```sql
 select * from `project.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)
@@ -306,7 +306,7 @@ select * from `project.nameless_analytics.attribution_single_touch`(start_date, 
 
 ### Attribution multi touch
 
-Distributes conversion credit across touchpoints using linear, time-decay and position-based models within the configured lookback window.
+Distributes conversion credit across touchpoints using linear, time-decay and position-based models within the configured lookback window. The date range follows `session_date`, matching `sessions`; `lookback_days` only expands the search for earlier sessions.
 
 ```sql
 select * from `project.nameless_analytics.attribution_multi_touch`(start_date, end_date, conversion_name, lookback_days)
