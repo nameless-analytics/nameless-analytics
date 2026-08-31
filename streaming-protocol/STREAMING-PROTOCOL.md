@@ -66,6 +66,8 @@ The JSON body must follow these rules:
 | `ecommerce` | Optional JSON object or `null`; an empty object is allowed |
 | `datalayer` | Optional JSON array or `null`; an empty array is allowed |
 
+Except for `session_data.user_id`, `user_data` and `session_data` must not contain the server-managed names documented as reserved parameters in the [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag/#user-data). Requests containing them are rejected with `400 Bad Request` before storage.
+
 Unknown top-level fields are rejected. Put custom parameters inside the appropriate scoped object. Invalid cookies or payloads return `400`; authentication and User-Agent failures return `401` or `403`. See the [Troubleshooting Guide](../setup-guides/TROUBLESHOOTING-GUIDE.md) for individual responses.
 
 

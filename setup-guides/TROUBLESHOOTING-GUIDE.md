@@ -69,7 +69,7 @@ The request could not become a valid event. Firestore, BigQuery and custom forwa
 | Server log | Meaning and action |
 |:---|:---|
 | `🔴 Invalid JSON request body` | The parsed body is not a JSON object. Send a JSON object using `POST`. A malformed or empty body can fail before this structured message is returned. |
-| `🔴 Invalid payload schema: [details]` | Required fields are missing or invalid, or an unsupported top-level field was sent. Follow the details in the response and compare the payload with the documented schema. Put custom parameters inside the appropriate scoped data object. |
+| `🔴 Invalid payload schema: [details]` | Required fields are missing or invalid, an unsupported top-level field was sent, or `user_data`/`session_data` contains a reserved parameter. Follow the details in the response and compare the payload with the documented schema. Put custom parameters inside the appropriate scoped data object. |
 | `🔴 Invalid cookie format` | `na_u` or `na_s` does not use the expected format. Check that the cookies were issued by Nameless Analytics and were not modified. Streaming Protocol requests must pass the original website cookie values. |
 | `🔴 Invalid event_name. Can't send page_view from Streaming Protocol` | `page_view` is reserved for website tracking. Send only supported offline or server-side events through the Streaming Protocol. |
 | `🔴 Orphan event: missing user cookie. Trigger a page_view event first to create a new user and a new session` | The event has no user context. Ensure `page_view` is the first event and verify that the expected cookie exists. |
