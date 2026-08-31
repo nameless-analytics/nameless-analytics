@@ -61,8 +61,9 @@ The JSON body must follow these rules:
 | `event_name` | Non-empty backend or offline event name; not `page_view` or `get_user_data` |
 | `event_origin` | Exactly `Streaming Protocol` |
 | `event_data` | Non-empty object with `event_type: "event"` and the required nullable attribution fields shown below |
-| `user_data`, `session_data`, `gtm_data` | Optional JSON object or `null`; an empty object is allowed |
-| `consent_data` | Optional non-empty JSON object or `null` |
+| `user_data`, `session_data` | Optional JSON object or `null`; an empty object is allowed |
+| `gtm_data` | Optional JSON object or `null`; values must be strings, integers or `null` |
+| `consent_data` | Optional non-empty JSON object or `null`; values must be strings or `null` |
 | `ecommerce` | Optional JSON object or `null`; an empty object is allowed |
 | `datalayer` | Optional JSON array or `null`; an empty array is allowed |
 
