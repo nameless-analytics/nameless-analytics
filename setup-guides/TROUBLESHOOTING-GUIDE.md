@@ -89,7 +89,7 @@ The Streaming Protocol request has a missing or incorrect `X-Api-Key`. Send the 
 
 ### 403 Forbidden
 
-The request is not allowed to proceed, or Firestore refused a handled write operation.
+The request is not allowed to proceed.
 
 | Server log | Meaning and action |
 |:---|:---|
@@ -98,19 +98,8 @@ The request is not allowed to proceed, or Firestore refused a handled write oper
 | `🔴 Missing User-Agent header. Request from bot` | No User-Agent was received. Use a normal browser for website events or the required Streaming Protocol User-Agent for backend events. |
 | `🔴 Invalid User-Agent header value. Request from bot` | The User-Agent matches a blocked automation signature, or a Streaming Protocol request is not using exactly `Nameless Analytics - Streaming Protocol`. |
 | `🔴 Add API key for Streaming Protocol is not enabled.` | The payload declares `Streaming Protocol`, but API-key validation is not configured. Enable **Add API key for Streaming Protocol**, publish the container and send the configured key in `X-Api-Key`. |
-| `🔴 User or session data not created to Firestore` | Firestore could not create the user or session. |
-| `🔴 User or session data not added to Firestore` | Firestore could not add a new session. |
-| `🔴 User or session data not updated to Firestore` | Firestore could not update the existing state. |
-
-For the three Firestore messages, verify the project, quotas, Firestore Native Mode and that the runtime service account has `roles/datastore.user`. BigQuery and custom forwarding are not attempted for that request. Although the current response is `403`, these messages describe a storage failure, not invalid caller credentials.
 
 The exact blocked signatures and the checks that remain active when general bot protection is disabled are documented under [Enable Bot protection](https://github.com/nameless-analytics/server-side-client-tag/#enable-bot-protection).
-
-#### Firestore 1 MiB document limit
-
-Firestore user documents have a hard [1 MiB limit](https://firebase.google.com/docs/firestore/quotas#limits). The document grows as sessions and custom user or session parameters are added.
-
-When the next update would exceed the limit, Firestore refuses it and BigQuery and custom forwarding are not attempted for that event. Reduce the stored custom fields or session history before retrying, and review the snapshot model for users with many sessions.
 
 ### 405 Method Not Allowed
 
@@ -122,11 +111,24 @@ The endpoint accepts `POST` only. This check runs before the request body is rea
 
 ### 500 Internal Server Error
 
-```text
-🔴 Payload data not inserted into BigQuery
-```
+The request passed validation, but a persistence or processing stage failed.
 
-The BigQuery insert failed after Firestore completed. Verify the project, dataset, table schema, quotas and that the runtime service account has `roles/bigquery.dataEditor`. Custom forwarding is skipped.
+| Server log | Meaning and action |
+|:---|:---|
+| `🔴 User or session data not created to Firestore` | Firestore could not create the user or session. |
+| `🔴 User or session data not added to Firestore` | Firestore could not add a new session. |
+| `🔴 User or session data not updated to Firestore` | Firestore could not update the existing state. |
+| `🔴 Payload data not inserted into BigQuery` | BigQuery could not store the enriched event after Firestore completed. |
+
+For Firestore failures, verify the project, quotas, Firestore Native Mode and that the runtime service account has `roles/datastore.user`. BigQuery and custom forwarding are not attempted.
+
+For BigQuery failures, verify the project, dataset, table schema, quotas and that the runtime service account has `roles/bigquery.dataEditor`. Custom forwarding is skipped.
+
+#### Firestore 1 MiB document limit
+
+Firestore user documents have a hard [1 MiB limit](https://firebase.google.com/docs/firestore/quotas#limits). The document grows as sessions and custom user or session parameters are added.
+
+When the next update would exceed the limit, Firestore refuses it and BigQuery and custom forwarding are not attempted for that event. Reduce the stored custom fields or session history before retrying, and review the snapshot model for users with many sessions.
 
 An unexpected exception uses one of these messages:
 
