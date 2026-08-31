@@ -216,7 +216,7 @@ select * from `project.nameless_analytics.users`(start_date, end_date)
 
 ### Users RFM
 
-Scores customers with at least one purchase using Recency, Frequency and Monetary metrics. Churn window and RFM weights are configurable.
+Scores the current Recency, Frequency and Monetary state of customers acquired in the selected range, using all their available activity. Churn window and RFM weights are configurable.
 
 ```sql
 select * from `project.nameless_analytics.users_rfm`(start_date, end_date, churn_window_days, r_weight, f_weight, m_weight)

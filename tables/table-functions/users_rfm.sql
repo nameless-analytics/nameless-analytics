@@ -33,8 +33,8 @@ WITH customers AS (
     # CUSTOMER DATA
     first_purchase_timestamp,
     last_purchase_timestamp,
-    date_diff(end_date, date(first_purchase_timestamp), day) as days_from_first_purchase,
-    date_diff(end_date, date(last_purchase_timestamp), day) as days_from_last_purchase,
+    days_from_first_purchase,
+    days_from_last_purchase,
     purchase,
     refund,
     purchase_net_refund,
