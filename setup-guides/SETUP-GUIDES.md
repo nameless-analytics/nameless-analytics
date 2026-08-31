@@ -288,7 +288,7 @@ Enable **Respect Google Consent Mode** under **Consent Settings**:
 
 ### 3. Preserving acquisition data (the na_temp cookie)
 
-While `analytics_storage` is denied, the tracker can preserve source, campaign and referrer in the first-party session cookie `na_temp`. If consent is later granted, these values initialize the session and the temporary cookie is removed on a subsequent page view.
+While `analytics_storage` is denied, the tracker preserves source, campaign and referrer in the first-party session cookie `na_temp` and keeps it across real and virtual page views. After consent is granted, pending events can use these values; the next page view processed with granted consent removes the cookie and recalculates event-level acquisition.
 
 `na_temp` is client-readable. Do not place sensitive information in campaign parameters or referrer query strings.
 
@@ -391,7 +391,7 @@ Open the Client-side Tracker Tag template → **Permissions** → **Inject Scrip
 
 ## How to configure real-time forwarding
 
-After Firestore and BigQuery complete, Nameless Analytics can forward the enriched event to an external HTTPS endpoint. Forwarding receives the event before BigQuery-specific encoding; a forwarding failure does not roll back the stored event.
+After Firestore and BigQuery complete, Nameless Analytics can forward the enriched event to an external HTTPS endpoint as JSON with `Content-Type: application/json`. Forwarding receives the event before BigQuery-specific encoding; a forwarding failure does not roll back the stored event.
 
 ### Configuration steps
 
