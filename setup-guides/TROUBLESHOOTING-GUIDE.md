@@ -180,6 +180,7 @@ See [first-party library hosting](SETUP-GUIDES.md#how-to-set-up-first-party-libr
 | Browser log | Meaning and action |
 |:---|:---|
 | `[event_name] > 🔴 analytics_storage denied` | Tracking is correctly paused because analytics consent is denied. If consent is later granted but events remain blocked, verify that the CMP sends a Consent Mode `update`. |
+| `[event_name] > 🔴 analytics_storage not configured` | Consent Mode was detected, but `analytics_storage` had no explicit value. The request is aborted. Configure an `analytics_storage` default before other tags run. |
 | `[event_name] > 🔴 Google Consent Mode not found` | **Respect Google Consent Mode** is enabled, but no Consent Mode default was available. Initialize consent before the GTM container loads. |
 
 ### Event sequence

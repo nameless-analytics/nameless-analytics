@@ -356,7 +356,7 @@ The values sent in the payload are **partial**. The tracker cannot read `client_
 
 
 ### Smart consent management
-When **Respect Google Consent Mode** is enabled, events are sent only after `analytics_storage` is granted. Pending events retain their original order, and acquisition data can be held temporarily in the first-party session cookie `na_temp` until consent is available. If Consent Mode is missing, tracking remains blocked.
+When **Respect Google Consent Mode** is enabled, events are sent only after `analytics_storage` is explicitly granted. When it is denied, pending events retain their original order and acquisition data can be held temporarily in the first-party session cookie `na_temp` until consent is available. If Consent Mode or its `analytics_storage` value is missing, the request is aborted.
 
 When the option is disabled, events are sent independently of Consent Mode. Your CMP configuration and legal basis remain implementation-specific; see [How to respect user consents](setup-guides/SETUP-GUIDES.md#how-to-respect-user-consents).
 

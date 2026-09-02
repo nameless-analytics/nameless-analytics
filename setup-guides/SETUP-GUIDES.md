@@ -284,6 +284,7 @@ Enable **Respect Google Consent Mode** under **Consent Settings**:
 
 - `granted`: events are sent normally;
 - `denied`: events are held until a later consent update;
+- `analytics_storage` missing or unset: the request is aborted and no event is sent;
 - Consent Mode missing: the tag aborts without sending data.
 
 ### 3. Preserving acquisition data (the na_temp cookie)
