@@ -617,7 +617,7 @@ Extraction is positional: missing parts return `NULL`, while values in the wrong
 ## AI support
 
 - [Nameless Analytics QnA](https://notebooklm.google.com/notebook/73cd9ce3-9873-40cf-9d52-110d74dff5f9) answers implementation and documentation questions.
-- BigQuery conversational analysis can use selected tables and routines as knowledge sources. Follow the [Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-configure-a-conversational-analysis-agent-in-bigquery-studio) and review generated SQL before use.
+- BigQuery conversational analysis can use table functions as knowledge sources. Follow the [Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-configure-a-conversational-analysis-agent-in-bigquery-studio).
 
 ## Google Cloud costs
 
