@@ -91,6 +91,7 @@ with raw_session_data as (
       countif(event_name = 'add_payment_info') as add_payment_info,
       countif(event_name = 'purchase') as purchase,
       countif(event_name = 'refund') as refund,
+      countif(event_name = 'login') as login,
 
       # ECOMMERCE DATA
       ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.value') as float64) end), 0) as purchase_revenue,
@@ -221,6 +222,7 @@ with raw_session_data as (
       add_payment_info,
       purchase,
       refund,
+      login,
 
       # ECOMMERCE DATA
       purchase_revenue,
@@ -357,6 +359,7 @@ with raw_session_data as (
     add_payment_info,
     purchase,
     refund,
+    login,
 
     # ECOMMERCE DATA
     purchase_revenue,
