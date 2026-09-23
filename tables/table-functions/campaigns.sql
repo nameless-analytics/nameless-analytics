@@ -76,7 +76,7 @@ with session_data as (
       sum(click) as click,
       safe_divide(sum(cost), sum(click)) as avg_cost_per_click,
       safe_divide(sum(click), sum(impression)) as avg_click_through_rate,
-    from `%s.%s.online_campaign_performance_sheets`
+    from `%s.%s.campaigns_raw`
     where true 
       and date between start_date and end_date
       and date is not null
