@@ -22,7 +22,7 @@ with media_plan_data as (
       FORMAT_DATE('%%Y-%%m', date) AS year_month,
       campaign,
       sum(cost) as spend
-    from `%s.%s.online_campaign_performance_sheets`
+    from `%s.%s.campaigns_raw`
     where true
       and date between start_date and end_date
       and campaign is not null
