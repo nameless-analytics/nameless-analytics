@@ -1,4 +1,4 @@
-declare project_name string default 'PROJECT NAME';  -- Change this
+declare project_name string default 'PROJECT NAME';  -- Change this 
 declare dataset_name string default 'nameless_analytics';
 
 declare events string default format ("""
