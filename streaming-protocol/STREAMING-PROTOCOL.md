@@ -53,10 +53,11 @@ The JSON body must follow these rules:
 
 | Field | Requirement |
 |:---|:---|
-| `page_date`, `event_date` | Real calendar dates in `YYYY-MM-DD` format |
+| `page_date` | Real calendar date in `YYYY-MM-DD` format: the date of the page view the event is attached to |
+| `event_date` | The date the event is sent, in UTC, in `YYYY-MM-DD` format |
 | `page_id` | The 15-character segment after `-` in `na_s` |
 | `page_data` | Non-empty object containing `page_title`, `page_hostname`, `page_url`, `page_path` and a positive integer `page_load_timestamp` |
-| `event_timestamp` | Positive Unix timestamp in milliseconds |
+| `event_timestamp` | The time the event is sent, as a Unix timestamp in milliseconds |
 | `event_id` | `{page_id}_{random_id}`, where both segments contain 15 alphanumeric characters |
 | `event_name` | Non-empty backend or offline event name; not `page_view` or `get_user_data` |
 | `event_origin` | Exactly `Streaming Protocol` |
@@ -66,6 +67,8 @@ The JSON body must follow these rules:
 | `consent_data` | Optional non-empty JSON object or `null`; values must be strings or `null` |
 | `ecommerce` | Optional JSON object or `null`; an empty object is allowed |
 | `datalayer` | Optional JSON array or `null`; an empty array is allowed |
+
+`event_date` and `event_timestamp` must be the time the event is sent: today's date (UTC) and the current Unix time in milliseconds. Backdated events are not supported: the event is attached to the user's current session through the `na_s` cookie, and the daily refresh of the reporting tables only picks up events sent since its last run.
 
 Except for `session_data.user_id`, `user_data` and `session_data` must not contain the server-managed names documented as reserved parameters in the [Server-side Client Tag](https://github.com/nameless-analytics/server-side-client-tag/#user-data). Requests containing them are rejected with `400 Bad Request` before storage.
 
