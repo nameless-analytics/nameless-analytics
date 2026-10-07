@@ -12,7 +12,7 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 ## Wishlist
 Here is a wishlist of ideas and features for future releases, representing a list of intentions rather than a strict roadmap.
 
-- Complete Dataform datamodel
+- Server to Server tracking
 - Add core web vitals metrics (Client-side Tracker Tag) for page_load_time event
 
 #
