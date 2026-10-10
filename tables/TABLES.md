@@ -364,17 +364,19 @@ If the cookie remains, a later `page_view` can recreate the same `client_id` wit
 
 ### Delete user data script
 
-The provided [`Users deletion tool`](users-deletion-tool.py) is a reference utility for deleting a `client_id` from Firestore and BigQuery.
+The provided [`Users deletion tool`](users-deletion-tool.py) is a reference utility for deleting a `client_id` from BigQuery and Firestore.
 
 Before running it:
 
-1. configure `client_id`, project, dataset, table and service-account path;
+1. configure `client_id`, project, dataset and service-account path;
 2. install the `google-cloud-firestore` and `google-cloud-bigquery` Python packages;
-3. verify that the credentials can read and delete the Firestore document and execute BigQuery DML.
+3. verify that the credentials can execute BigQuery DML (BigQuery Job User and Data Editor) and read and delete Firestore documents (Cloud Datastore User).
 
-The script reads `user_date` from Firestore when available, deletes the Firestore document and then deletes the BigQuery rows. It uses the date to reduce the partitions scanned; without it, the BigQuery deletion falls back to `client_id` alone.
+The script deletes every row of the `client_id` from `events_raw`, and from `events` when the dataset has one, then deletes the Firestore document. It filters on `client_id` alone, so no row is left behind under another `user_date` or a wrong device clock; BigQuery scans only the `client_id` column to find them and rewrites only the partitions that held them.
 
-The operations are sequential, not atomic. A later step may fail after an earlier deletion succeeds, so confirm the result independently in both stores.
+BigQuery first, Firestore last: if a step fails, the run can be repeated. Rows streamed in the last minutes are still in BigQuery's streaming buffer, where DML cannot change them; the script then stops before deleting anything else and asks to run it again in about 90 minutes.
+
+The operations are sequential, not atomic: confirm the result in both stores.
 
 ### Manual user data deletion
 
@@ -382,23 +384,14 @@ If deleting manually, remove the user from both stores.
 
 #### BigQuery user data deletion
 
-`client_id` alone is the completeness fallback:
+Delete by `client_id` alone, so no row is left behind:
 
 ```sql
 delete from `project.nameless_analytics.events_raw`
 where client_id = 'USER_CLIENT_ID';
 ```
 
-When a trusted `user_date` is available, add it and the corresponding partition boundary to reduce the data scanned:
-
-```sql
-delete from `project.nameless_analytics.events_raw`
-where client_id = 'USER_CLIENT_ID'
-  and user_date = date '2026-01-01'
-  and event_date >= date '2026-01-01';
-```
-
-Use the `client_id`-only version if the date cannot be verified, then confirm that no rows remain.
+Do the same in the `events` table, when the dataset has one. Rows still in the streaming buffer cannot be deleted: run it again later, then confirm that no rows remain.
 
 #### Firestore user data deletion
 
