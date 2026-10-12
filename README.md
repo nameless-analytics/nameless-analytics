@@ -515,6 +515,8 @@ The channel grouping logic uses the following Source categories based on the sou
 
 The equivalent BigQuery [`get_custom_channel_grouping`](tables/user-defined-functions/get_custom_channel_grouping.sql) UDF powers customizable reporting fields. Changes to that UDF apply to historical results at query time without rewriting raw events.
 
+The [`get_channel_grouping`](tables/user-defined-functions/get_channel_grouping.sql) UDF is the standard logic itself, unchanged, for data that never went through the tag: `campaigns` uses it for advertising platform rows with no matching sessions.
+
 
 ### Server-side cookies
 The identity cookies are issued as `HttpOnly`, `Secure` and `SameSite=Strict` on the Effective TLD+1 derived from the request origin. `na_u` lasts 400 days; `na_s` uses the configured session duration and is refreshed by valid events.

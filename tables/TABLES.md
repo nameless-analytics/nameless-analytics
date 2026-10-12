@@ -60,8 +60,9 @@ Run [`tables.sql`](tables/tables.sql) to create the dataset, `events_raw` and `c
 
 ### Create custom functions
 
-Create both user-defined functions before the reporting table functions:
+Create the user-defined functions before the reporting table functions:
 
+- [`get_channel_grouping`](user-defined-functions/get_channel_grouping.sql) applies the standard [channel grouping logic](../README.md#channel-grouping-logic), the same the Server-side Client Tag applies, to rows that never went through it, such as advertising platform data in `campaigns`. Keep it in sync with the tag and leave customizations to `get_custom_channel_grouping`.
 - [`get_custom_channel_grouping`](user-defined-functions/get_custom_channel_grouping.sql) applies the [channel grouping logic](../README.md#channel-grouping-logic) at query time. Customizations also affect historical reports.
 - [`get_campaign_part`](user-defined-functions/get_campaign_part.sql) extracts the seven dimensions from the pipe-delimited [campaign taxonomy](../README.md#campaign-taxonomy).
 

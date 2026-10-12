@@ -6,6 +6,7 @@ CREATE OR REPLACE TABLE FUNCTION `%s.%s.campaigns`(start_date DATE, end_date DAT
 with session_data as (
     select
       session_date,
+      session_channel_grouping,
       session_source,
       session_campaign_year,
       session_campaign_country,
@@ -69,6 +70,7 @@ with session_data as (
       `%s.%s.get_campaign_part`(campaign, 'campaign_marketing_objective') as session_campaign_marketing_objective,
       `%s.%s.get_campaign_part`(campaign, 'campaign_name') as session_campaign_name,
       source as session_source,
+      `%s.%s.get_channel_grouping`(source, campaign) as session_channel_grouping,
       campaign as session_campaign,
       campaign_id as session_campaign_id, 
       sum(cost) as spend,
@@ -87,10 +89,11 @@ with session_data as (
   select 
     coalesce(session_data.session_date, online_campaigns_performances.date) as session_date,
     coalesce(session_data.session_source, online_campaigns_performances.session_source) as session_source,
+    coalesce(session_data.session_channel_grouping, online_campaigns_performances.session_channel_grouping) as session_channel_grouping,
     `%s.%s.get_custom_channel_grouping`(
       coalesce(session_data.session_source, online_campaigns_performances.session_source),
       coalesce(session_data.session_campaign, online_campaigns_performances.session_campaign)
-    ) as session_channel_grouping,
+    ) as session_custom_channel_grouping,
     coalesce(session_data.session_campaign_year, online_campaigns_performances.session_campaign_year) as session_campaign_year,
     coalesce(session_data.session_campaign_country, online_campaigns_performances.session_campaign_country) as session_campaign_country,
     coalesce(session_data.session_campaign_funnel_stage, online_campaigns_performances.session_campaign_funnel_stage) as session_campaign_funnel_stage,
@@ -158,6 +161,7 @@ with session_data as (
     AND ifnull(session_data.session_campaign_id, "") = ifnull(online_campaigns_performances.session_campaign_id, "")
 );
 """,
+project_name, dataset_name,
 project_name, dataset_name,
 project_name, dataset_name,
 project_name, dataset_name,

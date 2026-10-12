@@ -1,10 +1,13 @@
 declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
+-- The custom channel grouping: by default the same as get_channel_grouping,
+-- the standard logic of the Server-side Client Tag. This is the one to edit
+-- with your own rules; get_channel_grouping stays aligned with the tag.
 declare get_custom_channel_grouping string default format ("""
 CREATE OR REPLACE FUNCTION `%s.%s.get_custom_channel_grouping`(source STRING, campaign STRING) RETURNS STRING AS (
   CASE
-    WHEN source IS NULL OR source = 'direct' THEN 'direct'
+    WHEN source IS NULL OR source = '' OR source = 'direct' THEN 'direct'
     WHEN source = 'tagassistant.google.com' THEN 'gtm_debugger'
     WHEN REGEXP_CONTAINS(source, r'(?i)chatgpt|gemini|bard|claude|alexa|siri|assistant|\\.ai([/]|$)') THEN 'ai'
     WHEN REGEXP_CONTAINS(source, r'(?i)360\\.cn|alice|aol|ar\\.search\\.yahoo\\.com|ask|bing|google|yahoo|yandex|baidu|ecosia|duckduckgo|sogou|naver|seznam') THEN IF(campaign IS NOT NULL AND campaign != '', 'paid_search_engine', 'organic_search_engine')
