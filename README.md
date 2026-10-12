@@ -582,7 +582,7 @@ User deletion must remove the identifier from both Firestore and BigQuery. The p
 
 ## Reporting
 
-BigQuery table functions transform `events_raw` into reporting-ready datasets:
+Scopes, BigQuery table functions, transform `events_raw` into reporting-ready datasets:
 
 | Area | Resources |
 |:---|:---|
@@ -612,14 +612,14 @@ Separate the values with a pipe and use the full string in the landing URL:
 utm_campaign=2026|IT|Upper funnel|Google Ads|Search ads|Brand awareness|Nameless Analytics
 ```
 
-The extracted dimensions are available at user, session and event scope and are reused by the reporting queries for users, sessions, pages, events, ecommerce, attribution, campaign performance and media plans. For example, the first part is exposed as `user_campaign_year`, `session_campaign_year` or `campaign_year`, depending on the scope.
+The extracted dimensions are available at user, session and event level and are reused by the reporting queries for users, sessions, pages, events, ecommerce, attribution, campaign performance and media plans. For example, the first part is exposed as `user_campaign_year`, `session_campaign_year` or `campaign_year`, depending on the level.
 
 Extraction is positional: missing parts return `NULL`, while values in the wrong position are assigned to the wrong dimension. The original campaign string remains unchanged. See the [`get_campaign_part`](tables/user-defined-functions/get_campaign_part.sql) function for the mapping used by BigQuery.
 
 ## AI support
 
 - [Nameless Analytics QnA](https://notebooklm.google.com/notebook/73cd9ce3-9873-40cf-9d52-110d74dff5f9) answers implementation and documentation questions.
-- BigQuery conversational analysis can use table functions as knowledge sources. Follow the [Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-configure-a-conversational-analysis-agent-in-bigquery-studio).
+- BigQuery conversational analysis can use the scopes as knowledge sources. Follow the [Setup Guide](setup-guides/SETUP-GUIDES.md#how-to-configure-a-conversational-analysis-agent-in-bigquery-studio).
 
 ## Google Cloud costs
 
