@@ -114,7 +114,7 @@ with raw_user_data as (
   select
     # USER DATA
     user_date,
-    user_id,
+    array_agg(user_id ignore nulls order by session_number limit 1)[safe_offset(0)] as user_id,
     client_id,
     case 
       when total_sessions = 1 then 'new_user'
