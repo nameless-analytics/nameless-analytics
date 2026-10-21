@@ -10,7 +10,7 @@ with media_plan_data as (
       format_date('%%m', date) as month,
       full_campaign_name as campaign,
       ifnull(sum(budget), 0.0) as budget
-    from `%s.%s.media_plan_sheets`
+    from `%s.%s.media_plan_raw`
     where true
       and date between start_date and end_date
       and full_campaign_name is not null

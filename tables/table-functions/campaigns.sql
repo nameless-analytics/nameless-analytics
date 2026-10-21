@@ -62,6 +62,8 @@ with session_data as (
   online_campaigns_performances as (
     select
       date,
+      source as session_source,
+      `%s.%s.get_channel_grouping`(source, campaign) as session_channel_grouping,
       `%s.%s.get_campaign_part`(campaign, 'campaign_year') as session_campaign_year,
       `%s.%s.get_campaign_part`(campaign, 'campaign_country') as session_campaign_country,
       `%s.%s.get_campaign_part`(campaign, 'campaign_funnel_stage') as session_campaign_funnel_stage,
@@ -69,8 +71,6 @@ with session_data as (
       `%s.%s.get_campaign_part`(campaign, 'campaign_type') as session_campaign_type,
       `%s.%s.get_campaign_part`(campaign, 'campaign_marketing_objective') as session_campaign_marketing_objective,
       `%s.%s.get_campaign_part`(campaign, 'campaign_name') as session_campaign_name,
-      source as session_source,
-      `%s.%s.get_channel_grouping`(source, campaign) as session_channel_grouping,
       campaign as session_campaign,
       campaign_id as session_campaign_id, 
       sum(cost) as spend,

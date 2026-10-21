@@ -74,7 +74,7 @@ select
     session_id,
 
     (select value.int from unnest(session_data) where name = 'session_number') as session_number,
-    first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(session_data) where name = 'cross_domain_session'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as cross_domain_session,
+    first_value((select value.string from unnest(session_data) where name = 'cross_domain_session')) over (partition by session_id order by if(event_origin = 'Streaming Protocol', 1, 0), event_timestamp desc, event_id desc rows between unbounded preceding and unbounded following) as cross_domain_session,
 
     (select value.int from unnest(session_data) where name = 'session_start_timestamp') as session_start_timestamp,
     first_value(IF(event_origin != 'Streaming Protocol', (select value.int from unnest(session_data) where name = 'session_end_timestamp'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_end_timestamp,
@@ -123,10 +123,10 @@ select
     (select value.string from unnest(session_data) where name = 'session_landing_page_url') as session_landing_page_url,
     (select value.string from unnest(session_data) where name = 'session_landing_page_path') as session_landing_page_path,
     (select value.string from unnest(session_data) where name = 'session_landing_page_title') as session_landing_page_title,
-    first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_category'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_category,
-    first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_url'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_url,
-    first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_path'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_path,
-    first_value(IF(event_origin != 'Streaming Protocol', (select value.string from unnest(session_data) where name = 'session_exit_page_title'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_exit_page_title,
+    first_value((select value.string from unnest(session_data) where name = 'session_exit_page_category')) over (partition by session_id order by if(event_origin = 'Streaming Protocol', 1, 0), event_timestamp desc, event_id desc rows between unbounded preceding and unbounded following) as session_exit_page_category,
+    first_value((select value.string from unnest(session_data) where name = 'session_exit_page_url')) over (partition by session_id order by if(event_origin = 'Streaming Protocol', 1, 0), event_timestamp desc, event_id desc rows between unbounded preceding and unbounded following) as session_exit_page_url,
+    first_value((select value.string from unnest(session_data) where name = 'session_exit_page_path')) over (partition by session_id order by if(event_origin = 'Streaming Protocol', 1, 0), event_timestamp desc, event_id desc rows between unbounded preceding and unbounded following) as session_exit_page_path,
+    first_value((select value.string from unnest(session_data) where name = 'session_exit_page_title')) over (partition by session_id order by if(event_origin = 'Streaming Protocol', 1, 0), event_timestamp desc, event_id desc rows between unbounded preceding and unbounded following) as session_exit_page_title,
 
     -- Add session level custom dimension here
     -- Include values from Streaming Protocol 

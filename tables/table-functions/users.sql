@@ -7,6 +7,7 @@ with raw_user_data as (
     select
       # USER DATA
       user_date,
+      user_first_session_timestamp,
       user_id,
       client_id,
       new_user_client_id,
@@ -61,6 +62,7 @@ with raw_user_data as (
     select
       # USER DATA
       user_date,
+      user_first_session_timestamp,
       user_id,
       client_id,
       new_user_client_id,
@@ -99,6 +101,7 @@ with raw_user_data as (
       countif(event_name = 'purchase') as purchase,
       countif(event_name = 'refund') as refund,
       count(*) as total_events,
+      max(event_timestamp) as last_event_timestamp,
 
       # ECOMMERCE DATA
       min(first_purchase_timestamp) as first_purchase_timestamp,
@@ -114,6 +117,7 @@ with raw_user_data as (
   select
     # USER DATA
     user_date,
+    user_first_session_timestamp,
     array_agg(user_id ignore nulls order by session_number limit 1)[safe_offset(0)] as user_id,
     client_id,
     case 
@@ -176,6 +180,8 @@ with raw_user_data as (
 
     min(first_purchase_timestamp) as first_purchase_timestamp,
     max(last_purchase_timestamp) as last_purchase_timestamp,
+
+    max(last_event_timestamp) as last_event_timestamp,
 
     count(distinct session_id) as sessions,
     avg(session_duration_sec) as avg_session_duration_sec,

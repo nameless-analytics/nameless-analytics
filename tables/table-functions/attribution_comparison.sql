@@ -2,15 +2,15 @@ declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
 declare attribution_comparison string default format ("""
-CREATE OR REPLACE TABLE FUNCTION `%s.%s.attribution_comparison`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.attribution_comparison`(start_date DATE, end_date DATE, conversion_event STRING, lookback_days INT64) AS (
 with attribution_data_single_touch as (
     select *
-    from `%s.%s.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)
+    from `%s.%s.attribution_single_touch`(start_date, end_date, conversion_event, lookback_days)
   ),
 
   attribution_data_multi_touch as (
     select *
-    from `%s.%s.attribution_multi_touch`(start_date, end_date, conversion_name, lookback_days)
+    from `%s.%s.attribution_multi_touch`(start_date, end_date, conversion_event, lookback_days)
   ),
 
   attribution_models_single_touch as (

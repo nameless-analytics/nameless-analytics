@@ -2,7 +2,7 @@ declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
 declare attribution_multi_touch string default format ("""
-CREATE OR REPLACE TABLE FUNCTION `%s.%s.attribution_multi_touch`(start_date DATE, end_date DATE, conversion_name STRING, lookback_days INT64) AS (
+CREATE OR REPLACE TABLE FUNCTION `%s.%s.attribution_multi_touch`(start_date DATE, end_date DATE, conversion_event STRING, lookback_days INT64) AS (
 with conversions as (
     select
       # CONVERSION DATA
@@ -16,7 +16,7 @@ with conversions as (
 
     from `%s.%s.events`(start_date, end_date, 'session')
     where true
-      and event_name = conversion_name
+      and event_name = conversion_event
   ),
 
   sessions as (

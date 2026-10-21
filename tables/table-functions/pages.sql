@@ -86,7 +86,9 @@ select
     max(page_status_code) as page_status_code,
 
     # EVENT DATA
-    countif(event_name = 'page_view') as total_page_views
+    countif(event_name = 'page_view') as total_page_views,
+    countif(event_name = 'purchase') as purchase,
+    ifnull(sum(case when event_name = 'purchase' then safe_cast(json_value(ecommerce, '$.value') as float64) end), 0) as purchase_revenue
   from `%s.%s.events`(start_date, end_date, 'session')
   group by all
 );

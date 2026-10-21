@@ -72,27 +72,28 @@ The `campaigns` and `media_plan` functions require the following source tables. 
 
 | Table | Suggested source | Used by |
 |:---|:---|:---|
-| `online_campaign_performance_sheets` | A native BigQuery table loaded from advertising platforms, or a connected Google Sheet | `campaigns`, `media_plan` |
-| `media_plan_sheets` | A connected Google Sheet or another maintained BigQuery table | `media_plan` |
+| `campaigns_raw` | A native BigQuery table loaded from advertising platforms, or a connected Google Sheet | `campaigns`, `media_plan` |
+| `media_plan_raw` | A connected Google Sheet or another maintained BigQuery table | `media_plan` |
 
 All other table functions work without these sources.
 
 Reference sheets: [online campaign performance](https://docs.google.com/spreadsheets/d/1aDfDJ3aDDH88ybJ4HH7y2m7cSRcKLhl6R9Z8ZbBmE0Y/#gid=418285084) and [media plan](https://docs.google.com/spreadsheets/d/1aDfDJ3aDDH88ybJ4HH7y2m7cSRcKLhl6R9Z8ZbBmE0Y/#gid=1267353944).
 
-#### online_campaign_performance_sheets
+#### campaigns_raw
 
-The table contains daily media performance, with one row per campaign and date. All six columns must exist; columns whose value is not required may contain `NULL`.
+The table contains daily media performance, with one row per source, campaign and date. All seven columns must exist; columns whose value is not required may contain `NULL`.
 
 | Column | Type | Value required | Description |
 |:---|:---|:---:|:---|
 | `date` | DATE | Yes | Date on which the spend occurred. |
+| `source` | STRING | Yes | Advertising platform, as `utm_source` names it (e.g. `google`). The `campaigns` function reads the channel grouping from it. |
 | `campaign` | STRING | Yes | Campaign name. The `campaigns` function compares it with `session_campaign` without distinguishing letter case. |
 | `campaign_id` | STRING | No | Advertising campaign ID. It must match `utm_id` when used; `NULL` and an empty value are treated as equivalent. |
 | `cost` | FLOAT64 | Yes | Spend in the reporting currency. |
 | `impression` | INT64 | No | Impressions. Missing values are reported as zero. |
 | `click` | INT64 | No | Clicks used to calculate CPC and click-through rate. |
 
-#### media_plan_sheets
+#### media_plan_raw
 
 The table contains planned campaign budgets. In the reference sheet, use this schema for the `A:J` range. `media_plan` reads only the three columns marked **Yes**; the others are editable helpers and do not affect the output.
 
@@ -118,8 +119,8 @@ To use a Google Sheet as an external table:
 1. In the dataset, select **Create table** and choose `Drive` as the source.
 2. Paste the spreadsheet URL and choose `Google Sheet` as the file format.
 3. Enter the relevant range:
-   - `Online campaigns performances!A:F` for `online_campaign_performance_sheets`;
-   - `Media plan pivot!A:J` for `media_plan_sheets`.
+   - `Online campaigns performances!A:G` for `campaigns_raw`;
+   - `Media plan pivot!A:J` for `media_plan_raw`.
 4. Use the exact table name and schema documented above, then set **Header rows to skip** to `1`.
 
 Queries against an external table read the current sheet content without a separate reload.
@@ -300,7 +301,7 @@ select * from `project.nameless_analytics.consents`(start_date, end_date)
 Calculates user first click, conversion-session last click and last non-direct click within the configured lookback window. The date range follows `session_date`, matching `sessions`; `lookback_days` only expands the search for earlier sessions. The last non-direct model falls back to the direct conversion session when no non-direct touchpoint exists.
 
 ```sql
-select * from `project.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_name, lookback_days)
+select * from `project.nameless_analytics.attribution_single_touch`(start_date, end_date, conversion_event, lookback_days)
 ```
 
 [View SQL code](table-functions/attribution_single_touch.sql)
@@ -310,7 +311,7 @@ select * from `project.nameless_analytics.attribution_single_touch`(start_date, 
 Distributes conversion credit across touchpoints using linear, time-decay and position-based models within the configured lookback window. The date range follows `session_date`, matching `sessions`; `lookback_days` only expands the search for earlier sessions.
 
 ```sql
-select * from `project.nameless_analytics.attribution_multi_touch`(start_date, end_date, conversion_name, lookback_days)
+select * from `project.nameless_analytics.attribution_multi_touch`(start_date, end_date, conversion_event, lookback_days)
 ```
 
 [View SQL code](table-functions/attribution_multi_touch.sql)
@@ -320,7 +321,7 @@ select * from `project.nameless_analytics.attribution_multi_touch`(start_date, e
 Aggregates conversion credit and revenue by traffic dimensions across the single-touch and multi-touch models.
 
 ```sql
-select * from `project.nameless_analytics.attribution_comparison`(start_date, end_date, conversion_name, lookback_days)
+select * from `project.nameless_analytics.attribution_comparison`(start_date, end_date, conversion_event, lookback_days)
 ```
 
 [View SQL code](table-functions/attribution_comparison.sql)
@@ -329,7 +330,7 @@ select * from `project.nameless_analytics.attribution_comparison`(start_date, en
 
 Combines monthly planned budgets with matching campaign spend. All media-plan rows are retained; spend without a corresponding plan row is not returned.
 
-Requires `media_plan_sheets` and `online_campaign_performance_sheets`.
+Requires `media_plan_raw` and `campaigns_raw`.
 
 ```sql
 select * from `project.nameless_analytics.media_plan`(start_date, end_date)
@@ -341,7 +342,7 @@ select * from `project.nameless_analytics.media_plan`(start_date, end_date)
 
 Combines daily advertising performance with post-click user, session, conversion, ecommerce and ROAS metrics. Its full join preserves unmatched advertising and analytics campaigns.
 
-Requires `online_campaign_performance_sheets`.
+Requires `campaigns_raw`.
 
 ```sql
 select * from `project.nameless_analytics.campaigns`(start_date, end_date)
