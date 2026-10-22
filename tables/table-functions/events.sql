@@ -74,7 +74,7 @@ select
     session_id,
 
     (select value.int from unnest(session_data) where name = 'session_number') as session_number,
-    first_value((select value.string from unnest(session_data) where name = 'cross_domain_session')) over (partition by session_id order by if(event_origin = 'Streaming Protocol', 1, 0), event_timestamp desc, event_id desc rows between unbounded preceding and unbounded following) as cross_domain_session,
+    if(countif((select value.string from unnest(session_data) where name = 'cross_domain_session') = 'Yes') over (partition by session_id) > 0, 'Yes', 'No') as cross_domain_session,
 
     (select value.int from unnest(session_data) where name = 'session_start_timestamp') as session_start_timestamp,
     first_value(IF(event_origin != 'Streaming Protocol', (select value.int from unnest(session_data) where name = 'session_end_timestamp'), NULL) IGNORE NULLS) over (partition by session_id order by event_timestamp desc rows between unbounded preceding and unbounded following) as session_end_timestamp,
