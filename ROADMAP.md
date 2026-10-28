@@ -8,7 +8,6 @@ For completed work and release history, see [changelog](CHANGELOG.md).
 ### 🚧 Nameless Analytics and the documentation are currently in beta and subject to change
 
 
-
 ## Wishlist
 Here is a wishlist of ideas and features for future releases, representing a list of intentions rather than a strict roadmap.
 
