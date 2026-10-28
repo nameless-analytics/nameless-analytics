@@ -298,11 +298,8 @@ with raw_session_data as (
     session_start_timestamp, 
     session_duration_sec,
     new_session,
-    safe_divide(sum(new_session), count(distinct session_id)) as new_sessions_percentage,
     returning_session,
-    safe_divide(sum(returning_session), count(distinct session_id)) as returning_sessions_percentage,
     engaged_session,
-    safe_divide(sum(engaged_session), count(distinct session_id)) as engaged_sessions_percentage,
     session_channel_grouping, 
     session_custom_channel_grouping, 
     session_source,
@@ -382,32 +379,18 @@ with raw_session_data as (
     consent_expressed,
 
     session_ad_user_data,
-    safe_divide(sum(session_ad_user_data), count(distinct session_id)) as ad_user_data_accepted_percentage,
-    1 - safe_divide(sum(session_ad_user_data), count(distinct session_id)) as ad_user_data_denied_percentage,
 
     session_ad_personalization,
-    safe_divide(sum(session_ad_personalization), count(distinct session_id)) as ad_personalization_accepted_percentage,
-    1 - safe_divide(sum(session_ad_personalization), count(distinct session_id)) as ad_personalization_denied_percentage,
 
     session_ad_storage,
-    safe_divide(sum(session_ad_storage), count(distinct session_id)) as ad_storage_accepted_percentage,
-    1 - safe_divide(sum(session_ad_storage), count(distinct session_id)) as ad_storage_denied_percentage,
 
     session_analytics_storage,
-    safe_divide(sum(session_analytics_storage), count(distinct session_id)) as analytics_storage_accepted_percentage,
-    1 - safe_divide(sum(session_analytics_storage), count(distinct session_id)) as analytics_storage_denied_percentage,
 
     session_functionality_storage,
-    safe_divide(sum(session_functionality_storage), count(distinct session_id)) as functionality_storage_accepted_percentage,
-    1 - safe_divide(sum(session_functionality_storage), count(distinct session_id)) as functionality_storage_denied_percentage,
 
     session_personalization_storage,
-    safe_divide(sum(session_personalization_storage), count(distinct session_id)) as personalization_storage_accepted_percentage,
-    1 - safe_divide(sum(session_personalization_storage), count(distinct session_id)) as personalization_storage_denied_percentage,
 
-    session_security_storage,
-    safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_accepted_percentage,
-    1 - safe_divide(sum(session_security_storage), count(distinct session_id)) as security_storage_denied_percentage
+    session_security_storage
 
   from session_data
   group by all

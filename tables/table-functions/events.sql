@@ -258,8 +258,7 @@ select
 
     (select value.int from unnest(gtm_data) where name = 'content_length') / 1024 as content_length_in_kb,
     (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') as processing_event_timestamp,
-    (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp as delay_in_millis,
-    ((select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp) / 1000 as delay_in_sec,
+    (select value.int from unnest(gtm_data) where name = 'processing_event_timestamp') - event_timestamp as delay_in_millis
 
   from `%s.%s.events_raw`
   where true
