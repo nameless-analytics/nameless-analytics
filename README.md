@@ -364,7 +364,7 @@ When the option is disabled, events are sent independently of Consent Mode. Your
 ### SPA & history management
 In a Single Page Application, changing route does not reload the document. Fire a new `page_view` whenever the application displays a new meaningful page: the first `page_view` of the physical load creates the initial context, while every later one is a virtual page view that replaces the current page context.
 
-For virtual page views, the previous tracked page becomes `page_referrer`. Event-level acquisition is recalculated from the new URL and normally becomes direct when the route no longer contains campaign parameters. User- and session-level acquisition remain unchanged, so use those scopes for acquisition reporting.
+The first `page_view` of the physical load is always the real one and is the only page view, with its events, that carries event-level acquisition. Virtual page views behave like internal navigation on a standard website: the previous tracked page becomes `page_referrer`, and source, campaign and click ID are null for them and for the events that follow, even when the URL still contains campaign parameters. User- and session-level acquisition remain unchanged, so use those scopes for acquisition reporting.
 
 See [How to track page views](setup-guides/SETUP-GUIDES.md#how-to-track-page-views) for History Change and custom `dataLayer` implementations. Page fields can be mapped through the [Configuration Variable](https://github.com/nameless-analytics/client-side-tracker-configuration-variable/#override-default-page-parameters).
 

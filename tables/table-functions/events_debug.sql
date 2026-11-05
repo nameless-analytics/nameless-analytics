@@ -49,7 +49,7 @@ with raw_event_data as (
           value.string as string,
           value.int as int,
           value.float as float,
-          to_json_string(value.json) as json,
+          if(value.json is null, null, to_json_string(value.json)) as json,
           value.bool as bool
         ) as value
       from unnest(user_data)
@@ -65,7 +65,7 @@ with raw_event_data as (
           value.string as string,
           value.int as int,
           value.float as float,
-          to_json_string(value.json) as json,
+          if(value.json is null, null, to_json_string(value.json)) as json,
           value.bool as bool
         ) as value
       from unnest(session_data)
@@ -82,7 +82,7 @@ with raw_event_data as (
           value.string as string,
           value.int as int,
           value.float as float,
-          to_json_string(value.json) as json,
+          if(value.json is null, null, to_json_string(value.json)) as json,
           value.bool as bool
         ) as value
       from unnest(page_data)
@@ -103,7 +103,7 @@ with raw_event_data as (
           value.string as string,
           value.int as int,
           value.float as float,
-          to_json_string(value.json) as json,
+          if(value.json is null, null, to_json_string(value.json)) as json,
           value.bool as bool
         ) as value
       from unnest(event_data)

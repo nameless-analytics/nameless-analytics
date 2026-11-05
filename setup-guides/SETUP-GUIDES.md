@@ -122,7 +122,7 @@ Use the [Troubleshooting Guide](TROUBLESHOOTING-GUIDE.md) if any stage fails.
 
 `page_view` creates the user and session context, sets the server cookies and records the page. It must be the first Nameless Analytics event on every physical page load; earlier interactions become [orphan events](TROUBLESHOOTING-GUIDE.md#event-sequence).
 
-Additional `page_view` events on the same physical page are virtual page views. They update page context and referrer without replacing the existing user/session acquisition. See [SPA & History Management](../README.md#spa--history-management) for reporting implications.
+Additional `page_view` events on the same physical page are virtual page views. They update page context and referrer, and they and the events after them are internal traffic with no event-level acquisition, even when the URL still contains campaign parameters. The existing user/session acquisition is not replaced. See [SPA & History Management](../README.md#spa--history-management) for reporting implications.
 
 ### Via GTM standard page view trigger
 
