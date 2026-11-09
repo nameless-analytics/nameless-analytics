@@ -70,6 +70,16 @@ with raw_transaction_data as (
       session_exit_page_path, 
       session_exit_page_title,
 
+      # PAGE DATA
+      page_date,
+      page_id,
+      page_view_number,
+      page_url,
+      page_path,
+      page_hostname,
+      page_title,
+      page_category,
+
       # EVENT DATA
       event_date,
       event_timestamp,
@@ -154,6 +164,16 @@ with raw_transaction_data as (
     session_exit_page_url, 
     session_exit_page_path, 
     session_exit_page_title,
+
+    # PAGE DATA: the page the event was sent from
+    page_date,
+    page_id,
+    page_view_number,
+    page_url,
+    page_path,
+    page_hostname,
+    page_title,
+    page_category,
 
     # EVENT DATA
     event_date,
