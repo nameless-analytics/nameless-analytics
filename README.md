@@ -88,6 +88,8 @@ Follow the [Setup Guides](setup-guides/SETUP-GUIDES.md) for the complete procedu
 ## Client-side collection
 The Client-side Tracker Tag builds the browser event, applies consent and page context, and sends requests sequentially to the configured server endpoint.
 
+Requests are sent with `keepalive`, so they survive the page being closed. Browsers refuse a `keepalive` request above 64 KB (shared with the other beacons on the page): such an event is not sent. A standard event weighs about 2.5 KB; what makes it grow is ecommerce items and the dataLayer state, which in a single-page application holds every push since the page was loaded.
+
 
 ### Request payload data
 The request data is sent via a POST request in JSON format. It is structured into several logical objects: `user_data`, `session_data`, `page_data`, `event_data`, `consent_data`, and `gtm_data`.
@@ -541,6 +543,8 @@ See the [Streaming Protocol reference](streaming-protocol/STREAMING-PROTOCOL.md)
 
 ## Storage
 Firestore holds the current operational state; BigQuery holds the event history.
+
+Firestore is written first, because the BigQuery row carries the user and session data it returns. If the BigQuery insert then fails, the event is missing from `events_raw` while Firestore has already counted it: a missing landing page view, or a gap in `session_number`. The two cannot be written atomically, and a retry could write the event twice, so this is accepted as a limit. A row that does not match the table's schema is refused: add a new field to the table before the tags send it.
 
 
 ### Firestore as last updated snapshot
