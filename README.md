@@ -111,6 +111,7 @@ The request data is sent via a POST request in JSON format. It is structured int
     "user_campaign_click_id": null,
     "user_campaign_term": null,
     "user_campaign_content": null,
+    "user_medium": null,
     "user_device_type": "desktop",
     "user_country": "IT",
     "user_city": "venice",
@@ -131,6 +132,7 @@ The request data is sent via a POST request in JSON format. It is structured int
     "session_campaign_click_id": null,
     "session_campaign_term": null,
     "session_campaign_content": null,
+    "session_medium": null,
     "session_device_type": "desktop",
     "session_country": "IT",
     "session_city": "venice",
@@ -178,6 +180,7 @@ The request data is sent via a POST request in JSON format. It is structured int
     "campaign_click_id": null,
     "campaign_term": null,
     "campaign_content": null,
+    "medium": null,
     "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)Chrome/142.0.0.0 Safari/537.36",
     "browser_name": "Chrome",
     "browser_language": "it-IT",
@@ -232,6 +235,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | user_campaign_click_id        | String   | Server-side | User campaign click identifier                |
 |                    | user_campaign_term            | String   | Server-side | User campaign term                            |
 |                    | user_campaign_content         | String   | Server-side | User campaign content                         |
+|                    | user_medium                   | String   | Server-side | User medium                                   |
 |                    | user_device_type              | String   | Server-side | User device type                              |
 |                    | user_country                  | String   | Server-side | User country                                  |
 |                    | user_city                     | String   | Server-side | User city                                     |
@@ -250,6 +254,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | session_campaign_click_id     | String   | Server-side | Session campaign click ID                     |
 |                    | session_campaign_term         | String   | Server-side | Session campaign term                         |
 |                    | session_campaign_content      | String   | Server-side | Session campaign content                      |
+|                    | session_medium                | String   | Server-side | Session medium                                |
 |                    | session_device_type           | String   | Server-side | Device type used in session                   |
 |                    | session_country               | String   | Server-side | Session country                               |
 |                    | session_city                  | String   | Server-side | Session geolocation city                      |
@@ -294,6 +299,7 @@ The request data is sent via a POST request in JSON format. It is structured int
 |                    | campaign_click_id             | String   | Client-side | Event campaign click ID                       |
 |                    | campaign_term                 | String   | Client-side | Event campaign term                           |
 |                    | campaign_content              | String   | Client-side | Event campaign content                        |
+|                    | medium                        | String   | Client-side | Event medium (`utm_medium`)                   |
 |                    | user_agent                    | String   | Client-side | Browser user agent string                     |
 |                    | browser_name                  | String   | Client-side | Browser name                                  |
 |                    | browser_language              | String   | Client-side | Browser language                              |
@@ -475,49 +481,67 @@ See [Enable Bot protection](https://github.com/nameless-analytics/server-side-cl
 
 
 ### Channel grouping logic
-The server derives `channel_grouping` from `source` and the presence of `campaign`. User and session channel values are captured when their respective scopes are created; event-level values reflect the individual event.
+The server derives `channel_grouping` from `source`, `medium`, `campaign` and `campaign_click_id`, following the [GA4 default channel group](https://support.google.com/analytics/answer/9756891). User and session channel values are captured when their respective scopes are created; event-level values reflect the individual event.
 
 <details><summary>See channel grouping rules</summary>
 
-The following table describes how the channel grouping is determined based on the `source` and `campaign` parameters of the event.
+The rules are evaluated **in the order below** and the first match wins.
 
-The rules are evaluated **in the order below** and the first match wins. The order matters for sources that belong to two categories: `gemini.google.com` matches both **AI** and **Search Engine**, and is classified as `ai` because AI is checked first.
+| # | Channel grouping | Rule |
+| :--- | :--- | :--- |
+| 1 | `direct` | Source empty or `direct`, and no medium |
+| 2 | `gtm_debugger` | Source `tagassistant.google.com` |
+| 3 | `cross_network` | Campaign contains `cross-network` |
+| 4 | `ai` | Medium `ai-assistant` |
+| 5 | `paid_shopping` | Paid medium¹ and a **Shopping** source, or a campaign matching `(^\|[^a-df-z])shop\|shopping` |
+| 6 | `paid_search_engine` | Paid medium¹ and a **Search** source |
+| 7 | `paid_social` | Paid medium¹ and a **Social** source |
+| 8 | `paid_video` | Paid medium¹ and a **Video** source |
+| 9 | `display` | Medium `display`, `banner`, `expandable`, `interstitial` or `cpm` |
+| 10 | `paid_other` | Paid medium¹ |
+| 11 | `email` | Medium `email`, `e-mail`, `e_mail`, `e mail` or `newsletter` |
+| 12 | `affiliate` | Medium `affiliate` |
+| 13 | `sms` | Medium `sms` |
+| 14 | `audio` | Medium `audio` |
+| 15 | `mobile_push` | Medium ending in `push`, or containing `mobile` or `notification` |
+| 16 | `organic_search_engine` | Medium `organic` |
+| 17 | `organic_social` | Medium `social`, `social-network`, `social-media`, `sm`, `social network` or `social media` |
+| 18 | `organic_video` | Medium containing `video` |
+| 19 | `referral` | Medium `referral`, `app` or `link` |
+| 20 | `ai` | An **AI** source |
+| 21 | `email` | A webmail source: starting with `mail.` or `webmail.` |
+| 22 | `referral` | A Google product that is not search: `mail.`, `docs.`, `drive.`, `sites.`, `calendar.`, `meet.`, `classroom.`, `groups.`, `accounts.` or `play.google.*`, unless the GA4 list categorizes it |
+| 23 | `paid_search_engine` | A **Search** source with a click ID: Google Ads and Microsoft Ads auto-tagging |
+| 24 | `organic_search_engine` | A **Search** source |
+| 25 | `organic_social` | A **Social** source |
+| 26 | `organic_shopping` | A **Shopping** source, or a campaign matching the shopping pattern |
+| 27 | `organic_video` | A **Video** source |
+| 28 | `email` | An **Email** source |
+| 29 | `sms` | Source `sms` |
+| 30 | `mobile_push` | Source `firebase` |
+| 31 | `unassigned` | A medium or a campaign, and none of the above |
+| 32 | `referral` | Anything else |
 
-| # | Channel grouping | Source category | Campaign |
-| :--- | :--- | :--- | :--- |
-| 1 | `direct` | **Direct** | Any |
-| 2 | `gtm_debugger` | **GTM Debugger** | Any |
-| 3 | `ai` | **AI** | Any |
-| 4 | `paid_search_engine` | **Search Engine** | Yes |
-| 4 | `organic_search_engine` | **Search Engine** | No |
-| 5 | `paid_social` | **Social** | Yes |
-| 5 | `organic_social` | **Social** | No |
-| 6 | `paid_shopping` | **Shopping** | Yes |
-| 6 | `organic_shopping` | **Shopping** | No |
-| 7 | `paid_video` | **Video** | Yes |
-| 7 | `organic_video` | **Video** | No |
-| 8 | `email` | **Email** | Any |
-| 9 | `referral` | None of the above | No |
-| 9 | `affiliate` | None of the above | Yes |
+¹ A paid medium matches `^(.*cp.*|ppc|retargeting|paid.*)$`: `cpc`, `cpm`, `cpv`, `paid_social` and so on.
 
-The channel grouping logic uses the following Source categories based on the source name. Matching is case-insensitive and works on substrings, so `google` also catches `news.google.com`. The only exception is the `.ai` rule, which matches the top-level domain and therefore catches `perplexity.ai` but not a source literally named `ai`.
+Matching ignores case. Compared with GA4, an explicit medium comes before the source category (`linkedin` with medium `email` is `email`, not `organic_social`), a click ID turns a search engine source into paid search, and webmail sources are `email`.
 
-| Source category | Source |
+**Source categories.** A source is first looked up, without `www.` and then by its registrable domain, in the source list of the GA4 default channel group (Search, Social, Shopping and Video, as Google publishes it). A source the list does not have is matched by name: the name has to start the source or one of its dot-, dash- or underscore-separated parts, so `google` catches `www.google.it` and `googleads` but not `bingo.com`; `alice`, `aol`, `ask`, `bing`, `brave`, `fb` and `ig` have to be a whole part, and `t.co`, `x.com` and `threads.net` the whole domain.
+
+| Source category | Names matched outside the GA4 list |
 | :--- | :--- |
-| **Direct** | `null`, `direct` |
-| **GTM Debugger** | `tagassistant.google.com` |
-| **Search Engine** | `360.cn`, `alice`, `aol`, `ar.search.yahoo.com`, `ask`, `bing`, `google`, `yahoo`, `yandex`, `baidu`, `ecosia`, `duckduckgo`, `sogou`, `naver`, `seznam` |
-| **Social** | `facebook`, `twitter`, `t.co`, `bsky.app`, `instagram`, `pinterest`, `linkedin`, `reddit`, `vk.com`, `tiktok`, `snapchat`, `tumblr`, `wechat`, `whatsapp` |
-| **Shopping** | `amazon`, `ebay`, `etsy`, `shopify`, `stripe`, `walmart`, `mercadolibre`, `alibaba`, `naver.shopping` |
+| **Search** | `360.cn`, `alice`, `aol`, `ask`, `baidu`, `bing`, `brave`, `duckduckgo`, `ecosia`, `google`, `naver`, `qwant`, `seznam`, `sogou`, `startpage`, `yahoo`, `yandex` |
+| **Social** | `facebook`, `fb`, `instagram`, `ig`, `threads.net`, `twitter`, `t.co`, `x.com`, `bsky`, `linkedin`, `lnkd.in`, `pinterest`, `reddit`, `vk.com`, `tiktok`, `snapchat`, `tumblr`, `wechat`, `whatsapp`, `telegram`, `discord`, `mastodon`, `quora` |
+| **Shopping** | `amazon`, `ebay`, `etsy`, `shopify`, `walmart`, `mercadolibre`, `alibaba`, `aliexpress`, `zalando` |
 | **Video** | `youtube`, `vimeo`, `netflix`, `twitch`, `dailymotion`, `hulu`, `disneyplus`, `wistia`, `youku` |
-| **AI** | `chatgpt`, `gemini`, `bard`, `claude`, `alexa`, `siri`, `assistant`, plus any source on a `.ai` domain |
-| **Email** | `email`, `e-mail`, `newsletter`, `mailchimp`, `sendgrid`, `sparkpost` |
+| **AI** | `chatgpt`, `openai`, `gemini`, `bard`, `claude`, `copilot`, `perplexity`, `deepseek`, `grok`, plus any source on a `.ai` domain |
+| **Email** | `email`, `e-mail`, `e_mail`, `newsletter`, `mailchimp`, `sendgrid`, `sparkpost`, `klaviyo`, `brevo`, `hubspot` |
 
 </details>
 
-The equivalent BigQuery [`get_custom_channel_grouping`](tables/user-defined-functions/get_custom_channel_grouping.sql) UDF powers customizable reporting fields. Changes to that UDF apply to historical results at query time without rewriting raw events.
+The [`get_channel_grouping`](tables/user-defined-functions/get_channel_grouping.sql) UDF is the standard logic itself, unchanged, for data that never went through the tag: `campaigns` uses it for advertising platform rows with no matching sessions, as paid traffic.
 
-The [`get_channel_grouping`](tables/user-defined-functions/get_channel_grouping.sql) UDF is the standard logic itself, unchanged, for data that never went through the tag: `campaigns` uses it for advertising platform rows with no matching sessions.
+The [`get_custom_channel_grouping`](tables/user-defined-functions/get_custom_channel_grouping.sql) UDF is a second grouping beside the standard one, on the same fields. It returns `NULL` until you write your own rules into it; changes apply to historical results at query time without rewriting raw events.
 
 
 ### Server-side cookies
@@ -560,9 +584,9 @@ Firestore ensures data integrity by managing how parameters are updated across h
 
 | Scope | Type | Parameters | Logic |
 | :--- | :--- | :--- | :--- |
-| **User** | **First-Touch** | `user_date`, `user_source`, `user_tld_source`, `user_campaign`, `user_campaign_id`, `user_campaign_click_id`, `user_campaign_term`, `user_campaign_content`, `user_channel_grouping`, `user_device_type`, `user_country`, `user_city`, `user_language`,   `user_first_session_timestamp` | Recorded at first visit, **never overwritten**. |
+| **User** | **First-Touch** | `user_date`, `user_source`, `user_tld_source`, `user_campaign`, `user_campaign_id`, `user_campaign_click_id`, `user_campaign_term`, `user_campaign_content`, `user_medium`, `user_channel_grouping`, `user_device_type`, `user_country`, `user_city`, `user_language`,   `user_first_session_timestamp` | Recorded at first visit, **never overwritten**. |
 | **User** | **Last-Touch** | `user_last_session_timestamp` | Updated at the start of every new session. |
-| **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`,   `session_channel_grouping`, `session_device_type`, `session_country`, `session_city`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_url`, `session_landing_page_path`, `session_landing_page_title` | Set at session start, persists throughout the session. |
+| **Session** | **First-Touch** | `session_date`, `session_number`, `session_start_timestamp`, `session_source`, `session_tld_source`, `session_campaign`, `session_campaign_id`, `session_campaign_click_id`, `session_campaign_term`, `session_campaign_content`, `session_medium`, `session_channel_grouping`, `session_device_type`, `session_country`, `session_city`, `session_language`, `session_hostname`, `session_browser_name`, `session_landing_page_category`, `session_landing_page_url`, `session_landing_page_path`, `session_landing_page_title` | Set at session start, persists throughout the session. |
 | **Session** | **Last-Touch** | `session_exit_page_category`, `session_exit_page_url`, `session_exit_page_path`, `session_exit_page_title`, `session_end_timestamp` | **Updated on every hit** to reflect the latest state. |
 | **Session** | **Progressive** | `cross_domain_session` | Flags as 'Yes' if any hit in the session is cross-domain. |
 | **Session** | **Event-driven** | `user_id` | Set at session start, then overwritten by `login` and cleared by `logout`. See [User ID lifecycle](#user-id-lifecycle). |

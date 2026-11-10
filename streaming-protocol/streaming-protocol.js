@@ -206,6 +206,7 @@ async function build_payload(page_date_from_bq, page_data_from_bq) {
         "event_data": {
             "event_type": "event", // Do not modify
             "source": 'direct', // Do not modify
+            "medium": null, // Do not modify
             "campaign": null, // Do not modify
             "campaign_id": null, // Do not modify
             "campaign_click_id": null, // Do not modify

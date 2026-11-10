@@ -27,10 +27,13 @@ with raw_product_data as (
       user_campaign_click_id,
       user_campaign_term,
       user_campaign_content,
+      user_medium,
       user_device_type, 
       user_country, 
       user_city,
       user_language,
+      user_first_session_timestamp,
+      user_last_session_timestamp,
 
       # SESSION DATA
       session_date, 
@@ -55,6 +58,7 @@ with raw_product_data as (
       session_campaign_click_id,
       session_campaign_term,
       session_campaign_content,
+      session_medium,
       session_device_type, 
       session_browser_name,
       session_country, 
@@ -191,10 +195,13 @@ with raw_product_data as (
     user_campaign_click_id,
     user_campaign_term,
     user_campaign_content,
+    user_medium,
     user_device_type, 
     user_country, 
     user_city,
     user_language,
+    user_first_session_timestamp,
+    user_last_session_timestamp,
 
     # SESSION DATA
     session_date, 
@@ -219,6 +226,7 @@ with raw_product_data as (
     session_campaign_click_id,
     session_campaign_term,
     session_campaign_content,
+    session_medium,
     session_device_type, 
     session_browser_name,
     session_country, 

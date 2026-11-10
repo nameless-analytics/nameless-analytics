@@ -98,6 +98,7 @@ This is a minimal valid `purchase` request body:
   "event_data": {
     "event_type": "event",
     "source": "direct",
+    "medium": null,
     "campaign": null,
     "campaign_id": null,
     "campaign_click_id": null,

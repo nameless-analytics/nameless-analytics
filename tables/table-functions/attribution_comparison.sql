@@ -30,6 +30,7 @@ with attribution_data_single_touch as (
       attribution_model.session_campaign_click_id,
       attribution_model.session_campaign_term,
       attribution_model.session_campaign_content,
+      attribution_model.session_medium,
 
       conversion_date,
       conversion_name,
@@ -57,6 +58,7 @@ with attribution_data_single_touch as (
         first_click_campaign_click_id as session_campaign_click_id,
         first_click_campaign_term as session_campaign_term,
         first_click_campaign_content as session_campaign_content,
+        first_click_medium as session_medium,
         'first_click' as attribution_model_name
       ),
 
@@ -76,6 +78,7 @@ with attribution_data_single_touch as (
         last_click_campaign_click_id as session_campaign_click_id,
         last_click_campaign_term as session_campaign_term,
         last_click_campaign_content as session_campaign_content,
+        last_click_medium as session_medium,
         'last_click' as attribution_model_name
       ),
 
@@ -95,6 +98,7 @@ with attribution_data_single_touch as (
         last_click_non_direct_campaign_click_id as session_campaign_click_id,
         last_click_non_direct_campaign_term as session_campaign_term,
         last_click_non_direct_campaign_content as session_campaign_content,
+        last_click_non_direct_medium as session_medium,
         'last_click_non_direct' as attribution_model_name
       )
     ]) as attribution_model
@@ -117,6 +121,7 @@ with attribution_data_single_touch as (
       session_campaign_click_id,
       session_campaign_term,
       session_campaign_content,
+      session_medium,
 
       conversion_date,
       conversion_name,
@@ -176,6 +181,7 @@ with attribution_data_single_touch as (
     session_campaign_click_id,
     session_campaign_term,
     session_campaign_content,
+    session_medium,
     attribution_model_name,
     attribution_model_type,
 

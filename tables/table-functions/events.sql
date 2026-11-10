@@ -33,7 +33,7 @@ select
     datetime_diff(current_timestamp(), timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), day) as days_from_last_visit,
 
     (select value.string from unnest(user_data) where name = 'user_channel_grouping') as user_channel_grouping,
-    `%s.%s.get_custom_channel_grouping`((select value.string from unnest(user_data) where name = 'user_source'), (select value.string from unnest(user_data) where name = 'user_campaign')) as user_custom_channel_grouping,
+    `%s.%s.get_custom_channel_grouping`((select value.string from unnest(user_data) where name = 'user_source'), (select value.string from unnest(user_data) where name = 'user_medium'), (select value.string from unnest(user_data) where name = 'user_campaign'), (select value.string from unnest(user_data) where name = 'user_campaign_click_id')) as user_custom_channel_grouping,
     (select value.string from unnest(user_data) where name = 'user_source') as user_source,
     (select value.string from unnest(user_data) where name = 'user_tld_source') as user_tld_source,
     split((select value.string from unnest(user_data) where name = 'user_tld_source'), '.')[safe_offset(0)] as user_source_cleaned,
@@ -49,6 +49,7 @@ select
     (select value.string from unnest(user_data) where name = 'user_campaign_click_id') as user_campaign_click_id,
     (select value.string from unnest(user_data) where name = 'user_campaign_term') as user_campaign_term,
     (select value.string from unnest(user_data) where name = 'user_campaign_content') as user_campaign_content,
+    (select value.string from unnest(user_data) where name = 'user_medium') as user_medium,
 
     (select value.string from unnest(user_data) where name = 'user_device_type') as user_device_type,
     (select value.string from unnest(user_data) where name = 'user_country') as user_country,
@@ -94,7 +95,7 @@ select
     case when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 1 else 0 end as returning_session,
 
     (select value.string from unnest(session_data) where name = 'session_channel_grouping') as session_channel_grouping,
-    `%s.%s.get_custom_channel_grouping`((select value.string from unnest(session_data) where name = 'session_source'), (select value.string from unnest(session_data) where name = 'session_campaign')) as session_custom_channel_grouping,
+    `%s.%s.get_custom_channel_grouping`((select value.string from unnest(session_data) where name = 'session_source'), (select value.string from unnest(session_data) where name = 'session_medium'), (select value.string from unnest(session_data) where name = 'session_campaign'), (select value.string from unnest(session_data) where name = 'session_campaign_click_id')) as session_custom_channel_grouping,
     (select value.string from unnest(session_data) where name = 'session_source') as session_source,
     (select value.string from unnest(session_data) where name = 'session_tld_source') as session_tld_source,
     split((select value.string from unnest(session_data) where name = 'session_tld_source'), '.')[safe_offset(0)] as session_source_cleaned,
@@ -110,6 +111,7 @@ select
     (select value.string from unnest(session_data) where name = 'session_campaign_click_id') as session_campaign_click_id,
     (select value.string from unnest(session_data) where name = 'session_campaign_term') as session_campaign_term,
     (select value.string from unnest(session_data) where name = 'session_campaign_content') as session_campaign_content,
+    (select value.string from unnest(session_data) where name = 'session_medium') as session_medium,
 
     (select value.string from unnest(session_data) where name = 'session_device_type') as session_device_type,
     (select value.string from unnest(session_data) where name = 'session_country') as session_country,
@@ -180,7 +182,7 @@ select
     (select value.string from unnest(event_data) where name = 'event_type') as event_type, 
 
     (select value.string from unnest(event_data) where name = 'channel_grouping') as channel_grouping, 
-    `%s.%s.get_custom_channel_grouping`((select value.string from unnest(event_data) where name = 'source'), (select value.string from unnest(event_data) where name = 'campaign')) as custom_channel_grouping, 
+    `%s.%s.get_custom_channel_grouping`((select value.string from unnest(event_data) where name = 'source'), (select value.string from unnest(event_data) where name = 'medium'), (select value.string from unnest(event_data) where name = 'campaign'), (select value.string from unnest(event_data) where name = 'campaign_click_id')) as custom_channel_grouping, 
     (select value.string from unnest(event_data) where name = 'source') as source, 
     (select value.string from unnest(event_data) where name = 'tld_source') as tld_source, 
     split((select value.string from unnest(event_data) where name = 'tld_source'), '.')[safe_offset(0)] as source_cleaned,
@@ -196,6 +198,7 @@ select
     (select value.string from unnest(event_data) where name = 'campaign_click_id') as campaign_click_id,
     (select value.string from unnest(event_data) where name = 'campaign_term') as campaign_term, 
     (select value.string from unnest(event_data) where name = 'campaign_content') as campaign_content, 
+    (select value.string from unnest(event_data) where name = 'medium') as medium, 
 
     (select value.string from unnest(event_data) where name = 'browser_name') as browser_name, 
     (select value.string from unnest(event_data) where name = 'browser_version') as browser_version, 

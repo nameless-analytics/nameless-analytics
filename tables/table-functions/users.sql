@@ -8,6 +8,7 @@ with raw_user_data as (
       # USER DATA
       user_date,
       user_first_session_timestamp,
+      user_last_session_timestamp,
       user_id,
       client_id,
       new_user_client_id,
@@ -27,6 +28,7 @@ with raw_user_data as (
       user_campaign_click_id,
       user_campaign_term,
       user_campaign_content,
+      user_medium,
       user_device_type,
       user_country,
       user_city,
@@ -63,6 +65,7 @@ with raw_user_data as (
       # USER DATA
       user_date,
       user_first_session_timestamp,
+      user_last_session_timestamp,
       user_id,
       client_id,
       new_user_client_id,
@@ -82,6 +85,7 @@ with raw_user_data as (
       user_campaign_click_id,
       user_campaign_term,
       user_campaign_content,
+      user_medium,
       user_device_type,
       user_country,
       user_city,
@@ -118,6 +122,7 @@ with raw_user_data as (
     # USER DATA
     user_date,
     user_first_session_timestamp,
+    user_last_session_timestamp,
     array_agg(user_id ignore nulls order by session_number limit 1)[safe_offset(0)] as user_id,
     client_id,
     case 
@@ -141,6 +146,7 @@ with raw_user_data as (
     user_campaign_click_id,
     user_campaign_term,
     user_campaign_content,
+    user_medium,
     user_device_type,
     user_country,
     user_city,

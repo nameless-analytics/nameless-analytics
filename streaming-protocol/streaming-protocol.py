@@ -178,6 +178,7 @@ def build_payload(page_date_from_bq, page_data_from_bq):
         "event_data": {
             "event_type": "event", # Do not modify
             "source": 'direct', # Do not modify
+            "medium": None, # Do not modify
             "campaign": None, # Do not modify
             "campaign_id": None, # Do not modify
             "campaign_click_id": None, # Do not modify

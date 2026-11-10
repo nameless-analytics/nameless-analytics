@@ -41,7 +41,8 @@ with conversions as (
       session_campaign_id,
       session_campaign_click_id,
       session_campaign_term,
-      session_campaign_content
+      session_campaign_content,
+      session_medium
 
     from `%s.%s.events`(date_sub(start_date, interval lookback_days day), end_date, 'session')
     group by all
@@ -83,7 +84,8 @@ with conversions as (
       sessions.session_campaign_id,
       sessions.session_campaign_click_id,
       sessions.session_campaign_term,
-      sessions.session_campaign_content
+      sessions.session_campaign_content,
+      sessions.session_medium
 
     from conversions
     inner join sessions
@@ -158,6 +160,7 @@ with conversions as (
     session_campaign_click_id,
     session_campaign_term,
     session_campaign_content,
+    session_medium,
 
     # LINEAR
     linear_weight as linear_attribution_credit,

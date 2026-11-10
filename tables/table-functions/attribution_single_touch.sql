@@ -30,6 +30,7 @@ with conversions as (
       user_campaign_click_id as first_click_campaign_click_id,
       user_campaign_term as first_click_campaign_term,
       user_campaign_content as first_click_campaign_content,
+      user_medium as first_click_medium,
 
       # LAST CLICK
       session_channel_grouping as last_click_channel_grouping,
@@ -46,7 +47,8 @@ with conversions as (
       session_campaign_id as last_click_campaign_id,
       session_campaign_click_id as last_click_campaign_click_id,
       session_campaign_term as last_click_campaign_term,
-      session_campaign_content as last_click_campaign_content
+      session_campaign_content as last_click_campaign_content,
+      session_medium as last_click_medium
 
     from `%s.%s.events`(start_date, end_date, 'session')
     where true 
@@ -72,7 +74,8 @@ with conversions as (
       session_campaign_id,
       session_campaign_click_id,
       session_campaign_term,
-      session_campaign_content
+      session_campaign_content,
+      session_medium
 
     from `%s.%s.events`(date_sub(start_date, interval lookback_days day), end_date, 'session')
   ),
@@ -98,7 +101,8 @@ with conversions as (
           session_campaign_id as campaign_id,
           session_campaign_click_id as campaign_click_id,
           session_campaign_term as campaign_term,
-          session_campaign_content as campaign_content
+          session_campaign_content as campaign_content,
+          session_medium as medium
         )
         order by session_start_timestamp desc
         limit 1
@@ -143,6 +147,7 @@ with conversions as (
     first_click_campaign_click_id,
     first_click_campaign_term,
     first_click_campaign_content,
+    first_click_medium,
 
     # LAST CLICK
     last_click_channel_grouping,
@@ -160,6 +165,7 @@ with conversions as (
     last_click_campaign_click_id,
     last_click_campaign_term,
     last_click_campaign_content,
+    last_click_medium,
 
     # LAST CLICK NON-DIRECT
     if(traffic_source.session_start_timestamp is not null, traffic_source.channel_grouping, last_click_channel_grouping) as last_click_non_direct_channel_grouping,
@@ -176,7 +182,8 @@ with conversions as (
     if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_id, last_click_campaign_id) as last_click_non_direct_campaign_id,
     if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_click_id, last_click_campaign_click_id) as last_click_non_direct_campaign_click_id,
     if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_term, last_click_campaign_term) as last_click_non_direct_campaign_term,
-    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_content, last_click_campaign_content) as last_click_non_direct_campaign_content
+    if(traffic_source.session_start_timestamp is not null, traffic_source.campaign_content, last_click_campaign_content) as last_click_non_direct_campaign_content,
+    if(traffic_source.session_start_timestamp is not null, traffic_source.medium, last_click_medium) as last_click_non_direct_medium
 
   from conversions
   left join last_click_non_direct using(conversion_id)
