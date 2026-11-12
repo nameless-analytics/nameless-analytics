@@ -369,7 +369,7 @@ First-party hosting reduces dependency on public CDNs and can reduce blocking by
 
 Download:
 
-1. [nameless-analytics_vX.X.X.min.js](https://github.com/nameless-analytics/client-side-tracker-tag/blob/main/lib/) using the version expected by the installed client template;
+1. `nameless-analytics_vX.X.X.min.js`, from the `lib/` folder of the [client-side tracker's release tag](https://github.com/nameless-analytics/client-side-tracker-tag/tags) of the version the installed template expects (tag `vX.X.X`), not from `main`;
 2. [ua-parser.pack.min.js](https://cdn.jsdelivr.net/npm/ua-parser-js@1.0.40/dist/ua-parser.pack.min.js), currently pinned to `ua-parser-js@1.0.40`.
 
 ### 2. Host the libraries on your infrastructure
