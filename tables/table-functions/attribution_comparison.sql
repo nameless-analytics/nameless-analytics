@@ -16,6 +16,7 @@ with attribution_data_single_touch as (
   attribution_models_single_touch as (
     select
       attribution_model.session_channel_grouping,
+      attribution_model.session_channel_paid,
       attribution_model.session_custom_channel_grouping,
       attribution_model.session_source,
       attribution_model.session_campaign_year,
@@ -28,6 +29,7 @@ with attribution_data_single_touch as (
       attribution_model.session_campaign,
       attribution_model.session_campaign_id,
       attribution_model.session_campaign_click_id,
+      attribution_model.session_campaign_click_id_type,
       attribution_model.session_campaign_term,
       attribution_model.session_campaign_content,
       attribution_model.session_medium,
@@ -44,6 +46,7 @@ with attribution_data_single_touch as (
     cross join unnest([
       struct(
         first_click_channel_grouping as session_channel_grouping,
+        first_click_channel_paid as session_channel_paid,
         first_click_custom_channel_grouping as session_custom_channel_grouping,
         first_click_source as session_source,
         first_click_campaign_year as session_campaign_year,
@@ -56,6 +59,7 @@ with attribution_data_single_touch as (
         first_click_campaign as session_campaign,
         first_click_campaign_id as session_campaign_id,
         first_click_campaign_click_id as session_campaign_click_id,
+        first_click_campaign_click_id_type as session_campaign_click_id_type,
         first_click_campaign_term as session_campaign_term,
         first_click_campaign_content as session_campaign_content,
         first_click_medium as session_medium,
@@ -64,6 +68,7 @@ with attribution_data_single_touch as (
 
       struct(
         last_click_channel_grouping as session_channel_grouping,
+        last_click_channel_paid as session_channel_paid,
         last_click_custom_channel_grouping as session_custom_channel_grouping,
         last_click_source as session_source,
         last_click_campaign_year as session_campaign_year,
@@ -76,6 +81,7 @@ with attribution_data_single_touch as (
         last_click_campaign as session_campaign,
         last_click_campaign_id as session_campaign_id,
         last_click_campaign_click_id as session_campaign_click_id,
+        last_click_campaign_click_id_type as session_campaign_click_id_type,
         last_click_campaign_term as session_campaign_term,
         last_click_campaign_content as session_campaign_content,
         last_click_medium as session_medium,
@@ -84,6 +90,7 @@ with attribution_data_single_touch as (
 
       struct(
         last_click_non_direct_channel_grouping as session_channel_grouping,
+        last_click_non_direct_channel_paid as session_channel_paid,
         last_click_non_direct_custom_channel_grouping as session_custom_channel_grouping,
         last_click_non_direct_source as session_source,
         last_click_non_direct_campaign_year as session_campaign_year,
@@ -96,6 +103,7 @@ with attribution_data_single_touch as (
         last_click_non_direct_campaign as session_campaign,
         last_click_non_direct_campaign_id as session_campaign_id,
         last_click_non_direct_campaign_click_id as session_campaign_click_id,
+        last_click_non_direct_campaign_click_id_type as session_campaign_click_id_type,
         last_click_non_direct_campaign_term as session_campaign_term,
         last_click_non_direct_campaign_content as session_campaign_content,
         last_click_non_direct_medium as session_medium,
@@ -107,6 +115,7 @@ with attribution_data_single_touch as (
   attribution_models_multi_touch as (
     select
       session_channel_grouping,
+      session_channel_paid,
       session_custom_channel_grouping,
       session_source,
       session_campaign_year,
@@ -119,6 +128,7 @@ with attribution_data_single_touch as (
       session_campaign,
       session_campaign_id,
       session_campaign_click_id,
+      session_campaign_click_id_type,
       session_campaign_term,
       session_campaign_content,
       session_medium,
@@ -167,6 +177,7 @@ with attribution_data_single_touch as (
     conversion_date,
     conversion_name,
     session_channel_grouping,
+    session_channel_paid,
     session_custom_channel_grouping,
     session_source,
     session_campaign_year,
@@ -179,6 +190,7 @@ with attribution_data_single_touch as (
     session_campaign,
     session_campaign_id,
     session_campaign_click_id,
+    session_campaign_click_id_type,
     session_campaign_term,
     session_campaign_content,
     session_medium,

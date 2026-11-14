@@ -102,6 +102,7 @@ This is a minimal valid `purchase` request body:
     "campaign": null,
     "campaign_id": null,
     "campaign_click_id": null,
+    "campaign_click_id_type": null,
     "campaign_term": null,
     "campaign_content": null
   },

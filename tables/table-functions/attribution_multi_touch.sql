@@ -26,6 +26,7 @@ with conversions as (
       session_start_timestamp,
 
       session_channel_grouping,
+      session_channel_paid,
       session_custom_channel_grouping,
       session_source_cleaned as session_source,
 
@@ -40,6 +41,7 @@ with conversions as (
       session_campaign,
       session_campaign_id,
       session_campaign_click_id,
+      session_campaign_click_id_type,
       session_campaign_term,
       session_campaign_content,
       session_medium
@@ -69,6 +71,7 @@ with conversions as (
 
       # TRAFFIC DATA
       sessions.session_channel_grouping,
+      sessions.session_channel_paid,
       sessions.session_custom_channel_grouping,
       sessions.session_source,
 
@@ -83,6 +86,7 @@ with conversions as (
       sessions.session_campaign,
       sessions.session_campaign_id,
       sessions.session_campaign_click_id,
+      sessions.session_campaign_click_id_type,
       sessions.session_campaign_term,
       sessions.session_campaign_content,
       sessions.session_medium
@@ -144,6 +148,7 @@ with conversions as (
 
     # TRAFFIC DATA
     session_channel_grouping,
+    session_channel_paid,
     session_custom_channel_grouping,
     session_source,
 
@@ -158,6 +163,7 @@ with conversions as (
     session_campaign,
     session_campaign_id,
     session_campaign_click_id,
+    session_campaign_click_id_type,
     session_campaign_term,
     session_campaign_content,
     session_medium,

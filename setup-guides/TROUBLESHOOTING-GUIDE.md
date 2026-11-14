@@ -255,7 +255,7 @@ If `country` or `city` is `null`, verify that the server environment forwards on
 
 ### Unexpected channel grouping
 
-Channel grouping is derived from `source` and `campaign`. Verify the incoming values against the [channel grouping rules](../README.md#channel-grouping-logic). An unknown source becomes `referral`, or `affiliate` when a campaign is present.
+Channel grouping is derived from `medium`, then `source`, then the click ID's type (`campaign_click_id_type`); `channel_paid` from the medium, or without one from an ad's click ID. Verify the incoming values against the [channel grouping rules](../README.md#channel-grouping-logic). An unknown website becomes `referral`; a medium or a source no rule knows, `other`. An ad without UTM parameters is classed by its referrer unless its click ID is `gclid`, `msclkid`, `wbraid`, `gbraid` or `dclid`: tag Meta, TikTok, LinkedIn, X, Pinterest and Snapchat ads with UTM parameters.
 
 #
 

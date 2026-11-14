@@ -1,63 +1,48 @@
 declare project_name string default 'PROJECT NAME';  -- Change this
 declare dataset_name string default 'nameless_analytics';
 
--- The standard channel grouping, as the Server-side Client Tag computes it
--- (get_channel_grouping in server-side-client-tag/template.js), for rows that
--- never went through the tag, such as advertising platform data. Keep it in
--- sync with the tag; customizations belong in get_custom_channel_grouping.
+-- The standard channel grouping, as the Server-side Client Tag works it out
+-- (get_channel_grouping and get_channel_paid in server-side-client-tag/template.js):
+-- where a session came from, and whether it was paid. For the events() table
+-- function and for rows that never went through the tag, such as advertising
+-- platform data. Customizations belong in get_custom_channel_grouping.
 -- Generated: the dashboard's scripts/channel-grouping/generate.mjs.
 declare get_channel_grouping string default format ("""
-CREATE OR REPLACE FUNCTION `%s.%s.get_channel_grouping`(source STRING, medium STRING, campaign STRING, campaign_click_id STRING)
+CREATE OR REPLACE FUNCTION `%s.%s.get_channel_grouping`(source STRING, medium STRING, campaign_click_id_type STRING)
 RETURNS STRING
 AS ((
   SELECT
     CASE
-      WHEN (s = '' OR s = 'direct') AND m = '' THEN 'direct'
-      WHEN s = 'tagassistant.google.com' THEN 'gtm_debugger'
-      WHEN REGEXP_CONTAINS(c, r'(?i)cross-network') THEN 'cross_network'
-      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^ai-assistant$') THEN 'ai'
-      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(.*cp.*|ppc|retargeting|paid.*)$') AND (is_shopping OR REGEXP_CONTAINS(c, r'(?i)(^|[^a-df-z])shop|shopping')) THEN 'paid_shopping'
-      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(.*cp.*|ppc|retargeting|paid.*)$') AND is_search THEN 'paid_search_engine'
-      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(.*cp.*|ppc|retargeting|paid.*)$') AND is_social THEN 'paid_social'
-      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(.*cp.*|ppc|retargeting|paid.*)$') AND is_video THEN 'paid_video'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(display|banner|expandable|interstitial|cpm)$') THEN 'display'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(.*cp.*|ppc|retargeting|paid.*)$') THEN 'paid_other'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(email|e-mail|e_mail|e mail|newsletter)$') THEN 'email'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^affiliate$') THEN 'affiliate'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^sms$') THEN 'sms'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^audio$') THEN 'audio'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)push$|mobile|notification') THEN 'mobile_push'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^organic$') THEN 'organic_search_engine'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(social|social-network|social-media|sm|social network|social media)$') THEN 'organic_social'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)video') THEN 'organic_video'
-        WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(referral|app|link)$') THEN 'referral'
+      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(email|e-mail|e_mail|e mail|newsletter)$') THEN 'email'
+      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^affiliates?$') THEN 'affiliate'
+      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(referral|app|link)$') THEN 'referral'
+      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(paid[-_ ]?)?(social|social[-_ ]network|social[-_ ]media|sm)$') THEN 'social'
+      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(paid[-_ ]?)?video$') THEN 'video'
+      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(display|banner|cpm|paid[-_ ]?display)$') THEN 'display'
+      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(organic|(paid[-_ ]?)?search)$') THEN 'search'
+      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(paid[-_ ]?)?shopping$') THEN 'shopping'
+      WHEN m != '' AND REGEXP_CONTAINS(m, r'(?i)^(ai|ai-assistant)$') THEN 'ai'
+      WHEN s = '' OR s = 'direct' THEN IF(m = '' AND NOT ad_click, 'direct', 'other')
       WHEN REGEXP_CONTAINS(s, r'(?i)(^|[^a-z0-9])(chatgpt|openai|gemini|bard|claude|copilot|perplexity|deepseek|grok)|\\.ai$') THEN 'ai'
       WHEN REGEXP_CONTAINS(s, r'(?i)^(mail|webmail)\\.') THEN 'email'
-      WHEN category IS NULL AND REGEXP_CONTAINS(s, r'(?i)^(mail|docs|drive|sites|calendar|meet|classroom|groups|accounts|play)\\.google\\.') THEN 'referral'
-      WHEN is_search THEN IF(IFNULL(campaign_click_id, '') != '', 'paid_search_engine', 'organic_search_engine')
-      WHEN is_social THEN 'organic_social'
-      WHEN is_shopping OR REGEXP_CONTAINS(c, r'(?i)(^|[^a-df-z])shop|shopping') THEN 'organic_shopping'
-      WHEN is_video THEN 'organic_video'
+      WHEN category IS NOT NULL THEN category
+      WHEN REGEXP_CONTAINS(s, r'(?i)^(mail|docs|drive|sites|calendar|meet|classroom|groups|accounts|play|tagassistant)\\.google\\.') THEN 'referral'
+      WHEN REGEXP_CONTAINS(s, r'(?i)(^|[^a-z0-9])(360\\.cn|baidu|duckduckgo|ecosia|google|naver|qwant|seznam|sogou|startpage|yahoo|yandex)|(^|[^a-z0-9])(alice|aol|ask|bing|brave)([^a-z0-9]|$)') THEN 'search'
+      WHEN REGEXP_CONTAINS(s, r'(?i)(^|[^a-z0-9])(fb|ig)([^a-z0-9]|$)|(^|[^a-z0-9])(facebook|instagram|threads\\.(net|com)|twitter|bsky|linkedin|lnkd\\.in|pinterest|reddit|vk\\.com|tiktok|snapchat|tumblr|wechat|whatsapp|telegram|discord|mastodon|quora)|(^|\\.)(t\\.co|x\\.com)$') THEN 'social'
+      WHEN REGEXP_CONTAINS(s, r'(?i)(^|[^a-z0-9])(youtube|vimeo|netflix|twitch|dailymotion|hulu|disneyplus|wistia|youku)') THEN 'video'
+      WHEN REGEXP_CONTAINS(s, r'(?i)(^|[^a-z0-9])(amazon|ebay|etsy|shopify|walmart|mercadolibre|alibaba|aliexpress|zalando)') THEN 'shopping'
       WHEN REGEXP_CONTAINS(s, r'(?i)(^|[^a-z0-9])(email|e-mail|e_mail|e mail|newsletter|mailchimp|sendgrid|sparkpost|klaviyo|brevo|hubspot)') THEN 'email'
-      WHEN LOWER(s) = 'sms' THEN 'sms'
-      WHEN LOWER(s) = 'firebase' THEN 'mobile_push'
-      WHEN m != '' OR c != '' THEN 'unassigned'
-      ELSE 'referral'
+      WHEN ad_click THEN 'display'
+      WHEN m = '' AND STRPOS(s, '.') > 0 THEN 'referral'
+      ELSE 'other'
     END
   FROM (
     SELECT
-      *,
-      category = 'shopping' OR (category IS NULL AND REGEXP_CONTAINS(s, r'(?i)(^|[^a-z0-9])(amazon|ebay|etsy|shopify|walmart|mercadolibre|alibaba|aliexpress|zalando)')) AS is_shopping,
-      category = 'search' OR (category IS NULL AND REGEXP_CONTAINS(s, r'(?i)(^|[^a-z0-9])(360\\.cn|baidu|duckduckgo|ecosia|google|naver|qwant|seznam|sogou|startpage|yahoo|yandex)|(^|[^a-z0-9])(alice|aol|ask|bing|brave)([^a-z0-9]|$)') AND NOT REGEXP_CONTAINS(s, r'(?i)^(mail|docs|drive|sites|calendar|meet|classroom|groups|accounts|play)\\.google\\.')) AS is_search,
-      category = 'social' OR (category IS NULL AND REGEXP_CONTAINS(s, r'(?i)(^|[^a-z0-9])(fb|ig)([^a-z0-9]|$)|(^|[^a-z0-9])(facebook|instagram|threads\\.(net|com)|twitter|bsky|linkedin|lnkd\\.in|pinterest|reddit|vk\\.com|tiktok|snapchat|tumblr|wechat|whatsapp|telegram|discord|mastodon|quora)|(^|\\.)(t\\.co|x\\.com)$')) AS is_social,
-      category = 'video' OR (category IS NULL AND REGEXP_CONTAINS(s, r'(?i)(^|[^a-z0-9])(youtube|vimeo|netflix|twitch|dailymotion|hulu|disneyplus|wistia|youku)')) AS is_video
-    FROM (
-      SELECT
-        s, m, c,
-        -- The source's category in the GA4 default channel group: the source itself without www., else its registrable domain
-        (
-          SELECT category
-          FROM UNNEST([
+      s, m, ad_click,
+      -- The source's category: the source itself without www., else its registrable domain
+      (
+        SELECT category
+        FROM UNNEST([
         STRUCT('360.cn' AS name, 'search' AS category),
         ('43things', 'social'),
         ('43things.com', 'social'),
@@ -877,21 +862,33 @@ AS ((
         ('zoo.gr', 'social'),
         ('zooppa', 'social'),
         ('zooppa.com', 'social')
-          ])
-          WHERE name IN (host, NET.REG_DOMAIN(host))
-          ORDER BY name = host DESC
-          LIMIT 1
-        ) AS category
-      FROM (
-        SELECT
-          IFNULL(source, '') AS s,
-          IFNULL(medium, '') AS m,
-          IFNULL(campaign, '') AS c,
-          REGEXP_REPLACE(LOWER(IFNULL(source, '')), r'^www\\.', '') AS host
-      )
+        ])
+        WHERE name IN (host, NET.REG_DOMAIN(host))
+        ORDER BY name = host DESC
+        LIMIT 1
+      ) AS category
+    FROM (
+      SELECT
+        IFNULL(source, '') AS s,
+        IFNULL(medium, '') AS m,
+        IFNULL(medium, '') = '' AND IFNULL(campaign_click_id_type, '') IN ('gclid', 'msclkid', 'wbraid', 'gbraid', 'dclid') AS ad_click,
+        REGEXP_REPLACE(LOWER(IFNULL(source, '')), r'^www\\.', '') AS host
     )
   )
 ));
 """, project_name, dataset_name);
 
+declare get_channel_paid string default format ("""
+CREATE OR REPLACE FUNCTION `%s.%s.get_channel_paid`(medium STRING, campaign_click_id_type STRING)
+RETURNS BOOL
+AS (
+  IF(
+    IFNULL(medium, '') != '',
+    REGEXP_CONTAINS(medium, r'(?i)^(.*cp.*|ppc|retargeting|paid.*|display|banner)$'),
+    IFNULL(campaign_click_id_type, '') IN ('gclid', 'msclkid', 'wbraid', 'gbraid', 'dclid')
+  )
+);
+""", project_name, dataset_name);
+
 execute immediate get_channel_grouping;
+execute immediate get_channel_paid;

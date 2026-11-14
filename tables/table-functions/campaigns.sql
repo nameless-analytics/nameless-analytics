@@ -7,6 +7,7 @@ with session_data as (
     select
       session_date,
       session_channel_grouping,
+      session_channel_paid,
       session_custom_channel_grouping,
       session_source,
       session_campaign_year,
@@ -65,7 +66,8 @@ with session_data as (
       date,
       source as session_source,
       -- Advertising platforms' rows are paid traffic: they have no medium of their own
-      `%s.%s.get_channel_grouping`(source, 'cpc', campaign, null) as session_channel_grouping,
+      `%s.%s.get_channel_grouping`(source, 'cpc', null) as session_channel_grouping,
+      `%s.%s.get_channel_paid`('cpc', null) as session_channel_paid,
       `%s.%s.get_campaign_part`(campaign, 'campaign_year') as session_campaign_year,
       `%s.%s.get_campaign_part`(campaign, 'campaign_country') as session_campaign_country,
       `%s.%s.get_campaign_part`(campaign, 'campaign_funnel_stage') as session_campaign_funnel_stage,
@@ -92,6 +94,7 @@ with session_data as (
     coalesce(session_data.session_date, online_campaigns_performances.date) as session_date,
     coalesce(session_data.session_source, online_campaigns_performances.session_source) as session_source,
     coalesce(session_data.session_channel_grouping, online_campaigns_performances.session_channel_grouping) as session_channel_grouping,
+    coalesce(session_data.session_channel_paid, online_campaigns_performances.session_channel_paid) as session_channel_paid,
     coalesce(session_data.session_custom_channel_grouping, `%s.%s.get_custom_channel_grouping`(online_campaigns_performances.session_source, 'cpc', online_campaigns_performances.session_campaign, null)) as session_custom_channel_grouping,
     coalesce(session_data.session_campaign_year, online_campaigns_performances.session_campaign_year) as session_campaign_year,
     coalesce(session_data.session_campaign_country, online_campaigns_performances.session_campaign_country) as session_campaign_country,

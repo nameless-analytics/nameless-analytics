@@ -33,6 +33,7 @@ select
     datetime_diff(current_timestamp(), timestamp_millis(first_value((select value.int from unnest(user_data) where name = 'user_last_session_timestamp')) over (partition by client_id order by event_timestamp desc)), day) as days_from_last_visit,
 
     (select value.string from unnest(user_data) where name = 'user_channel_grouping') as user_channel_grouping,
+    (select value.bool from unnest(user_data) where name = 'user_channel_paid') as user_channel_paid,
     `%s.%s.get_custom_channel_grouping`((select value.string from unnest(user_data) where name = 'user_source'), (select value.string from unnest(user_data) where name = 'user_medium'), (select value.string from unnest(user_data) where name = 'user_campaign'), (select value.string from unnest(user_data) where name = 'user_campaign_click_id')) as user_custom_channel_grouping,
     (select value.string from unnest(user_data) where name = 'user_source') as user_source,
     (select value.string from unnest(user_data) where name = 'user_tld_source') as user_tld_source,
@@ -47,6 +48,7 @@ select
     (select value.string from unnest(user_data) where name = 'user_campaign') as user_campaign,
     (select value.string from unnest(user_data) where name = 'user_campaign_id') as user_campaign_id,
     (select value.string from unnest(user_data) where name = 'user_campaign_click_id') as user_campaign_click_id,
+    (select value.string from unnest(user_data) where name = 'user_campaign_click_id_type') as user_campaign_click_id_type,
     (select value.string from unnest(user_data) where name = 'user_campaign_term') as user_campaign_term,
     (select value.string from unnest(user_data) where name = 'user_campaign_content') as user_campaign_content,
     (select value.string from unnest(user_data) where name = 'user_medium') as user_medium,
@@ -95,6 +97,7 @@ select
     case when (select value.int from unnest(session_data) where name = 'session_number') > 1 then 1 else 0 end as returning_session,
 
     (select value.string from unnest(session_data) where name = 'session_channel_grouping') as session_channel_grouping,
+    (select value.bool from unnest(session_data) where name = 'session_channel_paid') as session_channel_paid,
     `%s.%s.get_custom_channel_grouping`((select value.string from unnest(session_data) where name = 'session_source'), (select value.string from unnest(session_data) where name = 'session_medium'), (select value.string from unnest(session_data) where name = 'session_campaign'), (select value.string from unnest(session_data) where name = 'session_campaign_click_id')) as session_custom_channel_grouping,
     (select value.string from unnest(session_data) where name = 'session_source') as session_source,
     (select value.string from unnest(session_data) where name = 'session_tld_source') as session_tld_source,
@@ -109,6 +112,7 @@ select
     (select value.string from unnest(session_data) where name = 'session_campaign') as session_campaign,
     (select value.string from unnest(session_data) where name = 'session_campaign_id') as session_campaign_id,
     (select value.string from unnest(session_data) where name = 'session_campaign_click_id') as session_campaign_click_id,
+    (select value.string from unnest(session_data) where name = 'session_campaign_click_id_type') as session_campaign_click_id_type,
     (select value.string from unnest(session_data) where name = 'session_campaign_term') as session_campaign_term,
     (select value.string from unnest(session_data) where name = 'session_campaign_content') as session_campaign_content,
     (select value.string from unnest(session_data) where name = 'session_medium') as session_medium,
@@ -182,6 +186,7 @@ select
     (select value.string from unnest(event_data) where name = 'event_type') as event_type, 
 
     (select value.string from unnest(event_data) where name = 'channel_grouping') as channel_grouping, 
+    (select value.bool from unnest(event_data) where name = 'channel_paid') as channel_paid, 
     `%s.%s.get_custom_channel_grouping`((select value.string from unnest(event_data) where name = 'source'), (select value.string from unnest(event_data) where name = 'medium'), (select value.string from unnest(event_data) where name = 'campaign'), (select value.string from unnest(event_data) where name = 'campaign_click_id')) as custom_channel_grouping, 
     (select value.string from unnest(event_data) where name = 'source') as source, 
     (select value.string from unnest(event_data) where name = 'tld_source') as tld_source, 
@@ -196,6 +201,7 @@ select
     (select value.string from unnest(event_data) where name = 'campaign') as campaign, 
     (select value.string from unnest(event_data) where name = 'campaign_id') as campaign_id,
     (select value.string from unnest(event_data) where name = 'campaign_click_id') as campaign_click_id,
+    (select value.string from unnest(event_data) where name = 'campaign_click_id_type') as campaign_click_id_type,
     (select value.string from unnest(event_data) where name = 'campaign_term') as campaign_term, 
     (select value.string from unnest(event_data) where name = 'campaign_content') as campaign_content, 
     (select value.string from unnest(event_data) where name = 'medium') as medium, 
