@@ -630,7 +630,7 @@ Scopes, BigQuery table functions, transform `events_raw` into reporting-ready da
 | Acquisition | [Attribution](tables/TABLES.md#attribution-comparison) |
 | Validation | [Events Debug](tables/TABLES.md#events-debug) and [Consents](tables/TABLES.md#consents) |
 
-See [Reporting Tables](tables/TABLES.md) for setup, parameters and SQL source, or use the [Fields catalog explorer](https://datastudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d) to browse fields.
+See [Reporting Tables](tables/TABLES.md) for setup, parameters and SQL source, and [Reporting fields](https://namelessanalytics.com/reporting-fields) for every field they return.
 
 ### Campaign taxonomy
 Campaign naming is optional. When `utm_campaign` follows the seven-part pattern below, the tracker stores the complete value as `campaign` and the reporting queries expose each part as a separate dimension.

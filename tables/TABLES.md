@@ -31,6 +31,9 @@ For an overview of how Nameless Analytics works, [start with the main README](..
   - [Attribution Multi Touch](#attribution-multi-touch)
   - [Attribution Comparison](#attribution-comparison)
 - [Reporting fields](#reporting-fields)
+- [Available in platform only](#available-in-platform-only)
+  - [Campaigns](#campaigns)
+  - [Media plan](#media-plan)
 - [Data governance & maintenance](#data-governance--maintenance)
   - [Cookies are not deleted](#cookies-are-not-deleted)
   - [Delete user data script](#delete-user-data-script)
@@ -258,7 +261,7 @@ select * from `project.nameless_analytics.attribution_comparison`(start_date, en
 
 ## Reporting fields
 
-Use the [Reporting Fields Matrix](https://lookerstudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d) to browse the dimensions and metrics exposed by each table function.
+See [Reporting fields](https://namelessanalytics.com/reporting-fields) for every dimension and metric exposed by the table functions: what each field means and which table functions return it.
 
 ## Data governance & maintenance
 
