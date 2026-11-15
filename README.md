@@ -550,7 +550,7 @@ Matching ignores case. The medium comes first: `linkedin` with medium `email` is
 
 </details>
 
-The [`get_channel_grouping`](tables/user-defined-functions/get_channel_grouping.sql) script installs both rules as UDFs, `get_channel_grouping(source, medium, campaign_click_id_type)` and `get_channel_paid(medium, campaign_click_id_type)`, for data that never went through the tag: `campaigns` uses them for advertising platform rows with no matching sessions, as paid traffic.
+The [`get_channel_grouping`](tables/user-defined-functions/get_channel_grouping.sql) script installs both rules as UDFs, `get_channel_grouping(source, medium, campaign_click_id_type)` and `get_channel_paid(medium, campaign_click_id_type)`, for data that never went through the tag, such as advertising platform rows you join yourself.
 
 The [`get_custom_channel_grouping`](tables/user-defined-functions/get_custom_channel_grouping.sql) UDF is a second grouping beside the standard one, on the same fields. It returns `NULL` until you write your own rules into it; changes apply to historical results at query time without rewriting raw events.
 
@@ -627,7 +627,7 @@ Scopes, BigQuery table functions, transform `events_raw` into reporting-ready da
 |:---|:---|
 | Behavior | [Users](tables/TABLES.md#users), [Sessions](tables/TABLES.md#sessions), [Pages](tables/TABLES.md#pages), [Events](tables/TABLES.md#events) |
 | Ecommerce | [Transactions](tables/TABLES.md#transactions), [Products](tables/TABLES.md#products), [Funnels](tables/TABLES.md#ecommerce-funnel) and [RFM](tables/TABLES.md#users-rfm) |
-| Acquisition | [Attribution](tables/TABLES.md#attribution-comparison), [Campaigns](tables/TABLES.md#campaigns) and [Media Plan](tables/TABLES.md#media-plan) |
+| Acquisition | [Attribution](tables/TABLES.md#attribution-comparison) |
 | Validation | [Events Debug](tables/TABLES.md#events-debug) and [Consents](tables/TABLES.md#consents) |
 
 See [Reporting Tables](tables/TABLES.md) for setup, parameters and SQL source, or use the [Fields catalog explorer](https://datastudio.google.com/u/0/reporting/d4a86b2c-417d-4d4d-9ac5-281dca9d1abe/page/p_05l6ownl6d) to browse fields.
@@ -651,7 +651,7 @@ Separate the values with a pipe and use the full string in the landing URL:
 utm_campaign=2026|IT|Upper funnel|Google Ads|Search ads|Brand awareness|Nameless Analytics
 ```
 
-The extracted dimensions are available at user, session and event level and are reused by the reporting queries for users, sessions, pages, events, ecommerce, attribution, campaign performance and media plans. For example, the first part is exposed as `user_campaign_year`, `session_campaign_year` or `campaign_year`, depending on the level.
+The extracted dimensions are available at user, session and event level and are reused by the reporting queries for users, sessions, pages, events, ecommerce and attribution. For example, the first part is exposed as `user_campaign_year`, `session_campaign_year` or `campaign_year`, depending on the level.
 
 Extraction is positional: missing parts return `NULL`, while values in the wrong position are assigned to the wrong dimension. The original campaign string remains unchanged. See the [`get_campaign_part`](tables/user-defined-functions/get_campaign_part.sql) function for the mapping used by BigQuery.
 

@@ -12,7 +12,6 @@ For an overview of how Nameless Analytics works, [start with the main README](..
   - [Configure the SQL scripts](#configure-the-sql-scripts)
   - [Create raw tables](#create-raw-tables)
   - [Create custom functions](#create-custom-functions)
-  - [Configure optional campaign source tables](#configure-optional-campaign-source-tables)
   - [Create table functions](#create-table-functions)
 - [Raw tables](#raw-tables)
   - [Dates are UTC](#dates-are-utc)
@@ -31,8 +30,6 @@ For an overview of how Nameless Analytics works, [start with the main README](..
   - [Attribution Single Touch](#attribution-single-touch)
   - [Attribution Multi Touch](#attribution-multi-touch)
   - [Attribution Comparison](#attribution-comparison)
-  - [Media Plan](#media-plan)
-  - [Campaigns](#campaigns)
 - [Reporting fields](#reporting-fields)
 - [Data governance & maintenance](#data-governance--maintenance)
   - [Cookies are not deleted](#cookies-are-not-deleted)
@@ -62,75 +59,9 @@ Run [`tables.sql`](tables/tables.sql) to create the dataset, `events_raw` and `c
 
 Create the user-defined functions before the reporting table functions:
 
-- [`get_channel_grouping`](user-defined-functions/get_channel_grouping.sql) installs `get_channel_grouping` and `get_channel_paid`, the standard [channel grouping logic](../README.md#channel-grouping-logic) the Server-side Client Tag applies — where the traffic came from, and whether it was paid — for rows that never went through it, such as advertising platform data in `campaigns`. Keep it in sync with the tag and leave customizations to `get_custom_channel_grouping`.
+- [`get_channel_grouping`](user-defined-functions/get_channel_grouping.sql) installs `get_channel_grouping` and `get_channel_paid`, the standard [channel grouping logic](../README.md#channel-grouping-logic) the Server-side Client Tag applies — where the traffic came from, and whether it was paid — for rows that never went through it, such as advertising platform data you join yourself. Keep it in sync with the tag and leave customizations to `get_custom_channel_grouping`.
 - [`get_custom_channel_grouping`](user-defined-functions/get_custom_channel_grouping.sql) is your own channel grouping, beside the standard one, on the same source, medium, campaign and click ID. It returns `NULL` until you write your rules into it; changes also affect historical reports.
 - [`get_campaign_part`](user-defined-functions/get_campaign_part.sql) extracts the seven dimensions from the pipe-delimited [campaign taxonomy](../README.md#campaign-taxonomy).
-
-### Configure optional campaign source tables
-
-The `campaigns` and `media_plan` functions require the following source tables. They are not created by this repository and must reside in the same dataset as the table functions.
-
-| Table | Suggested source | Used by |
-|:---|:---|:---|
-| `campaigns_raw` | A native BigQuery table loaded from advertising platforms, or a connected Google Sheet | `campaigns`, `media_plan` |
-| `media_plan_raw` | A connected Google Sheet or another maintained BigQuery table | `media_plan` |
-
-All other table functions work without these sources.
-
-Reference sheets: [online campaign performance](https://docs.google.com/spreadsheets/d/1aDfDJ3aDDH88ybJ4HH7y2m7cSRcKLhl6R9Z8ZbBmE0Y/#gid=418285084) and [media plan](https://docs.google.com/spreadsheets/d/1aDfDJ3aDDH88ybJ4HH7y2m7cSRcKLhl6R9Z8ZbBmE0Y/#gid=1267353944).
-
-#### campaigns_raw
-
-The table contains daily media performance, with one row per source, campaign and date. All seven columns must exist; columns whose value is not required may contain `NULL`.
-
-| Column | Type | Value required | Description |
-|:---|:---|:---:|:---|
-| `date` | DATE | Yes | Date on which the spend occurred. |
-| `source` | STRING | Yes | Advertising platform, as `utm_source` names it (e.g. `google`). The `campaigns` function reads the channel grouping from it. |
-| `campaign` | STRING | Yes | Campaign name. The `campaigns` function compares it with `session_campaign` without distinguishing letter case. |
-| `campaign_id` | STRING | No | Advertising campaign ID. It must match `utm_id` when used; `NULL` and an empty value are treated as equivalent. |
-| `cost` | FLOAT64 | Yes | Spend in the reporting currency. |
-| `impression` | INT64 | No | Impressions. Missing values are reported as zero. |
-| `click` | INT64 | No | Clicks used to calculate CPC and click-through rate. |
-
-#### media_plan_raw
-
-The table contains planned campaign budgets. In the reference sheet, use this schema for the `A:J` range. `media_plan` reads only the three columns marked **Yes**; the others are editable helpers and do not affect the output.
-
-| Column | Type | Read by `media_plan` | Description |
-|:---|:---|:---:|:---|
-| `date` | DATE | Yes | Any date in the budget month. It must be recognized by BigQuery as a `DATE`. |
-| `year` | INT64 | No | Optional helper field. |
-| `country` | STRING | No | Optional helper field. |
-| `funnel_stage` | STRING | No | Optional helper field. |
-| `platform` | STRING | No | Optional helper field. |
-| `campaign_type` | STRING | No | Optional helper field. |
-| `marketing_objective` | STRING | No | Optional helper field. |
-| `campaign_name` | STRING | No | Optional helper field. |
-| `full_campaign_name` | STRING | Yes | Complete seven-part [campaign taxonomy](../README.md#campaign-taxonomy). It is matched exactly, including letter case, with the performance table's `campaign`. |
-| `budget` | FLOAT64 | Yes | Planned budget. Rows are aggregated by month and campaign. |
-
-Output taxonomy dimensions are extracted from `full_campaign_name`; output year and month are derived from `date`.
-
-#### Connecting a Google Sheet to BigQuery
-
-To use a Google Sheet as an external table:
-
-1. In the dataset, select **Create table** and choose `Drive` as the source.
-2. Paste the spreadsheet URL and choose `Google Sheet` as the file format.
-3. Enter the relevant range:
-   - `Online campaigns performances!A:G` for `campaigns_raw`;
-   - `Media plan pivot!A:J` for `media_plan_raw`.
-4. Use the exact table name and schema documented above, then set **Header rows to skip** to `1`.
-
-Queries against an external table read the current sheet content without a separate reload.
-
-#### Matching campaigns across sources
-
-The `utm_campaign` query parameter becomes `session_campaign` and should use the same taxonomy as the campaign source tables.
-
-- `campaigns` joins analytics and advertising data by date, case-insensitive campaign name and campaign ID. Its full join preserves unmatched rows from both sides.
-- `media_plan` joins planned budget to advertising spend by month and exact campaign name. It preserves all media-plan rows; spend-only campaigns are not returned.
 
 ### Create table functions
 
@@ -139,7 +70,6 @@ Create the functions in dependency order:
 1. Base functions: [`events`](table-functions/events.sql) and [`events_debug`](table-functions/events_debug.sql).
 2. Core functions: [`sessions`](table-functions/sessions.sql), [`users`](table-functions/users.sql), [`pages`](table-functions/pages.sql), [`ec_transactions`](table-functions/ec_transactions.sql), [`ec_products`](table-functions/ec_products.sql), [`ec_funnel`](table-functions/ec_funnel.sql), [`attribution_single_touch`](table-functions/attribution_single_touch.sql) and [`attribution_multi_touch`](table-functions/attribution_multi_touch.sql).
 3. Derived functions: [`consents`](table-functions/consents.sql), [`users_rfm`](table-functions/users_rfm.sql), [`ec_funnel_pivot`](table-functions/ec_funnel_pivot.sql) and [`attribution_comparison`](table-functions/attribution_comparison.sql).
-4. Optional campaign functions: [`campaigns`](table-functions/campaigns.sql) and [`media_plan`](table-functions/media_plan.sql), after configuring their source tables.
 
 ## Raw tables
 
@@ -325,30 +255,6 @@ select * from `project.nameless_analytics.attribution_comparison`(start_date, en
 ```
 
 [View SQL code](table-functions/attribution_comparison.sql)
-
-### Media plan
-
-Combines monthly planned budgets with matching campaign spend. All media-plan rows are retained; spend without a corresponding plan row is not returned.
-
-Requires `media_plan_raw` and `campaigns_raw`.
-
-```sql
-select * from `project.nameless_analytics.media_plan`(start_date, end_date)
-```
-
-[View SQL code](table-functions/media_plan.sql)
-
-### Campaigns
-
-Combines daily advertising performance with post-click user, session, conversion, ecommerce and ROAS metrics. Its full join preserves unmatched advertising and analytics campaigns.
-
-Requires `campaigns_raw`.
-
-```sql
-select * from `project.nameless_analytics.campaigns`(start_date, end_date)
-```
-
-[View SQL code](table-functions/campaigns.sql)
 
 ## Reporting fields
 
