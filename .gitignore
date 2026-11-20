@@ -7,8 +7,3 @@ package.json
 fields_catalog.sql
 REVIEW.md
 .stuffs/
-
-tables/table-functions/events_debug.sql
-tables/table-functions/users_rfm.sql
-tables/table-functions/ec_funnel_pivot.sql
-tables/table-functions/attribution_comparison.sql
