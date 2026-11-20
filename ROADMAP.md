@@ -13,6 +13,7 @@ Here is a wishlist of ideas and features for future releases, representing a lis
 
 - Server to Server tracking
 - Add core web vitals metrics (Client-side Tracker Tag) for page_load_time event
+- Mobile SDK
 
 #
 

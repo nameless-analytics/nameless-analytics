@@ -17,19 +17,15 @@ For an overview of how Nameless Analytics works, [start with the main README](..
   - [Dates are UTC](#dates-are-utc)
 - [Table functions](#table-functions)
   - [Events](#events)
-  - [Events Debug](#events-debug)
   - [Users](#users)
-  - [Users RFM](#users-rfm)
   - [Sessions](#sessions)
   - [Pages](#pages)
   - [Transactions](#transactions)
   - [Products](#products)
   - [Ecommerce Funnel](#ecommerce-funnel)
-  - [Ecommerce Funnel Pivot](#ecommerce-funnel-pivot)
   - [Consents](#consents)
   - [Attribution Single Touch](#attribution-single-touch)
   - [Attribution Multi Touch](#attribution-multi-touch)
-  - [Attribution Comparison](#attribution-comparison)
 - [Reporting fields](#reporting-fields)
 - [Available in platform only](#available-in-platform-only)
   - [Campaigns](#campaigns)
@@ -70,9 +66,9 @@ Create the user-defined functions before the reporting table functions:
 
 Create the functions in dependency order:
 
-1. Base functions: [`events`](table-functions/events.sql) and [`events_debug`](table-functions/events_debug.sql).
+1. Base function: [`events`](table-functions/events.sql).
 2. Core functions: [`sessions`](table-functions/sessions.sql), [`users`](table-functions/users.sql), [`pages`](table-functions/pages.sql), [`ec_transactions`](table-functions/ec_transactions.sql), [`ec_products`](table-functions/ec_products.sql), [`ec_funnel`](table-functions/ec_funnel.sql), [`attribution_single_touch`](table-functions/attribution_single_touch.sql) and [`attribution_multi_touch`](table-functions/attribution_multi_touch.sql).
-3. Derived functions: [`consents`](table-functions/consents.sql), [`users_rfm`](table-functions/users_rfm.sql), [`ec_funnel_pivot`](table-functions/ec_funnel_pivot.sql) and [`attribution_comparison`](table-functions/attribution_comparison.sql).
+3. Derived function: [`consents`](table-functions/consents.sql).
 
 ## Raw tables
 
@@ -129,16 +125,6 @@ The scope determines both the selected population and the rows available to wind
 
 [View SQL code](table-functions/events.sql)
 
-### Events debug
-
-Returns the raw and typed parameter structures used to validate stored user, session, page, event, ecommerce, dataLayer and consent data.
-
-```sql
-select * from `project.nameless_analytics.events_debug`(start_date, end_date)
-```
-
-[View SQL code](table-functions/events_debug.sql)
-
 ### Users
 
 Aggregates users acquired in the selected range, including acquisition, recency, session and ecommerce metrics.
@@ -148,16 +134,6 @@ select * from `project.nameless_analytics.users`(start_date, end_date)
 ```
 
 [View SQL code](table-functions/users.sql)
-
-### Users RFM
-
-Scores the current Recency, Frequency and Monetary state of customers acquired in the selected range, using all their available activity. Churn window and RFM weights are configurable.
-
-```sql
-select * from `project.nameless_analytics.users_rfm`(start_date, end_date, churn_window_days, r_weight, f_weight, m_weight)
-```
-
-[View SQL code](table-functions/users_rfm.sql)
 
 ### Sessions
 
@@ -209,16 +185,6 @@ select * from `project.nameless_analytics.ec_funnel`(start_date, end_date)
 
 [View SQL code](table-functions/ec_funnel.sql)
 
-### Ecommerce funnel pivot
-
-Returns the same funnel in long format, with one row per session and step for progression and drop-off analysis.
-
-```sql
-select * from `project.nameless_analytics.ec_funnel_pivot`(start_date, end_date)
-```
-
-[View SQL code](table-functions/ec_funnel_pivot.sql)
-
 ### Consents
 
 Returns one row per session and consent category. Session values use the first consent `Update` when present; otherwise the initial session values are retained and the consent state is reported as not expressed.
@@ -248,16 +214,6 @@ select * from `project.nameless_analytics.attribution_multi_touch`(start_date, e
 ```
 
 [View SQL code](table-functions/attribution_multi_touch.sql)
-
-### Attribution comparison
-
-Aggregates conversion credit and revenue by traffic dimensions across the single-touch and multi-touch models.
-
-```sql
-select * from `project.nameless_analytics.attribution_comparison`(start_date, end_date, conversion_event, lookback_days)
-```
-
-[View SQL code](table-functions/attribution_comparison.sql)
 
 ## Reporting fields
 
