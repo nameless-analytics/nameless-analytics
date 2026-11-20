@@ -26,6 +26,7 @@ For an overview of how Nameless Analytics works, [start with the main README](..
   - [Consents](#consents)
   - [Attribution Single Touch](#attribution-single-touch)
   - [Attribution Multi Touch](#attribution-multi-touch)
+  - [Attribution Comparison](#attribution-comparison)
 - [Reporting fields](#reporting-fields)
 - [Available in platform only](#available-in-platform-only)
   - [Campaigns](#campaigns)
@@ -68,7 +69,7 @@ Create the functions in dependency order:
 
 1. Base function: [`events`](table-functions/events.sql).
 2. Core functions: [`sessions`](table-functions/sessions.sql), [`users`](table-functions/users.sql), [`pages`](table-functions/pages.sql), [`ec_transactions`](table-functions/ec_transactions.sql), [`ec_products`](table-functions/ec_products.sql), [`ec_funnel`](table-functions/ec_funnel.sql), [`attribution_single_touch`](table-functions/attribution_single_touch.sql) and [`attribution_multi_touch`](table-functions/attribution_multi_touch.sql).
-3. Derived function: [`consents`](table-functions/consents.sql).
+3. Derived functions: [`consents`](table-functions/consents.sql) and [`attribution_comparison`](table-functions/attribution_comparison.sql).
 
 ## Raw tables
 
@@ -214,6 +215,16 @@ select * from `project.nameless_analytics.attribution_multi_touch`(start_date, e
 ```
 
 [View SQL code](table-functions/attribution_multi_touch.sql)
+
+### Attribution comparison
+
+Aggregates conversion credit and revenue by traffic dimensions across the single-touch and multi-touch models.
+
+```sql
+select * from `project.nameless_analytics.attribution_comparison`(start_date, end_date, conversion_event, lookback_days)
+```
+
+[View SQL code](table-functions/attribution_comparison.sql)
 
 ## Reporting fields
 

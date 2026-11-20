@@ -627,7 +627,7 @@ Scopes, BigQuery table functions, transform `events_raw` into reporting-ready da
 |:---|:---|
 | Behavior | [Users](tables/TABLES.md#users), [Sessions](tables/TABLES.md#sessions), [Pages](tables/TABLES.md#pages), [Events](tables/TABLES.md#events) |
 | Ecommerce | [Transactions](tables/TABLES.md#transactions), [Products](tables/TABLES.md#products) and [Funnel](tables/TABLES.md#ecommerce-funnel) |
-| Acquisition | [Attribution single touch](tables/TABLES.md#attribution-single-touch) and [Attribution multi touch](tables/TABLES.md#attribution-multi-touch) |
+| Acquisition | [Attribution](tables/TABLES.md#attribution-comparison) |
 | Validation | [Consents](tables/TABLES.md#consents) |
 
 See [Reporting Tables](tables/TABLES.md) for setup, parameters and SQL source, and [Reporting fields](https://namelessanalytics.com/reporting-fields) for every field they return.
