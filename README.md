@@ -57,7 +57,7 @@ Its main characteristics are:
 ## Overview
 The browser tracker builds the event, the Server-side Client Tag validates and enriches it, Firestore maintains the current user/session state and BigQuery stores the historical event timeline.
 
-![Nameless Analytics schema](https://github.com/user-attachments/assets/9ca3c843-5ca9-444e-96a4-9401773a4c21)
+![Nameless Analytics schema](https://namelessanalytics.com/img/Nameless%20Analytics%20schema.png)
 
 
 
