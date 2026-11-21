@@ -355,7 +355,7 @@ The server stores the ecommerce object as JSON in `events_raw.ecommerce`. For no
 - [Products](../tables/TABLES.md#products) flattens ecommerce items;
 - [Ecommerce Funnel](../tables/TABLES.md#ecommerce-funnel) reports progression from view to purchase.
 
-Revenue, RFM and ROAS currently aggregate numeric values without currency conversion. Normalize amounts to one reporting currency before sending them, or separate reporting by currency.
+Revenue values are currently aggregated without currency conversion. Normalize amounts to one reporting currency before sending them, or separate reporting by currency.
 
 ## How to send events via Streaming Protocol
 
